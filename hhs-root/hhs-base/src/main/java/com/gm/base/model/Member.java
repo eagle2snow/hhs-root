@@ -13,8 +13,8 @@ import com.gm.gencode.util.FieldType;
 
 @M("会员信息")
 @Entity(name = "member")
-@SuppressWarnings("serial")
 @Table(name = "t_member")
+@SuppressWarnings("serial")
 public class Member extends Model {
 
 	@FormField(type = FieldType.TEXTINPUT, label = "openid")

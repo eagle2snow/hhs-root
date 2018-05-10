@@ -1,18 +1,16 @@
 package com.gm.base.model;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
 import com.gm.gencode.util.DataNature;
 import com.gm.gencode.util.FieldType;
 
 @M("商品分类表")
+@SuppressWarnings("serial")
 @Entity(name = "commodityClass")
 @Table(name = "t_commodity_class")
 public class CommodityClass extends Model {

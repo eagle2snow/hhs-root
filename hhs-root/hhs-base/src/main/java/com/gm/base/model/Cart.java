@@ -11,6 +11,7 @@ import com.gm.gencode.util.FieldType;
 @M("购物车")
 @Entity(name = "cart")
 @Table(name = "t_cart")
+@SuppressWarnings("serial")
 public class Cart extends Model {
 
 	private Member member;// 关联会员id

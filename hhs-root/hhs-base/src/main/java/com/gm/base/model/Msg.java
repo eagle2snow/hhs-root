@@ -12,6 +12,7 @@ import com.gm.gencode.annotation.M;
 @M("消息")
 @Entity(name = "msg")
 @Table(name = "t_msg")
+@SuppressWarnings("serial")
 public class Msg extends Model {
 	private Integer fromId;
 	private Integer toId;

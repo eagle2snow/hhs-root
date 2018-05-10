@@ -28,6 +28,7 @@ import com.gm.gencode.util.FieldType;
 @M("订单项")
 @Table(name = "t_order_item")
 @Entity(name = "orderItem")
+@SuppressWarnings("serial")
 public class OrderItem extends Model {
 	
 	private Order order;
