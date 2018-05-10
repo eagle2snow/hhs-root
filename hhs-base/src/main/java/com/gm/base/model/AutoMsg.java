@@ -13,6 +13,7 @@ import com.gm.utils.StringUtil;
 @M("自动回复")
 @Entity(name = "autoMsg")
 @Table(name = "t_auto_msg")
+@SuppressWarnings("serial")
 public class AutoMsg extends Model {
 
 	@FormField(type = FieldType.SELECT, label = "分类", dataNature = DataNature.MODEL, ds = AutoMsgType.class)

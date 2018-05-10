@@ -1,20 +1,18 @@
 package com.gm.base.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
 import com.gm.gencode.util.DataNature;
 import com.gm.gencode.util.FieldType;
 
 @M("商品规格表")
+@SuppressWarnings("serial")
 @Entity(name = "commoditySpecification")
 @Table(name = "t_commodity_specification")
 public class CommoditySpecification extends Model {

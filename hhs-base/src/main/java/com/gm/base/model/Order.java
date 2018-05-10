@@ -20,6 +20,7 @@ import com.gm.gencode.util.FieldType;
 @M("订单表")
 @Entity(name = "order")
 @Table(name = "t_order")
+@SuppressWarnings("serial")
 public class Order extends Model {
 
 	@FormField(type = FieldType.TEXTINPUT, label = "openid")

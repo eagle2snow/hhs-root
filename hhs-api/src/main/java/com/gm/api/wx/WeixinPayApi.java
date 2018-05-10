@@ -2,8 +2,6 @@ package com.gm.api.wx;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLEncoder;
 
 import com.gm.base.consts.Const;
 import com.lly835.bestpay.config.WxPayH5Config;

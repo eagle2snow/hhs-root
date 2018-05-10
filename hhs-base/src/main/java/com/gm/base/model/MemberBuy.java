@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity(name = "memberBuy")
 @Table(name = "t_member_buy")
 public class MemberBuy extends Model {

@@ -9,10 +9,10 @@ import javax.persistence.Table;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
-import com.gm.gencode.util.DataNature;
 import com.gm.gencode.util.FieldType;
 
 @M("会员评价")
+@SuppressWarnings("serial")
 @Entity(name = "commodityAppraise")
 @Table(name = "t_commodity_appraise")
 public class CommodityAppraise extends Model {

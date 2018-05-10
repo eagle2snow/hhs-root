@@ -31,6 +31,7 @@ import com.gm.gencode.util.FieldType;
 @M("提现")
 @Table(name = "t_draw")
 @Entity(name = "draw")
+@SuppressWarnings("serial")
 public class Draw extends Model {
 
 	@FormField(type = FieldType.SELECT, label = "会员", dataNature = DataNature.MODEL, ds = Member.class)
