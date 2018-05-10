@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.gm.base.model.Draw;
 import com.gm.base.model.MemberBuy;
 import com.gm.base.model.OrderItem;
+import com.gm.base.model.TenReturnOne;
 import com.gm.gencode.Build;
 
 import freemarker.template.TemplateException;
@@ -27,11 +28,11 @@ public class CreateCode {
 
 		// Build.buildCode(AutoMsgType.class, null);
 		// Build.buildCode(AutoMsg.class, null);
-//		 Build.buildCode(CommodityEvaluation.class, null);
-		 //Build.buildCode(OrderItem.class, "idao,dao,si,is");
-		
-		Build.buildCode(MemberBuy.class, "idao,dao,si,is");
-		
+		// Build.buildCode(CommodityEvaluation.class, null);
+		// Build.buildCode(OrderItem.class, "idao,dao,si,is");
+
+		// Build.buildCode(TenReturnOne.class, "idao,dao,si,is");
+
 	}
 
 }
