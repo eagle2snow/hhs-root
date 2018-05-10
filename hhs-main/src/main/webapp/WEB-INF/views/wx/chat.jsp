@@ -16,7 +16,7 @@
 		<!-- 一行 -->
 		<div class="chatlist" id="chatArea" style="height: 566px;">
 			<div class="chatinsrow">
-				<span class="label">客服<span class="name">竹语</span>为您服务
+				<span class="label">客服<span class="name">小竹</span>为您服务
 				</span>
 			</div>
 

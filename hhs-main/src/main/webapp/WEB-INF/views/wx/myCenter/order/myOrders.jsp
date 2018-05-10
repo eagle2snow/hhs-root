@@ -72,6 +72,7 @@
 									
 									 <c:if test="${order.status==1}">
 										<span class="defaultlinebtn radiusbtn msbtn">马上付款</span>
+										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
 									</c:if>
 									
 									 <c:if test="${order.status==2}">
@@ -147,6 +148,22 @@
 		
 		function comments(orderId){
 			location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
+		}
+		
+		function cancelOrder(orderId){
+			$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
+				console.log(data);
+				if(data.status == 1){
+					layer.msg(data.msg,{icon:6});
+					re();
+				}
+				if(data.status == 2){
+					layer.msg(data.msg,{icon:5});
+					re();
+					
+				}
+			});
+			
 		}
 	</script>
 
