@@ -6,8 +6,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +48,8 @@ import com.gm.utils.StringUtil;
 @RequestMapping("/wx/order")
 public class WxOrderController extends WeixinBaseController {
 
+	private static final Logger logger = LoggerFactory.getLogger(WxOrderController.class);
+
 	@Resource
 	private ICommodityService commodityService;
 	@Resource
@@ -59,6 +64,28 @@ public class WxOrderController extends WeixinBaseController {
 	private IMemberAddressService memberAddressService;
 
 	private static final String PATH = "/wx/order/";
+
+	@ResponseBody
+	@GetMapping("cancelOrder/{orderId}")
+	public Map<String, Object> cancelOrder(@PathVariable Integer orderId) {
+		HashMap<String, Object> map = this.getMap();
+
+		try {
+			orderService.deleteById(orderId, true);
+			map.put("status", 1);
+			map.put("msg", "订单取消成功");
+
+		} catch (Exception e) {
+			map.put("status", 2);
+			map.put("msg", "系统正在维护");
+
+			logger.error("cancelOrder:Error info is {}", e.getMessage());
+
+		}
+
+		logger.error("cancelOrder:The Map map = {}", JSON.toJSON(map));
+		return map;
+	}
 
 	/**
 	 * <p>
@@ -214,4 +241,5 @@ public class WxOrderController extends WeixinBaseController {
 		Map<String, Object> map = orderService.prePayOrder(member, orderId, addressId, items, content);
 		return map;
 	}
+
 }
