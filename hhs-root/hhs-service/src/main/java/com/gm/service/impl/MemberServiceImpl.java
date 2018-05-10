@@ -8,10 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.gm.base.dao.IMemberDao;
+import com.gm.base.dao.ITenReturnOneDao;
+import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
 import com.gm.base.model.Order;
+import com.gm.base.model.TenReturnOne;
 import com.gm.service.IMemberService;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.consts.Const;
@@ -23,8 +27,11 @@ import com.gm.utils.QRCodeUtils;
 @Transactional
 @Service("memberSercive")
 public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implements IMemberService {
+
 	@Resource
 	private IMemberDao dao;
+
+	private ITenReturnOneDao tenReturnOneDao;
 
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
@@ -92,8 +99,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Member parent1 = getParent1(member);// 上一级
 		Member parent2 = getParent2(member);// 上二级
 		Member parent3 = getParent3(member);// 上三级
-		
-		//三级分润
+
+		// 三级分润
 		if (parent1 != null) {
 			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
 		}
@@ -103,12 +110,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (parent3 != null) {
 			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
 		}
-		
-		
 
-		
-		
-		
 	}
 
 	@Override
@@ -134,11 +136,36 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public Member getParent3(Member member) {
+
 		Member parent2 = getParent2(member);
 		if (parent2 != null) {
 			Member parent3 = getOne("generalizeId", parent2.getReferrerGeneralizeId());
 			return parent3;
 		}
+		return null;
+	}
+
+	@Override
+	public Commodity tenReturnOne(Integer memberId) {
+		TenReturnOne returnOne = tenReturnOneDao.getOne("member.id", memberId);
+		if (!StringUtils.isEmpty(returnOne)) {
+			Integer time = returnOne.getTime();
+			if (time % 10 == 0) { //10 -> 1 | 20 -> 2 | 30 -> 3 | ...
+				
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public BigDecimal returnFiveMoney(Integer mealMemberNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BigDecimal returnMeal(Integer mealMemberNumber) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

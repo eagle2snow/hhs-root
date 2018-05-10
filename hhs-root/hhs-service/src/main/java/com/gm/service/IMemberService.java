@@ -1,12 +1,11 @@
 package com.gm.service;
 
-import com.gm.service.IBaseService;
-
-import java.util.Map;
+import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
+import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
 import com.gm.base.model.Order;
 
@@ -18,6 +17,37 @@ import com.gm.base.model.Order;
  *
  */
 public interface IMemberService extends IBaseService<Member, Integer> {
+	
+	/**
+	 * @Title: returnMeal   
+	 * @Description: 返 5(元/人)
+	 * @param mealMemberNumber 直推业务经理人数
+	 * @return 套餐金额  
+	 * @return: BigDecimal      
+	 * @throws
+	 */
+	BigDecimal returnFiveMoney(Integer mealMemberNumber);
+	
+	/**
+	 * @Title: returnMeal   
+	 * @Description: 返套餐金额
+	 * @param mealMemberNumber 直推业务经理人数
+	 * @return 套餐金额  
+	 * @return: BigDecimal      
+	 * @throws
+	 */
+	BigDecimal returnMeal(Integer mealMemberNumber);
+	
+	
+	/**
+	 * @Title: tenReturnOne   
+	 * @Description: "十送一"
+	 * @param memberId 会员ID
+	 * @return   商品   
+	 * @return: Commodity      
+	 * @throws
+	 */
+	Commodity tenReturnOne(Integer memberId);
 
 	/**
 	 * 
