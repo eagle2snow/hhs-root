@@ -1,0 +1,80 @@
+package com.gm.api.wx;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import com.gm.base.consts.Const;
+import com.lly835.bestpay.config.WxPayH5Config;
+import com.lly835.bestpay.enums.BestPayTypeEnum;
+import com.lly835.bestpay.model.PayRequest;
+import com.lly835.bestpay.model.PayResponse;
+import com.lly835.bestpay.service.impl.BestPayServiceImpl;
+
+public class WeixinPayApi {
+
+	private static WxPayH5Config wxPayH5Config;
+
+	private WeixinPayApi() {
+	}
+
+	/**
+	 * 获取WxPayH5Config
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static WxPayH5Config getWxPayH5Config() {
+		if (wxPayH5Config == null) {
+			synchronized (WeixinPayApi.class) {
+				if (wxPayH5Config == null) {
+					wxPayH5Config = new WxPayH5Config();
+					wxPayH5Config.setAppId(Const.APPID);
+					wxPayH5Config.setAppSecret(Const.SECRET);
+					wxPayH5Config.setMchId(Const.MCHID);
+					wxPayH5Config.setMchKey(Const.MCHKEY);
+					wxPayH5Config.setNotifyUrl(Const.NOTIFY_URL);
+					wxPayH5Config.setReturnUrl(Const.RETURN_URL);
+				}
+			}
+		}
+		return wxPayH5Config;
+	}
+
+	/**
+	 * <p>
+	 * 描述:发起微信支付
+	 * </p>
+	 * 
+	 * @author 灰灰
+	 * @param orderNo
+	 *            订单号
+	 * @param orderName
+	 *            订单名称
+	 * @param amount
+	 *            支付金额（元）
+	 * @param openid
+	 *            当前支付人的openid
+	 * @date 2018年5月7日
+	 * 
+	 * @version 1.0
+	 */
+	public static PayResponse pay(String orderNo, String orderName, BigDecimal amount, String openid) {
+		PayRequest payRequest = new PayRequest();
+		payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
+		payRequest.setOrderId(orderNo);
+		payRequest.setOrderName(orderName);
+		payRequest.setOrderAmount(amount.doubleValue());
+		payRequest.setOpenid(openid);
+		PayResponse response = getBestPayServiceImpl().pay(payRequest);
+		return response;
+	}
+
+	public static BestPayServiceImpl getBestPayServiceImpl() {
+		BestPayServiceImpl bestPayService = new BestPayServiceImpl();
+		bestPayService.setWxPayH5Config(getWxPayH5Config());
+		return bestPayService;
+	}
+
+}
