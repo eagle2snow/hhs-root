@@ -85,7 +85,8 @@
 				<div class="dt">我的会员</div> <i class="rgt"></i>
 		</a></li>
 		<li class="gonavitem"><a
-			href="${ctx}wx/comments/myComments" class="gonavdl">
+			<%-- href="${ctx}wx/comments/myComments" class="gonavdl"> --%>
+			href="${ctx}wx/myCenter/replyMessage/1" class="gonavdl">
 				<div class="dt">我的评论</div> <i class="rgt"></i>
 		</a></li>
 		<li class="gonavitem"><a href="${adp }myQrCode" class="gonavdl">
