@@ -245,8 +245,18 @@ public class WxMyCenterController extends WeixinBaseController {
 		return map;
 	}
 
-	@RequestMapping("replyMessage")
-	public String replyMessage(ModelMap map) {
+
+	/**
+	 * 
+	 *<p>Title:replyMessage</p>
+	 *<p>Description:我的评论</p>
+	 *
+	 * @param map
+	 * @param type	1： 评论	2：回复
+	 * @return
+	 */
+	@RequestMapping("replyMessage/{type}")
+	public String replyMessage(ModelMap map, @PathVariable Integer type) {
 		Integer memberId = this.getMid();
 		map.put("model", commodityAppraiseService.listEqDc("member.id", memberId, "createTime", "desc"));
 		map.put("member", memberId);
