@@ -4,9 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.gm.base.model.CommodityAppraise;
+import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
+import com.gm.service.ICommodityAppraiseService;
 import com.gm.service.IOrderItemService;
+import com.gm.service.IOrderService;
+import com.gm.service.impl.CommodityAppraiseServiceImpl;
 import com.gm.service.impl.CommodityEvaluationServiceImpl;
 
 /**
@@ -32,9 +41,18 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 	@Autowired
 	private IOrderItemService itemService;
+	
+	@Autowired
+	private ICommodityAppraiseService appraiseService;
 
 	@Autowired
 	private CommodityEvaluationServiceImpl commodityEvaluationService;
+	
+	@Autowired
+	private CommodityAppraiseServiceImpl appraiseServiceImpl;
+	
+	@Autowired
+	private IOrderService orderService;
 
 	/**
 	 * @Title: commentSucceedView
@@ -91,29 +109,48 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	}
 
 	/**
-	 * @Title: confirmComments
-	 * @Description: 确认评价
-	 * @return Map<String,Object>
+	 * 
+	 *<p>Title:confirmComments</p>
+	 *<p>Description:会员评价</p>
+	 *
+	 * @param request
+	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("confirmComments")
-	public Map<String, Object> confirmComments() {
+	public String confirmComments(HttpServletRequest request) {
+		Map map = request.getParameterMap();
+		String xx = request.getParameter("xx");
+		String text = request.getParameter("text");
+		String memberId = request.getParameter("memberId");
+		String orderNo = request.getParameter("orderNo");
+		logger.info("request列表 {}.", JSON.toJSONString(map));
+		
+		Order order = orderService.getOne("orderNo", orderNo);
+		
+		CommodityAppraise t = new CommodityAppraise();
+		t.setContent(text);
+		t.setStarLevel(xx);
+		t.setOrderNo(orderNo);
+		t.setOrder(order);
+		t.setMember(this.getCurMember());
+		if(appraiseService.add(t)) {
+			return "ok";
+			
+		}else {
+			return "no";
+		}
 
-		HashMap<String, Object> map = this.getMap();
-
-		map.put("msg", "ok");
-
-		return map;
 
 	}
 
 	@RequestMapping("myComments")
 	public String myComments(ModelMap map) {
 
-		map.put("model", commodityEvaluationService.listEq("member.id", this.getMid()));
+		map.put("model", appraiseServiceImpl.listEq("openId", this.getMid()));
 		map.put("member", this.getMid());
 		map.put("path", PATH);
-		logger.info("商品评论列表 {}.", JSON.toJSONString(commodityEvaluationService.listEq("member.id", this.getMid())));
+		logger.info("商品评论列表 {}.", JSON.toJSONString(appraiseServiceImpl.listEq("openId", this.getMid())));
 
 		return PATH + "myComments";
 	}
