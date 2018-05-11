@@ -263,7 +263,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		map.put("path", PATH);
 		logger.info("会员评论列表 {}.",
 				JSON.toJSONString(commodityAppraiseService.listEqDc("member.id", memberId, "createTime", "desc")));
-		return PATH + "replyMessage";
+		return PATH + "replyMessage2";
 	}
 
 	@RequestMapping("genQrcode")
