@@ -106,12 +106,11 @@ public class WxIndexController extends WeixinBaseController {
 	/**
 	 * @Title: setMealView
 	 * @Description: 去购买套餐页面
-	 * @param memberId
 	 * @param model
 	 * @return String
 	 */
-	@RequestMapping("setMeal/{memberId}")
-	public String setMealView(@PathVariable String memberId, ModelMap model) {
+	@RequestMapping("setMeal")
+	public String setMealView(ModelMap model) {
 
 		model.put("member", this.getCurMember());
 		model.put("path", PATH);
@@ -123,15 +122,13 @@ public class WxIndexController extends WeixinBaseController {
 	/**
 	 * @Title: setMealView
 	 * @Description: 确定购买套餐
-	 * @param memberId
-	 *            会员ID
 	 * @param model
 	 *            页面封装信息
 	 * @return String 购买套餐页面
 	 */
 	@ResponseBody
-	@RequestMapping("setMealAction/{memberId}")
-	public Map<String, Object> setMealAction(@PathVariable String memberId) {
+	@RequestMapping("setMealAction")
+	public Map<String, Object> setMealAction() {
 
 		Member curMember = this.getCurMember();
 		HashMap<String, Object> map = this.getMap();

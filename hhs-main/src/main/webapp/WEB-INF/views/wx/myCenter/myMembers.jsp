@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title></title>
+<title>我的会员</title>
 <link rel="stylesheet" type="text/css" href="/static/wx/css/css.css" />
 <meta
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
@@ -33,7 +33,7 @@
 		<table class="simpletable">
 			<thead>
 				<tr>
-					<th width="200">昵称</th>
+					<th>昵称</th>
 					<th>联系方式</th>
 					<th>注册时间</th>
 				</tr>
