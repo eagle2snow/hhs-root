@@ -32,28 +32,28 @@
 				<div class="comment_mtcont">
 					<span class="itm">${u.member.nickname }</span>
 				</div>
-				<span class="date">${u.evaluationTime }</span>
+				<span class="date">${u.createTime }</span>
 			</div>
 			<div class="comment_mc">
-				<p class="para">${u.evaluationDetails }</p>
+				<p class="para">${u.content }</p>
 				<a href="###" class="scartpro">
-					<div class="scartpro_pic"><img src="${u.commodity.imgerPath }" alt=""></div>
+					<div class="scartpro_pic"><img src="{u.commodity.imgerPath }" alt=""></div>
 					<div class="scartpro_cont">
-						<div class="cuth">${u.commodity.commodityClass.name }</div>
-						<div class="cutd">${u.commodity.specifications }</div>
+						<div class="cuth">{u.commodity.commodityClass.name }</div>
+						<div class="cutd">{u.commodity.specifications }</div>
 						<div class="cutd"></div>
 						<div class="cutd">
-							<div class="cutdcont"><ins>&yen;<span class="insm">${u.commodity.showPrice }</span></ins></div>
-							<span>x<span class="insm">${u.orderItem.buyCount }</span></span>
+							<div class="cutdcont"><ins>&yen;<span class="insm">{u.commodity.showPrice }</span></ins></div>
+							<span>x<span class="insm">{u.orderItem.buyCount }</span></span>
 						</div>
 					</div>
 				</a>
 			</div>
 			<div class="comment_mb">
 				<div class="comment_mbcont">
-					<span class="vitm"><span class="num">${u.browse }</span>浏览</span>
-					<span class="vitm"><span class="num">${u.comment }</span>评论</span>
-					<span class="vitm"><span class="num">${u.praise }</span>赞</span>
+					<span class="vitm"><span class="num">{u.browse }</span>浏览</span>
+					<span class="vitm"><span class="num">{u.comment }</span>评论</span>
+					<span class="vitm"><span class="num">{u.praise }</span>赞</span>
 				</div>
 				<a href="###" class="secondlinebtn radiusbtn msbtn">删&nbsp;除</a>
 			</div>

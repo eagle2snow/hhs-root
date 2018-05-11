@@ -13,8 +13,12 @@
 <body>
 <!-- 中间 -->
 <!-- 一行 -->
+
 <div class="mbox">
 <c:forEach items="${orderItems}" var="commodity">
+		<div id="memberId" style="display: none">${commodity.order.member.id}</div>
+		<div id="orderNo" style="display: none">${commodity.order.orderNo}</div>
+<%-- 	<span id="openid"  style="display:none">${commodity.member.openid}</span> --%>
 		<!-- 一行 -->
 		<div class="simplecutproitem">
 			<div class="simplecutpro">
@@ -36,7 +40,7 @@
 		<!-- 一行 -->
 		<from id="form" method="post">
 		<div class="textintbox">
-			<textarea placeholder="点击此处，说说它的优点与美中不足吧~" class="remark_textint textint"></textarea>
+			<textarea id="text" placeholder="点击此处，说说它的优点与美中不足吧~" class="remark_textint textint"></textarea>
 			<div class="picthumbs">
 				<div class="picthumbitm"><img src="${commodity.imgerPath}" alt=""></div>
 				<div class="picthumbitm"><img src="${commodity.imgerPath}" alt=""></div>
@@ -67,9 +71,10 @@
 	function addImages(){
 		
 	}
-
+	
+	
 	function confirmComments(){
-		$.getJSON("${ctx}wx/comments/confirmComments/"+a,function (date){
+		 /* $.getJSON("${ctx}wx/comments/confirmComments/"+a,function (date){
 			if(date.msg=='ok'){
 				location.href='${ctx}wx/comments/commentSucceed';
 			
@@ -79,8 +84,30 @@
 			}else{
 				 $.alert("系统出错");
 			}	
-		});
+		});  */
+		      /* alert($("#orderNo").html());  */ 
+	 	 $.ajax({
+		      type: "POST",
+		      url: "${ctx}wx/comments/confirmComments/",
+		      data: {"xx":a,"text":$("#text").val(),"memberId":$("#memberId").html(),
+		    	  	 "orderNo":$("#orderNo").html()},
+		      dataType : "json",
+		      success: function(date){
+		      alert(date);  
+		    	   if(date=='ok'){
+						location.href='${ctx}wx/comments/commentSucceed';
+					
+					}else if(date=='no'){
+						location.href='${ctx}wx/comments/commentFailure/'+${orderId};
+					
+					}else{
+						 $.alert("系统出错");
+					}	   
+		      },
+		   });  
+		
 	}
+	
 	var a="";
 	$('#xx1').click(function(){
 		a=1;
