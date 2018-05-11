@@ -210,7 +210,8 @@
      wa.close();   
   }   
   //选取图片的来源，拍照和相册   
-  function showActionSheet(conf){   
+  function showActionSheet(conf){ 
+	  alert(conf);
      var divid = conf.id;   
            var actionbuttons=[{title:"拍照"},{title:"相册选取"}];   
            var actionstyle={title:"选择照片",cancel:"取消",buttons:actionbuttons};   
