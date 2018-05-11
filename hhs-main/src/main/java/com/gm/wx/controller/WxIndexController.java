@@ -115,7 +115,7 @@ public class WxIndexController extends WeixinBaseController {
 		model.put("member", this.getCurMember());
 		model.put("path", PATH);
 
-		return PATH + "setMeal";
+		return PATH + "myCenter/setMeal";
 
 	}
 

@@ -77,7 +77,7 @@ function goIndexPage() {
 
 function setMeal(){
 	
-	$.getJSON("${adp}setMealAction/${member.id}",function (date){
+	$.getJSON("${adp}setMealAction",function (date){
 		
 		if(date.msg == "ok"){
 			$.alert("您已经购买套餐,请勿重新购买!", "温馨提示",function (){
