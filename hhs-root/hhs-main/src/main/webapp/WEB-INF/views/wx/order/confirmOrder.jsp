@@ -272,6 +272,8 @@ var orderVue = new Vue({
 						 $.alert("商品库存不足");
 					}else if(res.s=='paid'){
 						 $.alert("订单已付款");
+					}else if(res.s=='null'){
+						 $.alert("订单不存在");
 					}
 					else{
 						 $.alert("系统出错");
@@ -302,25 +304,19 @@ document.addEventListener("touchstart", function() {
 //(String orderNo, String orderName, BigDecimal amount
 
 function prePay() {
-	
-	
-	
 	$.getJSON('/wx/pay/prePayOrder',{'orderNo':orderVue.order.orderNo,'orderName':'购买商品','amount':orderVue.totalAmount}, function(res) {
-		
-		//resultCode != SUCCESS, err_code = ORDERPAID err_code_des=该订单已支付
-		
-		
-		$.alert(res.prePayParams);
-		
-		
-		var appId = res.appId;
-		var timeStamp = res.timeStamp;
-		var nonceStr = res.nonceStr;
-		var packAge = res.packAge;
-		var signType = res.signType;
-		var paySign = res.paySign;
-		onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
+		if(res.s===1){
+			var appId = res.data.appId;
+			var timeStamp = res.data.timeStamp;
+			var nonceStr = res.data.nonceStr;
+			var packAge = res.data.packAge;
+			var signType = res.data.signType;
+			var paySign = res.data.paySign;
+			onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 				paySign);
+		}else{
+			$.alert(res.s);
+		}
 	});
 }
 
@@ -335,13 +331,11 @@ function onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 		"paySign" : paySign
 	//微信签名 
 	}, function(res) {
-		
-		
-		
 		if (res.err_msg == "get_brand_wcpay_request:ok") {
+			location.href='/wx/commodity/paySuccess';
+		}else{
+			location.href='/wx/commodity/payFail';
 		}
-		
-		
 	});
 	if (typeof WeixinJSBridge == "undefined") {
 		if (document.addEventListener) {

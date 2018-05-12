@@ -7,14 +7,12 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IPayBillDao;
 import com.gm.base.model.PayBill;
 import com.gm.service.IMemberService;
-import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.service.IPayBillService;
-import com.gm.base.dao.IBaseDao;
-import com.gm.service.impl.BaseServiceImpl;
 
 @Transactional
 @Service("payBillSercive")
@@ -33,12 +31,11 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 	}
 
 	@Override
-	public void paySuccess(String orderId, Double amount, String time, String outTradeNo) {
+	public void paySuccess(String orderId, Double amount, String outTradeNo) {
 		PayBill payBill = getOne("orderNo", orderId);
 		if (null != payBill) {
 			payBill.setPay(2);
-			payBill.setPayTime(time);
-			payBill.setReaFee(BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100)));
+			payBill.setReaFee(BigDecimal.valueOf(amount));
 			payBill.setTransactionId(outTradeNo);
 			update(payBill);
 			if (payBill.getType() == 1) { // 购买套餐

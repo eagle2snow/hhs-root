@@ -134,9 +134,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			List<OrderItemDto> orderItemDtos, String content) {
 
 		Map<String, Object> map = new HashMap<>();
-		
+
 		Order order = get(orderId);
-		if (order.getStatus()!=1) {
+		if (order == null) {
+			map.put("s", "null");
+			return map;
+		}
+
+		if (order.getStatus() != 1) {
 			map.put("s", "paid");
 			return map;
 		}
@@ -212,9 +217,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Order order = getOne("orderNo", orderNo);
 		order.setStatus(2);
 		update(order);
-		
-		//saveMemberBuy(order);
-		//returnSingleItemPrice(order);
+
+		// saveMemberBuy(order);
+		// returnSingleItemPrice(order);
 	}
 
 	// 保存购买记录

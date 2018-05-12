@@ -1,6 +1,7 @@
 package com.gm.base.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -19,9 +20,7 @@ public class PayBill extends Model {
 	private String transactionId;// 微信交易號
 	private Integer type;// 1购买套餐，2购买产品
 	private Integer pay;// 1未支付，2已支付
-	private String payTime;// 完成支付时间
-
-	
+	private LocalDateTime payTime = LocalDateTime.now();// 完成支付时间
 
 	public String getOrderNo() {
 		return orderNo;
@@ -38,7 +37,6 @@ public class PayBill extends Model {
 	public void setOpenid(String openid) {
 		this.openid = openid;
 	}
-
 
 	public String getTransactionId() {
 		return transactionId;
@@ -64,14 +62,6 @@ public class PayBill extends Model {
 		this.pay = pay;
 	}
 
-	public String getPayTime() {
-		return payTime;
-	}
-
-	public void setPayTime(String payTime) {
-		this.payTime = payTime;
-	}
-
 	public BigDecimal getPreFee() {
 		return preFee;
 	}
@@ -86,6 +76,14 @@ public class PayBill extends Model {
 
 	public void setReaFee(BigDecimal reaFee) {
 		this.reaFee = reaFee;
+	}
+
+	public LocalDateTime getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(LocalDateTime payTime) {
+		this.payTime = payTime;
 	}
 
 }

@@ -2,10 +2,7 @@ package com.gm.api.pay.exception;
 
 import com.gm.api.pay.emums.BestPayResultEnum;
 
-/**
- * Created by null on 2017/2/23.
- */
-public class BestPayException extends RuntimeException {
+public class BestPayException extends Exception {
 
 	private Integer code;
 
