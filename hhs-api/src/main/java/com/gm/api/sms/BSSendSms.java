@@ -64,7 +64,7 @@ public class BSSendSms {
 
 			String sign = Md5Util.getMD5(username + password + timestamp);
 
-			String content = "不要告诉任何人！验证码" + param + "，您于" + dateTime + "进行修改个人信息验证【竹语商城】";
+			String content = "【竹语商城】 验证码:" + param + "，您于" + dateTime + "进行修改个人信息,注意保密哦!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ";
 			String sendTime = "";
 			String action = "send";
 			String extno = "";

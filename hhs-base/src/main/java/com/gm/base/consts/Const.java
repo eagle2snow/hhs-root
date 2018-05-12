@@ -13,10 +13,8 @@ public class Const {
 	public static final String REDERECT_403 = "redirect:/error/403";// 重定向到403页面
 	public static final String REDERECT_404 = "redirect:/error/404";// 重定向到404页面
 	public static final String REDERECT_500 = "redirect:/error/500";// 重定向到500页面
-	public static final String SEND_NEW_MSG_TO_KF = "/msg/sendToKf/";//
-	public static final String SEND_NEW_MSG_TO_MEMBER = "/msg/sendToMember/";
-	
-	
+	public static final String SEND_NEW_MSG_TO_KF = "/msg/sendToKf/";// 发送消息到客服
+	public static final String SEND_NEW_MSG_TO_MEMBER = "/msg/sendToMember/";// 发送消息给会员
 
 	// 以下为微信参数
 	public static final String TOKEN = "451dsfDsadf11313sAaxGjhjk";
@@ -31,16 +29,14 @@ public class Const {
 	public static final String NOTIFY_URL = "http://aijfc.iask.in/wx/testPay/paySuccess";// 支付完成后的异步通知地址
 	public static final String RETURN_URL = "http://aijfc.iask.in/wx/index";// 支付完成后的同步返回地址
 
-
 	// 一下为短信方向参数
 	public static final String userId = "8131";// 企业id
 	public static final String userName = "zhuyu";// 企业账号
 	public static final String password = "wsB7sX83zy";// 企业密码
 	public static final String action = "send";// 发送任务命令
 	public static final String sMSApiUrl = "http://211.147.242.161:8888/v2sms.aspx";// 发送任务命令
-	
 
-	//以下为系统需要的其他常量
-	public static final String verificationCode2Session = "";//验证码
+	// 以下为系统需要的其他常量
+	public static final String verificationCode2Session = "";// 验证码
 
 }

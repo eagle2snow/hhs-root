@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dto.CartDto;
@@ -65,13 +66,42 @@ public class WxOrderController extends WeixinBaseController {
 
 	private static final String PATH = "/wx/order/";
 
+	/**
+	 * @Title: exitGoods   
+	 * @Description:退货申请 
+	 * @param orderId
+	 * @return      
+	 * @return: Map<String,Object>      
+	 * @throws
+	 */
+	@ResponseBody
+	@RequestMapping("exitGoods/{orderId}")
+	public Map<String, Object> exitGoods(@PathVariable Integer orderId){
+		HashMap<String,Object> map = this.getMap();
+		
+		
+		return map;
+	}
+
+	/**
+	 * @Title: cancelOrder   
+	 * @Description: 取消订单 物理删除库中订单信息
+	 * @param orderId
+	 * @return      
+	 * @return: Map<String,Object>      
+	 * @throws
+	 */
 	@ResponseBody
 	@GetMapping("cancelOrder/{orderId}")
 	public Map<String, Object> cancelOrder(@PathVariable Integer orderId) {
 		HashMap<String, Object> map = this.getMap();
 
 		try {
+			// 通过关联的实体删除实体
+			orderItemService.deleteByParm("order.id", orderId, true);
+
 			orderService.deleteById(orderId, true);
+
 			map.put("status", 1);
 			map.put("msg", "订单取消成功");
 

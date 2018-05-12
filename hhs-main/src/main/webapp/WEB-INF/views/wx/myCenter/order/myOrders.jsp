@@ -41,9 +41,9 @@
 							<c:when test="${order.status eq 3 }">待收货</c:when>
 							<c:when test="${order.status eq 4 }">已收货</c:when>
 							<c:when test="${order.status eq 5 }">退换货申请中</c:when>
-							<c:when test="${order.status eq 6 }">退换货申请通过待买家发货</c:when>
-							<c:when test="${order.status eq 7 }">退换货申请通过买家已发货</c:when>
-							<c:when test="${order.status eq 8 }">退换货申请不通过</c:when>
+							<c:when test="${order.status eq 6 }">退换申请通过待发货</c:when>
+							<c:when test="${order.status eq 7 }">退换申请通过已发货</c:when>
+							<c:when test="${order.status eq 8 }">退换货申请没有通过</c:when>
 							<c:when test="${order.status eq 9 }">订单已退款</c:when>
 							<c:when test="${order.status eq 10 }">订单已完成</c:when>
 						</c:choose>
@@ -66,22 +66,22 @@
 										数量：${item.buyCount }
 									</div>
 									
-									<c:if test="${order.status ne 1 and order.status ne 4}">
-										<span class="defaultlinebtn radiusbtn msbtn">查看物流</span>
+									<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}">
+										<span onclick="logisticsQuery(${order.id})"  class="defaultlinebtn radiusbtn msbtn">查看物流</span>
 									</c:if>
 									
 									 <c:if test="${order.status==1}">
-										<span class="defaultlinebtn radiusbtn msbtn">马上付款</span>
+										<span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
 										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
 									</c:if>
 									
 									 <c:if test="${order.status==2}">
-										<span class="defaultlinebtn radiusbtn msbtn">给我加急</span>
+										<span <%-- onclick="urgent(${order.id})"  --%> class="defaultlinebtn radiusbtn msbtn">给我加急</span>
 									</c:if>
 									
 									
 									 <c:if test="${order.status==3}">
-										<span class="defaultlinebtn radiusbtn msbtn">确认收货</span>
+										<span <%-- onclick="confirmGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">确认收货</span>
 									</c:if>
 									
 									
@@ -91,20 +91,20 @@
 									</c:if>
 									
 									 <c:if test="${order.status==4 and order.appraise==1 }">
-										<span class="defaultlinebtn radiusbtn msbtn">查看评价</span>
+										<span <%-- onclick="lookAppraise(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
 										<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span>
 									</c:if>
 									
 									 <c:if test="${order.status==5}">
-										<span class="defaultlinebtn radiusbtn msbtn">退换货中</span>
+										<span  class="defaultlinebtn radiusbtn msbtn">退换货中</span>
 									</c:if>
 									
 									 <c:if test="${order.status==6}">
-										<span class="defaultlinebtn radiusbtn msbtn">我要退货</span>
+										<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">我要退货</span>
 									</c:if>
 									
 									<c:if test="${order.status==7}">
-										<span class="defaultlinebtn radiusbtn msbtn">待卖家收货</span>
+										<span  class="defaultlinebtn radiusbtn msbtn">待卖家收货</span>
 									</c:if>
 									
 									
@@ -117,7 +117,7 @@
 									</c:if>
 									
 									<c:if test="${order.status==10}">
-										<span class="defaultlinebtn radiusbtn msbtn">已完成</span>
+										<span class="defaultlinebtn radiusbtn msbtn">订单完成</span>
 									</c:if>	
 								
 								</div>
@@ -139,6 +139,8 @@
 
 	<script>
 	
+		
+		//申请售后 1
 		function toBackOrder(orderId){
 			location.href='${adp}toBackOrder/'+orderId;
 		}	
@@ -146,11 +148,40 @@
 		document.addEventListener("touchstart", function() {
 		}, true);
 		
+		//即刻评价 1
 		function comments(orderId){
 			location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
 		}
 		
+		//我要退货 
+		function exitGoods(orderId){
+			location.href="${ctx}wx/order/exitGoods/"+orderId
+		}
+		
+		//确认收货 
+		function confirmGoods(orderId){
+			location.href="${ctx}wx/order/confirmGoods/"+orderId
+		}
+		
+		//给我加急
+		function urgent(orderId){
+			location.href="${ctx}wx/order/urgent/"+orderId
+		}
+		
+		//物流查询
+		function logisticsQuery(orderId){
+			location.href="${ctx}wx/order/logisticsQuery/"+orderId
+		}
+		
+		
+		//马上付款 1
+		function payMoney(orderId){
+			location.href="${ctx}wx/order/confirmOrder/"+orderId
+		}
+		
+		//取消订单 1
 		function cancelOrder(orderId){
+			
 			$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
 				console.log(data);
 				if(data.status == 1){
