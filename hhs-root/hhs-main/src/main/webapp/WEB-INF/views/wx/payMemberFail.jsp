@@ -12,7 +12,7 @@
 <body>
 	<!-- 中间 -->
 	<!-- 一行 -->
-	<div class="showdtlist wpbox">
+<!-- 	<div class="showdtlist wpbox">
 		<div class="showdtitem">
 			<a href="###" class="dl">
 				<p>
@@ -21,7 +21,7 @@
 				</p>
 			</a>
 		</div>
-	</div>
+	</div> -->
 	<!-- end 一行 -->
 	<!-- 一行 -->
 	<ul class="stepbar">
