@@ -39,7 +39,7 @@
 	</div>
 	<div class="mt80 spcbtnrow">
 		<div class="spcbtnrow_item">
-			<a href="${ctx}wx/order/confirmOrder/${orderId}"
+			<a href="${ctx}wx/setMeal/"
 				class="warnbtn mdbtn">重新支付</a>
 		</div>
 
