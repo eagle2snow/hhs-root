@@ -332,7 +332,7 @@ function onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 	//微信签名 
 	}, function(res) {
 		if (res.err_msg == "get_brand_wcpay_request:ok") {
-			location.href='/wx/commodity/paySuccess';
+			location.href='/wx/commodity/paySuccess?orderId='+orderVue.order.id+'&amount='+orderVue.totalAmount;
 		}else{
 			location.href='/wx/commodity/payFail';
 		}
