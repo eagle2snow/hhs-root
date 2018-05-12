@@ -96,20 +96,28 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void payMemberSuccess(String openid) {
 		Member member =getOne("openid", openid);
-		Member parent1 = getParent1(member);// 上一级
+		
+		member.setSetMeal(2);//
+		member.setLevel(3);//
+		update(member);
+		
+	/*	Member parent1 = getParent1(member);// 上一级
 		Member parent2 = getParent2(member);// 上二级
 		Member parent3 = getParent3(member);// 上三级
 
 		// 三级分润
 		if (parent1 != null) {
 			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
+			update(parent1);
 		}
 		if (parent2 != null) {
 			parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
+			update(parent2);
 		}
 		if (parent3 != null) {
 			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
-		}
+			update(parent3);
+		}*/
 
 	}
 
