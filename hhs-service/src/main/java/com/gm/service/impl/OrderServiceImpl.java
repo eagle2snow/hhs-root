@@ -215,6 +215,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	@Override
 	public void payOrderSuccess(String orderNo) {
 		Order order = getOne("orderNo", orderNo);
+		
+		Member member = order.getMember();
+		if (member.getLevel()==1) {//如果是访客，升级为普通会员
+			member.setLevel(2);
+			memberService.update(member);
+		}
+		
+		
 		order.setStatus(2);
 		update(order);
 

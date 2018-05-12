@@ -126,7 +126,6 @@ public class WxIndexController extends WeixinBaseController {
 	 */
 	@RequestMapping("/payMemberSuccess")
 	public String payMemberSuccess(ModelMap model) {
-		model.put("member", this.getCurMember());
 		model.put("path", PATH);
 		return PATH + "payMemberSuccess";
 	}
@@ -146,41 +145,5 @@ public class WxIndexController extends WeixinBaseController {
 		model.put("path", PATH);
 		return PATH + "payMemberFail";
 	}
-
-	/**
-	 * @Title: setMealView
-	 * @Description: 确定购买套餐
-	 * @param model
-	 *            页面封装信息
-	 * @return String 购买套餐页面
-	 */
-	@ResponseBody
-	@RequestMapping("setMealAction")
-	public Map<String, Object> setMealAction() {
-
-		Member curMember = this.getCurMember();
-		HashMap<String, Object> map = this.getMap();
-
-		if (curMember.getSetMeal() == 1) { // 未购买套餐
-			map.put("msg", "no");
-			curMember.setSetMeal(2);
-			curMember.setLevel(3);
-
-		} else if (curMember.getSetMeal() == 2) {
-			curMember.setLevel(3);
-			map.put("msg", "ok");
-
-		} else {
-			map.put("msg", "error");
-
-		}
-
-		logger.info("shippingAddressView: the ModelMap to json is {}.", JSON.toJSONString(map));
-
-		map.put("path", PATH);
-
-		return map;
-
-	}
-
+	
 }

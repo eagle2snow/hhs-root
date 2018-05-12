@@ -49,6 +49,7 @@ public class WeixinPayController extends WeixinBaseController {
 		if (null == payBill) {
 			payBill = new PayBill();
 			payBill.setOrderNo(orderNo);
+			payBill.setOpenid(getCurMember().getOpenid());
 			payBill.setType(2);
 			payBill.setPay(1);
 			payBill.setPreFee(amount);
@@ -74,20 +75,18 @@ public class WeixinPayController extends WeixinBaseController {
 	@RequestMapping("/prePayCombo")
 	@ResponseBody
 	public Map<String, Object> prePayCombo() {
+		Map<String, Object> map = getMap();
 		Member member = getCurMember();
 		String openid = member.getOpenid();
-		PayBill payBill = payBillService.getOne("openid", openid);
-		if (null == payBill) {
-			payBill = new PayBill();
-			payBill.setOrderNo(OrderServiceImpl.genOrderNo());
-			payBill.setType(1);
-			payBill.setPay(1);
-			payBill.setPreFee(Const.MEMBER_AMOUNT);
-			payBillService.save(payBill);
-		}
-		Map<String, Object> map = getMap();
+		PayBill payBill = new PayBill();
+		payBill.setOrderNo(OrderServiceImpl.genOrderNo());
+		payBill.setType(1);
+		payBill.setPay(1);
+		payBill.setOpenid(openid);
+		payBill.setPreFee(Const.MEMBER_AMOUNT);
+		payBillService.save(payBill);
 		try {
-			PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐",Const.MEMBER_AMOUNT, openid);
+			PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, openid);
 			map.put("s", 1);
 			map.put("data", res);
 		} catch (BestPayException e) {
