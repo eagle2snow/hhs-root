@@ -65,7 +65,7 @@
 										<tr>
 											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
 											<th width="40">ID</th>
-											<th>昵称</th>
+											<th>名字</th>
 											<th>等级</th>
 											<th>性别</th>
 											<th>省份</th>
@@ -84,7 +84,7 @@
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
 											<td>${model.id}</td>
 											
-											 <th>${model.nickname}</th>
+											 <th>${model.name}</th>
 											
 											
 											 <th>${model.level}</th>

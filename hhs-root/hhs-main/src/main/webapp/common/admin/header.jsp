@@ -84,6 +84,41 @@
 						</li>
 						<li class="footer"><a href="#">View all tasks</a></li>
 					</ul></li>
+					
+					
+					
+					
+					
+					
+					
+					
+				<li class="dropdown tasks-menu">
+				<a href="/admin/logout" class="dropdown-toggle" data-toggle="dropdown"> 
+					<span id="logout" onclick="out()" class="glyphicon glyphicon-log-out"></span>
+				</a>
+					<ul class="dropdown-menu">
+						<li class="header">You have 9 tasks</li>
+						<li>
+							<ul class="menu">
+								<li><a href="#">
+										<h3>
+											Design some buttons <small class="pull-right">20%</small>
+										</h3>
+										<div class="progress xs">
+											<div class="progress-bar progress-bar-aqua"
+												style="width: 20%" role="progressbar" aria-valuenow="20"
+												aria-valuemin="0" aria-valuemax="100">
+												<span class="sr-only">20% Complete</span>
+											</div>
+										</div>
+								</a></li>
+							</ul>
+						</li>
+						<li class="footer"><a href="#">View all tasks</a></li>
+					</ul></li>
+					
+					
+					
 				<li class="dropdown user user-menu"><a href="#"
 					class="dropdown-toggle" data-toggle="dropdown"> <img
 						src="/static/admin/img/avatar5.png" class="user-image"
@@ -131,6 +166,15 @@
 <!-- 	<script src="https://openapi.baidu.com"></script> -->
 
 	<script type="text/javascript">
+		
+	
+		//登出
+		function out(){
+			if(confirm("确定要退出登录么？")){
+				location.href="/admin/logout";
+				}
+		}
+	
 		//播放新订单语音
 		function playNewOrderMsg() {
 			var message = "您有新订单，请及时处理";

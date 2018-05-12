@@ -133,7 +133,7 @@ public class WxIndexController extends WeixinBaseController {
 		Member curMember = this.getCurMember();
 		HashMap<String, Object> map = this.getMap();
 
-		if (curMember.getSetMeal() == 1) { // 未购买套餐
+		if (curMember.getSetMeal() == 1) { // 未购买套餐 
 			map.put("msg", "no");
 			curMember.setSetMeal(2);
 			curMember.setLevel(3);
