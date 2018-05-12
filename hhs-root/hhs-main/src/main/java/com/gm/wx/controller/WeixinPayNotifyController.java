@@ -1,6 +1,11 @@
 package com.gm.wx.controller;
 
 import java.math.BigDecimal;
+import java.util.SortedMap;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +27,7 @@ import com.gm.base.consts.Const;
 import com.gm.utils.PathUtil;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.service.impl.BestPayServiceImpl;
-import com.lly835.bestpay.utils.JsonUtil;
+import com.lly835.bestpay.utils.XmlUtil;
 
 /**
  * 
@@ -66,19 +71,34 @@ public class WeixinPayNotifyController extends WeixinBaseController {
 		String orderNo = System.currentTimeMillis() + "";
 
 		PayResponse res = WeixinPayApi.pay(orderNo, "aaaaaaaaa", BigDecimal.valueOf(0.01), getCurMember().getOpenid());
+		
+		
 		logger.info("prePay:The PayResponse res = {}", JSON.toJSON(res));
 
 		return res;
 	}
 
 	// 成功支付
-	@PostMapping("/paySuccess")
-	public ModelAndView notify(@RequestBody String notifyData) throws Exception {
-		logger.info("【异步回调】request={}", notifyData);
-		PayResponse response = new BestPayServiceImpl().asyncNotify(notifyData);
-		logger.info("【异步回调】response={}", JsonUtil.toJson(response));
+	@PostMapping(value = "/paySuccess", produces = "text/html;charset=utf-8")
+	@ResponseBody
+	public String WeixinParentNotifyPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ServletInputStream instream = request.getInputStream();
+		StringBuffer sb = new StringBuffer();
+		int len = -1;
+		byte[] buffer = new byte[1024];
 
-		return new ModelAndView("pay/success");
+		while ((len = instream.read(buffer)) != -1) {
+			sb.append(new String(buffer, 0, len));
+		}
+		instream.close();
+		
+		System.err.println(sb);
+		
+		PayResponse response2 = WeixinPayApi.getBestPayServiceImpl().asyncNotify(sb.toString());
+		System.out.println(response2.getPrePayParams() + "@@");
+
+		return "";
+
 	}
 
 }

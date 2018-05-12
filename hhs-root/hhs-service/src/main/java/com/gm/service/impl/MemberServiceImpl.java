@@ -94,8 +94,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void payMemberSuccess(Integer memberId) {
-		Member member = get(memberId);
+	public void payMemberSuccess(String openid) {
+		Member member =getOne("openid", openid);
 		Member parent1 = getParent1(member);// 上一级
 		Member parent2 = getParent2(member);// 上二级
 		Member parent3 = getParent3(member);// 上三级
@@ -111,11 +111,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
 		}
 
-	}
-
-	@Override
-	public void maid(Order order) {
-		Member member = order.getMember();// 买家
 	}
 
 	@Override

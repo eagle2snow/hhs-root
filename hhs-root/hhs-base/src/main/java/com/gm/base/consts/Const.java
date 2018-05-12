@@ -26,7 +26,7 @@ public class Const {
 	public static final String PASSWORD_SECRET = "qweoxm235DHG24!@#$xss";// 密钥
 	public static final String MCHID = "1502723581"; // 商户id
 	public static final String MCHKEY = "a74srx89fxadcgq0ertcAQEXqxdQs541";// 商户key
-	public static final String NOTIFY_URL = "http://aijfc.iask.in/wx/testPay/paySuccess";// 支付完成后的异步通知地址
+	public static final String NOTIFY_URL = "http://aijfc.iask.in/wx/pay/notify/paySuccess";// 支付完成后的异步通知地址
 	public static final String RETURN_URL = "http://aijfc.iask.in/wx/index";// 支付完成后的同步返回地址
 
 	// 一下为短信方向参数

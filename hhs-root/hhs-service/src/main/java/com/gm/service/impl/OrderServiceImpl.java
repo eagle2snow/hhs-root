@@ -134,6 +134,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			List<OrderItemDto> orderItemDtos, String content) {
 
 		Map<String, Object> map = new HashMap<>();
+		
+		Order order = get(orderId);
+		if (order.getStatus()!=1) {
+			map.put("s", "paid");
+			return map;
+		}
 
 		updateByHql("update order o set o.memberAddress.id=" + addressId);
 
@@ -196,7 +202,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		return map;
 	}
 
-	private static String genOrderNo() {
+	public static String genOrderNo() {
 		String s = DateUtil.format(LocalDateTime.now(), DateUtil.f10) + RandomUtil.randomNumbers(5);
 		return s;
 	}
@@ -204,8 +210,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	@Override
 	public void payOrderSuccess(String orderNo) {
 		Order order = getOne("orderNo", orderNo);
-		saveMemberBuy(order);
-		returnSingleItemPrice(order);
+		order.setStatus(2);
+		update(order);
+		
+		//saveMemberBuy(order);
+		//returnSingleItemPrice(order);
 	}
 
 	// 保存购买记录

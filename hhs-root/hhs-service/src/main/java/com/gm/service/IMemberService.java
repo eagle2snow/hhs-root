@@ -136,22 +136,8 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * 
 	 * @version 1.0
 	 */
-	void payMemberSuccess(Integer memberId);
+	void payMemberSuccess(String openid);
 
-	/**
-	 * 
-	 * 
-	 * <p>
-	 * 描述:分佣
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月4日
-	 * 
-	 * @version 1.0
-	 */
-	void maid(Order order);
 
 	/**
 	 * 
