@@ -334,7 +334,7 @@ function onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 		if (res.err_msg == "get_brand_wcpay_request:ok") {
 			location.href='/wx/commodity/paySuccess?orderId='+orderVue.order.id+'&amount='+orderVue.totalAmount;
 		}else{
-			location.href='/wx/commodity/payFail';
+			location.href='/wx/commodity/payFail?orderId='+orderVue.order.id;
 		}
 	});
 	if (typeof WeixinJSBridge == "undefined") {
