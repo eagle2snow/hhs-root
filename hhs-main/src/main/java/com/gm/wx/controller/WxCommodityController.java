@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,7 +72,12 @@ public class WxCommodityController extends WeixinBaseController {
 	public String commodityDetail(ModelMap map, @PathVariable Integer id) {
 
 		Commodity commodity = commodityService.get(id);
-		commodity.setBrowse(commodity.getBrowse() + 1);
+		logger.info("commodityDetail:The Commodity to json is {}", JSON.toJSON(commodity));
+		if (!StringUtils.isEmpty(commodity.getBrowse())) {
+			commodity.setBrowse(commodity.getBrowse() + 1);
+		} else {
+			commodity.setBrowse(1);
+		}
 
 		map.put("model", commodity);
 		map.put("member", this.getCurMember());

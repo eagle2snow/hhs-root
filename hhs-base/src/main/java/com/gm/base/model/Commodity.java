@@ -21,22 +21,22 @@ public class Commodity extends Model {
 	private CommodityClass commodityClass;
 	
 	@FormField(label = "商品主页显示价格", type = FieldType.NUMBER)
-	private BigDecimal showPrice;
+	private BigDecimal showPrice = BigDecimal.ZERO;
 	
 	@FormField(label = "商品主页显示折扣价", type = FieldType.NUMBER)
-	private BigDecimal showDiscount;
+	private BigDecimal showDiscount =BigDecimal.ZERO;
 	
 	@FormField(label = "商品主页显示原价", type = FieldType.NUMBER)
-	private BigDecimal originalPrice;
+	private BigDecimal originalPrice = BigDecimal.ZERO;
 	
 	@FormField(label = "商品邮费", type = FieldType.NUMBER)
-	private BigDecimal freight;
+	private BigDecimal freight = BigDecimal.ZERO;
 	
 	@FormField(label = "商品备注", type = FieldType.TEXTINPUT)
 	private String remarks;
 	
 	@FormField(label = "商品总库存", type = FieldType.NUMBER)
-	private Integer totalStock;
+	private Integer totalStock = 0;
 	
 	@FormField(type = FieldType.PICTURE, label = "商品主页显示图片")
 	private String imgerPath;
@@ -48,34 +48,34 @@ public class Commodity extends Model {
 	private String activity;
 	
 	@FormField(label = "商品销量", type = FieldType.NUMBER)
-	private Integer salesVolume;
+	private Integer salesVolume = 0;
 	
 	@FormField(label = "商品多少件包邮", type = FieldType.NUMBER)
-	private Integer freePostage;
+	private Integer freePostage = 0;
 	
 	@FormField(label = "商品成本", type = FieldType.NUMBER)
-	private BigDecimal cost;
+	private BigDecimal cost = BigDecimal.ZERO;
 	
 	@FormField(label = "评价数量", type = FieldType.NUMBER)
-	private Integer appraiseCount;
+	private Integer appraiseCount = 0;
 	
 	@FormField(type = FieldType.NUMBER, label = "浏览")
-	private Integer browse;
+	private Integer browse = 0;
 
 	@FormField(type = FieldType.NUMBER, label = "评论")
-	private Integer comment;
+	private Integer comment = 0;
 
 	@FormField(type = FieldType.NUMBER, label = "赞")
-	private Integer praise;
+	private Integer praise = 0;
 	
 	@FormField(label = "商品前台显示备注", type = FieldType.TEXTINPUT)
 	private String showRemarks;
 	
 	@FormField(label = "默认重量", type = FieldType.NUMBER)
-	private Double defaultWeight;
+	private Double defaultWeight = 0.0;
 	
 	@FormField(label = "默认体积", type = FieldType.NUMBER)
-	private Double defaultBulk;
+	private Double defaultBulk = 0.0;
 	
 	@FormField(label = "排序", type = FieldType.NUMBER)
 	private Integer sort;
@@ -84,7 +84,7 @@ public class Commodity extends Model {
 	private String specifications;
 	
 	@FormField(label = "次数", type = FieldType.NUMBER)
-	private Integer time;
+	private Integer time = 0;
 	
 	@FormField(type = FieldType.SELECT, label = "本次购买者",dataNature=DataNature.MODEL,ds=Member.class)
 	private Member thisTimeMember;
