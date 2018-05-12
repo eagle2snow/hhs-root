@@ -216,47 +216,4 @@ public class WxCommodityController extends WeixinBaseController {
 		return PATH + "confirmOrder";
 	}
 
-	/**
-	 * 支付成功
-	 * 
-	 * <p>
-	 * Title: paySuccess
-	 * </p>
-	 * 
-	 * <p>
-	 * Description:
-	 * </p>
-	 * 
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping("/paySuccess")
-	public String paySuccess(ModelMap map, Integer orderId, String amount) {
-		map.put("orderId", orderId);
-		map.put("amount", amount);
-		map.put("path", PATH);
-		return PATH + "paySuccess";
-	}
-
-	/**
-	 * 支付失败
-	 * 
-	 * <p>
-	 * Title: payFail
-	 * </p>
-	 * 
-	 * <p>
-	 * Description:
-	 * </p>
-	 * 
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping("/payFail")
-	public String payFail(ModelMap map, Integer orderId) {
-		map.put("orderId", orderId);
-		map.put("path", PATH);
-		return PATH + "payFail";
-	}
-
 }
