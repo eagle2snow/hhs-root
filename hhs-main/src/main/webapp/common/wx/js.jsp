@@ -12,11 +12,6 @@
 <script src="/static/plugins/socket/sockjs.js"></script>
 <script src="/static/plugins/socket/stomp.js"></script>
 <script src="/static/plugins/vue/vue.js"></script>
-
-<script src="/static/wx/js/jquery.js"></script>  
-<script type="text/javascript" src="/static/wx/js/common.js"></script>  
-<script type="text/javascript" src="/static/wx/js/utitls.js"></script>  
-<script type="text/javascript" src="http://api.map.baidu.com/api?ak=59PBaEOro16CiH2W4CG81zEN&v=2.0"></script>  
   
 
 

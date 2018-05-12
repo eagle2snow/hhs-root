@@ -3,12 +3,13 @@ package com.gm.api.wx;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 
+import com.gm.api.pay.config.WxPayH5Config;
+import com.gm.api.pay.emums.BestPayTypeEnum;
+import com.gm.api.pay.exception.BestPayException;
+import com.gm.api.pay.model.PayRequest;
+import com.gm.api.pay.model.PayResponse;
+import com.gm.api.pay.service.impl.BestPayServiceImpl;
 import com.gm.base.consts.Const;
-import com.lly835.bestpay.config.WxPayH5Config;
-import com.lly835.bestpay.enums.BestPayTypeEnum;
-import com.lly835.bestpay.model.PayRequest;
-import com.lly835.bestpay.model.PayResponse;
-import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 
 public class WeixinPayApi {
 
@@ -58,7 +59,8 @@ public class WeixinPayApi {
 	 * 
 	 * @version 1.0
 	 */
-	public static PayResponse pay(String orderNo, String orderName, BigDecimal amount, String openid) {
+	public static PayResponse pay(String orderNo, String orderName, BigDecimal amount, String openid)
+			throws BestPayException {
 		PayRequest payRequest = new PayRequest();
 		payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
 		payRequest.setOrderId(orderNo);

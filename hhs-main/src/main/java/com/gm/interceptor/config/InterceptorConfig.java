@@ -34,7 +34,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 
 		// 微信
 		registry.addInterceptor(weixinInterceptor).addPathPatterns("/wx/**").excludePathPatterns("/wx/saveMember")
-				.excludePathPatterns("/wx/testPay/paySuccess").excludePathPatterns("/wx/testLogin/**");
+				.excludePathPatterns("/wx/pay/paySuccess").excludePathPatterns("/wx/testLogin/**");
 
 		super.addInterceptors(registry);
 	}

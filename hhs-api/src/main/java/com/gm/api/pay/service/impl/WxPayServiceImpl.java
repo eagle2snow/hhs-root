@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.gm.api.pay.config.SignType;
 import com.gm.api.pay.config.WxPayH5Config;
 import com.gm.api.pay.constants.WxPayConstants;
+import com.gm.api.pay.emums.BestPayResultEnum;
 import com.gm.api.pay.emums.BestPayTypeEnum;
+import com.gm.api.pay.exception.BestPayException;
 import com.gm.api.pay.model.PayRequest;
 import com.gm.api.pay.model.PayResponse;
 import com.gm.api.pay.model.RefundRequest;
@@ -49,7 +51,7 @@ public class WxPayServiceImpl implements BestPayService {
     }
 
     @Override
-    public PayResponse pay(PayRequest request) {
+    public PayResponse pay(PayRequest request) throws BestPayException{
         WxPayUnifiedorderRequest wxRequest = new WxPayUnifiedorderRequest();
         wxRequest.setOutTradeNo(request.getOrderId());
         wxRequest.setTotalFee(MoneyUtil.Yuan2Fen(request.getOrderAmount()));
@@ -87,7 +89,12 @@ public class WxPayServiceImpl implements BestPayService {
             throw new RuntimeException("【微信统一支付】发起支付, returnCode != SUCCESS, returnMsg = " + response.getReturnMsg());
         }
         if (!response.getResultCode().equals(WxPayConstants.SUCCESS)) {
-            throw new RuntimeException("【微信统一支付】发起支付, resultCode != SUCCESS, err_code = " + response.getErrCode() + " err_code_des=" + response.getErrCodeDes());
+           // throw new BestPayException("【微信统一支付】发起支付, resultCode != SUCCESS, err_code = " + response.getErrCode() + " err_code_des=" + response.getErrCodeDes());
+           
+       //    【微信统一支付】发起支付, resultCode != SUCCESS, err_code = ORDERPAID err_code_des=该订单已支付
+        	if ("ORDERPAID".equals(response.getErrCode())) {
+        		throw new BestPayException(BestPayResultEnum.ORDER_PAID);
+			}	   
         }
 
         return buildPayResponse(response);
