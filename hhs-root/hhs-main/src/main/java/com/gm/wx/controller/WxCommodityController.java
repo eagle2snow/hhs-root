@@ -253,7 +253,8 @@ public class WxCommodityController extends WeixinBaseController {
 	 * @return
 	 */
 	@RequestMapping("/payFail")
-	public String payFail(ModelMap map) {
+	public String payFail(ModelMap map, Integer orderId) {
+		map.put("orderId", orderId);
 		map.put("path", PATH);
 		return PATH + "payFail";
 	}
