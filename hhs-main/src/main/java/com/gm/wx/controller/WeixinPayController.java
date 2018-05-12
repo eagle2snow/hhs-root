@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.sql.visitor.functions.Concat;
 import com.gm.api.pay.exception.BestPayException;
 import com.gm.api.pay.model.PayResponse;
 import com.gm.api.wx.WeixinPayApi;
+import com.gm.base.consts.Const;
 import com.gm.base.model.Member;
 import com.gm.base.model.PayBill;
 import com.gm.service.IPayBillService;
@@ -80,12 +82,12 @@ public class WeixinPayController extends WeixinBaseController {
 			payBill.setOrderNo(OrderServiceImpl.genOrderNo());
 			payBill.setType(1);
 			payBill.setPay(1);
-			payBill.setPreFee(BigDecimal.valueOf(398));
+			payBill.setPreFee(Const.MEMBER_AMOUNT);
 			payBillService.save(payBill);
 		}
 		Map<String, Object> map = getMap();
 		try {
-			PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", BigDecimal.valueOf(398), openid);
+			PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐",Const.MEMBER_AMOUNT, openid);
 			map.put("s", 1);
 			map.put("data", res);
 		} catch (BestPayException e) {

@@ -1,5 +1,7 @@
 package com.gm.base.consts;
 
+import java.math.BigDecimal;
+
 /**
  * 静态常量
  * 
@@ -38,5 +40,6 @@ public class Const {
 
 	// 以下为系统需要的其他常量
 	public static final String verificationCode2Session = "";// 验证码
+	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);//会员套餐价格
 
 }

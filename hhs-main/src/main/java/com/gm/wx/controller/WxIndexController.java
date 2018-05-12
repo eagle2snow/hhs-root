@@ -109,14 +109,42 @@ public class WxIndexController extends WeixinBaseController {
 	 * @param model
 	 * @return String
 	 */
-	@RequestMapping("setMeal")
+	@RequestMapping("/setMeal")
 	public String setMealView(ModelMap model) {
-
 		model.put("member", this.getCurMember());
 		model.put("path", PATH);
+		return PATH + "setMeal";
+	}
 
-		return PATH + "myCenter/setMeal";
+	/**
+	 * @Title: payMemberSuccess   
+	 * @Description: 购买会员套餐成功 
+	 * @param model
+	 * @return      
+	 * @return: String      
+	 * @throws
+	 */
+	@RequestMapping("/payMemberSuccess")
+	public String payMemberSuccess(ModelMap model) {
+		model.put("member", this.getCurMember());
+		model.put("path", PATH);
+		return PATH + "payMemberSuccess";
+	}
 
+	/**
+	 * 
+	 * @Title: payMemberFail   
+	 * @Description: 购买会员套餐失败
+	 * @param model
+	 * @return      
+	 * @return: String      
+	 * @throws
+	 */
+	@RequestMapping("/payMemberFail")
+	public String payMemberFail(ModelMap model) {
+		model.put("member", this.getCurMember());
+		model.put("path", PATH);
+		return PATH + "payMemberFail";
 	}
 
 	/**
@@ -133,7 +161,7 @@ public class WxIndexController extends WeixinBaseController {
 		Member curMember = this.getCurMember();
 		HashMap<String, Object> map = this.getMap();
 
-		if (curMember.getSetMeal() == 1) { // 未购买套餐 
+		if (curMember.getSetMeal() == 1) { // 未购买套餐
 			map.put("msg", "no");
 			curMember.setSetMeal(2);
 			curMember.setLevel(3);
