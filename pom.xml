@@ -31,6 +31,15 @@
 
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<!-- 主要用于通过注解自动生成 get set 方法 用法参照：https://www.zhihu.com/question/42348457 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -89,11 +98,8 @@
 			<version>1.0.6</version>
 		</dependency>
 
-	<!-- 	<dependency>
-			<groupId>com.my.qrcode</groupId>
-			<artifactId>qrcode</artifactId>
-			<version>0.0.1</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.my.qrcode</groupId> <artifactId>qrcode</artifactId> 
+			<version>0.0.1</version> </dependency> -->
 
 
 

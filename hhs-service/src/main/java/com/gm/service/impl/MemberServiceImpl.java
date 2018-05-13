@@ -95,29 +95,29 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public void payMemberSuccess(String openid) {
-		Member member =getOne("openid", openid);
-		
+		Member member = getOne("openid", openid);
+
 		member.setSetMeal(2);//
 		member.setLevel(3);//
 		update(member);
-		
-	/*	Member parent1 = getParent1(member);// 上一级
-		Member parent2 = getParent2(member);// 上二级
-		Member parent3 = getParent3(member);// 上三级
 
-		// 三级分润
-		if (parent1 != null) {
-			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
-			update(parent1);
-		}
-		if (parent2 != null) {
-			parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
-			update(parent2);
-		}
-		if (parent3 != null) {
-			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
-			update(parent3);
-		}*/
+		/*	Member parent1 = getParent1(member);// 上一级
+			Member parent2 = getParent2(member);// 上二级
+			Member parent3 = getParent3(member);// 上三级
+		
+			// 三级分润
+			if (parent1 != null) {
+				parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
+				update(parent1);
+			}
+			if (parent2 != null) {
+				parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
+				update(parent2);
+			}
+			if (parent3 != null) {
+				parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
+				update(parent3);
+			}*/
 
 	}
 
@@ -149,15 +149,25 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Commodity tenReturnOne(Integer memberId) {
-		TenReturnOne returnOne = tenReturnOneDao.getOne("member.id", memberId);
-		if (!StringUtils.isEmpty(returnOne)) {
-			Integer time = returnOne.getTime();
-			if (time % 10 == 0) { //10 -> 1 | 20 -> 2 | 30 -> 3 | ...
-				
+	public void tenReturnOne(Integer memberId) {
+		// ① 判断会员等级
+		Member member = dao.get(memberId);
+		if (!StringUtils.isEmpty(member) && member.getLevel() != 1) { // 判断等级 除了 游客外
+			TenReturnOne tenReturnOne = tenReturnOneDao.getOne("member.id", memberId);
+			Integer time = tenReturnOne.getTime();
+			if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
+				// 通过次数获取会员
+				TenReturnOne one = tenReturnOneDao.getOne("time", time);
+				Member thisTimeMember = one.getThisTimeMember();
+				// 设置会员的十返一字段 空：设置 非空：取出来再加
+				if (StringUtils.isEmpty(thisTimeMember.getTenReturnOne())) {
+					thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
+				} else {
+					thisTimeMember.setTenReturnOne(
+							thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
+				}
 			}
 		}
-		return null;
 	}
 
 	@Override
@@ -166,10 +176,20 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return null;
 	}
 
+	/**
+	 * 返套餐金额
+	 * ①判断是否购买套餐
+	 * ②判断直推会员是否是十的倍数
+	 * ③
+	 */
 	@Override
 	public BigDecimal returnMeal(Integer mealMemberNumber) {
-		// TODO Auto-generated method stub
+
 		return null;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(30 / 10);
 	}
 
 }

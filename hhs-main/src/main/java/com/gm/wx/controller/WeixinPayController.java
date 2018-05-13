@@ -8,6 +8,8 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,14 +39,28 @@ import com.gm.service.impl.OrderServiceImpl;
 @Controller
 public class WeixinPayController extends WeixinBaseController {
 
+	private static final Logger logger = LoggerFactory.getLogger(WeixinPayApi.class);
+
 	@Resource
 	private IPayBillService payBillService;
 
+	/**
+	 * @Title: prePay   
+	 * @Description: 订单支付前
+	 * @param orderNo
+	 * @param orderName
+	 * @param amount 订单金额
+	 * @return      
+	 * @return: Map<String,Object>      
+	 * @throws
+	 */
 	@RequestMapping("/prePayOrder")
 	@ResponseBody
 	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount) {
-		System.err.println("发起支付＝＝> orderNo:" + orderNo + " | orderName:" + orderName + " | amount:" + amount);
+		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
+		
 		amount = BigDecimal.valueOf(0.01);
+		
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
 		if (null == payBill) {
 			payBill = new PayBill();
@@ -61,6 +77,7 @@ public class WeixinPayController extends WeixinBaseController {
 			PayResponse res = WeixinPayApi.pay(orderNo, orderName, amount, getCurMember().getOpenid());
 			map.put("s", 1);
 			map.put("data", res);
+		
 		} catch (BestPayException e) {
 			e.printStackTrace();
 			if (e.getCode().equals(17)) {
@@ -72,12 +89,22 @@ public class WeixinPayController extends WeixinBaseController {
 		return map;
 	}
 
+	/**
+	 * @Title: prePayCombo   
+	 * @Description: 套餐支付前
+	 * @return      
+	 * @return: Map<String,Object>      
+	 * @throws
+	 */
 	@RequestMapping("/prePayCombo")
 	@ResponseBody
 	public Map<String, Object> prePayCombo() {
+		
 		Map<String, Object> map = getMap();
+		
 		Member member = getCurMember();
 		String openid = member.getOpenid();
+		
 		PayBill payBill = new PayBill();
 		payBill.setOrderNo(OrderServiceImpl.genOrderNo());
 		payBill.setType(1);
@@ -101,6 +128,7 @@ public class WeixinPayController extends WeixinBaseController {
 	}
 
 	// 成功支付
+	//produces:    指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；
 	@PostMapping(value = "/paySuccess", produces = "text/html;charset=utf-8")
 	@ResponseBody
 	public String WeixinParentNotifyPage(HttpServletRequest request, HttpServletResponse response) throws Exception {

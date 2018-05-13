@@ -11,6 +11,7 @@ import com.gm.gencode.annotation.M;
 @M("支付")
 @Entity(name = "payBill")
 @Table(name = "t_payBill")
+@SuppressWarnings("serial")
 public class PayBill extends Model {
 
 	private String orderNo;
