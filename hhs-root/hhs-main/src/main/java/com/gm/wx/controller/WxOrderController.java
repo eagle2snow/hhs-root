@@ -290,9 +290,12 @@ public class WxOrderController extends WeixinBaseController {
 	 */
 	@RequestMapping("/paySuccess")
 	public String paySuccess(ModelMap map, Integer orderId, String amount) {
+		logger.info("paySuccess:The args orderId={},amount={}",orderId,amount);
+		
 		map.put("orderId", orderId);
 		map.put("amount", amount);
 		map.put("path", PATH);
+		
 		return PATH + "paySuccess";
 	}
 

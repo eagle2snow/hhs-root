@@ -22,7 +22,7 @@ public class TenReturnOne extends Model {
 	private Member thisTimeMember;
 
 	@FormField(label = "次数", type = FieldType.NUMBER)
-	private Integer time;
+	private Integer time = 0;
 
 	@ManyToOne
 	public Commodity getThisTimeCommodity() {

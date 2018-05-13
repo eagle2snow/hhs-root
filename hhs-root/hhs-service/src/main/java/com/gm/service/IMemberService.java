@@ -47,7 +47,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @return: Commodity      
 	 * @throws
 	 */
-	Commodity tenReturnOne(Integer memberId);
+	void tenReturnOne(Integer memberId);
 
 	/**
 	 * 

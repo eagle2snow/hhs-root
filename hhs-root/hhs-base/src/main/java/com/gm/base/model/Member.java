@@ -2,6 +2,7 @@ package com.gm.base.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -91,6 +92,26 @@ public class Member extends Model {
 	private Integer changReferrer = 0;// 是否更改过推荐人 ：未更改 0 ,已更改1
 
 	private Integer setMeal = 1;// 套餐类型 ：未购买 - 1 ,已购买 - 2
+	
+	@FormField(type = FieldType.TEXTINPUT, label = "十返一")
+	private BigDecimal tenReturnOne = BigDecimal.ZERO;
+	
+	
+	private List<Member> directMembers; //直推会员
+	
+	private List<Member> lowerMembers; //下级会员
+	
+	
+	
+	
+	
+	public BigDecimal getTenReturnOne() {
+		return tenReturnOne;
+	}
+
+	public void setTenReturnOne(BigDecimal tenReturnOne) {
+		this.tenReturnOne = tenReturnOne;
+	}
 
 	public String getAgencyId() {
 		return agencyId;

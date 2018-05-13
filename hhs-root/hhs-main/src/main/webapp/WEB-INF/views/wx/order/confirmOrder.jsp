@@ -333,6 +333,7 @@ function onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 	}, function(res) {
 		if (res.err_msg == "get_brand_wcpay_request:ok") {
 			location.href='${adp}paySuccess?orderId='+orderVue.order.id+'&amount='+orderVue.totalAmount;
+			$.toast(orderVue.order.id+":"+orderVue.totalAmount,"text");
 		}else{
 			location.href='${adp}payFail?orderId='+orderVue.order.id;
 		}
