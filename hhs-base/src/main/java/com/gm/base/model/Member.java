@@ -43,7 +43,7 @@ public class Member extends Model {
 	private Integer gender = 0;
 
 	@FormField(type = FieldType.NUMBER, label = "可用积分")
-	private Integer integral;
+	private Integer integral = 0;
 
 	@FormField(type = FieldType.TEXTINPUT, label = "国家")
 	private String country;

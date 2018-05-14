@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ import com.gm.base.model.TenReturnOne;
 import com.gm.service.IMemberService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
+import com.gm.utils.StringUtil;
+import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
 @Service("memberSercive")
@@ -98,9 +101,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public void payMemberSuccess(String openid) {
+		
 		Member member = getOne("openid", openid);
-		member.setSetMeal(2);//
-		member.setLevel(3);//
+		member.setSetMeal(2);
+		member.setLevel(3);
+		member.setGeneralizeId(StringUtil.get8UUID());
+		member.setLove(member.getLove() + 1);
+		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
+		genCodeAndQrCode(member);
+
 		update(member);
 	}
 
@@ -174,13 +183,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 		}
 
-		if (!list.isEmpty() && list.size() > Const.betweenMember) {//间间代理100人
+		if (!list.isEmpty() && list.size() > Const.betweenMember) {// 间间代理100人
 			if (!StringUtils.isEmpty(member.getGeneralizeCost())) {
 				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
-				member.setLevel(4); //城市经理
+				member.setLevel(4); // 城市经理
 			} else {
 				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
-				member.setLevel(4); //城市经理
+				member.setLevel(4); // 城市经理
 
 			}
 		}
@@ -213,7 +222,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public void threeLevel(Integer openid) {
-		
+
 		Member member = dao.getOne("openid", openid);
 		Member parent1 = getParent1(member);// 上一级
 		Member parent2 = getParent2(member);// 上二级
