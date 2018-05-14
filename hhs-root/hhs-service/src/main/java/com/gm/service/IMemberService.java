@@ -1,13 +1,9 @@
 package com.gm.service;
 
-import java.math.BigDecimal;
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
-import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
-import com.gm.base.model.Order;
 
 /**
  * 代码生成器生成代码<br/>
@@ -19,14 +15,17 @@ import com.gm.base.model.Order;
 public interface IMemberService extends IBaseService<Member, Integer> {
 	
 	/**
-	 * @Title: returnMeal   
-	 * @Description: 返 5(元/人)
-	 * @param mealMemberNumber 直推业务经理人数
-	 * @return 套餐金额  
-	 * @return: BigDecimal      
-	 * @throws
+	 * @Title: threeLevel   
+	 * @Description: 三级分润
+	 * @param openid 会员开发id
 	 */
-	BigDecimal returnFiveMoney(Integer mealMemberNumber);
+	void threeLevel(Integer openid);
+	
+	/**
+	 * @Title: returnFiveMoney   
+	 * @Description: 返 5(元/人)
+	 */
+	void returnFiveMoney(Integer openid);
 	
 	/**
 	 * @Title: returnMeal   
@@ -36,7 +35,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @return: BigDecimal      
 	 * @throws
 	 */
-	BigDecimal returnMeal(Integer mealMemberNumber);
+	void returnMeal(Integer openid);
 	
 	
 	/**
