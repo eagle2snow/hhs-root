@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +13,17 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.gm.api.wx.WeixinPayApi;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IOrderDao;
+import com.gm.base.dao.ITenReturnOneDao;
 import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
 import com.gm.base.model.Cart;
@@ -26,24 +33,34 @@ import com.gm.base.model.MemberBuy;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.base.model.PayBill;
+import com.gm.base.model.TenReturnOne;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberBuyService;
 import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
+import com.gm.service.ITenReturnOneService;
 import com.gm.utils.DateUtil;
+import com.gm.utils.LocalDateUtil;
+import com.gm.utils.StringUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
 @Service("orderSercive")
 public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements IOrderService {
+
+	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+	@Resource
+	private ITenReturnOneDao oneDao;
+
 	@Resource
 	private IOrderDao dao;
 
 	@Resource
 	private ICartService cartService;
-	
+
 	@Resource
 	private PayBillServiceImpl payBillService;
 
@@ -218,30 +235,58 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 	@Override
 	public void payOrderSuccess(String orderNo) {
+
+		PayBill payBill = payBillService.getOne("orderNo", orderNo);
+		logger.info("payBill={}", JSON.toJSON(payBill));
+
 		Order order = getOne("orderNo", orderNo);
-		order.setStatus(2);
-		//设置订单金额
+		logger.info("order={}", JSON.toJSON(order));
+
 		Member member = order.getMember();
+		logger.info("member={}", JSON.toJSON(member));
+
 		OrderItem orderItem = orderItemService.getOne("order", order);
+		logger.info("orderItem={}", JSON.toJSON(orderItem));
+
 		Commodity commodity = orderItem.getCommodity();
+		logger.info("commodity={}", JSON.toJSON(commodity));
+
+		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
+		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
+
+		// 订单的设置
+		order.setStatus(2);
+		order.setTotalMoney(payBill.getReaFee());
+		order.setPaymentTime(LocalDateTime.now());
+		order.setPayPathway(1);
+		update(order);
+
+		// 会员的设置
 		List<Commodity> list = null;
-		
-		if (null!=commodity) {
+		if (null != commodity) {
 			list = new ArrayList<>();
 			list.add(commodity);
-			member.setLove(member.getLove()+list.size());
+			member.setLove(member.getLove() + list.size());
 		}
-		
 		member.setConsume(member.getConsume().add(order.getTotalMoney()));
-		
-		if (member.getLevel()==1) {//如果是访客，升级为普通会员
-			 
+		if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
 			member.setLevel(2);
-			memberService.update(member);
 		}
-		
-		
-		update(order);
+		memberService.update(member);
+
+		// 商品的设置
+		commodity.setTotalStock(commodity.getTotalStock() - 1);
+		commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+		commodityService.update(commodity);
+
+		// 商品购买次数设置
+		if (StringUtils.isEmpty(tenReturnOne)) {
+			tenReturnOne = new TenReturnOne();
+		}
+		tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+		tenReturnOne.setThisTimeMember(member);
+		tenReturnOne.setThisTimeCommodity(commodity);
+		oneDao.update(tenReturnOne);
 
 		// saveMemberBuy(order);
 		// returnSingleItemPrice(order);
@@ -275,6 +320,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					"update member m set m.balance=m.balance+" + memberBuy.getPrice() + " where id=" + member.getId());
 			memberBuyService.update("isReturn", 2, memberBuy.getId());
 		}
+	}
+
+	public static void main(String[] args) {
+
 	}
 
 }

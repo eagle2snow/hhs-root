@@ -83,32 +83,7 @@ public class Commodity extends Model {
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
 	private String specifications;
 	
-	@FormField(label = "次数", type = FieldType.NUMBER)
-	private Integer time = 0;
 	
-	@FormField(type = FieldType.SELECT, label = "本次购买者",dataNature=DataNature.MODEL,ds=Member.class)
-	private Member thisTimeMember;
-	
-	
-	
-	
-	public Integer getTime() {
-		return time;
-	}
-
-	public void setTime(Integer time) {
-		this.time = time;
-	}
-
-	@ManyToOne
-	public Member getThisTimeMember() {
-		return thisTimeMember;
-	}
-
-	public void setThisTimeMember(Member thisTimeMember) {
-		this.thisTimeMember = thisTimeMember;
-	}
-
 	@ManyToOne
 	public CommodityClass getCommodityClass() {
 		return commodityClass;
