@@ -1,18 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/common/wx/global.jsp"%>	
+<%@ include file="/common/wx/global.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
-<title></title>
-<link rel="stylesheet" type="text/css" href="/static/wx/css/css.css" />
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-<meta content="yes" name="apple-mobile-web-app-capable" />
-<meta content="black" name="apple-mobile-web-app-status-bar-style" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="format-detection" content="email=no" />
-<meta name="msapplication-tap-highlight" content="no">
+<title>评论</title>
+<%@ include file="/common/wx/mate.jsp"%>
+<%@ include file="/common/wx/css.jsp"%>
 </head>
 <body>
 <!-- 中间 -->
@@ -55,7 +50,7 @@
 					<span class="vitm"><span class="num">${u.commodity.comment }</span>评论</span>
 					<span class="vitm"><span class="num">${u.commodity.praise }</span>赞</span>
 				</div>
-				<a href="###" class="secondlinebtn radiusbtn msbtn" onclick="deletes(${u.id })">删&nbsp;除</a>
+				<a  class="secondlinebtn radiusbtn msbtn" onclick="deletes(${u.id })">删&nbsp;除</a>
 			</div>
 		</li>
 	</c:forEach>
@@ -109,6 +104,8 @@
 <!-- end 一行 -->
 <!--end 中间-->
 
+<%@ include file="/common/wx/js.jsp"%>
+<%@ include file="/common/wx/socket.jsp"%>
 
 <script >
 document.addEventListener("touchstart", function(){}, true);
@@ -117,23 +114,11 @@ document.addEventListener("touchstart", function(){}, true);
 <script type="text/javascript">
 
 function deletes(id){
-	alert(id);
-	location.href=("${ctx}wx/myCenter/deleteComment/"+id);
- /* 	$.getJSON("${ctx}wx/myCenter/deleteComment/"+id,
- 			function(date) {
- 			alert(date);	
- 		}); */
-// 
-// 	 $.ajax({
-// 	      url: "${ctx}wx/myCenter/deleteComment",
-// 	      data: {"id":id},
-// 	      dataType : "json",
-// 	      success: function(date){
-// 	      alert(date);  
-	    	      
-// 	      },
-// 	   });   
- }
+	alert(1);
+	$.getJSON("${adp}deleteComment/"+id, function(data) {
+		alert(data.msg);
+	});
+}
 </script>
 
 </body>
