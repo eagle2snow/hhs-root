@@ -2,31 +2,34 @@ package com.gm.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.gm.base.dao.IMemberDao;
-import com.gm.base.dao.ITenReturnOneDao;
-import com.gm.base.model.Commodity;
-import com.gm.base.model.Member;
-import com.gm.base.model.Order;
-import com.gm.base.model.TenReturnOne;
-import com.gm.service.IMemberService;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
-import com.gm.service.impl.BaseServiceImpl;
+import com.gm.base.dao.IMemberDao;
+import com.gm.base.dao.ITenReturnOneDao;
+import com.gm.base.model.Member;
+import com.gm.base.model.TenReturnOne;
+import com.gm.service.IMemberService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
 
 @Transactional
 @Service("memberSercive")
 public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implements IMemberService {
+
+	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
 	@Resource
 	private IMemberDao dao;
@@ -96,39 +99,19 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void payMemberSuccess(String openid) {
 		Member member = getOne("openid", openid);
-
 		member.setSetMeal(2);//
 		member.setLevel(3);//
 		update(member);
-
-		/*	Member parent1 = getParent1(member);// 上一级
-			Member parent2 = getParent2(member);// 上二级
-			Member parent3 = getParent3(member);// 上三级
-		
-			// 三级分润
-			if (parent1 != null) {
-				parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
-				update(parent1);
-			}
-			if (parent2 != null) {
-				parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
-				update(parent2);
-			}
-			if (parent3 != null) {
-				parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
-				update(parent3);
-			}*/
-
 	}
 
 	@Override
-	public Member getParent1(Member member) {
+	public Member getParent1(Member member) {// 获取张三的推荐人 50 三级代理 上家
 		Member parent1 = getOne("generalizeId", member.getReferrerGeneralizeId());
 		return parent1;
 	}
 
 	@Override
-	public Member getParent2(Member member) {
+	public Member getParent2(Member member) {// 获取张三的推介人的推介人 60 二级代理 上上家
 		Member parent1 = getParent1(member);
 		if (parent1 != null) {
 			Member parent2 = getOne("generalizeId", parent1.getReferrerGeneralizeId());
@@ -138,7 +121,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Member getParent3(Member member) {
+	public Member getParent3(Member member) {// 获取张三推荐人的推荐人的推荐人 50 一级代理 上上上家
 
 		Member parent2 = getParent2(member);
 		if (parent2 != null) {
@@ -170,26 +153,88 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		}
 	}
 
+	/**
+	 * 返 5 元/人
+	 * 
+	 */
 	@Override
-	public BigDecimal returnFiveMoney(Integer mealMemberNumber) {
-		// TODO Auto-generated method stub
-		return null;
+	public void returnFiveMoney(Integer openid) {
+
+		Member member = dao.getOne("openid", openid);
+		List<Member> list = null;
+
+		if (member.getSetMeal() == 3) { // 直推十人
+			Member parent2 = getParent2(member);
+			Member parent3 = getParent3(member);
+
+			if (!StringUtils.isEmpty(parent2) || !StringUtils.isEmpty(parent3)) {
+				list = new ArrayList<>();
+				list.add(parent2);
+				list.add(parent3);
+			}
+		}
+
+		if (!list.isEmpty() && list.size() > Const.betweenMember) {//间间代理100人
+			if (!StringUtils.isEmpty(member.getGeneralizeCost())) {
+				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
+				member.setLevel(4); //城市经理
+			} else {
+				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
+				member.setLevel(4); //城市经理
+
+			}
+		}
+
+		logger.info("returnFiveMoney:The List size is size = {}", list.size());
+
 	}
 
 	/**
 	 * 返套餐金额
 	 * ①判断是否购买套餐
 	 * ②判断直推会员是否是十的倍数
-	 * ③
 	 */
 	@Override
-	public BigDecimal returnMeal(Integer mealMemberNumber) {
+	public void returnMeal(Integer openid) {
+		Member member = dao.getOne("openid", openid);
+		List<Member> list = null;
+		if (!StringUtils.isEmpty(member.getSetMeal()) && member.getSetMeal() == 2) { // 购买套餐了
+			Member parent1 = getParent1(member);
+			if (!StringUtils.isEmpty(parent1)) {
+				list = new ArrayList<>();
+				list.add(parent1);
+			}
+		}
+		if (!list.isEmpty() && list.size() >= Const.directMember) {
+			member.setSetMeal(3);// 返套餐钱
+		}
 
-		return null;
+	}
+
+	@Override
+	public void threeLevel(Integer openid) {
+		
+		Member member = dao.getOne("openid", openid);
+		Member parent1 = getParent1(member);// 上一级
+		Member parent2 = getParent2(member);// 上二级
+		Member parent3 = getParent3(member);// 上三级
+
+		// 三级分润
+		if (parent1 != null) {
+			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
+			update(parent1);
+		}
+		if (parent2 != null) {
+			parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
+			update(parent2);
+		}
+		if (parent3 != null) {
+			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
+			update(parent3);
+		}
 	}
 
 	public static void main(String[] args) {
-		System.out.println(30 / 10);
 	}
 
 }
