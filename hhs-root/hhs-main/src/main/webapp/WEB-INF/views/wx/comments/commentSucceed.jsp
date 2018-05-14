@@ -16,7 +16,7 @@
 <div class="ntpage">
 	<div class="ntpage_cartoon"><i class="bs_success_ntico ntico"></i></div>
 	<div class="ntpage_dt">评价成功，感谢您的支持~</div>
-	<div class="ntpage_foot"><a href="${ctx}wx/comments/myComments" class="butxt">点击前往评价列表&nbsp;&gt;</a></div>
+	<div class="ntpage_foot"><a href="${ctx}wx/myCenter/replyMessage/1" class="butxt">点击前往评价列表&nbsp;&gt;</a></div>
 </div>
 <!-- end 一行 -->
 <!--end 中间-->
