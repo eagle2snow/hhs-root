@@ -19,9 +19,11 @@ public class CommodityAppraise extends Model {
 	
 	private CommodityEvaluation commodityEvaluation;
 	
-	private Order order;
+	private OrderItem orderItem;
 	
 	private Member member;
+	
+	private Commodity commodity;
 	
 	
 	@FormField(label = "订单id", type = FieldType.TEXTINPUT)
@@ -62,25 +64,26 @@ public class CommodityAppraise extends Model {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-	/**
-	 * @return the orderItem
-	 */
-	@ManyToOne
-	public Order getOrder() {
-		return order;
-	}
-	/**
-	 * @param orderItem the orderItem to set
-	 */
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+
 
 	/**
 	 * @return the starLevel
 	 */
 	public String getStarLevel() {
 		return starLevel;
+	}
+	/**
+	 * @return the orderItem
+	 */
+	@ManyToOne
+	public OrderItem getOrderItem() {
+		return orderItem;
+	}
+	/**
+	 * @param orderItem the orderItem to set
+	 */
+	public void setOrderItem(OrderItem orderItem) {
+		this.orderItem = orderItem;
 	}
 	/**
 	 * @param starLevel the starLevel to set
@@ -99,6 +102,19 @@ public class CommodityAppraise extends Model {
 	 */
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
+	}
+	/**
+	 * @return the commodity
+	 */
+	@ManyToOne
+	public Commodity getCommodity() {
+		return commodity;
+	}
+	/**
+	 * @param commodity the commodity to set
+	 */
+	public void setCommodity(Commodity commodity) {
+		this.commodity = commodity;
 	}
 	
 
