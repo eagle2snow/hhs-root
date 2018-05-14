@@ -280,9 +280,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		
 		HashMap<String, Object> map = this.getMap();
 
-		int pid = Integer.valueOf(id).intValue();
-
-		if (commodityAppraiseService.deleteById(pid, true)) {
+		if (commodityAppraiseService.deleteById(id, true)) {
 			map.put("status", 1);
 			map.put("msg", "删除成功");
 		} else {
