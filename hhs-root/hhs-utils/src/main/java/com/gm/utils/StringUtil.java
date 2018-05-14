@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -31,6 +32,16 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
 	 * 每位允许的字符
 	 */
 	private static final String POSSIBLE_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	/**
+	* 获得8个长度的十六进制的UUID
+	* @return UUID
+	*/
+	public static String get8UUID() {
+		UUID id = UUID.randomUUID();
+		String[] idd = id.toString().split("-");
+		return idd[0];
+	}
 
 	/**
 	 * 判断是否是空或者空字符
@@ -5547,25 +5558,23 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
 				.map(NumberUtils::toInt).collect(Collectors.toList());
 		return list;
 	}
-	
+
 	/**
 	 * List<Integer>用自定义字符分割转String
 	 * @param list
 	 * @param reg
 	 * @return
 	 */
-	public static String listToStringByReg(List<Integer> list,String reg){
-		String returnString = ""; 
+	public static String listToStringByReg(List<Integer> list, String reg) {
+		String returnString = "";
 		for (int i = 0; i < list.size(); i++) {
-			if(i+1 == list.size()){
+			if (i + 1 == list.size()) {
 				returnString += list.get(i);
-			}else{
+			} else {
 				returnString += list.get(i) + reg;
 			}
 		}
 		return returnString;
 	}
-	
-	
 
 }

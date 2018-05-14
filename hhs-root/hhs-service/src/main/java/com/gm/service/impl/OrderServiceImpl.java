@@ -25,6 +25,7 @@ import com.gm.base.model.Member;
 import com.gm.base.model.MemberBuy;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
+import com.gm.base.model.PayBill;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberBuyService;
@@ -42,6 +43,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 	@Resource
 	private ICartService cartService;
+	
+	@Resource
+	private PayBillServiceImpl payBillService;
 
 	@Resource
 	private IOrderItemService orderItemService;
@@ -215,15 +219,28 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	@Override
 	public void payOrderSuccess(String orderNo) {
 		Order order = getOne("orderNo", orderNo);
-		
+		order.setStatus(2);
+		//设置订单金额
 		Member member = order.getMember();
+		OrderItem orderItem = orderItemService.getOne("order", order);
+		Commodity commodity = orderItem.getCommodity();
+		List<Commodity> list = null;
+		
+		if (null!=commodity) {
+			list = new ArrayList<>();
+			list.add(commodity);
+			member.setLove(member.getLove()+list.size());
+		}
+		
+		member.setConsume(member.getConsume().add(order.getTotalMoney()));
+		
 		if (member.getLevel()==1) {//如果是访客，升级为普通会员
+			 
 			member.setLevel(2);
 			memberService.update(member);
 		}
 		
 		
-		order.setStatus(2);
 		update(order);
 
 		// saveMemberBuy(order);
