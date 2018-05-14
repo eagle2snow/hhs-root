@@ -37,6 +37,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private IMemberDao dao;
 
+	@Resource
 	private ITenReturnOneDao tenReturnOneDao;
 
 	@Override
@@ -151,7 +152,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				// 通过次数获取会员
 				TenReturnOne one = tenReturnOneDao.getOne("time", time);
 				Member thisTimeMember = one.getThisTimeMember();
-				// 设置会员的十返一字段 空：设置 非空：取出来再加
+				// 设置会员的十返一字段 空：设置， 非空：取出来再加
 				if (StringUtils.isEmpty(thisTimeMember.getTenReturnOne())) {
 					thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
 				} else {
