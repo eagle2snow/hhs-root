@@ -245,7 +245,6 @@ public class WxMyCenterController extends WeixinBaseController {
 		return map;
 	}
 
-
 	/**
 	 * 
 	 *<p>Title:replyMessage</p>
@@ -265,7 +264,7 @@ public class WxMyCenterController extends WeixinBaseController {
 				JSON.toJSONString(commodityAppraiseService.listEqDc("member.id", memberId, "createTime", "desc")));
 		return PATH + "replyMessage";
 	}
-	
+
 	/**
 	 * 
 	 *<p>Title:deleteComment</p>
@@ -275,22 +274,26 @@ public class WxMyCenterController extends WeixinBaseController {
 	 * @param type id
 	 * @return
 	 */
-//	@ResponseBody
+	@ResponseBody
 	@RequestMapping("deleteComment/{id}")
-	public String deleteComment(@PathVariable Integer id1 ,HttpServletRequest request) {
+	public Map<String, Object> deleteComment(@PathVariable Integer id) {
 		
-		System.out.println(id1);
-		
-		String id = request.getParameter("id");
+		HashMap<String, Object> map = this.getMap();
+
 		int pid = Integer.valueOf(id).intValue();
-		logger.info("删除评论 {}.",
-				JSON.toJSONString(commodityAppraiseService.deleteById(pid, true)));
-		if(commodityAppraiseService.deleteById(pid, true)) {
-			return "0";
-		}else {
-			return "9";
+
+		if (commodityAppraiseService.deleteById(pid, true)) {
+			map.put("status", 1);
+			map.put("msg", "删除成功");
+		} else {
+			map.put("status", 2);
+			map.put("msg", "删除失败");
 		}
-	
+
+		logger.info("deleteComment:the Map to Json is map = {}", JSON.toJSON(map));
+		
+		return map;
+
 	}
 
 	@RequestMapping("genQrcode")
