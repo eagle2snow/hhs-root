@@ -7,8 +7,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.gm.base.model.sys.User;
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
+import com.gm.gencode.annotation.Verification;
 import com.gm.gencode.util.FieldType;
 
 @M("会员评价")
@@ -25,18 +27,20 @@ public class CommodityAppraise extends Model {
 	
 	private Commodity commodity;
 	
+	private User user;
 	
-	@FormField(label = "订单id", type = FieldType.TEXTINPUT)
-	private String orderNo;
+	@FormField(label = "管理员是否回复", type = FieldType.TEXTINPUT)
+	private String state;//1，已回复 
 	
 	@FormField(label = "星级", type = FieldType.TEXTINPUT)
 	private String starLevel;
 	 
-	@FormField(label = "管理员回复", type = FieldType.TEXTINPUT)
+	@FormField(label = "管理员回复", sort = 100, type = FieldType.EDITOR)
+	@Verification()
 	private String replyDeails;
 	
-	@JSONField(format = "yyyy-MM-dd HH:mm:ss",label = "管理员回复")
-	private LocalDateTime replyTime = LocalDateTime.now();// 管理员回复时间
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss",label = "管理员回复时间")
+	private LocalDateTime replyTime ;// 管理员回复时间
 	
 	public String getReplyDeails() {
 		return replyDeails;
@@ -91,17 +95,18 @@ public class CommodityAppraise extends Model {
 	public void setStarLevel(String starLevel) {
 		this.starLevel = starLevel;
 	}
+
 	/**
-	 * @return the orderNo
+	 * @return the state
 	 */
-	public String getOrderNo() {
-		return orderNo;
+	public String getState() {
+		return state;
 	}
 	/**
-	 * @param orderNo the orderNo to set
+	 * @param state the state to set
 	 */
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setState(String state) {
+		this.state = state;
 	}
 	/**
 	 * @return the commodity
@@ -115,6 +120,19 @@ public class CommodityAppraise extends Model {
 	 */
 	public void setCommodity(Commodity commodity) {
 		this.commodity = commodity;
+	}
+	/**
+	 * @return the user
+	 */
+	@ManyToOne
+	public User getUser() {
+		return user;
+	}
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 
