@@ -265,6 +265,33 @@ public class WxMyCenterController extends WeixinBaseController {
 				JSON.toJSONString(commodityAppraiseService.listEqDc("member.id", memberId, "createTime", "desc")));
 		return PATH + "replyMessage";
 	}
+	
+	/**
+	 * 
+	 *<p>Title:deleteComment</p>
+	 *<p>Description:删除评论</p>
+	 *
+	 * @param map
+	 * @param type id
+	 * @return
+	 */
+//	@ResponseBody
+	@RequestMapping("deleteComment/{id}")
+	public String deleteComment(@PathVariable Integer id1 ,HttpServletRequest request) {
+		
+		System.out.println(id1);
+		
+		String id = request.getParameter("id");
+		int pid = Integer.valueOf(id).intValue();
+		logger.info("删除评论 {}.",
+				JSON.toJSONString(commodityAppraiseService.deleteById(pid, true)));
+		if(commodityAppraiseService.deleteById(pid, true)) {
+			return "0";
+		}else {
+			return "9";
+		}
+	
+	}
 
 	@RequestMapping("genQrcode")
 	@ResponseBody
