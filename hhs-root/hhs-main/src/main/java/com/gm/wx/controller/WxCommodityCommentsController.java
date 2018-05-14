@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.gm.base.model.Commodity;
 import com.gm.base.model.CommodityAppraise;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.service.ICommodityAppraiseService;
+import com.gm.service.ICommodityService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.service.impl.CommodityAppraiseServiceImpl;
@@ -53,6 +55,9 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	
 	@Autowired
 	private IOrderService orderService;
+	
+	@Autowired
+	private ICommodityService commodityService;
 
 	/**
 	 * @Title: commentSucceedView
@@ -120,20 +125,24 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	@RequestMapping("confirmComments")
 	public String confirmComments(HttpServletRequest request) {
 		Map map = request.getParameterMap();
-		String xx = request.getParameter("xx");
+		String Stars = request.getParameter("xx");
 		String text = request.getParameter("text");
 		String memberId = request.getParameter("memberId");
-		String orderNo = request.getParameter("orderNo");
+		String commodityid = request.getParameter("commodityid");
+		String orderid = request.getParameter("orderid");
+		int cid = Integer.valueOf(commodityid).intValue();
+		int oid = Integer.valueOf(orderid).intValue();
 		logger.info("request列表 {}.", JSON.toJSONString(map));
 		
-		Order order = orderService.getOne("orderNo", orderNo);
+		OrderItem order = itemService.getOne("id", oid);
+		Commodity commodity = commodityService.get(cid);
 		
 		CommodityAppraise t = new CommodityAppraise();
 		t.setContent(text);
-		t.setStarLevel(xx);
-		t.setOrderNo(orderNo);
-		t.setOrder(order);
+		t.setStarLevel(Stars);
+		t.setOrderItem(order);
 		t.setMember(this.getCurMember());
+		t.setCommodity(commodity);
 		if(appraiseService.add(t)) {
 			return "ok";
 			
