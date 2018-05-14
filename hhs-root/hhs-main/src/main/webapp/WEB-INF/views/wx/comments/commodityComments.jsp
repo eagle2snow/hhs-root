@@ -17,7 +17,8 @@
 <div class="mbox">
 <c:forEach items="${orderItems}" var="commodity">
 		<div id="memberId" style="display: none">${commodity.order.member.id}</div>
-		<div id="orderNo" style="display: none">${commodity.order.orderNo}</div>
+		<div id="orderid" style="display: none">${commodity.id}</div>
+		<div id="commodityid" style="display: none">${commodity.commodity.id}</div>
 <%-- 	<span id="openid"  style="display:none">${commodity.member.openid}</span> --%>
 		<!-- 一行 -->
 		<div class="simplecutproitem">
@@ -85,12 +86,12 @@
 				 $.alert("系统出错");
 			}	
 		});  */
-		      /* alert($("#orderNo").html());  */ 
+		       alert($("#commodityid").html());   
 	 	 $.ajax({
 		      type: "POST",
 		      url: "${ctx}wx/comments/confirmComments/",
 		      data: {"xx":a,"text":$("#text").val(),"memberId":$("#memberId").html(),
-		    	  	 "orderNo":$("#orderNo").html()},
+		    	  	 "orderid":$("#orderid").html(),"commodityid":$("#commodityid").html()},
 		      dataType : "json",
 		      success: function(date){
 		      alert(date);  
