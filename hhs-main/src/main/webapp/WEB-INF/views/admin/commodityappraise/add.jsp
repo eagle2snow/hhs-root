@@ -3,9 +3,10 @@
 <html>
 
 <head>
-<title>商品评价新增 </title>
+<title>会员评价新增 </title>
 
 <%@ include file="/common/admin/head.jsp"%>
+<%@ include file="/common/admin/datetimepic.jsp"%>
 
 </head>
 
@@ -47,13 +48,11 @@
 						
 						
                         
-	                            <div class="box-body">
 	                               <div class="form-group">
 										<label class="col-sm-2 control-label">内容:</label>
 										<div class="col-sm-8">
-											 <script id="content" name="content" type="text/plain" class="ue-editor" style="width: 100%; height: 400px;"></script>
+											 <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script>
 										</div>
-									</div>
 								</div>
                         
 						
@@ -65,10 +64,10 @@
 						 	
 							<div class="box-body">
 								<div class="form-group">
-									<label class="col-sm-2 control-label">评级:</label>
+									<label class="col-sm-2 control-label">管理员是否回复:</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" 
-								        placeholder="评级" id="level" name="level"           />
+								        placeholder="管理员是否回复" id="state" name="state"           />
 									</div>
 								</div>
 							</div>	
@@ -87,10 +86,10 @@
 						 	
 							<div class="box-body">
 								<div class="form-group">
-									<label class="col-sm-2 control-label">商品评价:</label>
+									<label class="col-sm-2 control-label">星级:</label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control" 
-								        placeholder="商品评价" id="appraiseDetails" name="appraiseDetails"           />
+								        placeholder="星级" id="starLevel" name="starLevel"           />
 									</div>
 								</div>
 							</div>	
@@ -150,6 +149,23 @@
 			<%@ include file="/common/admin/my_js.jsp"%>
 
 	<script>
+		
+		var newDate = new Date();
+	    var t       = newDate.toJSON(); 
+		$('.form_datetime1').datetimepicker({
+			weekStart : 0, //一周从哪一天开始
+			todayBtn : 1, //
+			autoclose : 1,
+			todayHighlight : true,
+			todayHighlight : 1,
+			startView : 2,
+			forceParse : 0,
+			language : 'zh_CN',
+			showMeridian : 1,
+			format : 'yyyy-mm-dd HH:mm:ss',
+			startDate:new Date(t)
+		});
+		
 		$(".form-horizontal").Validform({
 			btnSubmit: ".btn_sub",
 			btnReset: ".btn_reset",

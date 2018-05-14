@@ -4,7 +4,7 @@
 <html>
 
 <head>
-<title>商品评价列表 </title>
+<title>会员评价列表 </title>
 
 <%@ include file="/common/admin/head.jsp"%>
 
@@ -24,7 +24,7 @@
 					<!-- Horizontal Form -->
 					<div class="box box-info">
 						<div class="box-header with-border">
-							<h3 class="box-title">商品评价列表</h3>
+							<h3 class="box-title">会员评价列表</h3>
 						</div>
 						<!-- /.box-header -->
 						<div class="box">
@@ -37,10 +37,10 @@
 										<div class="cl pd-5 bg-1 bk-gray mt-20">
 											<span class="l"><a href="javascript:;"
 												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
-													class="glyphicon glyphicon-trash"></i> 批量删除</a> <button
+													class="glyphicon glyphicon-trash"></i> 批量删除</a> <%-- <button
 													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
 												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
-													添加</button></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
+													添加</button> --%></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
 											</span>
 										</div>
 									</div>
@@ -65,12 +65,12 @@
 										<tr>
 											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
 											<th width="40">ID</th>
-											<th>名称</th>
-											<th>评级</th>
-											<th>商品评价</th>
-											<th>管理员回复</th>
+											<th>内容</th>
+											<th width="80">状态</th>
+											<th width="60">星级</th>
+											<th>管理员回复内容</th>
 											<th width="130">创建时间</th>
-											<th width="100">状态</th>
+											<!-- <th width="100">状态</th> -->
 											<th width="100">操作</th>
 										</tr>
 									</thead>
@@ -81,26 +81,26 @@
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
 											<td>${model.id}</td>
 											
-											 <th>${model.name}</th>
+											 <th>${model.content}</th>
 											
 											
-											 <th>${model.level}</th>
+											 <th>${model.state eq 1? "已回复":"未回复"}</th>
 											
-											 <th>${model.appraiseDetails}</th>
+											 <th>${model.starLevel}</th>
 											
 											 <th>${model.replyDeails}</th>
 											
 											<td><javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td class="td-status">
+										<%-- 	<td class="td-status">
 														<div class="switch switchevent" data-on="primary"
 															lang="${model.id}" title="${model.enable}"
 															data-on-label="开" data-off-label="关" data-off="info">
 															<input type="checkbox" ${(model.enable==1)?'checked':'' }
 																class="swbtn" />
 														</div>
-											</td>
+											</td> --%>
 											<td>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-cog" title="修改"></i></button>
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>
@@ -166,7 +166,7 @@
 		
 		function edit(id){
 		
-				openPerRe("编辑商品评价", 90,90,'${adp}update/'+id+'.htm');
+				openPerRe("编辑会员评价", 90,90,'${adp}update/'+id+'.htm');
 		
 			
 		}
