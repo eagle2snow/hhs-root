@@ -164,4 +164,22 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		return PATH + "myComments";
 	}
 
+	
+	/**
+	 * 
+	 *<p>Title:allComments</p>
+	 *<p>Description:查看全部评论</p>
+	 *
+	 * @param map
+	 * @param type
+	 * @return
+	 */
+	@RequestMapping("allComments/{type}")
+	public String allComments(ModelMap map, @PathVariable Integer type) {
+		map.put("model", appraiseService.listEqDc("commodity.id", type, "createTime", "desc"));
+		map.put("path", PATH);
+		logger.info("全部评论列表 {}.",
+				JSON.toJSONString(appraiseService.listEqDc("commodity.id", type,  "createTime", "desc")));
+		return PATH + "allComments";
+	}
 }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import com.gm.base.model.Member;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberService;
+import com.gm.service.impl.CommodityAppraiseServiceImpl;
 import com.gm.utils.DateUtil;
 
 import net.bytebuddy.asm.Advice.This;
@@ -50,6 +52,7 @@ public class WxCommodityController extends WeixinBaseController {
 	private ICartService cartService;
 	@Resource
 	private IMemberService memberService;
+
 
 	private static final String PATH = "/wx/commodity/";
 
@@ -216,4 +219,5 @@ public class WxCommodityController extends WeixinBaseController {
 		return PATH + "confirmOrder";
 	}
 
+	
 }

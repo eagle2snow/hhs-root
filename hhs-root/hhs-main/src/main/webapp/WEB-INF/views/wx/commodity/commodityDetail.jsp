@@ -42,7 +42,7 @@
 			<div class="boxmt_cont">
 				<h3 class="boxmtitle">评论（${model.appraiseCount}）</h3>
 			</div>
-			<a href="###" class="boxmtmore">查看全部评论<i class="rgt"></i></a>
+			<a href="${ctx}wx/comments/allComments/${model.id }" class="boxmtmore">查看全部评论<i class="rgt"></i></a>
 		</div>
 		<ul class="nospactor_comments comments">
 			<li class="comment">
@@ -66,7 +66,7 @@
 					</div>
 				</div>
 				<div class="comment_mc">
-					<p class="para">纸质很棒，是正品，还会来买的！</p>
+					<p class="para">酒很好喝，是正品，还会来买的！</p>
 				</div>
 				<div class="comment_mb">
 					<div class="comment_mbcont">

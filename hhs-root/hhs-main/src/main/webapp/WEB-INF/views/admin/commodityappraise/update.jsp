@@ -1,5 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>  
+<%@page import="java.util.*"%> 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 <head>
@@ -10,6 +12,11 @@
 </head>
 
 <body>
+	<%  
+        Date d = new Date();  
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        String now = df.format(d);  
+    %>  
 	<section class="content">
 	<form class="form-horizontal" method="post" id="form-admin-add" action="${adp}update.json">
 		<input type="hidden" name="id" value="${model.id}"/>	
@@ -20,17 +27,65 @@
 					<div class="box-header with-border">
 						<h3 class="box-title">编辑</h3>
 					</div>
-							<div class="form-group" style="display: none">
+							<%-- <div class="form-group" style="display: ">
 								<label class="col-sm-2 control-label">名称:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.name}"
 							        placeholder="名称" id="name" name="name" datatype="*" errormsg="请输入名称"         />
 								</div>
+							</div> --%>
+                        
+							<%-- <div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">创建时间:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="<javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />"
+							        placeholder="创建时间" id="createTime" name="createTime"  />                                           
+								</div>
+							</div> --%>
+							<%-- <div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">商品评价表:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.commodityEvaluation.id}"
+							        placeholder="商品评价表" id="commodityEvaluation.id" name="commodityEvaluation.id"           />
+								</div>
+							</div> --%>
+							
+							
+							<div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">订单项:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.orderItem.id}"
+							        placeholder="订单项" id=orderItem.id name="orderItem.id"           />
+								</div>
 							</div>
-                        
-                        
-						
-						
+							<div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">会员表:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.member.id}"
+							        placeholder="会员表" id="member.id" name="member.id"           />
+								</div>
+							</div>
+							<div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">商品表:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.commodity.id}"
+							        placeholder="商品表" id="commodity.id" name="commodity.id"           />
+								</div>
+							</div>
+							<div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">管理员表:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${sessionScope.curUser.id}"
+							        placeholder="管理员表" id="user.id" name="user.id"           />
+								</div>
+							</div>
+							<div class="form-group" style="display: ">
+								<label class="col-sm-2 control-label">管理员回复时间:</label>
+								<div class="col-sm-8">
+									<input type="" class="form-control" value="<%=now %>"
+							        placeholder="管理员回复时间" id="replyTime" name="replyTime"           />
+								</div>
+							</div>
                         
 			                
 			                
@@ -45,7 +100,7 @@
 						
 						
                         
-	                               <div class="form-group" style="display: none">
+	                               <div class="form-group" style="display:">
 										<label class="col-sm-2 control-label">内容:</label>
 										<div class="col-sm-8">
 											 <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script>
@@ -59,7 +114,7 @@
 							
 							
 			                
-							<div class="form-group" style="display: none">
+							<div class="form-group" style="display: ">
 								<label class="col-sm-2 control-label">管理员是否回复:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="1"
@@ -79,7 +134,7 @@
 							
 							
 			                
-							<div class="form-group" style="display: none">
+							<div class="form-group" style="display: ">
 								<label class="col-sm-2 control-label">星级:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.starLevel}"
