@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>评论</title>
+<title>我的评论</title>
 <%@ include file="/common/wx/mate.jsp"%>
 <%@ include file="/common/wx/css.jsp"%>
 </head>
@@ -27,7 +27,8 @@
 				<div class="comment_mtcont">
 					<span class="itm">${u.member.nickname }</span>
 				</div>
-				<span class="date">${u.createTime }</span>
+				<span class="date"></span>
+				<javatime:format value="${u.createTime }" pattern="yyyy-MM-dd HH:mm:ss" />
 			</div>
 			<div class="comment_mc">
 				<p class="para">${u.content }</p>
@@ -58,26 +59,27 @@
 
 <ul class="mt16 hasmtline comments" ${type==2?'':'style="display:none"'}>
 	<c:forEach items="${model}" var="u">
-			<li class="comment">
+			<li class="comment" ${u.state==1?'':'style="display:none"'}>
 				<div class="comment_mt">
-					<div class="comment_avator"><img src="images/portrait/50/01.jpg" alt=""></div>
+					<div class="comment_avator"><img src="${u.user.avatar}" alt=""></div>
 					<div class="comment_mtcont">
-						<span class="itm">${u.member.nickname }</span><big class="itm">回复</big><span class="itm">${u.commodityEvaluation.member.nickname }</span>
+						<span class="itm">${u.user.name }</span><big class="itm">回复</big><span class="itm">我</span>
 					</div>
-					<span class="date">${u.createTime }</span>
+					<span class="date">${u.replyTime}</span>
+					
 				</div>
 				<div class="comment_mc">
-					<div class="quote">${u.commodityEvaluation.evaluationDetails }</div>
-					<p class="para">${u.content }</p>
+					<div class="quote">${u.content }</div>
+					<p class="para">${u.replyDeails }</p>
 				</div>
-				<div class="comment_mb">
+				<!-- <div class="comment_mb">
 					<div class="comment_mbcont">
 						<span class="vitm"><span class="num">3.8K</span>浏览</span>
 						<span class="vitm"><span class="num">2.1K</span>评论</span>
 						<span class="vitm"><span class="num">2150</span>赞</span>
 					</div>
 					<a href="###" class="secondlinebtn radiusbtn msbtn">删&nbsp;除</a>
-				</div>
+				</div> -->
 			</li>
 	</c:forEach>
 	<!-- <li class="comment">
