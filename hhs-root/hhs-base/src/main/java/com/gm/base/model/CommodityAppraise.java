@@ -1,12 +1,13 @@
 package com.gm.base.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.gm.base.model.sys.User;
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
@@ -39,8 +40,9 @@ public class CommodityAppraise extends Model {
 	@Verification()
 	private String replyDeails;
 	
-	@JSONField(format = "yyyy-MM-dd HH:mm:ss",label = "管理员回复时间")
-	private LocalDateTime replyTime ;// 管理员回复时间
+	//@JSONField(format = "yyyy-MM-dd HH:mm:ss",label = "管理员回复时间")
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private Date replyTime ;// 管理员回复时间
 	
 	public String getReplyDeails() {
 		return replyDeails;
@@ -48,10 +50,17 @@ public class CommodityAppraise extends Model {
 	public void setReplyDeails(String replyDeails) {
 		this.replyDeails = replyDeails;
 	}
-	public LocalDateTime getReplyTime() {
+	
+	/**
+	 * @return the replyTime
+	 */
+	public Date getReplyTime() {
 		return replyTime;
 	}
-	public void setReplyTime(LocalDateTime replyTime) {
+	/**
+	 * @param replyTime the replyTime to set
+	 */
+	public void setReplyTime(Date replyTime) {
 		this.replyTime = replyTime;
 	}
 	@ManyToOne
