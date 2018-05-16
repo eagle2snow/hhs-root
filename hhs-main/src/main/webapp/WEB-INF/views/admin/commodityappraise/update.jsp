@@ -51,35 +51,35 @@
 							</div> --%>
 							
 							
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none " >
 								<label class="col-sm-2 control-label">订单项:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.orderItem.id}"
 							        placeholder="订单项" id=orderItem.id name="orderItem.id"           />
 								</div>
 							</div>
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none ">
 								<label class="col-sm-2 control-label">会员表:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.member.id}"
 							        placeholder="会员表" id="member.id" name="member.id"           />
 								</div>
 							</div>
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none ">
 								<label class="col-sm-2 control-label">商品表:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.commodity.id}"
 							        placeholder="商品表" id="commodity.id" name="commodity.id"           />
 								</div>
 							</div>
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none ">
 								<label class="col-sm-2 control-label">管理员表:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${sessionScope.curUser.id}"
 							        placeholder="管理员表" id="user.id" name="user.id"           />
 								</div>
 							</div>
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none ">
 								<label class="col-sm-2 control-label">管理员回复时间:</label>
 								<div class="col-sm-8">
 									<input type="" class="form-control" value="<%=now %>"
@@ -103,7 +103,9 @@
 	                               <div class="form-group" style="display:">
 										<label class="col-sm-2 control-label">内容:</label>
 										<div class="col-sm-8">
-											 <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script>
+											<!-- <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script> --> 
+											<input type="text" class="form-control" value="${model.content}"
+								        	placeholder="买家评价" id="content" name="content"   disabled='disabled'  />
 										</div>
 								</div>
 			                
@@ -114,7 +116,7 @@
 							
 							
 			                
-							<div class="form-group" style="display: ">
+							<div class="form-group" style="display:none ">
 								<label class="col-sm-2 control-label">管理员是否回复:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="1"
