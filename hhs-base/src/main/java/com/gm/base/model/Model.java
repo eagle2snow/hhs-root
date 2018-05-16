@@ -126,6 +126,7 @@ public abstract class Model implements IModel {
 		this.object = object;
 	}
 
+	@Column(name="createTime",updatable=false)
 	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
