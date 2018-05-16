@@ -105,9 +105,20 @@
 										<div class="col-sm-8">
 											<!-- <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script> --> 
 											<input type="text" class="form-control" value="${model.content}"
-								        	placeholder="买家评价" id="content" name="content"   disabled='disabled'  />
+								        	placeholder="买家评价" id="content" name="content" 
+											style="border: none;" readonly="readonly" />
 										</div>
 								</div>
+	                               
+	                               <div class="form-group" style="display:">
+										<label class="col-sm-2 control-label">首页显示图片:</label>
+										<div class="col-sm-8" >
+											<img alt="" src="${model.orderItem.imgerPath}" width="200" height="180" >
+										</div>
+								</div>
+	                               
+
+							
 			                
 			                
 			                
