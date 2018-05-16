@@ -47,9 +47,9 @@
 			</div>
 			<div class="comment_mb">
 				<div class="comment_mbcont">
-					<span class="vitm"><span class="num">${u.commodity.browse }</span>浏览</span>
-					<span class="vitm"><span class="num">${u.commodity.comment }</span>评论</span>
-					<span class="vitm"><span class="num">${u.commodity.praise }</span>赞</span>
+					<span class="vitm"><span class="num">${u.commodity.browse /1000}</span>K浏览</span>
+					<span class="vitm"><span class="num">${u.commodity.comment /1000}</span>K评论</span>
+					<span class="vitm"><span class="num">${u.commodity.praise /1000}</span>K赞</span>
 				</div>
 				<a  class="secondlinebtn radiusbtn msbtn" onclick="deletes(${u.id })">删&nbsp;除</a>
 			</div>
