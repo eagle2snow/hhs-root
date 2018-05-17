@@ -10,17 +10,23 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Order;
+import com.gm.base.model.OrderItem;
 import com.gm.base.query.Page;
+import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.StringUtil;
+import com.gm.wx.controller.WxCommodityCommentsController;
 
 /**
  * 后台用户操作
@@ -37,7 +43,10 @@ public class AdminOrderController extends BaseAdminController{
 	@Resource
 	private IOrderService orderService;
 	
-
+	@Resource
+	private IOrderItemService orderItemService;
+	
+	
 	@RequestMapping("add.htm")
 	@RequiresPermissions("admin:order:add")
 	public String addView(ModelMap map) {
@@ -200,8 +209,12 @@ public class AdminOrderController extends BaseAdminController{
 	@RequestMapping("details1/{id}.htm")
 	public String detailsView1(@PathVariable Integer id, ModelMap map) {
 		Order model = orderService.get(id);
+		List<OrderItem> models = orderItemService.listEq("order.id", id);
 		map.put("path", path);
 		map.put("model", model);
+		map.put("models", models);
+		logger.info("发货订单表详情 = {}", JSON.toJSON(model));
+		logger.info("发货订单项表详情 = {}", JSON.toJSON(models));
 
 		return path + "details1";
 	}
