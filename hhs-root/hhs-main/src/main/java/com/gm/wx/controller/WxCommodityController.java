@@ -81,7 +81,7 @@ public class WxCommodityController extends WeixinBaseController {
 		} else {
 			commodity.setBrowse(1);
 		}
-
+		commodityService.update(commodity);
 		map.put("model", commodity);
 		map.put("member", this.getCurMember());
 		map.put("date", DateUtil.dateToStr(new Date(), 12));
