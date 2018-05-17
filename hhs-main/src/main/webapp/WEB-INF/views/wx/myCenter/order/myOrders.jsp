@@ -27,7 +27,7 @@
 	<!-- 一行 -->
 	<ul class="mt16 orderlist">
 		<c:forEach items="${orders }" var='order'>
-			<li data-state="finish" class="orderitem">
+			<li data-state="finish" class="orderitem" >
 				<div class="order_mt">
 					<span class="t">订单号：${order.orderNo }</span>
 					<div class="order_mtcont">
@@ -51,7 +51,7 @@
 					</span>
 				</div> 
 				<c:forEach items='${order.items }' var='item'>
-					<div class="order_mc">
+					<div class="order_mc" ${item.appraise eq "1" and status==4? 'style="display:none"':''}>
 						<a href="###" class="cartpro">
 							<div class="cartpro_pic">
 								<img src="${item.imgerPath }" alt="">
@@ -86,7 +86,7 @@
 									
 									
 									 <c:if test="${order.status==4 and order.appraise==0 }">
-										<span onclick="comments(${order.id})" class="defaultlinebtn radiusbtn msbtn">即刻评价</span>
+										<span onclick="comments(${item.id})" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"':''}>即刻评价</span>
 										<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span>
 									</c:if>
 									
@@ -150,6 +150,7 @@
 		
 		//即刻评价 1
 		function comments(orderId){
+			//alert(orderId);
 			location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
 		}
 		
