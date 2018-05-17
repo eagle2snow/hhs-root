@@ -13,6 +13,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -103,7 +104,8 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 		}
 
-		List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
+		//List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
+		OrderItem orderItems = itemService.get(orderId);
 		logger.info("toCommondityComment:the pojo OrderItem = {}", JSON.toJSON(orderItems));
 
 		map.put("orderItems", orderItems);
@@ -144,6 +146,14 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		t.setMember(this.getCurMember());
 		t.setCommodity(commodity);
 		if(appraiseService.add(t)) {
+			if (!StringUtils.isEmpty(commodity.getComment())) {
+				commodity.setComment(commodity.getComment() + 1);
+			} else {
+				commodity.setComment(1);
+			}
+			commodityService.update(commodity);
+			order.setAppraise("1");
+			itemService.update(order);
 			return "ok";
 			
 		}else {
