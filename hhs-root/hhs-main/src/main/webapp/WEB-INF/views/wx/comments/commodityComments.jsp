@@ -15,15 +15,15 @@
 <!-- 一行 -->
 
 <div class="mbox">
-<c:forEach items="${orderItems}" var="commodity">
-		<div id="memberId" style="display: none">${commodity.order.member.id}</div>
-		<div id="orderid" style="display: none">${commodity.id}</div>
-		<div id="commodityid" style="display: none">${commodity.commodity.id}</div>
+<%-- <c:forEach items="${orderItems}" var="commodity"> --%>
+		<div id="memberId" style="display: none">${orderItems.order.member.id}</div>
+		<div id="orderid" style="display: none">${orderItems.id}</div>
+		<div id="commodityid" style="display:none ">${orderItems.commodity.id}</div>
 <%-- 	<span id="openid"  style="display:none">${commodity.member.openid}</span> --%>
 		<!-- 一行 -->
 		<div class="simplecutproitem">
 			<div class="simplecutpro">
-				<div class="simplecutpro_pic"><img src="${commodity.imgerPath}" alt=""></div>
+				<div class="simplecutpro_pic"><img src="${orderItems.commodity.imgerPath}" alt=""></div>
 				<span class="givescorebox">
 					综合评价
 					<span class="givescore">
@@ -43,14 +43,14 @@
 		<div class="textintbox">
 			<textarea id="text" placeholder="点击此处，说说它的优点与美中不足吧~" class="remark_textint textint"></textarea>
 			<div class="picthumbs">
-				<div class="picthumbitm"><img src="${commodity.imgerPath}" alt=""></div>
-				<div class="picthumbitm"><img src="${commodity.imgerPath}" alt=""></div>
+				<div class="picthumbitm"><img src="${orderItems.imgerPath}" alt=""></div>
+				<div class="picthumbitm"><img src="${orderItems.imgerPath}" alt=""></div>
 				<div onclick="pop('data/takephotocpop.html')" class="addpicthumbitm picthumbitm"><input type="file" class="hidel"><i onclick="addImages()" class="takephoto_bsico bsico"></i><p>添加图片</p></div>
 			</div>
 		</div>
 		</from>
 		<!-- end 一行 -->
-</c:forEach>
+<%-- </c:forEach> --%>
 </div>
 <!-- end 一行 -->
 <!--end 中间-->
