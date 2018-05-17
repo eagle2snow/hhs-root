@@ -71,8 +71,8 @@
 									</c:if>
 									
 									 <c:if test="${order.status==1}">
-										<span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
-										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
+										<%-- <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
+										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span> --%>
 									</c:if>
 									
 									 <c:if test="${order.status==2}">
@@ -126,8 +126,11 @@
 						</a>
 					</div>
 				</c:forEach> 
-
 			</li>
+		<c:if test="${order.status==1}"><li style="background-color: #fff;padding-left: 55%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
+										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span> 
+										</li>
+										</c:if>
 		</c:forEach>
 
 	</ul>
@@ -169,8 +172,11 @@
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
 				if(data.status){
 					$.alert(data.msg);
-					var urgent= document.getElementById("urgent");
-					urgent.innerHTML("<span class='defaultlinebtn radiusbtn msbtn'>已加急</span>");
+					$("#urgent").click(function(){
+						$("#urgent").text("已加急"); 
+				         
+				    });
+					}
 				}else{
 					$.alert("网络出错，请稍后再试。");
 					
