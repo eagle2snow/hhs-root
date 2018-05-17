@@ -81,7 +81,7 @@
 									
 									
 									 <c:if test="${order.status==3}">
-										<span <%-- onclick="confirmGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">确认收货</span>
+										<span onclick="confirmGoods(${order.id})"  class="defaultlinebtn radiusbtn msbtn">确认收货</span>
 									</c:if>
 									
 									
@@ -117,7 +117,7 @@
 									</c:if>
 									
 									<c:if test="${order.status==10}">
-										<span class="defaultlinebtn radiusbtn msbtn">订单完成</span>
+										<span onclick="finishGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn">订单完成</span>
 									</c:if>	
 								
 								</div>
