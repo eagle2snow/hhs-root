@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dto.CartDto;
@@ -66,12 +65,26 @@ public class WxOrderController extends WeixinBaseController {
 
 	private static final String PATH = "/wx/order/";
 	
+	@ResponseBody
+	@RequestMapping("urgent/{orderId}")
+	public Map<String, Object> urgent(@PathVariable Integer orderId){
+		logger.info("urgent:method starting ~~~");
+		
+		HashMap<String,Object> map = this.getMap();
+		Order order = orderService.get(orderId);
+		order.setStatus(11);//加急
+		map.put("status", 1);
+		map.put("msg", "加急请求已送达，请耐心等候！");
+		
+		return map;
+	}
+	
 	
 	
 	
 
 	/**
-	 * @Title: confirmGoods   
+	 * @Title: confirmGoods    
 	 * @Description: 确定收货
 	 * @param orderId
 	 * @return      
@@ -88,7 +101,7 @@ public class WxOrderController extends WeixinBaseController {
 			Order order = orderService.get(orderId);
 			order.setStatus(4);
 			//调用订单确认收货处理器
-			
+			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
 			
@@ -99,6 +112,8 @@ public class WxOrderController extends WeixinBaseController {
 			logger.error("confirmGoods:Error info is {}", e.getMessage());
 			
 		}
+		map.put("status", 3);
+		map.put("msg", "网络异常,请稍后重试！");
 		
 		logger.error("confirmGoods:The Map map = {}", JSON.toJSON(map));
 		return map;
@@ -137,16 +152,13 @@ public class WxOrderController extends WeixinBaseController {
 		try {
 			// 通过关联的实体删除实体
 			orderItemService.deleteByParm("order.id", orderId, true);
-
 			orderService.deleteById(orderId, true);
-
 			map.put("status", 1);
 			map.put("msg", "订单取消成功");
 
 		} catch (Exception e) {
 			map.put("status", 2);
 			map.put("msg", "系统正在维护");
-
 			logger.error("cancelOrder:Error info is {}", e.getMessage());
 
 		}
@@ -195,6 +207,7 @@ public class WxOrderController extends WeixinBaseController {
 	 * @param map
 	 * @return
 	 */
+	@SuppressWarnings("all")
 	@RequestMapping("/confirmOrder/{orderId}")
 	public String confirmOrder(@PathVariable Integer orderId, ModelMap map, String addressId) {
 		Member member = getCurMember();
@@ -221,6 +234,7 @@ public class WxOrderController extends WeixinBaseController {
 			}
 		}
 
+		
 		List addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
 				.pq("defaultAddress").eq("member.id", member.getId()).pqList();
 		map.put("addressList", JSON.toJSONString(addressList));

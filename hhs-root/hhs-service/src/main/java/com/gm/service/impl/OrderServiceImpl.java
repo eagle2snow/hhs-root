@@ -25,7 +25,6 @@ import com.gm.base.dto.OrderItemDto;
 import com.gm.base.model.Cart;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
-import com.gm.base.model.MemberBuy;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.base.model.PayBill;
@@ -277,19 +276,46 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
-		Member member = order.getMember();
-
 		OrderItem orderItem = orderItemService.getOne("order", order);
 		logger.info("orderItem={}", JSON.toJSON(orderItem));
 
 		Commodity commodity = orderItem.getCommodity();
 
 		// 设置订单相关属性
-		order.setTotalMoney(payBill.getReaFee()); // 订单总额
+		if (payBill != null) {
+			order.setTotalMoney(payBill.getReaFee()); // 订单总额
+		}
 		order.setStatus(4); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		logger.info("order={}", JSON.toJSON(order));
 		update(order);
+
+		// 商品的设置
+		commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
+		commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
+		logger.info("commodity={}", JSON.toJSON(commodity));
+		commodityService.update(commodity);
+		
+		//规定多少天后若是没有客户要求退货就执行订单完成方法
+		//  . . . 这里改怎么写 
+		this.finishGoodsGoods(orderId);
+		
+
+	}
+
+	/**
+	 * 订单完成
+	 */
+	private void finishGoodsGoods(Integer orderId) {
+
+		Order order = orderService.get(orderId);
+		Member member = order.getMember();
+		OrderItem orderItem = orderItemService.getOne("order", order);
+		Commodity commodity = orderItem.getCommodity();
+		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
+
+		order.setStatus(10);
+		order.setFinishTime(LocalDateTime.now());
 
 		// 会员的设置
 		List<Commodity> list = null;
@@ -306,36 +332,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("member={}", JSON.toJSON(member));
 		memberService.update(member);
 
-		// 商品的设置
-		commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
-		commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
-		logger.info("commodity={}", JSON.toJSON(commodity));
-		commodityService.update(commodity);
-
-		// 商品购买次数设置 等订单完成再设置
-
-	}
-
-	/**
-	 * 订单完成
-	 */
-	@Override
-	public void finishGoodsGoods(Integer orderId) {
-
-		Order order = orderService.get(orderId);
-		Member member = order.getMember();
-		OrderItem orderItem = orderItemService.getOne("order", order);
-		Commodity commodity = orderItem.getCommodity();
-		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
-
+		//十返一类相关属性设置
 		if (StringUtils.isEmpty(tenReturnOne)) {
 			tenReturnOne = new TenReturnOne();
 		}
-		tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+		tenReturnOne.setTime(tenReturnOne.getTime() + 1); 
 		tenReturnOne.setThisTimeMember(member);
 		tenReturnOne.setThisTimeCommodity(commodity);
 		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
 		oneDao.update(tenReturnOne);
+
 	}
 
 }

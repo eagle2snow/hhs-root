@@ -76,7 +76,7 @@
 									</c:if>
 									
 									 <c:if test="${order.status==2}">
-										<span <%-- onclick="urgent(${order.id})"  --%> class="defaultlinebtn radiusbtn msbtn">给我加急</span>
+										<span id="urgent" onclick="urgent(${order.id})"  class="defaultlinebtn radiusbtn msbtn">给我加急</span>
 									</c:if>
 									
 									
@@ -117,7 +117,7 @@
 									</c:if>
 									
 									<c:if test="${order.status==10}">
-										<span onclick="finishGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn">订单完成</span>
+										<span class="defaultlinebtn radiusbtn msbtn">订单完成</span>
 									</c:if>	
 								
 								</div>
@@ -166,7 +166,16 @@
 		
 		//给我加急
 		function urgent(orderId){
-			location.href="${ctx}wx/order/urgent/"+orderId
+			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
+				if(data.status){
+					$.alert(data.msg);
+					var urgent= document.getElementById("urgent");
+					urgent.innerHTML("<span class='defaultlinebtn radiusbtn msbtn'>已加急</span>");
+				}else{
+					$.alert("网络出错，请稍后再试。");
+					
+				}
+			});
 		}
 		
 		//物流查询
