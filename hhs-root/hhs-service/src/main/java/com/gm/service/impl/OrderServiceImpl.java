@@ -1,11 +1,8 @@
 package com.gm.service.impl;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.gm.api.wx.WeixinPayApi;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IOrderDao;
 import com.gm.base.dao.ITenReturnOneDao;
@@ -40,10 +36,7 @@ import com.gm.service.IMemberBuyService;
 import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
-import com.gm.service.ITenReturnOneService;
 import com.gm.utils.DateUtil;
-import com.gm.utils.LocalDateUtil;
-import com.gm.utils.StringUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
@@ -60,6 +53,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 	@Resource
 	private ICartService cartService;
+
+	@Resource
+	private IOrderService orderService;
 
 	@Resource
 	private PayBillServiceImpl payBillService;
@@ -157,9 +153,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Map<String, Object> map = new HashMap<>();
 
 		Order order = get(orderId);
+
 		if (order == null) {
 			map.put("s", "null");
 			return map;
+		} else {
+			order.setOrderRemarks(content);
 		}
 
 		if (order.getStatus() != 1) {
@@ -233,6 +232,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		return s;
 	}
 
+	/**
+	 * 支付成功之后的相关设置
+	 */
 	@Override
 	public void payOrderSuccess(String orderNo) {
 
@@ -240,25 +242,53 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
 		Order order = getOne("orderNo", orderNo);
-		logger.info("order={}", JSON.toJSON(order));
-
-		Member member = order.getMember();
-		logger.info("member={}", JSON.toJSON(member));
 
 		OrderItem orderItem = orderItemService.getOne("order", order);
 		logger.info("orderItem={}", JSON.toJSON(orderItem));
 
 		Commodity commodity = orderItem.getCommodity();
-		logger.info("commodity={}", JSON.toJSON(commodity));
-
-		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
-		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
 
 		// 订单的设置
 		order.setStatus(2);
-		order.setTotalMoney(payBill.getReaFee());
-		order.setPaymentTime(LocalDateTime.now());
-		order.setPayPathway(1);
+		order.setPostageMoney(BigDecimal.valueOf(0));// 包邮
+		order.setPaymentTime(LocalDateTime.now());// 付款时间
+		order.setPayPathway(1);// 支付方式
+		logger.info("order={}", JSON.toJSON(order));
+		update(order);
+
+		// 商品的设置
+		commodity.setTotalStock(commodity.getTotalStock() - 1);
+		commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+		logger.info("commodity={}", JSON.toJSON(commodity));
+		commodityService.update(commodity);
+
+		// saveMemberBuy(order);
+		// returnSingleItemPrice(order);
+	}
+
+	/**
+	 * 确认收货之后的相关设置
+	 */
+	@Override
+	public void confirmGoods(Integer orderId) {
+
+		Order order = orderService.get(orderId);
+
+		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
+		logger.info("payBill={}", JSON.toJSON(payBill));
+
+		Member member = order.getMember();
+
+		OrderItem orderItem = orderItemService.getOne("order", order);
+		logger.info("orderItem={}", JSON.toJSON(orderItem));
+
+		Commodity commodity = orderItem.getCommodity();
+
+		// 设置订单相关属性
+		order.setTotalMoney(payBill.getReaFee()); // 订单总额
+		order.setStatus(4); // 4|已收货
+		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
+		logger.info("order={}", JSON.toJSON(order));
 		update(order);
 
 		// 会员的设置
@@ -266,64 +296,46 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		if (null != commodity) {
 			list = new ArrayList<>();
 			list.add(commodity);
-			member.setLove(member.getLove() + list.size());
+			logger.info("List<Cmmodity> size = {}", list.size());
+			member.setLove(member.getLove() + list.size());// 爱心资助
 		}
-		member.setConsume(member.getConsume().add(order.getTotalMoney()));
+		member.setConsume(member.getConsume().add(order.getTotalMoney()));// 消费额
 		if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
-			member.setLevel(2);
+			member.setLevel(2);// 等级
 		}
+		logger.info("member={}", JSON.toJSON(member));
 		memberService.update(member);
 
 		// 商品的设置
-		commodity.setTotalStock(commodity.getTotalStock() - 1);
-		commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+		commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
+		commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
+		logger.info("commodity={}", JSON.toJSON(commodity));
 		commodityService.update(commodity);
 
-		// 商品购买次数设置
+		// 商品购买次数设置 等订单完成再设置
+
+	}
+
+	/**
+	 * 订单完成
+	 */
+	@Override
+	public void finishGoodsGoods(Integer orderId) {
+
+		Order order = orderService.get(orderId);
+		Member member = order.getMember();
+		OrderItem orderItem = orderItemService.getOne("order", order);
+		Commodity commodity = orderItem.getCommodity();
+		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
+
 		if (StringUtils.isEmpty(tenReturnOne)) {
 			tenReturnOne = new TenReturnOne();
 		}
 		tenReturnOne.setTime(tenReturnOne.getTime() + 1);
 		tenReturnOne.setThisTimeMember(member);
 		tenReturnOne.setThisTimeCommodity(commodity);
+		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
 		oneDao.update(tenReturnOne);
-
-		// saveMemberBuy(order);
-		// returnSingleItemPrice(order);
-	}
-
-	// 保存购买记录
-	private void saveMemberBuy(Order order) {
-		Member member = order.getMember();
-		order.setStatus(2);// 设为已付款
-		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
-		for (OrderItem orderItem : items) {
-			for (int i = 0; i < orderItem.getBuyCount(); i++) {
-				MemberBuy memberBuy = new MemberBuy();
-				memberBuy.setMember(member);
-				memberBuy.setCommodity(orderItem.getCommodity());
-				memberBuy.setIsReturn(1);
-				memberBuy.setPrice(orderItem.getCommodity().getShowPrice());
-				memberBuyService.save(memberBuy);
-			}
-		}
-	}
-
-	// 返单品分佣
-	private void returnSingleItemPrice(Order order) {
-		List<MemberBuy> memberBuys = memberBuyService.listEq("isReturn", 1);
-		int n = memberBuys.size();
-		for (int i = 0; i < n - 10; i++) {
-			MemberBuy memberBuy = memberBuys.get(i);
-			Member member = memberBuy.getMember();
-			memberService.updateByHql(
-					"update member m set m.balance=m.balance+" + memberBuy.getPrice() + " where id=" + member.getId());
-			memberBuyService.update("isReturn", 2, memberBuy.getId());
-		}
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }

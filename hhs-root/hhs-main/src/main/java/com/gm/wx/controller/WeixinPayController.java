@@ -46,7 +46,7 @@ public class WeixinPayController extends WeixinBaseController {
 
 	/**
 	 * @Title: prePay   
-	 * @Description: 订单支付前
+	 * @Description: 订单支付前    应该添加个备注字段
 	 * @param orderNo
 	 * @param orderName
 	 * @param amount 订单金额

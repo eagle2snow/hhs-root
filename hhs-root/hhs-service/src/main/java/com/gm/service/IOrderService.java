@@ -36,7 +36,7 @@ public interface IOrderService extends IBaseService<Order, Integer> {
 
 	Map<String, Object> prePayOrder(Member member, Integer orderId, Integer addressId, List<OrderItemDto> items,
 			String content);
-	
+
 	/**
 	
 	* <p>描述: </p>  
@@ -48,7 +48,22 @@ public interface IOrderService extends IBaseService<Order, Integer> {
 	* @version 1.0
 	 */
 	void payOrderSuccess(String orderNo);
-	
-	
+
+	/**
+	 * @Title: confirmGoods   
+	 * @Description: 确认收货      
+	 * @return: void      
+	 * @throws
+	 */
+	void confirmGoods(Integer orderId);
+
+	/**
+	 * @Title: finishGoodsGoods   
+	 * @Description: 订单完成
+	 * @param orderId      
+	 * @return: void      
+	 * @throws
+	 */
+	void finishGoodsGoods(Integer orderId);
 
 }
