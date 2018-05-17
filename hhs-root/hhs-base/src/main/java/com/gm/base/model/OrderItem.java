@@ -87,6 +87,9 @@ public class OrderItem extends Model {
 
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
 	private String specifications;
+	
+	@FormField(label = "是否已评价", type = FieldType.TEXTINPUT)
+	private String appraise;
 
 	@ManyToOne
 	public Order getOrder() {
@@ -239,6 +242,16 @@ public class OrderItem extends Model {
 
 	public void setSpecifications(String specifications) {
 		this.specifications = specifications;
+	}
+
+
+	public String getAppraise() {
+		return appraise;
+	}
+
+
+	public void setAppraise(String appraise) {
+		this.appraise = appraise;
 	}
 
 	public OrderItem() {
