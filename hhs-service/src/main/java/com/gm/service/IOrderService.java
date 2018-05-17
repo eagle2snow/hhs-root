@@ -57,13 +57,4 @@ public interface IOrderService extends IBaseService<Order, Integer> {
 	 */
 	void confirmGoods(Integer orderId);
 
-	/**
-	 * @Title: finishGoodsGoods   
-	 * @Description: 订单完成
-	 * @param orderId      
-	 * @return: void      
-	 * @throws
-	 */
-	void finishGoodsGoods(Integer orderId);
-
 }

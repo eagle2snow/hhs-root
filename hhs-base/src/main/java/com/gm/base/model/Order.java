@@ -34,7 +34,7 @@ public class Order extends Model {
 	@FormField(type = FieldType.NUMBER, label = "邮费")
 	private BigDecimal postageMoney;// 订单邮费
 
-	@FormField(type = FieldType.NUMBER, label = "订单状态", data = "1|待付款,2|待发货,3|待收货,4|已收货,5|退换货申请中,6|退换货申请通过待买家发货,7|退换货申请通过买家已发货,8|退换货申请不通过,9|订单已退款,10|订单已完成")
+	@FormField(type = FieldType.NUMBER, label = "订单状态", data = "1|待付款,2|待发货,3|待收货,4|已收货,5|退换货申请中,6|退换货申请通过待买家发货,7|退换货申请通过买家已发货,8|退换货申请不通过,9|订单已退款,10|订单已完成,11|加急")
 	private Integer status;// 订单状态
 
 	@FormField(type = FieldType.TEXTINPUT, label = "订单备注")

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.druid.sql.visitor.functions.Concat;
 import com.gm.api.pay.exception.BestPayException;
 import com.gm.api.pay.model.PayResponse;
 import com.gm.api.wx.WeixinPayApi;
