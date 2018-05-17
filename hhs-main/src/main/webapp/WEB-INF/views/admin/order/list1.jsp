@@ -4,10 +4,9 @@
 <html>
 
 <head>
-<title>订单表列表 </title>
+<title>订单表-发货 </title>
 
 <%@ include file="/common/admin/head.jsp"%>
-
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -193,7 +192,7 @@
 											<td>
 												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
 												<button onclick="ok(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-ok" title="确认发货"></i></button>
-												<button onclick="del(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-tag" title="备注"></i></button>
+												<button onclick="bz(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-tag" title="备注"></i></button>
 											</td>
 										</tr>
 										</c:forEach>
@@ -272,6 +271,12 @@
 		function del(id){
 			delById(id, '${adp}'); 
 		}
+		
+		function bz(id){
+				  alert(id);
+				  
+		}
+		
 		
 		//开关回调
 		/* var enableFun = function(){
