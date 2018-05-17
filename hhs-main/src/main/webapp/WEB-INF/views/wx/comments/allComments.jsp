@@ -26,7 +26,7 @@
 						<c:when test="${u.member.level==5}">合作伙伴</c:when>  
 				</c:choose></span>
 			</div>
-			<a href="###" class="secondlinebtn radiusbtn msbtn">举报</a>
+			<a href="###" class="secondlinebtn radiusbtn msbtn" onclick="jb()">举报</a>
 			<!-- <a href="###" class="primarylinebtn radiusbtn msbtn">评论</a> -->
 		</div>
 		<div class="comment_mc">
@@ -87,6 +87,10 @@
 
 <script>
 document.addEventListener("touchstart", function(){}, true);
+
+function jb() {
+	$.alert("举报成功!您真是火眼金睛,我们会尽快审核,感谢您对我们的支持!", "举报!");
+}
 </script>
 
 
