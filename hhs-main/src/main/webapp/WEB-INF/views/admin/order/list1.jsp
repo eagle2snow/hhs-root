@@ -7,19 +7,41 @@
 <title>订单表-发货 </title>
 
 <%@ include file="/common/admin/head.jsp"%>
+<style type="text/css">
+#Popup{
 
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+
 	<div class="wrapper">
 
 		<%@ include file="/common/admin/header.jsp"%>
 		<%@ include file="/common/admin/left.jsp"%>
+		
 		<div class="content-wrapper">
+		
 		<!-- Main content -->
 		<section class="content">
+		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: absolute;top: 0;left: 0;display: none;">
+				<div style="width: 300px;height: 200px;position: fixed;top:40%;left: 40%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;">请输入备注</li>
+				<li style="height: 131px;width:300px;background: #fff">
+				<textarea id="area" style="padding-top: 5px;height: 100px;width: 250px;margin-left: 8%;margin-top: 4%;padding-left:10px;font-size: 16px; "></textarea>
+				<p style="float: left;position: relative;top: -20px;left: 220px;"><span id="text-count">50</span>/50</p>
+				</li>
+				<li style="background: #fff;">
+				<span style="cursor: pointer;background: #fff;display:block;font-size: 18px;text-align: center;float: left;width: 150px;border-right: 1px solid #ccc;height: 30px;">确定</span>
+				<span id="Popup_off" style="cursor: pointer;background: #fff;width: 150px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 30px;">取消</span></li>
+				</ul>
+				</div>
+				</div>
 			<div class="row">
 				<!-- left column -->
 				<div class="col-md-12">
+				
 					<!-- Horizontal Form -->
 					<div class="box box-info">
 						<div class="box-header with-border">
@@ -192,7 +214,7 @@
 											<td>
 												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
 												<button onclick="ok(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-ok" title="确认发货"></i></button>
-												<button onclick="bz(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-tag" title="备注"></i></button>
+												<button onclick="bz(${model.id})" class="btn btn-sm btn-primary" id="btn_note" ><i class="glyphicon glyphicon-tag" title="备注"></i></button>
 											</td>
 										</tr>
 										</c:forEach>
@@ -220,6 +242,8 @@
 		<%@ include file="/common/admin/my_js.jsp"%>
 
 		<div class="control-sidebar-bg"></div>
+		
+		
 	</div>
 
 		<script>
@@ -281,8 +305,24 @@
 		//开关回调
 		/* var enableFun = function(){
 		} */
-		
-		
+		$(document).ready(function(){
+			  $("#Popup_off").click(function(){
+			  $("#Popup").fadeToggle(1000);
+			  });
+			  $("#btn_note").click(function(){
+				  $("#Popup").fadeToggle(1000);
+				  });
+			  $("#area").on("input propertychange", function() {  
+			        var $this = $(this),  
+			            _val = $this.val(),  
+			            count = "";  
+			        if (_val.length > 50) {  
+			            $this.val(_val.substring(0, 50));  
+			        }  
+			        count = 50 - $this.val().length;  
+			        $("#text-count").text(count);  
+			    });  
+			});
 
 		</script>
 	</body>
