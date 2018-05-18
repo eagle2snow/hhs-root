@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,8 +68,8 @@ public class WxIndexController extends WeixinBaseController {
 	 * 
 	 * @version 1.0
 	 */
-	@RequestMapping("/index")
-	public String index(ModelMap map, String generalizeId, HttpSession session) {
+	@RequestMapping("/index/{id}")
+	public String index(ModelMap map, String generalizeId, HttpSession session, @PathVariable Integer id) {
 		if (!StringUtil.strNullOrEmpty(generalizeId)) {
 			Member member = getRealMember();
 			if (StringUtil.strNullOrEmpty(member.getReferrerGeneralizeId())) {
@@ -76,7 +78,7 @@ public class WxIndexController extends WeixinBaseController {
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
 		}
-		map.put("page", getCommodityData(1));
+		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
 		return PATH + "/index";
 	}
@@ -92,15 +94,21 @@ public class WxIndexController extends WeixinBaseController {
 	 * Description:
 	 * </p>
 	 * 
-	 * @param pageIndex
+	 * @param id 1.酒   2.纸
 	 * @return
 	 */
-	@RequestMapping("/getCommodityData/{pageIndex}")
+	@RequestMapping("/getCommodityData/{id}")
 	@ResponseBody
-	public Page<Commodity> getCommodityData(@PathVariable Integer pageIndex) {
+	public Page<Commodity> getCommodityData(@PathVariable Integer id) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Commodity.class);
 		dc.addOrder(Order.desc("sort"));
-		return commodityService.list(dc, pageIndex, 10);
+		if(id == 1) {
+		dc.add(Restrictions.like("code", "1", MatchMode.ANYWHERE));
+		}else {
+		dc.add(Restrictions.like("code", "2", MatchMode.ANYWHERE));	
+		}
+		
+		return commodityService.list(dc, 1, 10);
 	}
 
 	/**
