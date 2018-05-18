@@ -83,8 +83,6 @@
 											数量：${item.buyCount }
 										</div>
 
-										
-
 									</div>
 
 								</div>
@@ -92,64 +90,55 @@
 						</div>
 					</c:forEach>
 				</li>
-				
+
 				<li style="background-color: #fff;padding-left: 55%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
-		
-		
-									<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
-																	<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
-									 </c:if>
-										
-										
-									<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}">
-																<span onclick="logisticsQuery(${order.id})"  class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">查看物流</span>
-									</c:if>
-																
-																	
-									<c:if test="${order.status==9}">
-									<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退款成功</span>
-									</c:if>
-									
-									
-									<c:if test="${order.status==7}">
-																<span  class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">待卖家收货</span>
-									</c:if>
-									
-									
-									<c:if test="${order.status==6}">
-																<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">我要退货</span>
-									</c:if>
-									
-									
-									 <c:if test="${order.status==5}">
-									 							<span  class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退换货中</span>
-									 </c:if>
-									 
-									 
-									  <c:if test="${order.status==4 and order.appraise==1 }">
-																<span <%-- onclick="lookAppraise(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
-																<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span>
-									</c:if>
-													
-																	
-									 <c:if test="${order.status==4 and order.appraise==0 }">
-																<span onclick="comments(${item.id})" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"':''}>即刻评价</span>
-																<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span>
-									 </c:if>
-																	
-									<c:if test="${order.status==2}">
-																<span id="urgent" onclick="urgent(${order.id})"  class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">给我加急</span>
-										</c:if>
-				</li>
-				
-				
-				
-				
-				<c:if test="${order.status==1}">
-					<li style="background-color: #fff;padding-left: 55%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span>
+
+					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span>
 						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
-					</li>
-				</c:if>
+					</c:if>
+
+					<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}">
+						<%-- 						<span onclick="logisticsQuery(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">查看物流</span> --%>
+					</c:if>
+
+					<c:if test="${order.status==9}">
+						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退款成功</span>
+					</c:if>
+					
+					<c:if test="${order.status==3}">
+						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">确认收货</span> 
+					</c:if>
+
+					<c:if test="${order.status==7}">
+						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">待卖家收货</span>
+					</c:if>
+
+					<c:if test="${order.status==6}">
+						<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">我要退货</span>
+					</c:if>
+
+					<c:if test="${order.status==5}">
+						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退换货中</span>
+					</c:if>
+
+					<c:if test="${order.status==4 and order.appraise==1 }">
+						<span <%-- onclick="lookAppraise(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
+						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
+					</c:if>
+
+					<c:if test="${order.status==4 and order.appraise==0 }">
+						<span onclick="comments(${item.id})" style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
+						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
+					</c:if>
+
+					<c:if test="${order.status==2}">
+						<span id="urgent" onclick="urgent(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">给我加急</span>
+					</c:if>
+					<c:if test="${order.status==11}">
+						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left: 52%;">加急中</span>
+					</c:if>
+				</li>
+
 			</c:forEach>
 
 		</ul>
@@ -199,6 +188,7 @@
 				if(data.status == 1){
 					$.alert(data.msg);
 					$("#urgent").text("已加急"); 
+					re();
 				}else{
 					$.alert("网络出错，请稍后再试。");
 					
