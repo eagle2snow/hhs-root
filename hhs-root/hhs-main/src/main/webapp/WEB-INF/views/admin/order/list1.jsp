@@ -306,8 +306,6 @@
 				  document.getElementById('Popup').style.display = '';
 		}
 		function bzs(){
-				  //alert($("#bzid").text());
-				  //alert($("#area").val());
 				   $.ajax({
 			             type: "POST",
 			             url: "${ctx}admin/order/updateNotes",
