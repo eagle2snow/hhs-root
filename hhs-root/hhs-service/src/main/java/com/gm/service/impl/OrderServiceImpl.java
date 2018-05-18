@@ -36,6 +36,7 @@ import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.DateUtil;
+import com.gm.utils.StringUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
@@ -295,11 +296,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
 		logger.info("commodity={}", JSON.toJSON(commodity));
 		commodityService.update(commodity);
-		
-		//规定七天后若是没有客户要求退货就执行订单完成方法
-		//  . . . 这里改怎么写 
+
+		// 规定七天后若是没有客户要求退货就执行订单完成方法
+		// . . . 这里改怎么写
 		this.finishGoods(orderId);
-		
 
 	}
 
@@ -325,22 +325,34 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			logger.info("List<Cmmodity> size = {}", list.size());
 			member.setLove(member.getLove() + list.size());// 爱心资助
 		}
-		member.setConsume(member.getConsume().add(order.getTotalMoney()));// 消费额
+		try {
+			BigDecimal consume = member.getConsume();
+			BigDecimal totalMoney = order.getTotalMoney();
+			BigDecimal add = consume.add(totalMoney); // null 一个订单多个商品 会报：Error info is query did not return a unique
+														// result: 2; nested exception is
+														// org.hibernate.NonUniqueResultException: query did not return
+														// a unique result: 2 异常
+			member.setConsume(add);// 消费额 null?
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
 			member.setLevel(2);// 等级
 		}
 		logger.info("member={}", JSON.toJSON(member));
 		memberService.update(member);
 
-		//十返一类相关属性设置
+		// 十返一类相关属性设置
 		if (StringUtils.isEmpty(tenReturnOne)) {
 			tenReturnOne = new TenReturnOne();
 		}
-		tenReturnOne.setTime(tenReturnOne.getTime() + 1); 
+		tenReturnOne.setTime(tenReturnOne.getTime() + 1);
 		tenReturnOne.setThisTimeMember(member);
 		tenReturnOne.setThisTimeCommodity(commodity);
 		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
-		oneDao.update(tenReturnOne);
+		oneDao.add(tenReturnOne);
+		// oneDao.update(tenReturnOne);
 
 	}
 

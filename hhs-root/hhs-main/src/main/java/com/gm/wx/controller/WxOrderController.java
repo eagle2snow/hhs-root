@@ -114,9 +114,6 @@ public class WxOrderController extends WeixinBaseController {
 			logger.error("confirmGoods:Error info is {}", e.getMessage());
 			
 		}
-		map.put("status", 3);
-		map.put("msg", "网络异常,请稍后重试！");
-		
 		logger.error("confirmGoods:The Map map = {}", JSON.toJSON(map));
 		return map;
 	}

@@ -1,5 +1,7 @@
 package com.gm.wx.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,19 +46,19 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 	@Autowired
 	private IOrderItemService itemService;
-	
+
 	@Autowired
 	private ICommodityAppraiseService appraiseService;
 
 	@Autowired
 	private CommodityEvaluationServiceImpl commodityEvaluationService;
-	
+
 	@Autowired
 	private CommodityAppraiseServiceImpl appraiseServiceImpl;
-	
+
 	@Autowired
 	private IOrderService orderService;
-	
+
 	@Autowired
 	private ICommodityService commodityService;
 
@@ -104,7 +106,13 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 		}
 
-		//List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
+		Order order = orderService.get(orderId);
+		if (null !=order) {
+			order.setAppraiseTime(new Date());
+			order.setAppraise(1);
+		}
+
+		// List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
 		OrderItem orderItems = itemService.get(orderId);
 		logger.info("toCommondityComment:the pojo OrderItem = {}", JSON.toJSON(orderItems));
 
@@ -135,17 +143,17 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		int cid = Integer.valueOf(commodityid).intValue();
 		int oid = Integer.valueOf(orderid).intValue();
 		logger.info("request列表 {}.", JSON.toJSONString(map));
-		
+
 		OrderItem order = itemService.getOne("id", oid);
 		Commodity commodity = commodityService.get(cid);
-		
+
 		CommodityAppraise t = new CommodityAppraise();
 		t.setContent(text);
 		t.setStarLevel(Stars);
 		t.setOrderItem(order);
 		t.setMember(this.getCurMember());
 		t.setCommodity(commodity);
-		if(appraiseService.add(t)) {
+		if (appraiseService.add(t)) {
 			if (!StringUtils.isEmpty(commodity.getComment())) {
 				commodity.setComment(commodity.getComment() + 1);
 			} else {
@@ -155,11 +163,10 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 			order.setAppraise("1");
 			itemService.update(order);
 			return "ok";
-			
-		}else {
+
+		} else {
 			return "no";
 		}
-
 
 	}
 
@@ -174,7 +181,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		return PATH + "myComments";
 	}
 
-	
 	/**
 	 * 
 	 *<p>Title:allComments</p>
@@ -188,9 +194,9 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	public String allComments(ModelMap map, @PathVariable Integer type) {
 		map.put("model", appraiseService.listEqDc("commodity.id", type, "createTime", "desc"));
 		map.put("path", PATH);
-		map.put("cid",type);
+		map.put("cid", type);
 		logger.info("全部评论列表 {}.",
-				JSON.toJSONString(appraiseService.listEqDc("commodity.id", type,  "createTime", "desc")));
+				JSON.toJSONString(appraiseService.listEqDc("commodity.id", type, "createTime", "desc")));
 		return PATH + "allComments";
 	}
 }
