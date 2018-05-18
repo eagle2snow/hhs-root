@@ -19,7 +19,6 @@
 			<li ${status==0?'class="on"':'' }><a href="${adp}myOrders/0">全部</a></li>
 			<li ${status==1?'class="on"':'' }><a href="${adp}myOrders/1">待付款</a></li>
 			<li ${status==2?'class="on"':'' }><a href="${adp}myOrders/2">待发货</a></li>
-			<li ${status==11?'class="on"':'' }><a href="${adp}myOrders/11">已加急</a></li>
 			<li ${status==3?'class="on"':'' }><a href="${adp}myOrders/3">待收货</a></li>
 			<li ${status==4?'class="on"':'' }><a href="${adp}myOrders/4">待评价</a></li>
 		</ul>
@@ -36,12 +35,10 @@
 							&yen;<span class="insm">${order.totalMoney }</span>
 						</ins>
 					</div>
-					<span class="state"> 
-					<c:choose>
+					<span class="state"> <c:choose>
 							<c:when test="${order.status eq 1 }">待付款</c:when>
 							<c:when test="${order.status eq 2 }">待发货</c:when>
 							<c:when test="${order.status eq 3 }">待收货</c:when>
-							<c:when test="${order.status eq 11 }">待发货</c:when>
 							<c:when test="${order.status eq 4 }">已收货</c:when>
 							<c:when test="${order.status eq 5 }">退换货申请中</c:when>
 							<c:when test="${order.status eq 6 }">退换申请通过待发货</c:when>
@@ -83,7 +80,7 @@
 										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span> </c:if>
 										
 										
-		<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}" style="margin-left:45%;"><span onclick="logisticsQuery(${order.id})"  class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">查看物流</span></c:if>
+		<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}"><span onclick="logisticsQuery(${order.id})"  class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">查看物流</span></c:if>
 									
 										
 		<c:if test="${order.status==9}"><span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退款成功</span></c:if>
@@ -143,23 +140,19 @@
 		
 		//确认收货 
 		function confirmGoods(orderId){
-// 			location.href="${ctx}wx/order/confirmGoods/"+orderId
-			$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
-				if(data.status == 1){
-					$.alert(data.msg);
-					re();
-				}
-				$.alert(data.msg);
-					
-			});
+			location.href="${ctx}wx/order/confirmGoods/"+orderId
 		}
 		
 		//给我加急
 		function urgent(orderId){
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
-				if(data.status == 1){
+				if(data.status){
 					$.alert(data.msg);
-					$("#urgent").text("已加急"); 
+					$("#urgent").click(function(){
+						$("#urgent").text("已加急"); 
+				         
+				    });
+					}
 				}else{
 					$.alert("网络出错，请稍后再试。");
 					
