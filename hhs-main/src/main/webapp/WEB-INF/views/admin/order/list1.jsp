@@ -330,11 +330,11 @@
 				   $.ajax({
 			             type: "POST",
 			             url: "${ctx}admin/order/updateNotes",
-			             data: {id:$("#bzid").text(), content:$("#company").val()},
+			             data: {id:$("#bzid").text(), content:$("#area").val()},
 			             dataType: "json",
 			             success: function(data){
 			                         if(data == 0){
-			                        	 $("#company").val("");
+			                        	 $("#area").val("");
 			                        	 window.location.reload();
 			                         }
 			         },
