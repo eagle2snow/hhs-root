@@ -247,6 +247,22 @@
 				</ul>
 				</div>
 			</div>
+	<div id="Popup1" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: absolute;top: 0;left: 0;">
+				<div style="width: 340px;height: 200px;position: fixed;top:40%;left: 40%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;">请输入备注</li>
+				<li style="height: 50px;width:340px;background: #fff;padding-left: 8%;padding-top: 4%;">
+				<span style="font-size: 16px;">快递公司</span><input type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
+				</li>
+				<li style="height: 50px;width:340px;background: #fff;padding-left: 8%;padding-top: 2%;">
+				<span style="font-size: 16px;">快递单号</span><input type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
+				</li>
+				<li style="background: #fff;">
+				<span style="cursor: pointer;background: #fff;display:block;font-size: 18px;text-align: center;float: left;width: 170px;border-right: 1px solid #ccc;height: 30px;" onclick="bzs()">确定</span>
+				<span id="Popup_off" style="cursor: pointer;background: #fff;width: 170px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 30px;">取消</span></li>
+				</ul>
+				</div>
+			</div>
 
 
 		
