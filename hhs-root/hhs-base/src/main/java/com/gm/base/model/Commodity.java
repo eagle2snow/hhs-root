@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import com.gm.gencode.annotation.FormField;
 import com.gm.gencode.annotation.M;
+import com.gm.gencode.annotation.Verification;
 import com.gm.gencode.util.DataNature;
 import com.gm.gencode.util.FieldType;
 
@@ -36,7 +37,8 @@ public class Commodity extends Model {
 	private String remarks;
 	
 	@FormField(label = "编码", type = FieldType.TEXTINPUT)
-	private String code;//1.酒  2.纸
+	@Verification(datatype = "*", errormsg = "请选择")
+	private String code;//1.酒  2.纸 
 	
 	@FormField(label = "商品总库存", type = FieldType.NUMBER)
 	private Integer totalStock = 0;
@@ -98,6 +100,20 @@ public class Commodity extends Model {
 	
 	
 	
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
+	}
+
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public Integer getBrowse() {
 		return browse;
 	}
