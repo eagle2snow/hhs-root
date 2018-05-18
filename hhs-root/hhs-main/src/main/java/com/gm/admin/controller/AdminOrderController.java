@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.criterion.DetachedCriteria;
@@ -229,4 +230,19 @@ public class AdminOrderController extends BaseAdminController{
 		return path + "details2";
 	}
 	
+	@ResponseBody
+	@RequestMapping("updateNotes")
+	public String updateNotes(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String content = request.getParameter("content");
+		int oid = Integer.valueOf(id).intValue();
+		Order order = orderService.get(oid);
+		order.setBusinessRemarks(content);
+		if(orderService.update(order)) {
+			return "0";
+		}else {
+		return "9";
+	}
+	}
+		
 }
