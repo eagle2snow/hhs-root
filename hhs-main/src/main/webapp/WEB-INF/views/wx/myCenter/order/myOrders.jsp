@@ -105,7 +105,7 @@
 										<span  class="defaultlinebtn radiusbtn msbtn">退换货中</span>
 									</c:if>
 									
-									 <c:if test="${order.status==6 or order.status eq 11}">
+									 <c:if test="${order.status==6 or order.status eq 11 or order.status eq 2}">
 										<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">我要退货</span>
 									</c:if>
 									
@@ -170,13 +170,21 @@
 		
 		//确认收货 
 		function confirmGoods(orderId){
-			location.href="${ctx}wx/order/confirmGoods/"+orderId
+// 			location.href="${ctx}wx/order/confirmGoods/"+orderId
+			$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
+				if(data.status == 1){
+					$.alert(data.msg);
+					re();
+				}
+				$.alert(data.msg);
+					
+			});
 		}
 		
 		//给我加急
 		function urgent(orderId){
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
-				if(data.status){
+				if(data.status == 1){
 					$.alert(data.msg);
 					$("#urgent").text("已加急"); 
 				}else{
