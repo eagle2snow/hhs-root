@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.DownloadMediaResponse;
 import com.github.sd4324530.fastweixin.api.response.GetSignatureResponse;
 import com.gm.api.wx.WeiXinApi;
@@ -89,19 +90,29 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 		Member member = getCurMember();
 
 		List<Order> orders = new ArrayList<>();
+		
+//		logger.info("myOrders:The args stattus = {}",status);
 
 		if (0 != status) {
 			orders = orderService.list(
 					"from order o where o.member.id=" + member.getId() + " and o.deleted=1 and o.status=" + status);
+//			logger.info("myOrders:The List<Order> orders = {}",JSON.toJSON(orders));
+			
 		} else {
 			orders = orderService.list("from order o where o.member.id=" + member.getId() + " and o.deleted=1");
+			logger.info("myOrders:The List<Order> orders = {}",JSON.toJSON(orders));
+			
 		}
 		if (orders.size() > 0) {
 			List<Integer> orderIds = orders.parallelStream().map(Order::getId).collect(Collectors.toList());
 			List<OrderItem> items = orderItemService.listIn("order.id", orderIds);
 			orders.forEach(p -> p.setItems(
 					items.stream().filter(q -> q.getOrder().getId().equals(p.getId())).collect(Collectors.toList())));
+//			logger.info("myOrders:The List<Integer> orderIds = {}",JSON.toJSON(orderIds));
+//			logger.info("myOrders:The List<OrderItem> items = {}",JSON.toJSON(items));
+			
 		}
+		
 		map.put("orders", orders);
 		map.put("path", PATH);
 		

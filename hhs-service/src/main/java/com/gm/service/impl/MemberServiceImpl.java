@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
@@ -110,6 +111,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setLove(member.getLove() + 1);
 		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 		genCodeAndQrCode(member);
+		
+		logger.info("payMemberSuccess:The Member member={}",JSON.toJSON(member));
 
 		update(member);
 	}
