@@ -35,7 +35,26 @@
 						
                         
                         
-						
+						<div class="box-body">
+									<div class="form-group">
+										<label class="col-sm-2 control-label"><i class="red">*</i>归类:</label>
+										<div class="col-sm-8">
+											<select name="code" style="width: 100% !important;" class="form-control select2" id="code">
+													<option >
+														
+													</option>
+												
+													<option value="1">
+														酒
+													</option>
+													<option value="2">
+														纸
+													</option>
+ 
+											</select>
+										</div>
+									</div>
+								</div>
 							
 							
 							
