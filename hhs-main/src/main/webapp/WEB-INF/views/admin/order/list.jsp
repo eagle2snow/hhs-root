@@ -90,7 +90,7 @@
 											<!-- <th>一级分销提成</th>
 											<th>二级分销提成</th> -->
 											<th>支付方式</th>
-											<th>是否已评价</th>
+											<!-- <th>是否已评价</th> -->
 											<!-- <th>评价时间</th> -->
 											<th>商家备注</th>
 											<!-- <th>退款备注</th> -->
@@ -169,7 +169,7 @@
 											
 											 <th>${model.payPathway eq 1 ? "微信":"支付宝"}</th>
 											
-											 <th>${model.appraise eq 1 ? "已评价":"未评价"}</th>
+											 <%-- <th>${model.appraise eq 1 ? "已评价":"未评价"}</th> --%>
 											
 											 <%-- <th>${model.appraiseTime}</th> --%>
 											
