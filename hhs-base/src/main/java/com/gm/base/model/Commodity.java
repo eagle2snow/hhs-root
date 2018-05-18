@@ -35,6 +35,9 @@ public class Commodity extends Model {
 	@FormField(label = "商品备注", type = FieldType.TEXTINPUT)
 	private String remarks;
 	
+	@FormField(label = "编码", type = FieldType.TEXTINPUT)
+	private String code;//1.酒  2.纸
+	
 	@FormField(label = "商品总库存", type = FieldType.NUMBER)
 	private Integer totalStock = 0;
 	
