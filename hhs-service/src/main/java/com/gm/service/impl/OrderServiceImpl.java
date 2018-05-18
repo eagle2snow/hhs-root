@@ -343,7 +343,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("member={}", JSON.toJSON(member));
 		memberService.update(member);
 
-		// 十返一类相关属性设置
+		// 十返一类相关属性设置  对应的次数 对应的会员 对应的商品 每成交一次交易就该保存一条记录
 		if (StringUtils.isEmpty(tenReturnOne)) {
 			tenReturnOne = new TenReturnOne();
 		}
