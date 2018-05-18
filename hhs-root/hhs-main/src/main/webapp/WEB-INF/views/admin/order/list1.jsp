@@ -233,7 +233,7 @@
 		
 	</div>
 	
-			<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: absolute;top: 0;left: 0;display:none ;">
+			<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 300px;height: 200px;position: fixed;top:40%;left: 40%;">
 				<ul>
 				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;">请输入备注</li>
@@ -242,24 +242,24 @@
 				<p style="float: left;position: relative;top: -20px;left: 220px;"><span id="text-count">50</span>/50</p>
 				</li>
 				<li style="background: #fff;">
-				<span style="cursor: pointer;background: #fff;display:block;font-size: 18px;text-align: center;float: left;width: 150px;border-right: 1px solid #ccc;height: 30px;" onclick="bzs()">确定</span>
-				<span id="Popup_off" style="cursor: pointer;background: #fff;width: 150px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 30px;">取消</span></li>
+				<span style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 150px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="bzs()">确定</span>
+				<span id="Popup_off" style="line-height: 40px;cursor: pointer;width: 150px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
 				</ul>
 				</div>
 			</div>
-	<div id="Popup1" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: absolute;top: 0;left: 0;">
+	<div id="Popup1" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none;">
 				<div style="width: 340px;height: 200px;position: fixed;top:40%;left: 40%;">
 				<ul>
 				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;">请输入备注</li>
 				<li style="height: 50px;width:340px;background: #fff;padding-left: 8%;padding-top: 4%;">
-				<span style="font-size: 16px;">快递公司</span><input type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
+				<span style="font-size: 16px;">快递公司</span><input id="company" type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
 				</li>
 				<li style="height: 50px;width:340px;background: #fff;padding-left: 8%;padding-top: 2%;">
-				<span style="font-size: 16px;">快递单号</span><input type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
+				<span style="font-size: 16px;">快递单号</span><input id="Order" type="text" style="margin-left: 2%;padding-left: 5px;width: 210px;height: 30px;">
 				</li>
 				<li style="background: #fff;">
-				<span style="cursor: pointer;background: #fff;display:block;font-size: 18px;text-align: center;float: left;width: 170px;border-right: 1px solid #ccc;height: 30px;" onclick="bzs()">确定</span>
-				<span id="Popup_off" style="cursor: pointer;background: #fff;width: 170px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 30px;">取消</span></li>
+				<span style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 170px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="oks()">确定</span>
+				<span id="Popup_off1" style="line-height: 40px;cursor: pointer;width: 170px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
 				</ul>
 				</div>
 			</div>
@@ -302,6 +302,8 @@
 		function ok(id){
 		
 				openPerRe("编辑订单表", 90,90,'${adp}update/'+id+'.htm');
+				$("#okid").text(id);
+				  document.getElementById('Popup1').style.display = '';
 		
 			
 		}
@@ -325,18 +327,19 @@
 				   $.ajax({
 			             type: "POST",
 			             url: "${ctx}admin/order/updateNotes",
-			             data: {id:$("#bzid").text(), content:$("#area").val()},
+			             data: {id:$("#bzid").text(), content:$("#company").val()},
 			             dataType: "json",
 			             success: function(data){
 			                         if(data == 0){
-			                        	 $("#area").val("");
+			                        	 $("#company").val("");
 			                        	 window.location.reload();
 			                         }
 			         },
 			    
 		});
 			
-		}		
+		}	
+		
 		
 		//开关回调
 		/* var enableFun = function(){
@@ -346,9 +349,7 @@
 			  $("#area").val("");
 			  $("#Popup").fadeToggle(1000);
 			  });
-			  $("#btn_note").click(function(){
-				  $("#Popup").fadeToggle(1000);
-				  });
+			  
 			  $("#area").on("input propertychange", function() {  
 			        var $this = $(this),  
 			            _val = $this.val(),  
@@ -359,6 +360,12 @@
 			        count = 50 - $this.val().length;  
 			        $("#text-count").text(count);  
 			    });  
+			  $("#Popup_off1").click(function(){
+				  $("#Order").val("");
+				  $("#company").val("");
+				  $("#Popup1").fadeToggle(1000);
+				  });
+				  
 			});
 
 		</script>
