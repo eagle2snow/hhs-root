@@ -19,6 +19,7 @@
 			<li ${status==0?'class="on"':'' }><a href="${adp}myOrders/0">全部</a></li>
 			<li ${status==1?'class="on"':'' }><a href="${adp}myOrders/1">待付款</a></li>
 			<li ${status==2?'class="on"':'' }><a href="${adp}myOrders/2">待发货</a></li>
+			<li ${status==11?'class="on"':'' }><a href="${adp}myOrders/11">已加急</a></li>
 			<li ${status==3?'class="on"':'' }><a href="${adp}myOrders/3">待收货</a></li>
 			<li ${status==4?'class="on"':'' }><a href="${adp}myOrders/4">待评价</a></li>
 		</ul>
@@ -35,10 +36,12 @@
 							&yen;<span class="insm">${order.totalMoney }</span>
 						</ins>
 					</div>
-					<span class="state"> <c:choose>
+					<span class="state"> 
+					<c:choose>
 							<c:when test="${order.status eq 1 }">待付款</c:when>
 							<c:when test="${order.status eq 2 }">待发货</c:when>
 							<c:when test="${order.status eq 3 }">待收货</c:when>
+							<c:when test="${order.status eq 11 }">待发货</c:when>
 							<c:when test="${order.status eq 4 }">已收货</c:when>
 							<c:when test="${order.status eq 5 }">退换货申请中</c:when>
 							<c:when test="${order.status eq 6 }">退换申请通过待发货</c:when>
@@ -66,19 +69,22 @@
 										数量：${item.buyCount }
 									</div>
 									
-									<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}">
+									<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4 and order.status ne 11}">
 										<span onclick="logisticsQuery(${order.id})"  class="defaultlinebtn radiusbtn msbtn">查看物流</span>
 									</c:if>
 									
-									 <c:if test="${order.status==1}">
-										<%-- <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span> 
-										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span> --%>
+<%-- 									 <c:if test="${order.status==1}"> --%>
+<%-- 										<span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span>  --%>
+<%-- 										<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span> --%>
+<%-- 									</c:if> --%>
+									
+									 <c:if test="${order.status eq 11}">
+										<span id="urgent" onclick="urgent(${order.id})"  class="defaultlinebtn radiusbtn msbtn">已加急</span>
 									</c:if>
 									
-									 <c:if test="${order.status==2}">
+									 <c:if test="${order.status eq 2}">
 										<span id="urgent" onclick="urgent(${order.id})"  class="defaultlinebtn radiusbtn msbtn">给我加急</span>
 									</c:if>
-									
 									
 									 <c:if test="${order.status==3}">
 										<span onclick="confirmGoods(${order.id})"  class="defaultlinebtn radiusbtn msbtn">确认收货</span>
@@ -99,7 +105,7 @@
 										<span  class="defaultlinebtn radiusbtn msbtn">退换货中</span>
 									</c:if>
 									
-									 <c:if test="${order.status==6}">
+									 <c:if test="${order.status==6 or order.status eq 11}">
 										<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">我要退货</span>
 									</c:if>
 									
@@ -172,11 +178,7 @@
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
 				if(data.status){
 					$.alert(data.msg);
-					$("#urgent").click(function(){
-						$("#urgent").text("已加急"); 
-				         
-				    });
-					}
+					$("#urgent").text("已加急"); 
 				}else{
 					$.alert("网络出错，请稍后再试。");
 					

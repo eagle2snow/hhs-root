@@ -296,9 +296,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("commodity={}", JSON.toJSON(commodity));
 		commodityService.update(commodity);
 		
-		//规定多少天后若是没有客户要求退货就执行订单完成方法
+		//规定七天后若是没有客户要求退货就执行订单完成方法
 		//  . . . 这里改怎么写 
-		this.finishGoodsGoods(orderId);
+		this.finishGoods(orderId);
 		
 
 	}
@@ -306,7 +306,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	/**
 	 * 订单完成
 	 */
-	private void finishGoodsGoods(Integer orderId) {
+	private void finishGoods(Integer orderId) {
 
 		Order order = orderService.get(orderId);
 		Member member = order.getMember();
