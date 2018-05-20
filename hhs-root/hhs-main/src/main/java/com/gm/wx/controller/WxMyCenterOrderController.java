@@ -160,8 +160,8 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	public Map<String, Object> backOrder(Integer orderId, String reason, String mark, String pics) {
 		Map<String, Object> map = getMap();
 		Order order = orderService.get(orderId);
-		if (order.getStatus() == 3 || order.getStatus() == 4) {
-			order.setStatus(5);
+		if (order.getStatus() == "3" || order.getStatus() == "4") {
+			order.setStatus("5");
 			order.setApplyForTime(LocalDateTime.now());
 			order.setRefundReason(reason);
 			order.setRefundRemarks(mark);

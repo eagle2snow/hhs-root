@@ -72,7 +72,7 @@ public class WxOrderController extends WeixinBaseController {
 		
 		HashMap<String,Object> map = this.getMap();
 		Order order = orderService.get(orderId);
-		order.setStatus(11);//加急
+		order.setStatus("11");//加急
 		orderService.update(order);
 		map.put("status", 1);
 		map.put("msg", "加急请求已送达，请耐心等候！");
@@ -101,7 +101,7 @@ public class WxOrderController extends WeixinBaseController {
 		
 		try {
 			Order order = orderService.get(orderId);
-			order.setStatus(4);
+			order.setStatus("4");
 			//调用订单确认收货处理器
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
