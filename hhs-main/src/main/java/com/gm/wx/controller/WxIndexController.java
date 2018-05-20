@@ -78,6 +78,41 @@ public class WxIndexController extends WeixinBaseController {
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
 		}
+		session.setAttribute("iid", id);
+		map.put("page", getCommodityData(id));
+		map.put("path", PATH);
+		return PATH + "/index";
+	}
+	/**
+	 * 
+	 * 
+	 * <p>
+	 * 描述:首页入口
+	 * </p>
+	 * 
+	 * @author 灰灰
+	 * 
+	 * @param generalizeId
+	 *            推荐人id
+	 * 
+	 * @date 2018年4月28日
+	 * 
+	 * @version 1.0
+	 */
+	@RequestMapping("/index")
+	public String index(ModelMap map, String generalizeId, HttpSession session) {
+		if (!StringUtil.strNullOrEmpty(generalizeId)) {
+			Member member = getRealMember();
+			if (StringUtil.strNullOrEmpty(member.getReferrerGeneralizeId())) {
+				member.setReferrerGeneralizeId(AESCoder.decryptResultStr(generalizeId, Const.PASSWORD_SECRET));
+				memberService.update(member);
+				session.setAttribute(Const.CUR_WX_MEMBER, member);
+			}
+		}
+		int id = 1;
+		if(!(session.getAttribute("iid").equals(null))){
+			id = (int) session.getAttribute("iid");
+		}
 		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
 		return PATH + "/index";
