@@ -147,69 +147,100 @@
 						
                         
 			                
+			                <div class="form-group">
+								<label class="col-sm-2 control-label">付款时间:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.paymentTime}"
+							        placeholder="付款时间" id="paymentTime" name="paymentTime"     
+							              />
+								</div>
+							</div>
 			                
 			                
-			                
-									<div class="form-group">
+								<!-- 	<div class="form-group">
 										<label class="col-sm-2 control-label">付款时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="paymentTime" name="paymentTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
+								</div> -->
+							
+							
+							
+			                
+                        
+                        
+						
+						
+                        
+			                
+			                
+			                	<div class="form-group">
+									<label class="col-sm-2 control-label">发货时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.shipmentsTime}"
+								        placeholder="发货时间" id="shipmentsTime" name="shipmentsTime"       
+								            />
+									</div>
 								</div>
-							
-							
-							
 			                
-                        
-                        
-						
-						
-                        
-			                
-			                
-			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">发货时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="shipmentsTime" name="shipmentsTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
+								</div> -->
+							
+							
+							
+			                
+                        
+                        
+						
+						
+                        
+			                
+			                  
+				                <div class="form-group">
+									<label class="col-sm-2 control-label">收货时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.receivingTime}"
+								        placeholder="收货时间" id="receivingTime" name="receivingTime"       
+								           />
+									</div>
 								</div>
-							
-							
-							
 			                
-                        
-                        
-						
-						
-                        
-			                
-			                
-			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">收货时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="receivingTime" name="receivingTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
+								</div> -->
+							
+							
+							
+			                
+                        
+                        
+						
+						
+                        
+			                
+			                
+			                		<div class="form-group">
+									<label class="col-sm-2 control-label">退货申请时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.applyForTime}"
+								        placeholder="退货申请时间" id="applyForTime" name="applyForTime"       
+								          />
+									</div>
 								</div>
-							
-							
-							
 			                
-                        
-                        
-						
-						
-                        
-			                
-			                
-			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">退货申请时间:</label>
 										<div class="col-sm-8">
@@ -217,7 +248,7 @@
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
 								</div>
-							
+							 -->
 							
 							
 			                
@@ -227,8 +258,16 @@
 						
                         
 			                
+			                	<div class="form-group">
+									<label class="col-sm-2 control-label">退货审核时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.checkTime}"
+								        placeholder="退货审核时间" id="checkTime" name="checkTime"       
+								          />
+									</div>
+								</div>
 			                
-			                
+			                <!-- 
 			                
 									<div class="form-group">
 										<label class="col-sm-2 control-label">退货审核时间:</label>
@@ -236,40 +275,56 @@
 											<input value="" id="checkTime" name="checkTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
+								</div> -->
+							
+							
+							
+			                
+                        
+                        
+						
+						
+                        
+			                
+			                
+			                		<div class="form-group">
+									<label class="col-sm-2 control-label">退货发货时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.buyerDshipmentsTime}"
+								        placeholder="退货发货时间" id="buyerDshipmentsTime" name="buyerDshipmentsTime"       
+								          />
+									</div>
 								</div>
-							
-							
-							
 			                
-                        
-                        
-						
-						
-                        
-			                
-			                
-			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">退货发货时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="buyerDshipmentsTime" name="buyerDshipmentsTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
+								</div> -->
+							
+							
+							
+			                
+                        
+                        
+						
+						
+                        
+			                
+			                
+			                	<div class="form-group">
+									<label class="col-sm-2 control-label">退款时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.refundTime}"
+								        placeholder="退款时间" id="refundTime" name="refundTime"       
+								          />
+									</div>
 								</div>
-							
-							
-							
 			                
-                        
-                        
-						
-						
-                        
-			                
-			                
-			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">退款时间:</label>
 										<div class="col-sm-8">
@@ -277,7 +332,7 @@
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
 								</div>
-							
+							 -->
 							
 							
 			                
@@ -288,15 +343,23 @@
                         
 			                
 			                
+			                	  	<div class="form-group">
+									<label class="col-sm-2 control-label">订单完成时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.finishTime}"
+								        placeholder="订单完成时间" id="finishTime" name="finishTime"       
+								        />
+									</div>
+								</div>
 			                
-			                
+			                <!-- 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">订单完成时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="finishTime" name="finishTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
-								</div>
+								</div> -->
 							
 							
 							
@@ -548,15 +611,23 @@
                         
 			                
 			                
+			                	 	<div class="form-group">
+									<label class="col-sm-2 control-label">评价时间:</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" value="${model.appraiseTime}"
+								        placeholder="评价时间" id="appraiseTime" name="appraiseTime"       
+								        style="border: none;" readonly="readonly"    />
+									</div>
+								</div>
 			                
 			                
-									<div class="form-group">
+								<!-- 	<div class="form-group">
 										<label class="col-sm-2 control-label">评价时间:</label>
 										<div class="col-sm-8">
 											<input value="" id="appraiseTime" name="appraiseTime" type="hidden">
 											<div class="auto-kal" data-kal="months: 2, direction: 'future'"></div>
 										</div>
-								</div>
+								</div> -->
 							
 							
 							
