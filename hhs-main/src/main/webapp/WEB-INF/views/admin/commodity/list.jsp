@@ -79,7 +79,7 @@
 											<th>销量</th>
 											<th>多少件包邮</th>
 											<th>成本</th>
-											<th>评价数量</th>
+											<!-- <th>评价数量</th> -->
 											<!-- <th>前台备注</th> -->
 											<th>重量</th>
 											<th>体积</th>
@@ -124,7 +124,7 @@
 																style="width: 50pxp; height: 50px; float: left; margin-left: 5px;" />
 														</c:forEach></th> --%>
 											
-											 <th>${model.activity}</th>
+											 <th>${model.activity eq 1? "是":"否"}</th>
 											
 											 <th>${model.salesVolume}</th>
 											
@@ -132,7 +132,7 @@
 											
 											 <th>${model.cost}</th>
 											
-											 <th>${model.appraiseCount}</th>
+											 <%-- <th>${model.appraiseCount}</th> --%>
 											
 											 <%-- <th>${model.showRemarks}</th> --%>
 											
