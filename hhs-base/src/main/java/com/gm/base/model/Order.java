@@ -35,7 +35,7 @@ public class Order extends Model {
 	private BigDecimal postageMoney;// 订单邮费
 
 	@FormField(type = FieldType.NUMBER, label = "订单状态", data = "1|待付款,2|待发货,3|待收货,4|已收货,5|退换货申请中,6|退换货申请通过待买家发货,7|退换货申请通过买家已发货,8|退换货申请不通过,9|订单已退款,10|订单已完成,11|加急")
-	private Integer status;// 订单状态
+	private String status;// 订单状态
 
 	@FormField(type = FieldType.TEXTINPUT, label = "订单备注")
 	private String orderRemarks;// 订单所留备注
@@ -153,11 +153,11 @@ public class Order extends Model {
 		this.postageMoney = postageMoney;
 	}
 
-	public Integer getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -169,66 +169,120 @@ public class Order extends Model {
 		this.orderRemarks = orderRemarks;
 	}
 
+	
+
+	
+
+	
+
+	/**
+	 * @return the paymentTime
+	 */
 	public LocalDateTime getPaymentTime() {
 		return paymentTime;
 	}
 
+	/**
+	 * @param paymentTime the paymentTime to set
+	 */
 	public void setPaymentTime(LocalDateTime paymentTime) {
 		this.paymentTime = paymentTime;
 	}
 
+	/**
+	 * @return the shipmentsTime
+	 */
 	public LocalDateTime getShipmentsTime() {
 		return shipmentsTime;
 	}
 
+	/**
+	 * @param shipmentsTime the shipmentsTime to set
+	 */
 	public void setShipmentsTime(LocalDateTime shipmentsTime) {
 		this.shipmentsTime = shipmentsTime;
 	}
 
+	/**
+	 * @return the receivingTime
+	 */
 	public LocalDateTime getReceivingTime() {
 		return receivingTime;
 	}
 
+	/**
+	 * @param receivingTime the receivingTime to set
+	 */
 	public void setReceivingTime(LocalDateTime receivingTime) {
 		this.receivingTime = receivingTime;
 	}
 
+	/**
+	 * @return the applyForTime
+	 */
 	public LocalDateTime getApplyForTime() {
 		return applyForTime;
 	}
 
+	/**
+	 * @param applyForTime the applyForTime to set
+	 */
 	public void setApplyForTime(LocalDateTime applyForTime) {
 		this.applyForTime = applyForTime;
 	}
 
+	/**
+	 * @return the checkTime
+	 */
 	public LocalDateTime getCheckTime() {
 		return checkTime;
 	}
 
+	/**
+	 * @param checkTime the checkTime to set
+	 */
 	public void setCheckTime(LocalDateTime checkTime) {
 		this.checkTime = checkTime;
 	}
 
+	/**
+	 * @return the buyerDshipmentsTime
+	 */
 	public LocalDateTime getBuyerDshipmentsTime() {
 		return buyerDshipmentsTime;
 	}
 
+	/**
+	 * @param buyerDshipmentsTime the buyerDshipmentsTime to set
+	 */
 	public void setBuyerDshipmentsTime(LocalDateTime buyerDshipmentsTime) {
 		this.buyerDshipmentsTime = buyerDshipmentsTime;
 	}
 
+	/**
+	 * @return the refundTime
+	 */
 	public LocalDateTime getRefundTime() {
 		return refundTime;
 	}
 
+	/**
+	 * @param refundTime the refundTime to set
+	 */
 	public void setRefundTime(LocalDateTime refundTime) {
 		this.refundTime = refundTime;
 	}
 
+	/**
+	 * @return the finishTime
+	 */
 	public LocalDateTime getFinishTime() {
 		return finishTime;
 	}
 
+	/**
+	 * @param finishTime the finishTime to set
+	 */
 	public void setFinishTime(LocalDateTime finishTime) {
 		this.finishTime = finishTime;
 	}
