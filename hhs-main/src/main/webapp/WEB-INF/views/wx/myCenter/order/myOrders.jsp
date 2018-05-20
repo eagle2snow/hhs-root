@@ -126,10 +126,15 @@
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 
-					<c:if test="${order.status==4 and order.appraise==0 }">
+					<c:if test="${order.status==4 and order.appraise==0}">
 						<span onclick="comments(${item.id})" style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
+
+					<c:if test="${order.status==10}">
+						<span  style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>订单完成</span>
+					</c:if>
+
 
 					<c:if test="${order.status==2}">
 						<span id="urgent" onclick="urgent(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">给我加急</span>
@@ -176,6 +181,7 @@
 			$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
 				if(data.status == 1){
 					$.alert(data.msg);
+					re();
 				}
 				$.alert(data.msg);
 					

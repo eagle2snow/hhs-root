@@ -242,11 +242,19 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
 		Order order = getOne("orderNo", orderNo);
+		List<OrderItem> listEq = orderItemService.listEq("order", order);
 
-		OrderItem orderItem = orderItemService.getOne("order", order);
-		logger.info("orderItem={}", JSON.toJSON(orderItem));
-
-		Commodity commodity = orderItem.getCommodity();
+		for (OrderItem item : listEq) {
+			logger.info("orderItem={}", JSON.toJSON(item));
+			Commodity commodity = item.getCommodity();
+			if (null != commodity) {
+				// 商品的设置
+				commodity.setTotalStock(commodity.getTotalStock() - 1);
+				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+				logger.info("commodity={}", JSON.toJSON(commodity));
+				commodityService.update(commodity);
+			}
+		}
 
 		// 订单的设置
 		order.setStatus("2");
@@ -255,12 +263,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		order.setPayPathway(1);// 支付方式
 		logger.info("order={}", JSON.toJSON(order));
 		update(order);
-
-		// 商品的设置
-		commodity.setTotalStock(commodity.getTotalStock() - 1);
-		commodity.setSalesVolume(commodity.getSalesVolume() + 1);
-		logger.info("commodity={}", JSON.toJSON(commodity));
-		commodityService.update(commodity);
 
 		// saveMemberBuy(order);
 		// returnSingleItemPrice(order);
@@ -277,10 +279,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
-		OrderItem orderItem = orderItemService.getOne("order", order);
-		logger.info("orderItem={}", JSON.toJSON(orderItem));
-
-		Commodity commodity = orderItem.getCommodity();
+		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+		for (OrderItem item : listEq) {
+			logger.info("orderItem={}", JSON.toJSON(item));
+			Commodity commodity = item.getCommodity();
+			// 商品的设置
+			commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
+			commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
+			logger.info("commodity={}", JSON.toJSON(commodity));
+			commodityService.update(commodity);
+		}
 
 		// 设置订单相关属性
 		if (payBill != null) {
@@ -290,12 +298,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		logger.info("order={}", JSON.toJSON(order));
 		update(order);
-
-		// 商品的设置
-		commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
-		commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
-		logger.info("commodity={}", JSON.toJSON(commodity));
-		commodityService.update(commodity);
 
 		// 规定七天后若是没有客户要求退货就执行订单完成方法
 		// . . . 这里改怎么写
@@ -307,52 +309,50 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 订单完成
 	 */
 	private void finishGoods(Integer orderId) {
-
-		Order order = orderService.get(orderId);
-		Member member = order.getMember();
-		OrderItem orderItem = orderItemService.getOne("order", order);
-		Commodity commodity = orderItem.getCommodity();
-		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
-
-		order.setStatus("10");
-		order.setFinishTime(LocalDateTime.now());
-
-		// 会员的设置
-		List<Commodity> list = null;
-		if (null != commodity) {
-			list = new ArrayList<>();
-			list.add(commodity);
-			logger.info("List<Cmmodity> size = {}", list.size());
-			member.setLove(member.getLove() + list.size());// 爱心资助
-		}
 		try {
+			Order order = orderService.get(orderId);
+			order.setStatus("10");
+			order.setFinishTime(LocalDateTime.now()); 
+			orderService.update(order);
+
+			Member member = order.getMember();
+
+			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+			List<Commodity> list = null;
+			for (OrderItem item : listEq) {
+				Commodity commodity = item.getCommodity();
+				if (null != commodity) {
+					TenReturnOne tenReturnOne = oneDao.getOne("thisTimeCommodity", commodity);
+					
+					if (tenReturnOne.getTime() != null) {
+						tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+					} else {
+						tenReturnOne.setTime(1);
+					}
+					tenReturnOne.setThisTimeCommodity(commodity);
+					tenReturnOne.setThisTimeMember(member);
+					list = new ArrayList<>();
+					list.add(commodity);
+					oneDao.save(tenReturnOne);
+				}
+			}
+
+			member.setLove(member.getLove() + list.size());// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
 			BigDecimal add = consume.add(totalMoney); // null 一个订单多个商品 会报：Error info is query did not return a unique
-														// result: 2; nested exception is
-														// org.hibernate.NonUniqueResultException: query did not return
-														// a unique result: 2 异常
 			member.setConsume(add);// 消费额 null?
+
+			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
+				member.setLevel(2);// 等级
+			}
+			logger.info("member={}", JSON.toJSON(member));
+			memberService.update(member);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
-			member.setLevel(2);// 等级
-		}
-		logger.info("member={}", JSON.toJSON(member));
-		memberService.update(member);
-
-		// 十返一类相关属性设置
-		if (StringUtils.isEmpty(tenReturnOne)) {
-			tenReturnOne = new TenReturnOne();
-		}
-		tenReturnOne.setTime(tenReturnOne.getTime() + 1);
-		tenReturnOne.setThisTimeMember(member);
-		tenReturnOne.setThisTimeCommodity(commodity);
-		logger.info("tenReturnOne={}", JSON.toJSON(tenReturnOne));
-		oneDao.add(tenReturnOne);
-		// oneDao.update(tenReturnOne);
 
 	}
 

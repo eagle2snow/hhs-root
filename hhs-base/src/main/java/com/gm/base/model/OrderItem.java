@@ -38,16 +38,16 @@ public class OrderItem extends Model {
 	private Integer buyCount;
 
 	@FormField(label = "商品主页显示价格", type = FieldType.NUMBER)
-	private BigDecimal showPrice;
+	private BigDecimal showPrice = BigDecimal.ZERO;
 
 	@FormField(label = "商品主页显示折扣价", type = FieldType.NUMBER)
-	private BigDecimal showDiscount;
+	private BigDecimal showDiscount = BigDecimal.ZERO;
 
 	@FormField(label = "商品主页显示原价", type = FieldType.NUMBER)
-	private BigDecimal originalPrice;
+	private BigDecimal originalPrice = BigDecimal.ZERO;
 
 	@FormField(label = "商品邮费", type = FieldType.NUMBER)
-	private BigDecimal freight;
+	private BigDecimal freight = BigDecimal.ZERO;
 
 	@FormField(label = "商品备注", type = FieldType.TEXTINPUT)
 	private String remarks;
@@ -71,7 +71,7 @@ public class OrderItem extends Model {
 	private Integer freePostage;
 
 	@FormField(label = "商品成本", type = FieldType.NUMBER)
-	private BigDecimal cost;
+	private BigDecimal cost = BigDecimal.ZERO;
 
 	@FormField(label = "评价数量", type = FieldType.NUMBER)
 	private Integer appraiseCount;

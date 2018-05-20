@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.validator.cfg.defs.DigitsDef;
+
 import com.gm.gencode.annotation.M;
 
 @M("支付")
@@ -16,8 +18,8 @@ public class PayBill extends Model {
 
 	private String orderNo;
 	private String openid;
-	private BigDecimal preFee;// 预付款金额，單位（元）
-	private BigDecimal reaFee;// 实际付款金额，單位（元）
+	private BigDecimal preFee = BigDecimal.ZERO;// 预付款金额，單位（元）
+	private BigDecimal reaFee = BigDecimal.ZERO;// 实际付款金额，單位（元）
 	private String transactionId;// 微信交易號
 	private Integer type;// 1购买套餐，2购买产品
 	private Integer pay;// 1未支付，2已支付

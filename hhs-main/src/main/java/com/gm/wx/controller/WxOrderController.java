@@ -211,7 +211,6 @@ public class WxOrderController extends WeixinBaseController {
 	public String confirmOrder(@PathVariable Integer orderId, ModelMap map, String addressId) {
 		Member member = getCurMember();
 		Order order = orderService.get(orderId);
-
 		if (!StringUtil.strNullOrEmpty(addressId)) {
 			MemberAddress orderAddress = memberAddressService.get(Integer.parseInt(addressId));
 			if (null != orderAddress) {
