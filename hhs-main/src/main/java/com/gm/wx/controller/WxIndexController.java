@@ -110,7 +110,7 @@ public class WxIndexController extends WeixinBaseController {
 			}
 		}
 		int id = 1;
-		if(!(session.getAttribute("iid").equals(null))){
+		if(!(session.getAttribute("iid") == null)){
 			id = (int) session.getAttribute("iid");
 		}
 		map.put("page", getCommodityData(id));
