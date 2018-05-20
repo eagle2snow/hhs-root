@@ -117,16 +117,17 @@
 											 <%-- <th>${model.postageMoney}</th> --%>
 											
 											 <th>
-												<c:if test="${model.status == '0'}">待付款</c:if>
-												<c:if test="${model.status == '1'}">待发货</c:if>
-												<c:if test="${model.status == '2'}">待收货</c:if>
-												<c:if test="${model.status == '3'}">已收货</c:if>
-												<c:if test="${model.status == '4'}">退换货申请中</c:if>
-												<c:if test="${model.status == '5'}">退换货申请通过，待买家发货</c:if>
-												<c:if test="${model.status == '6'}">退换货申请通过，买家已发货</c:if>
-												<c:if test="${model.status == '7'}">退换货申请不通过</c:if>
-												<c:if test="${model.status == '8'}">订单已退款</c:if>
-												<c:if test="${model.status == '9'}">订单已完成</c:if>
+												<c:if test="${model.status == '1'}">待付款</c:if>
+												<c:if test="${model.status == '2'}">待发货</c:if>
+												<c:if test="${model.status == '3'}">待收货</c:if>
+												<c:if test="${model.status == '4'}">已收货</c:if>
+												<c:if test="${model.status == '5'}">退换货申请中</c:if>
+												<c:if test="${model.status == '6'}">退换货申请通过，待买家发货</c:if>
+												<c:if test="${model.status == '7'}">退换货申请通过，买家已发货</c:if>
+												<c:if test="${model.status == '8'}">退换货申请不通过</c:if>
+												<c:if test="${model.status == '9'}">订单已退款</c:if>
+												<c:if test="${model.status == '10'}">订单已完成</c:if>
+												<c:if test="${model.status == '11'}">加急</c:if>
 											 </th>
 											
 											 <th>${model.orderRemarks}</th>
@@ -151,6 +152,8 @@
 											
 											 <%-- <th>${model.orderRefundTime}</th> --%>
 											
+											 <th>${model.expressName}</th>
+											 
 											 <th>${model.expressNo}</th>
 											
 											 <%-- <th>${model.refundReason}</th> --%>
@@ -158,8 +161,6 @@
 											<%--  <th>${model.imageUrl}</th>
 											
 											 <th>${model.rejectReason}</th> --%>
-											
-											 <th>${model.refundExpressName}</th>
 											
 											<%--  <th>${model.refundExpressNo}</th> --%>
 											
