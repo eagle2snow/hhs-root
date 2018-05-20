@@ -1,5 +1,6 @@
 package com.gm.admin.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.StringUtil;
 import com.gm.wx.controller.WxCommodityCommentsController;
+import com.xiaoleilu.hutool.date.DateTime;
 
 /**
  * 后台用户操作
@@ -130,7 +132,9 @@ public class AdminOrderController extends BaseAdminController{
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (!StringUtil.strNullOrEmpty(k)) {
 			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
-		}
+		}	
+		dc.add(Restrictions.or(Restrictions.ilike("status", "2",MatchMode.ANYWHERE),Restrictions.ilike("status", "11",MatchMode.ANYWHERE)));
+
 		Page<Order> list = orderService.list(dc, pageIndex, pageSize);
 		map.put("page", list);
 		map.put("path", path);
@@ -243,6 +247,25 @@ public class AdminOrderController extends BaseAdminController{
 		}else {
 		return "9";
 	}
+	}
+	
+	@ResponseBody
+	@RequestMapping("updateExpress")
+	public String updateExpress(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String express = request.getParameter("express");
+		String numbers = request.getParameter("numbers");
+		int oid = Integer.valueOf(id).intValue();
+		Order order = orderService.get(oid);
+		order.setExpressName(express);
+		order.setExpressNo(numbers);
+		order.setStatus("3");
+		order.setShipmentsTime(LocalDateTime.now());
+		if(orderService.update(order)) {
+			return "0";
+		}else {
+			return "9";
+		}
 	}
 		
 }
