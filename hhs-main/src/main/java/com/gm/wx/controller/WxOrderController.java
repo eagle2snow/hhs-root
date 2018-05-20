@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dto.CartDto;
@@ -64,26 +65,29 @@ public class WxOrderController extends WeixinBaseController {
 	private IMemberAddressService memberAddressService;
 
 	private static final String PATH = "/wx/order/";
-	
+
+	// 查看订单
+	@GetMapping("lookOrder/{orderId}")
+	public String lookOrderView(@PathVariable Integer orderId) {
+		System.out.println(orderId);
+		return PATH+"lookOrder";
+	}
+
 	@ResponseBody
 	@RequestMapping("urgent/{orderId}")
-	public Map<String, Object> urgent(@PathVariable Integer orderId){
+	public Map<String, Object> urgent(@PathVariable Integer orderId) {
 		logger.info("urgent:method starting ~~~");
-		
-		HashMap<String,Object> map = this.getMap();
+
+		HashMap<String, Object> map = this.getMap();
 		Order order = orderService.get(orderId);
-		order.setStatus("11");//加急
+		order.setStatus("11");// 加急
 		orderService.update(order);
 		map.put("status", 1);
 		map.put("msg", "加急请求已送达，请耐心等候！");
-		logger.info("urgent:Order order = {}",JSON.toJSON(order));
-		
+		logger.info("urgent:Order order = {}", JSON.toJSON(order));
+
 		return map;
 	}
-	
-	
-	
-	
 
 	/**
 	 * @Title: confirmGoods    
@@ -96,28 +100,28 @@ public class WxOrderController extends WeixinBaseController {
 	@ResponseBody
 	@GetMapping("confirmGoods/{orderId}")
 	public Map<String, Object> confirmGoods(@PathVariable Integer orderId) {
-		
+
 		HashMap<String, Object> map = this.getMap();
-		
+
 		try {
 			Order order = orderService.get(orderId);
 			order.setStatus("4");
-			//调用订单确认收货处理器
+			// 调用订单确认收货处理器
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
-			
+
 		} catch (Exception e) {
 			map.put("status", 2);
 			map.put("msg", "系统正在维护");
-			
+
 			logger.error("confirmGoods:Error info is {}", e.getMessage());
-			
+
 		}
 		logger.error("confirmGoods:The Map map = {}", JSON.toJSON(map));
 		return map;
 	}
-	
+
 	/**
 	 * @Title: exitGoods   
 	 * @Description:退货申请 
@@ -128,10 +132,9 @@ public class WxOrderController extends WeixinBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("exitGoods/{orderId}")
-	public Map<String, Object> exitGoods(@PathVariable Integer orderId){
-		HashMap<String,Object> map = this.getMap();
-		
-		
+	public Map<String, Object> exitGoods(@PathVariable Integer orderId) {
+		HashMap<String, Object> map = this.getMap();
+
 		return map;
 	}
 
@@ -232,7 +235,6 @@ public class WxOrderController extends WeixinBaseController {
 			}
 		}
 
-		
 		List addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
 				.pq("defaultAddress").eq("member.id", member.getId()).pqList();
 		map.put("addressList", JSON.toJSONString(addressList));
@@ -321,9 +323,7 @@ public class WxOrderController extends WeixinBaseController {
 		Map<String, Object> map = orderService.prePayOrder(member, orderId, addressId, items, content);
 		return map;
 	}
-	
-	
-	
+
 	/**
 	 * 支付成功
 	 * 
@@ -340,12 +340,12 @@ public class WxOrderController extends WeixinBaseController {
 	 */
 	@RequestMapping("/paySuccess")
 	public String paySuccess(ModelMap map, Integer orderId, String amount) {
-		logger.info("paySuccess:The args orderId={},amount={}",orderId,amount);
-		
+		logger.info("paySuccess:The args orderId={},amount={}", orderId, amount);
+
 		map.put("orderId", orderId);
 		map.put("amount", amount);
 		map.put("path", PATH);
-		
+
 		return PATH + "paySuccess";
 	}
 
@@ -369,7 +369,5 @@ public class WxOrderController extends WeixinBaseController {
 		map.put("path", PATH);
 		return PATH + "payFail";
 	}
-
-	
 
 }

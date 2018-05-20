@@ -161,7 +161,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			order.setOrderRemarks(content);
 		}
 
-		if (order.getStatus() != "1") {
+		if (!"1".equals(order.getStatus())) {
 			map.put("s", "paid");
 			return map;
 		}
@@ -242,7 +242,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
 		Order order = getOne("orderNo", orderNo);
-		List<OrderItem> listEq = orderItemService.listEq("order", order);
+		List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item));
@@ -312,7 +312,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		try {
 			Order order = orderService.get(orderId);
 			order.setStatus("10");
-			order.setFinishTime(LocalDateTime.now()); 
+			order.setFinishTime(LocalDateTime.now());
 			orderService.update(order);
 
 			Member member = order.getMember();
@@ -323,7 +323,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				Commodity commodity = item.getCommodity();
 				if (null != commodity) {
 					TenReturnOne tenReturnOne = oneDao.getOne("thisTimeCommodity", commodity);
-					
+
 					if (tenReturnOne.getTime() != null) {
 						tenReturnOne.setTime(tenReturnOne.getTime() + 1);
 					} else {
