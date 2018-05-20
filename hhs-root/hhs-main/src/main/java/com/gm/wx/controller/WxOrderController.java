@@ -73,6 +73,7 @@ public class WxOrderController extends WeixinBaseController {
 		return PATH+"lookOrder";
 	}
 
+	//给我加急
 	@ResponseBody
 	@RequestMapping("urgent/{orderId}")
 	public Map<String, Object> urgent(@PathVariable Integer orderId) {
