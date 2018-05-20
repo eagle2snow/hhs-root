@@ -115,7 +115,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			Order order = new Order();
 			order.setOrderNo(genOrderNo());// 生成订单号
 			order.setMember(member);
-			order.setStatus(1);
+			order.setStatus("1");
 			Integer orderId = dao.saveReturnId(order);
 			order.setId(orderId);
 
@@ -161,7 +161,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			order.setOrderRemarks(content);
 		}
 
-		if (order.getStatus() != 1) {
+		if (order.getStatus() != "1") {
 			map.put("s", "paid");
 			return map;
 		}
@@ -249,7 +249,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Commodity commodity = orderItem.getCommodity();
 
 		// 订单的设置
-		order.setStatus(2);
+		order.setStatus("2");
 		order.setPostageMoney(BigDecimal.valueOf(0));// 包邮
 		order.setPaymentTime(LocalDateTime.now());// 付款时间
 		order.setPayPathway(1);// 支付方式
@@ -286,7 +286,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		if (payBill != null) {
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 		}
-		order.setStatus(4); // 4|已收货
+		order.setStatus("4"); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		logger.info("order={}", JSON.toJSON(order));
 		update(order);
@@ -314,7 +314,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Commodity commodity = orderItem.getCommodity();
 		TenReturnOne tenReturnOne = oneDao.getOne("thisTimeMember", member);
 
-		order.setStatus(10);
+		order.setStatus("10");
 		order.setFinishTime(LocalDateTime.now());
 
 		// 会员的设置
@@ -343,7 +343,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("member={}", JSON.toJSON(member));
 		memberService.update(member);
 
-		// 十返一类相关属性设置  对应的次数 对应的会员 对应的商品 每成交一次交易就该保存一条记录
+		// 十返一类相关属性设置
 		if (StringUtils.isEmpty(tenReturnOne)) {
 			tenReturnOne = new TenReturnOne();
 		}
