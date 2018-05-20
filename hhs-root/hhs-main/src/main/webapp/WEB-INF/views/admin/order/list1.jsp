@@ -119,16 +119,17 @@
 											 <%-- <th>${model.name}</th> --%>
 											
 											 <th width="100">
-												<c:if test="${model.status == '0'}">待付款</c:if>
-												<c:if test="${model.status == '1'}">待发货</c:if>
-												<c:if test="${model.status == '2'}">待收货</c:if>
-												<c:if test="${model.status == '3'}">已收货</c:if>
-												<c:if test="${model.status == '4'}">退换货申请中</c:if>
-												<c:if test="${model.status == '5'}">退换货申请通过，待买家发货</c:if>
-												<c:if test="${model.status == '6'}">退换货申请通过，买家已发货</c:if>
-												<c:if test="${model.status == '7'}">退换货申请不通过</c:if>
-												<c:if test="${model.status == '8'}">订单已退款</c:if>
-												<c:if test="${model.status == '9'}">订单已完成</c:if>
+												<c:if test="${model.status == '2'}">待发货</c:if>
+												<c:if test="${model.status == '11'}">加急</c:if>
+												<%-- <c:if test="${model.status == '1'}">待付款</c:if>
+												<c:if test="${model.status == '3'}">待收货</c:if>
+												<c:if test="${model.status == '4'}">已收货</c:if>
+												<c:if test="${model.status == '5'}">退换货申请中</c:if>
+												<c:if test="${model.status == '6'}">退换货申请通过，待买家发货</c:if>
+												<c:if test="${model.status == '7'}">退换货申请通过，买家已发货</c:if>
+												<c:if test="${model.status == '8'}">退换货申请不通过</c:if>
+												<c:if test="${model.status == '9'}">订单已退款</c:if>
+												<c:if test="${model.status == '10'}">订单已完成</c:if> --%>
 											 </th>
 											 <th>${model.member.name}</th>
 											
@@ -302,14 +303,14 @@
 		}
 		
 		
-		function ok(id){
+		/* function ok(id){
 		
 				openPerRe("编辑订单表", 90,90,'${adp}update/'+id+'.htm');
 				$("#okid").text(id);
 				  document.getElementById('Popup1').style.display = '';
 		
 			
-		}
+		} */
 		function details(id){
 		
 				openPerRe("编辑订单表", 90,90,'${adp}details1/'+id+'.htm');
@@ -321,6 +322,30 @@
 			delById(id, '${adp}'); 
 		}
 		
+		function ok(id){
+				  //alert(id);
+				  $("#bzid").text(id);
+				  document.getElementById('Popup1').style.display = '';
+		}
+		function oks(){
+				  //alert(id);
+				 // alert($("#company").val());
+				  //alert($("#Order").val());
+			 $.ajax({
+	             type: "POST",
+	             url: "${ctx}admin/order/updateExpress",
+	             data: {id:$("#bzid").text(), express:$("#company").val(), numbers:$("#Order").val()},
+	             dataType: "json",
+	             success: function(data){
+	                         if(data == 0){
+	                        	$("#company").val("");
+	           				    $("#Order").val("");
+	                        	 window.location.reload();
+	                         }
+	         },
+	    
+});
+		}
 		function bz(id){
 				  //alert(id);
 				  $("#bzid").text(id);
