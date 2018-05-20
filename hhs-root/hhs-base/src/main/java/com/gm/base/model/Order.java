@@ -29,10 +29,10 @@ public class Order extends Model {
 	private MemberAddress memberAddress;// 会员收货地址
 
 	@FormField(type = FieldType.NUMBER, label = "订单总额")
-	private BigDecimal totalMoney;// 订单总额
+	private BigDecimal totalMoney = BigDecimal.ZERO;// 订单总额
 
 	@FormField(type = FieldType.NUMBER, label = "邮费")
-	private BigDecimal postageMoney;// 订单邮费
+	private BigDecimal postageMoney = BigDecimal.ZERO;// 订单邮费
 
 	@FormField(type = FieldType.NUMBER, label = "订单状态", data = "1|待付款,2|待发货,3|待收货,4|已收货,5|退换货申请中,6|退换货申请通过待买家发货,7|退换货申请通过买家已发货,8|退换货申请不通过,9|订单已退款,10|订单已完成,11|加急")
 	private String status;// 订单状态
@@ -76,7 +76,7 @@ public class Order extends Model {
 	private String expressName;// 快递名称
 
 	@FormField(type = FieldType.NUMBER, label = "退款金额")
-	private BigDecimal orderRefundTime;// 退款金额
+	private BigDecimal orderRefundTime = BigDecimal.ZERO;// 退款金额
 
 	@FormField(type = FieldType.TEXTINPUT, label = "发货快递单号")
 	private String expressNo;// 快递单号
@@ -97,10 +97,10 @@ public class Order extends Model {
 	private String refundExpressNo;// 退货快递单号
 
 	@FormField(type = FieldType.NUMBER, label = "一级分销提成")
-	private BigDecimal firstLevelBrokerage;// 一级分销提成
+	private BigDecimal firstLevelBrokerage = BigDecimal.ZERO;// 一级分销提成
 
 	@FormField(type = FieldType.NUMBER, label = "二级分销提成")
-	private BigDecimal secondLevelBrokerage;// 二级分销提成
+	private BigDecimal secondLevelBrokerage = BigDecimal.ZERO;// 二级分销提成
 
 	@FormField(type = FieldType.NUMBER, label = "支付方式", data = "0|余额支付,1|微信支付,2|支付宝支付")
 	private Integer payPathway;// 支付方式
