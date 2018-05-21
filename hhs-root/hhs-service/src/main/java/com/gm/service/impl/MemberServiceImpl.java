@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
@@ -84,19 +83,34 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public Member genCodeAndQrCode(Member member, HttpServletRequest request) {
+		logger.info("genCodeAndQrCode:Start");
 		String path = request.getServletContext().getRealPath(File.separator) + File.separator;
+		logger.info("path={}",path);
+		
 		String domain = request.getScheme() + "://" + request.getServerName();
+		logger.info("domain={}",domain);
+		
 		String generalizeId = AESCoder.encryptResultStr(member.getGeneralizeId(), Const.PASSWORD_SECRET);
-		QRCodeUtils.createQrcode(path + "static" + File.separator + "member" + File.separator + "qrcode"
+		logger.info("generalizeId={}",generalizeId);
+		
+		String createQrcode = QRCodeUtils.createQrcode(path + "static" + File.separator + "member" + File.separator + "qrcode"
 				+ File.separator + generalizeId + ".png", domain + "/wx/index?generalizeId=" + generalizeId);
-		member.setQrCode("/static/member/qrcode/" + generalizeId + ".png");
+		logger.info("createQrcode={}",createQrcode);
+		
+
+		if (StringUtils.isEmpty(member.getQrCode())) {
+			member.setQrCode("/static/member/qrcode/" + generalizeId + ".png");
+		}
+		logger.info("genCodeAndQrCode:End");
 		return member;
 	}
 
 	@Override
 	public Member genCodeAndQrCode(Member member) {
 		String base64 = QRCodeUtils.createQrcode("", member.getGeneralizeId());
-		member.setQrCode(base64);
+		if (StringUtils.isEmpty(member.getQrCode())) {
+			member.setQrCode(base64);
+		}
 		return member;
 	}
 

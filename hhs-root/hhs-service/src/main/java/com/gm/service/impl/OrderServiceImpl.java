@@ -248,13 +248,17 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item));
 			Commodity commodity = item.getCommodity();
-			if (null != commodity) {
-				// 商品的设置
+			// 商品的设置
+			if (!StringUtils.isEmpty(commodity.getTotalStock())) {
+
 				commodity.setTotalStock(commodity.getTotalStock() - 1);
-				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
-				logger.info("commodity={}", JSON.toJSON(commodity));
-				commodityService.update(commodity);
 			}
+			if (!StringUtils.isEmpty(commodity.getSalesVolume())) {
+
+				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+			}
+			logger.info("commodity={}", JSON.toJSON(commodity));
+			commodityService.update(commodity);
 		}
 
 		// 订单的设置
@@ -297,7 +301,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		}
 		order.setStatus("4"); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
-		logger.info("order={}", JSON.toJSON(order));	
+		logger.info("order={}", JSON.toJSON(order));
 		update(order);
 
 		// 规定七天后若是没有客户要求退货就执行订单完成方法
@@ -316,20 +320,19 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			orderService.update(order);
 
 			Member member = order.getMember();
-			
+
 			BigDecimal balance = member.getBalance();
-			
-			memberService.tenReturnOne(member.getId()); 
-			balance.add(member.getTenReturnOne()); //十件商品返一件
-			
-			memberService.returnFiveMoney(member.getId()); //返5元
-			
-			balance.add(memberService.returnMeal(member.getId())); //返套餐
-			
-			memberService.threeLevel(member.getId()); //三级分润
-			
-			member.setBalance(balance); //设置可提现余额
-			
+
+			memberService.tenReturnOne(member.getId());
+			balance.add(member.getTenReturnOne()); // 十件商品返一件
+
+			memberService.returnFiveMoney(member.getId()); // 返5元
+
+			balance.add(memberService.returnMeal(member.getId())); // 返套餐
+
+			memberService.threeLevel(member.getId()); // 三级分润
+
+			member.setBalance(balance); // 设置可提现余额
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 			List<Commodity> list = null;
