@@ -300,7 +300,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		update(order);
 
 		// 规定七天后若是没有客户要求退货就执行订单完成方法
-		// . . . 这里改怎么写
 		this.finishGoods(orderId);
 
 	}
