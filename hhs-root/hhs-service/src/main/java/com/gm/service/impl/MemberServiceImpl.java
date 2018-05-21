@@ -4,7 +4,6 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
@@ -27,7 +27,6 @@ import com.gm.service.IMemberService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
 import com.gm.utils.StringUtil;
-import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
 @Service("memberSercive")
@@ -103,7 +102,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public void payMemberSuccess(String openid) {
-		
+
 		Member member = getOne("openid", openid);
 		member.setSetMeal(2);
 		member.setLevel(3);
@@ -111,8 +110,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setLove(member.getLove() + 1);
 		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 		genCodeAndQrCode(member);
-		
-		logger.info("payMemberSuccess:The Member member={}",JSON.toJSON(member));
+
+		logger.info("payMemberSuccess:The Member member={}", JSON.toJSON(member));
 
 		update(member);
 	}
@@ -163,6 +162,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 							thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
 				}
 			}
+			try {
+				dao.update(member);
+				tenReturnOneDao.update(tenReturnOne);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 	}
 
@@ -171,9 +178,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 
 	 */
 	@Override
-	public void returnFiveMoney(Integer openid) {
+	public void returnFiveMoney(Integer memberId) {
 
-		Member member = dao.getOne("openid", openid);
+		Member member = dao.getOne("openid", memberId);
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 3) { // 直推十人
@@ -198,6 +205,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 		}
 
+		dao.update(member);
+
 		logger.info("returnFiveMoney:The List size is size = {}", list.size());
 
 	}
@@ -208,8 +217,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * ②判断直推会员是否是十的倍数
 	 */
 	@Override
-	public void returnMeal(Integer openid) {
+	public BigDecimal returnMeal(Integer openid) {
 		Member member = dao.getOne("openid", openid);
+		BigDecimal balance = member.getBalance();
 		List<Member> list = null;
 		if (!StringUtils.isEmpty(member.getSetMeal()) && member.getSetMeal() == 2) { // 购买套餐了
 			Member parent1 = getParent1(member);
@@ -221,13 +231,18 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (!list.isEmpty() && list.size() >= Const.directMember) {
 			member.setSetMeal(3);// 返套餐钱
 		}
+		if (member.getSetMeal() == 3) {
+			balance.add(Const.MEMBER_AMOUNT);
+		}
+		dao.update(member);
+		return balance;
 
 	}
 
 	@Override
-	public void threeLevel(Integer openid) {
+	public void threeLevel(Integer memberId) {
 
-		Member member = dao.getOne("openid", openid);
+		Member member = dao.getOne("id", memberId);
 		Member parent1 = getParent1(member);// 上一级
 		Member parent2 = getParent2(member);// 上二级
 		Member parent3 = getParent3(member);// 上三级

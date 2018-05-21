@@ -1,5 +1,7 @@
 package com.gm.service;
 
+import java.math.BigDecimal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
@@ -19,13 +21,13 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @Description: 三级分润
 	 * @param openid 会员开发id
 	 */
-	void threeLevel(Integer openid);
+	void threeLevel(Integer memberId);
 	
 	/**
 	 * @Title: returnFiveMoney   
 	 * @Description: 返 5(元/人)
 	 */
-	void returnFiveMoney(Integer openid);
+	void returnFiveMoney(Integer memberId);
 	
 	/**
 	 * @Title: returnMeal   
@@ -35,7 +37,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @return: BigDecimal      
 	 * @throws
 	 */
-	void returnMeal(Integer openid);
+	BigDecimal returnMeal(Integer memberId);
 	
 	
 	/**
