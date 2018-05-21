@@ -4,7 +4,7 @@
 <html>
 
 <head>
-<title>订单表列表 </title>
+<title>数据库备份 </title>
 
 <%@ include file="/common/admin/head.jsp"%>
 
@@ -23,199 +23,72 @@
 				<div class="col-md-12">
 					<!-- Horizontal Form -->
 					<div class="box box-info">
-						<div class="box-header with-border">
-							<h3 class="box-title">订单表列表</h3>
-						</div>
-						<!-- /.box-header -->
-						<div class="box">
+						<div class="box-header with-border" style="height: 800px;">
+							<h3 class="box-title">数据库备份</h3>
 							
-							<!-- /.box-header -->
-							<div class="box-body">
-								<!--搜索框-->
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="cl pd-5 bg-1 bk-gray mt-20">
-											<span class="l"><a href="javascript:;"
-												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
-													class="glyphicon glyphicon-trash"></i> 批量删除</a> <%-- <button
-													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
-												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
-													添加</button> --%></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
-											</span>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div id="example1_filter" class="dataTables_filter">
-											<div class="text-c">
-												<input type="text" name="" id="key" placeholder="名称、介绍等"
-													onkeypress="if(event.keyCode==13) {btn.click();return false;}"
-													value='${key}' style="width: 250px;height:33px" class="input-text">
-												<button name="" id="btn" class="btn btn-success" type="submit"
-													onclick="getData(1)">
-													<i class="glyphicon glyphicon-search"></i> 搜索
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!--表单数据-->
-								<table  class="table table-bordered table-striped">
-									<thead>
-									
-										<tr>
-											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
-											<th >订单号</th>
-											<th>名称</th>
-											<th>会员昵称</th>
-											<th>订单总额</th>
-											<!-- <th>邮费</th> -->
-											<th>订单状态</th>
-											<th>订单备注</th>
-											<!-- <th>付款时间</th>
-											<th>发货时间</th>
-											<th>收货时间</th>
-											<th>退货申请时间</th>
-											<th>退货审核时间</th>
-											<th>退货发货时间</th>
-											<th>退款时间</th>
-											<th>订单完成时间</th> -->
-											<th>发货快递</th>
-											<!-- <th>退款金额</th> -->
-											<th>发货快递单号</th>
-											<!-- <th>退款理由</th> -->
-											<!-- <th>退货上传图片</th> -->
-											<!-- <th>拒绝退款</th> -->
-											<!-- <th>退货快递</th> -->
-											<!-- <th>退货快递单号</th> -->
-											<!-- <th>一级分销提成</th>
-											<th>二级分销提成</th> -->
-											<th>支付方式</th>
-											<!-- <th>是否已评价</th> -->
-											<!-- <th>评价时间</th> -->
-											<th>商家备注</th>
-											<!-- <th>退款备注</th> -->
-											<!-- <th>支付宝交易号</th>
-											<th>微信交易号</th> -->
-											<th width="130">创建时间</th>
-											<th width="100">状态</th>
-											<th width="150">操作</th>
-										</tr>
-									</thead>
-									<tbody>
-									
-										<c:forEach items="${page.list}" var="model">
-										<tr>
-											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
-											<td>${model.id}</td>
-											
-											 <th>${model.name}</th>
-											
-											 <th>${model.member.name}</th>
-											
-											 <th>${model.totalMoney}</th>
-											
-											 <%-- <th>${model.postageMoney}</th> --%>
-											
-											 <th>
-												<c:if test="${model.status == '1'}">待付款</c:if>
-												<c:if test="${model.status == '2'}">待发货</c:if>
-												<c:if test="${model.status == '3'}">待收货</c:if>
-												<c:if test="${model.status == '4'}">已收货</c:if>
-												<c:if test="${model.status == '5'}">退换货申请中</c:if>
-												<c:if test="${model.status == '6'}">退换货申请通过，待买家发货</c:if>
-												<c:if test="${model.status == '7'}">退换货申请通过，买家已发货</c:if>
-												<c:if test="${model.status == '8'}">退换货申请不通过</c:if>
-												<c:if test="${model.status == '9'}">订单已退款</c:if>
-												<c:if test="${model.status == '10'}">订单已完成</c:if>
-												<c:if test="${model.status == '11'}">加急</c:if>
-											 </th>
-											
-											 <th>${model.orderRemarks}</th>
-											
-											<%--  <th>${model.paymentTime}</th>
-											
-											 <th>${model.shipmentsTime}</th>
-											
-											 <th>${model.receivingTime}</th>
-											
-											 <th>${model.applyForTime}</th>
-											
-											 <th>${model.checkTime}</th>
-											
-											 <th>${model.buyerDshipmentsTime}</th>
-											
-											 <th>${model.refundTime}</th>
-											
-											 <th>${model.finishTime}</th> --%>
-											
-											<%--  <th>${model.expressName}</th> --%>
-											
-											 <%-- <th>${model.orderRefundTime}</th> --%>
-											
-											 <th>${model.expressName}</th>
-											 
-											 <th>${model.expressNo}</th>
-											
-											 <%-- <th>${model.refundReason}</th> --%>
-											
-											<%--  <th>${model.imageUrl}</th>
-											
-											 <th>${model.rejectReason}</th> --%>
-											
-											<%--  <th>${model.refundExpressNo}</th> --%>
-											
-											 <%-- <th>${model.firstLevelBrokerage}</th>
-											
-											 <th>${model.secondLevelBrokerage}</th> --%>
-											
-											 <th>${model.payPathway eq 1 ? "微信":"支付宝"}</th>
-											
-											 <%-- <th>${model.appraise eq 1 ? "已评价":"未评价"}</th> --%>
-											
-											 <%-- <th>${model.appraiseTime}</th> --%>
-											
-											 <th>${model.businessRemarks}</th>
-											
-											<%--  <th>${model.refundRemarks}</th> --%>
-											
-											 <%-- <th>${model.alipayNumber}</th>
-											
-											 <th>${model.wxNumber}</th> --%>
-											
-											<td><javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-											<td class="td-status">
-														<div class="switch switchevent" data-on="primary"
-															lang="${model.id}" title="${model.enable}"
-															data-on-label="开" data-off-label="关" data-off="info">
-															<input type="checkbox" ${(model.enable==1)?'checked':'' }
-																class="swbtn" />
-														</div>
-											</td>
-											<td>
-												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
-												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
-											</td>
-										</tr>
-										</c:forEach>
-										
-									</tbody>
-								</table>
-								<!--分页-->
-								<div class="row">
-									<div id="page" class="text-c mt-10"></div>
-								</div>
-
+							<div style="height: 200px;width: 400px;position: relative;top: 30%;left: 35%;">
+								<ul style="border: 1px solid #3c8dbc;border-radius: 5px 5px 0 0;height: 200px;">
+									<li style="height: 50px;background: #3c8dbc;color: #fff;text-align: center;line-height: 50px;font-size: 20px;font-weight: bold;border-radius: 5px 5px 0 0;">提示</li>
+									<li>
+										<a id="backup" style="display: block;width: 120px;height: 45px;float: left;background: #3c8dbc;margin-left: 50px;margin-top: 60px;border-radius: 5px;color: #fff;font-weight: bold;text-align: center;line-height: 45px;letter-spacing: 2px;border-bottom: 2px solid #ad9d9d;border-right: 2px solid #ad9d9d;cursor: pointer;">数据备份</a>
+										<a id="recovery" style="display: block;width: 120px;height: 45px;float: left;background: #3c8dbc;margin-left: 50px;margin-top: 60px;border-radius: 5px;color: #fff;font-weight: bold;text-align: center;line-height: 45px;letter-spacing: 2px;border-bottom: 2px solid #ad9d9d;border-right: 2px solid #ad9d9d;cursor: pointer;">数据恢复</a>
+									</li>
+								</ul>
 							</div>
-							<!-- /.box-body -->
+							
 						</div>
-						<!-- /.box -->
-
-					</div>
-					<!-- /.box -->
+						
+		</section>
+		
+		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display: none;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意！</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否数据备份？
+				</li>
+				<li style="background: #fff;">
+				<span  id="Popup_ok" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="bzs()">确定</span>
+				<span id="Popup_off" style="line-height: 40px;cursor: pointer;width: 225px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
+				</ul>
 				</div>
 			</div>
-		</section>
+			
+			<div id="Popup1" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意！</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否数据恢复？
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_ok1" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="bzs()">确定</span>
+				<span id="Popup_off1" style="line-height: 40px;cursor: pointer;width: 225px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
+				</ul>
+				</div>
+			</div>
+		<div id="Popup2" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">备份成功！</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据已经备份成功
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off2" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">确定</span></li>
+				</ul>
+				</div>
+			</div>
+			
+				<div id="Popup3" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">备份恢复成功！</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据已经恢复成功
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off3" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">确定</span></li>
+				</ul>
+				</div>
+			</div>
+		
 		</div>
 		<%@ include file="/common/admin/footer.jsp"%>
 		<%@ include file="/common/admin/right.jsp"%>
@@ -274,12 +147,42 @@
 			delById(id, '${adp}'); 
 		}
 		
+		
 		//开关回调
 		/* var enableFun = function(){
 		} */
 		
-		
 
+		</script>
+		
+		<script type="text/javascript">
+
+		$(document).ready(function(){
+			  $("#recovery").click(function(){
+			  $("#Popup1").fadeToggle(500);
+			  });
+			  $("#backup").click(function(){
+				  $("#Popup").fadeToggle(500);
+				  });
+			  $("#Popup_off").click(function(){
+				  $("#Popup").fadeToggle(500);
+				  });
+			  $("#Popup_off1").click(function(){
+				  $("#Popup1").fadeToggle(500);
+				  });
+			  $("#Popup_ok").click(function(){
+				  $("#Popup").fadeToggle(500);
+				  });
+			  $("#Popup_ok1").click(function(){
+				  $("#Popup1").fadeToggle(500);
+				  });
+			  $("#Popup_off2").click(function(){
+				  $("#Popup2").fadeToggle(500);
+				  });
+			  $("#Popup_off3").click(function(){
+				  $("#Popup3").fadeToggle(500);
+				  });
+		});
 		</script>
 	</body>
 
