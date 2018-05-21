@@ -60,6 +60,26 @@
 							
 							
 			                
+								<div class="box-body">
+									<div class="form-group">
+										<label class="col-sm-2 control-label"><i class="red">*</i>归类:</label>
+										<div class="col-sm-8">
+											<select name="code" style="width: 100% !important;" class="form-control select2" id="code">
+													<option value="${model.code}">
+														${model.code eq "1"? "酒":"纸"}
+													</option>
+												
+													<option value="1">
+														酒
+													</option>
+													<option value="2">
+														纸
+													</option>
+ 
+											</select>
+										</div>
+									</div>
+								</div>
                         
                         
 						
@@ -405,7 +425,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">默认重量:</label>
 										<div class="col-sm-8">
-											<input type="number" class="form-control" value="${model.defaultWeight}"
+											<input type="text" class="form-control" value="${model.defaultWeight}"
 								        	placeholder="默认重量" id="defaultWeight" name="defaultWeight" />
 										</div>
 								</div>
@@ -425,7 +445,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">默认体积:</label>
 										<div class="col-sm-8">
-											<input type="number" class="form-control" value="${model.defaultBulk}"
+											<input type="text" class="form-control" value="${model.defaultBulk}"
 								        	placeholder="默认体积" id="defaultBulk" name="defaultBulk" />
 										</div>
 								</div>
