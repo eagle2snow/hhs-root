@@ -297,7 +297,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		}
 		order.setStatus("4"); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
-		logger.info("order={}", JSON.toJSON(order));
+		logger.info("order={}", JSON.toJSON(order));	
 		update(order);
 
 		// 规定七天后若是没有客户要求退货就执行订单完成方法

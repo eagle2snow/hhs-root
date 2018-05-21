@@ -41,7 +41,7 @@
 	<%@ include file="/common/wx/socket.jsp"%>
 
 	<script>
-	 var qrCode = "${curMember.qrCode }";
+	 var qrCode = "${curMember.qrCode}";
 	 if(!qrCode){
 		 $.alert('您还没有消费体验产品 <br>不能使用二维码');
 	 }
