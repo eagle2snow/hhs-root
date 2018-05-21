@@ -42,6 +42,7 @@
 
 	<script>
 	 var qrCode = "${curMember.qrCode}";
+	 console.log(qrCode);
 	 if(!qrCode){
 		 $.alert('您还没有消费体验产品 <br>不能使用二维码');
 	 }
