@@ -432,7 +432,7 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">默认重量:</label>
 									<div class="col-sm-8">
-										<input type="number" class="form-control"
+										<input type="text" class="form-control"
 							        	placeholder="默认重量" id="defaultWeight" name="defaultWeight"          />
 									</div>
 								</div>
@@ -454,7 +454,7 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">默认体积:</label>
 									<div class="col-sm-8">
-										<input type="number" class="form-control"
+										<input type="text" class="form-control"
 							        	placeholder="默认体积" id="defaultBulk" name="defaultBulk"          />
 									</div>
 								</div>
