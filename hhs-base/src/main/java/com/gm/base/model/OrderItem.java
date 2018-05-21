@@ -79,10 +79,10 @@ public class OrderItem extends Model {
 	@FormField(label = "商品前台显示备注", type = FieldType.TEXTINPUT)
 	private String showRemarks;
 
-	@FormField(label = "默认重量", type = FieldType.NUMBER)
+	@FormField(label = "默认重量", type = FieldType.TEXTINPUT)
 	private String defaultWeight;
 
-	@FormField(label = "默认体积", type = FieldType.NUMBER)
+	@FormField(label = "默认体积", type = FieldType.TEXTINPUT)
 	private String defaultBulk;
 
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
