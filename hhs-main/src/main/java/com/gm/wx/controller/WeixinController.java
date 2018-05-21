@@ -30,8 +30,8 @@ import com.gm.utils.StringUtil;
  * @author ying-pc
  *
  */
-//@RestController
-//@RequestMapping("/wx")
+@RestController
+@RequestMapping("/wx")
 public class WeixinController extends WeixinControllerSupport {
 	private static final Logger log = LoggerFactory.getLogger(WeixinController.class);
 	private static final String TOKEN = Const.TOKEN;

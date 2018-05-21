@@ -83,6 +83,7 @@ public class WxIndexController extends WeixinBaseController {
 		map.put("path", PATH);
 		return PATH + "/index";
 	}
+
 	/**
 	 * 
 	 * 
@@ -110,7 +111,7 @@ public class WxIndexController extends WeixinBaseController {
 			}
 		}
 		int id = 1;
-		if(!(session.getAttribute("iid") == null)){
+		if (!(session.getAttribute("iid") == null)) {
 			id = (int) session.getAttribute("iid");
 		}
 		map.put("page", getCommodityData(id));
@@ -137,13 +138,25 @@ public class WxIndexController extends WeixinBaseController {
 	public Page<Commodity> getCommodityData(@PathVariable Integer id) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Commodity.class);
 		dc.addOrder(Order.desc("sort"));
-		if(id == 1) {
-		dc.add(Restrictions.like("code", "1", MatchMode.ANYWHERE));
-		}else {
-		dc.add(Restrictions.like("code", "2", MatchMode.ANYWHERE));	
+		if (id == 1) {
+			dc.add(Restrictions.like("code", "1", MatchMode.ANYWHERE));
+		} else {
+			dc.add(Restrictions.like("code", "2", MatchMode.ANYWHERE));
 		}
-		
+
 		return commodityService.list(dc, 1, 10);
+	}
+
+	/**
+	 * @Description: 去公司简介页面
+	 * @param model
+	 * @return String
+	 */
+	@RequestMapping("/profile")
+	public String setProfileView(ModelMap model) {
+		model.put("member", this.getCurMember());
+		model.put("path", PATH);
+		return PATH + "profile";
 	}
 
 	/**
@@ -170,6 +183,7 @@ public class WxIndexController extends WeixinBaseController {
 	@RequestMapping("/payMemberSuccess")
 	public String payMemberSuccess(ModelMap model) {
 		model.put("path", PATH);
+		memberService.genCodeAndQrCode(getCurMember());
 		return PATH + "payMemberSuccess";
 	}
 
@@ -188,5 +202,5 @@ public class WxIndexController extends WeixinBaseController {
 		model.put("path", PATH);
 		return PATH + "payMemberFail";
 	}
-	
+
 }
