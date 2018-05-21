@@ -80,10 +80,10 @@ public class OrderItem extends Model {
 	private String showRemarks;
 
 	@FormField(label = "默认重量", type = FieldType.NUMBER)
-	private Double defaultWeight;
+	private String defaultWeight;
 
 	@FormField(label = "默认体积", type = FieldType.NUMBER)
-	private Double defaultBulk;
+	private String defaultBulk;
 
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
 	private String specifications;
@@ -220,19 +220,33 @@ public class OrderItem extends Model {
 		this.showRemarks = showRemarks;
 	}
 
-	public Double getDefaultWeight() {
+	
+
+	/**
+	 * @return the defaultWeight
+	 */
+	public String getDefaultWeight() {
 		return defaultWeight;
 	}
 
-	public void setDefaultWeight(Double defaultWeight) {
+	/**
+	 * @param defaultWeight the defaultWeight to set
+	 */
+	public void setDefaultWeight(String defaultWeight) {
 		this.defaultWeight = defaultWeight;
 	}
 
-	public Double getDefaultBulk() {
+	/**
+	 * @return the defaultBulk
+	 */
+	public String getDefaultBulk() {
 		return defaultBulk;
 	}
 
-	public void setDefaultBulk(Double defaultBulk) {
+	/**
+	 * @param defaultBulk the defaultBulk to set
+	 */
+	public void setDefaultBulk(String defaultBulk) {
 		this.defaultBulk = defaultBulk;
 	}
 
