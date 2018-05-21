@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IOrderDao;
 import com.gm.base.dao.ITenReturnOneDao;
@@ -315,6 +316,20 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			orderService.update(order);
 
 			Member member = order.getMember();
+			
+			BigDecimal balance = member.getBalance();
+			
+			memberService.tenReturnOne(member.getId()); 
+			balance.add(member.getTenReturnOne()); //十件商品返一件
+			
+			memberService.returnFiveMoney(member.getId()); //返5元
+			
+			balance.add(memberService.returnMeal(member.getId())); //返套餐
+			
+			memberService.threeLevel(member.getId()); //三级分润
+			
+			member.setBalance(balance); //设置可提现余额
+			
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 			List<Commodity> list = null;
