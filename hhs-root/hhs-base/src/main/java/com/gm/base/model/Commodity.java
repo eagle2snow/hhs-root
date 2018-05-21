@@ -77,10 +77,10 @@ public class Commodity extends Model {
 	private String showRemarks;
 	
 	@FormField(label = "默认重量", type = FieldType.NUMBER)
-	private Double defaultWeight = 0.0;
+	private String defaultWeight;
 	
 	@FormField(label = "默认体积", type = FieldType.NUMBER)
-	private Double defaultBulk = 0.0;
+	private String defaultBulk;
 	
 	@FormField(label = "排序", type = FieldType.NUMBER)
 	private Integer sort;
@@ -250,19 +250,33 @@ public class Commodity extends Model {
 		this.showRemarks = showRemarks;
 	}
 	
-	public Double getDefaultWeight() {
+	
+
+	/**
+	 * @return the defaultWeight
+	 */
+	public String getDefaultWeight() {
 		return defaultWeight;
 	}
-	
-	public void setDefaultWeight(Double defaultWeight) {
+
+	/**
+	 * @param defaultWeight the defaultWeight to set
+	 */
+	public void setDefaultWeight(String defaultWeight) {
 		this.defaultWeight = defaultWeight;
 	}
-	
-	public Double getDefaultBulk() {
+
+	/**
+	 * @return the defaultBulk
+	 */
+	public String getDefaultBulk() {
 		return defaultBulk;
 	}
-	
-	public void setDefaultBulk(Double defaultBulk) {
+
+	/**
+	 * @param defaultBulk the defaultBulk to set
+	 */
+	public void setDefaultBulk(String defaultBulk) {
 		this.defaultBulk = defaultBulk;
 	}
 
