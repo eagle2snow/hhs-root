@@ -98,6 +98,14 @@
 <ul class="gonavlist">
 	<li class="gonavitem">
 		<a href="###" class="gonavdl">
+			<div class="dt"><a href="/wx/profile.jsp">公司简介</a></div>
+			<i class="rgt"></i>
+		</a>
+	</li>
+</ul>
+<ul class="gonavlist">
+	<li class="gonavitem">
+		<a href="###" class="gonavdl">
 			<div class="dt">联系客服</div>
 			<i class="rgt"></i>
 		</a>
