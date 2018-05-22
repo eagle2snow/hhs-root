@@ -90,7 +90,7 @@ public class Member extends Model {
 
 	private Integer changReferrer = 0;// 是否更改过推荐人 ：未更改 0 ,已更改1
 
-	private Integer setMeal = 1;// 套餐类型 ：未购买 - 1 ,已购买 - 2 ,返套餐金额 - 3 
+	private Integer setMeal = 1;// 套餐类型 ：未购买 |1 ,已购买|2 ,返套餐金额 |3
 	
 	@FormField(type = FieldType.TEXTINPUT, label = "十返一")
 	private BigDecimal tenReturnOne = BigDecimal.ZERO;
