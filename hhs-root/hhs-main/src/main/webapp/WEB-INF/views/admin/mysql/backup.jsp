@@ -43,11 +43,11 @@
 		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display: none;">
 				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意！</li>
-				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否数据备份？
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否进行数据备份？
 				</li>
 				<li style="background: #fff;">
-				<span  id="Popup_ok" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="bzs()">确定</span>
+				<span  id="Popup_ok" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="go()">确定</span>
 				<span id="Popup_off" style="line-height: 40px;cursor: pointer;width: 225px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
 				</ul>
 				</div>
@@ -56,11 +56,11 @@
 			<div id="Popup1" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意！</li>
-				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否数据恢复？
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">注意</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">是否进行数据恢复？
 				</li>
 				<li style="background: #fff;">
-				<span id="Popup_ok1" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="bzs()">确定</span>
+				<span id="Popup_ok1" style="line-height: 40px;cursor: pointer;display:block;font-size: 18px;text-align: center;float: left;width: 225px;border-right: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;" onclick="go1()">确定</span>
 				<span id="Popup_off1" style="line-height: 40px;cursor: pointer;width: 225px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">取消</span></li>
 				</ul>
 				</div>
@@ -68,7 +68,7 @@
 		<div id="Popup2" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">备份成功！</li>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">提示</li>
 				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据已经备份成功
 				</li>
 				<li style="background: #fff;">
@@ -80,11 +80,34 @@
 				<div id="Popup3" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">备份恢复成功！</li>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">提示</li>
 				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据已经恢复成功
 				</li>
 				<li style="background: #fff;">
 				<span id="Popup_off3" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">确定</span></li>
+				</ul>
+				</div>
+			</div>
+		<div id="Popup4" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">提示</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据经备份失败
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off4" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">确定</span></li>
+				</ul>
+				</div>
+			</div>
+			
+				<div id="Popup5" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">提示</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">您的数据恢复失败
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off5" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">确定</span></li>
 				</ul>
 				</div>
 			</div>
@@ -97,7 +120,7 @@
 		<div class="control-sidebar-bg"></div>
 	</div>
 
-		<script>
+		<script >
 			$(function() {
 				$("#example1").DataTable();
 				$("#key").focus();
@@ -148,6 +171,7 @@
 		}
 		
 		
+		
 		//开关回调
 		/* var enableFun = function(){
 		} */
@@ -156,6 +180,30 @@
 		</script>
 		
 		<script type="text/javascript">
+		function go(){
+			 $.getJSON("${ctx}admin/mysql/backup",
+					function(date) {
+			//alert(date);
+						if(date == "0") {
+							document.getElementById('Popup2').style.display = '';					
+						}else{
+							document.getElementById('Popup4').style.display = '';
+						}
+						
+						}); 
+		}
+		function go1(){
+			 $.getJSON("${ctx}admin/mysql/restore",
+					function(date) {
+			//alert(date);
+						if(date == "0") {
+							document.getElementById('Popup3').style.display = '';					
+						}else{
+							document.getElementById('Popup5').style.display = '';
+						}
+						
+						}); 
+		}
 
 		$(document).ready(function(){
 			  $("#recovery").click(function(){
@@ -181,6 +229,12 @@
 				  });
 			  $("#Popup_off3").click(function(){
 				  $("#Popup3").fadeToggle(500);
+				  });
+			  $("#Popup_off4").click(function(){
+				  $("#Popup4").fadeToggle(500);
+				  });
+			  $("#Popup_off5").click(function(){
+				  $("#Popup5").fadeToggle(500);
 				  });
 		});
 		</script>
