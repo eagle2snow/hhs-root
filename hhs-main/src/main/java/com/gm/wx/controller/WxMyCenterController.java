@@ -411,8 +411,6 @@ public class WxMyCenterController extends WeixinBaseController {
 			if (!StringUtil.strNullOrEmpty(member.getGeneralizeId())) {
 				member = memberService.genCodeAndQrCode(member, request);
 				
-				System.out.println(member.getQrCode()+"|!!");
-				
 				memberService.update(member);
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
