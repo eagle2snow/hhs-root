@@ -50,13 +50,15 @@ public class BinaryUploader {
 			if (fileStream == null) {
 				return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
 			}
-
-			String savePath = (String) conf.get("savePath");
+			
+			//String savePath = (String) conf.get("savePath");
+			String localSavePathPrefix = (String) conf.get("localSavePathPrefix");
 			String originFileName = fileStream.getName();
 			String suffix = FileType.getSuffixByFilename(originFileName);
 
 			originFileName = originFileName.substring(0, originFileName.length() - suffix.length());
-			savePath = savePath + suffix;
+			//savePath = savePath + suffix;
+			localSavePathPrefix = localSavePathPrefix + suffix;
 
 			long maxSize = ((Long) conf.get("maxSize")).longValue();
 
@@ -64,16 +66,19 @@ public class BinaryUploader {
 				return new BaseState(false, AppInfo.NOT_ALLOW_FILE_TYPE);
 			}
 
-			savePath = PathFormat.parse(savePath, originFileName);
+			//savePath = PathFormat.parse(savePath, originFileName);
+			localSavePathPrefix = PathFormat.parse(localSavePathPrefix, originFileName);
 
-			String physicalPath = (String) conf.get("rootPath") + savePath;
+			//String physicalPath = (String) conf.get("rootPath") + savePath;
+			String physicalPath = localSavePathPrefix;
 
 			InputStream is = fileStream.openStream();
 			State storageState = StorageManager.saveFileByInputStream(is, physicalPath, maxSize);
 			is.close();
 
 			if (storageState.isSuccess()) {
-				storageState.putInfo("url", PathFormat.format(savePath));
+				//storageState.putInfo("url", PathFormat.format(savePath));
+				storageState.putInfo("url", PathFormat.format(localSavePathPrefix));
 				storageState.putInfo("type", suffix);
 				storageState.putInfo("original", originFileName + suffix);
 			}
