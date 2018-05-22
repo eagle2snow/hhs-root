@@ -1,6 +1,7 @@
 package com.gm.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,38 +16,30 @@ import com.gm.base.model.Member;
  *
  */
 public interface IMemberService extends IBaseService<Member, Integer> {
-	
+
 	/**
-	 * @Title: threeLevel   
+	 * @Title: threeLevel
 	 * @Description: 三级分润
-	 * @param openid 会员开发id
+	 * @param openid
+	 *            会员开发id
 	 */
 	void threeLevel(Integer memberId);
-	
+
 	/**
-	 * @Title: returnFiveMoney   
+	 * @Title: returnFiveMoney
 	 * @Description: 返 5(元/人)
 	 */
 	void returnFiveMoney(String memberId);
-	
+
 	/**
-	 * @Title: returnMeal   
-	 * @Description: 返套餐金额
-	 * @param mealMemberNumber 直推业务经理人数
-	 * @return 套餐金额  
-	 * @return: BigDecimal      
-	 * @throws
+	 * @Title: returnMeal @Description: 返套餐金额 @param mealMemberNumber
+	 *         直推业务经理人数 @return 套餐金额 @return: BigDecimal @throws
 	 */
 	BigDecimal returnMeal(String openId);
-	
-	
+
 	/**
-	 * @Title: tenReturnOne   
-	 * @Description: "十送一"
-	 * @param memberId 会员ID
-	 * @return   商品   
-	 * @return: Commodity      
-	 * @throws
+	 * @Title: tenReturnOne @Description: "十送一" @param memberId 会员ID @return
+	 *         商品 @return: Commodity @throws
 	 */
 	void tenReturnOne(Integer orderId);
 
@@ -139,7 +132,6 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 */
 	void payMemberSuccess(String openid);
 
-
 	/**
 	 * 
 	 * <p>
@@ -180,5 +172,21 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @version 1.0
 	 */
 	Member getParent3(Member member);
+
+	/**
+	 * 根据会员获取直系会员
+	 * 
+	 * @param member
+	 * @return
+	 */
+	List<Member> getAllSons(Member member);
+
+	/**
+	 * 根据会员获取直推会员
+	 * 
+	 * @param member
+	 * @return
+	 */
+	List<Member> getSons1(Member member);
 
 }
