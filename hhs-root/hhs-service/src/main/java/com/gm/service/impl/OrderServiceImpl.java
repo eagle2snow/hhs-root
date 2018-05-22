@@ -243,10 +243,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		logger.info("payBill={}", JSON.toJSON(payBill));
 
 		Order order = getOne("orderNo", orderNo);
-		List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
+		List<OrderItem> listEq = null;
+		if (!StringUtils.isEmpty(order)) {
+			listEq = orderItemService.listEq("order.id", order.getId());
+		}
 
 		for (OrderItem item : listEq) {
-			logger.info("orderItem={}", JSON.toJSON(item));
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
 			if (!StringUtils.isEmpty(commodity.getTotalStock())) {
@@ -323,12 +325,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			BigDecimal balance = member.getBalance();
 
-			memberService.tenReturnOne(member.getId());
+			memberService.tenReturnOne(orderId);
 			balance.add(member.getTenReturnOne()); // 十件商品返一件
 
-			memberService.returnFiveMoney(member.getId()); // 返5元
+			memberService.returnFiveMoney(member.getOpenid()); // 返5元
 
-			balance.add(memberService.returnMeal(member.getId())); // 返套餐
+			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
 
 			memberService.threeLevel(member.getId()); // 三级分润
 

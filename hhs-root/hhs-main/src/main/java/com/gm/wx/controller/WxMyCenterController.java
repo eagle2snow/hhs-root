@@ -406,12 +406,9 @@ public class WxMyCenterController extends WeixinBaseController {
 	public String myQrCode(HttpSession session, HttpServletRequest request) {
 		Member member = getRealMember();
 		
-		System.err.println(member.getQrCode()+"$$");
 		if (StringUtil.strNullOrEmpty(member.getQrCode())) {
 			
-			System.err.println("@@");
 			if (!StringUtil.strNullOrEmpty(member.getGeneralizeId())) {
-				System.err.println("@@@@");
 				member = memberService.genCodeAndQrCode(member, request);
 				
 				System.out.println(member.getQrCode()+"|!!");

@@ -33,8 +33,8 @@
 				<li ${status==3? 'class="on"': '' }>
 					<a href="${adp}myOrders/3">待收货</a>
 				</li>
-				<li ${status==4? 'class="on"': '' }>
-					<a href="${adp}myOrders/4">待评价</a>
+				<li ${status==10? 'class="on"': '' }>
+					<a href="${adp}myOrders/10">待评价</a>
 				</li>
 			</ul>
 		</nav>
@@ -126,14 +126,14 @@
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 
-					<c:if test="${order.status==4 and order.appraise==0}">
+					<c:if test="${order.status==10 and order.appraise==0}">
 						<span onclick="comments(${item.id})" style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 
-					<c:if test="${order.status==10}">
-						<span  style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>订单完成</span>
-					</c:if>
+<%-- 					<c:if test="${order.status==10}"> --%>
+<%-- 						<span  style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>订单完成</span> --%>
+<%-- 					</c:if> --%>
 
 
 					<c:if test="${order.status==2}">

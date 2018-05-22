@@ -168,7 +168,9 @@
 											
 											 <th>${model.secondLevelBrokerage}</th> --%>
 											
-											 <th>${model.payPathway eq 1 ? "微信":"支付宝"}</th>
+											 <th>
+											 
+											 ${model.payPathway eq 1 ? "微信":(model.payPathway eq 2 ? "支付宝":"支付失败")}</th>
 											
 											 <%-- <th>${model.appraise eq 1 ? "已评价":"未评价"}</th> --%>
 											
