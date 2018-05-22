@@ -1,7 +1,6 @@
 package com.gm.wx.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -81,6 +80,35 @@ public class WxIndexController extends WeixinBaseController {
 		session.setAttribute("iid", id);
 		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
+
+		Member m = memberService.get(14);
+
+		List<Member> members = memberService.getAllSons(m);
+
+		for (Member member : members) {
+			System.out.println(member.getId());
+		}
+
+		List<Member> members1 = memberService.getSons1(m);
+
+		for (Member member : members1) {
+			System.err.println(member.getId());
+		}
+
+		return PATH + "/index";
+	}
+
+	@RequestMapping("/test/{id}")
+	public String index(@PathVariable Integer id) {
+		Member m = memberService.get(id);
+		List<Member> members = memberService.getAllSons(m);
+//		for (Member member : members) {
+//			System.out.println(member.getId());
+//		}
+//		List<Member> members1 = memberService.getSons1(m);
+//		for (Member member : members1) {
+//			System.err.println(member.getId());
+//		}
 		return PATH + "/index";
 	}
 
@@ -116,6 +144,7 @@ public class WxIndexController extends WeixinBaseController {
 		}
 		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
+		logger.info("Map map = {}", JSON.toJSON(map));
 		return PATH + "/index";
 	}
 
@@ -130,7 +159,8 @@ public class WxIndexController extends WeixinBaseController {
 	 * Description:
 	 * </p>
 	 * 
-	 * @param id 1.酒   2.纸
+	 * @param id
+	 *            1.酒 2.纸
 	 * @return
 	 */
 	@RequestMapping("/getCommodityData/{id}")
@@ -173,12 +203,8 @@ public class WxIndexController extends WeixinBaseController {
 	}
 
 	/**
-	 * @Title: payMemberSuccess   
-	 * @Description: 购买会员套餐成功 
-	 * @param model
-	 * @return      
-	 * @return: String      
-	 * @throws
+	 * @Title: payMemberSuccess @Description: 购买会员套餐成功 @param model @return @return:
+	 *         String @throws
 	 */
 	@RequestMapping("/payMemberSuccess")
 	public String payMemberSuccess(ModelMap model) {
@@ -189,12 +215,8 @@ public class WxIndexController extends WeixinBaseController {
 
 	/**
 	 * 
-	 * @Title: payMemberFail   
-	 * @Description: 购买会员套餐失败
-	 * @param model
-	 * @return      
-	 * @return: String      
-	 * @throws
+	 * @Title: payMemberFail @Description: 购买会员套餐失败 @param model @return @return:
+	 *         String @throws
 	 */
 	@RequestMapping("/payMemberFail")
 	public String payMemberFail(ModelMap model) {
