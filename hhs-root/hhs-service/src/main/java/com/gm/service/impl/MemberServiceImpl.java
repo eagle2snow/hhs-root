@@ -4,12 +4,14 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,8 @@ import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IMemberDao;
 import com.gm.base.dao.ITenReturnOneDao;
+import com.gm.base.dto.Node;
+import com.gm.base.dto.SuperTree;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
 import com.gm.base.model.Order;
@@ -49,6 +53,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Resource
 	private ITenReturnOneDao tenReturnOneDao;
+
+	@Autowired
+	private SuperTree superTree;
 
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
@@ -177,7 +184,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		if (!StringUtils.isEmpty(member) && member.getLevel() != 1) { // 判断等级 除了 游客外
 			try {
-				TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeMember", member);
+				TenReturnOne tenReturnOne = null;
+				// TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity",
+				// member);
 				if (StringUtils.isEmpty(tenReturnOne)) {
 					for (OrderItem item : listEq) {
 						tenReturnOne = new TenReturnOne();
@@ -250,9 +259,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	/**
-	 * 返套餐金额
-	 * ①判断是否购买套餐
-	 * ②判断直推会员是否是十的倍数
+	 * 返套餐金额 ①判断是否购买套餐 ②判断直推会员是否是十的倍数
 	 */
 	@Override
 	public BigDecimal returnMeal(String openid) {
@@ -304,6 +311,83 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	public static void main(String[] args) {
+	}
+
+	// 获取直系会员
+	@Override
+	public List<Member> getAllSons(Member member) {
+
+		List<Node> nodeList = new ArrayList<Node>();
+
+		Node node1 = new Node("100001", "0");
+		Node node2 = new Node("100002", "100001");
+		Node node3 = new Node("100003", "100001");
+		Node node4 = new Node("100004", "100001");
+		Node node5 = new Node("100005", "100002");
+		Node node6 = new Node("100006", "100002");
+		Node node7 = new Node("100007", "100002");
+		Node node8 = new Node("100008", "100002");
+		Node node9 = new Node("100009", "100003");
+		Node node10 = new Node("100010", "100003");
+		Node node11 = new Node("100011", "100003");
+		Node node12 = new Node("100012", "100004");
+		Node node13 = new Node("100013", "100005");
+		Node node14 = new Node("100014", "100005");
+		Node node15 = new Node("100015", "100005");
+		Node node16 = new Node("100016", "100014");
+		Node node17 = new Node("100017", "100014");
+		Node node18 = new Node("100018", "100017");
+
+		nodeList.add(node1);
+		nodeList.add(node2);
+		nodeList.add(node3);
+		nodeList.add(node4);
+		nodeList.add(node5);
+		nodeList.add(node6);
+		nodeList.add(node7);
+		nodeList.add(node8);
+		nodeList.add(node9);
+		nodeList.add(node10);
+		nodeList.add(node11);
+		nodeList.add(node12);
+		nodeList.add(node13);
+		nodeList.add(node14);
+		nodeList.add(node15);
+		nodeList.add(node16);
+		nodeList.add(node17);
+		nodeList.add(node18);
+
+		List<Member> members = list();
+
+		List<Node> nodes = new ArrayList<>();
+		for (Member member2 : members) {
+			Node node = new Node(member2.getGeneralizeId(), member2.getReferrerGeneralizeId());
+			nodes.add(node);
+		}
+
+		// members.stream().map(m -> new Node(m)).collect(Collectors.toList());
+
+		for (Node node : nodes) {
+			System.out.println(node.getId() + "@" + node.getParentId());
+		}
+
+		SuperTree superTree = new SuperTree();
+
+		List<String> ids = superTree.getChildNodes(nodes, "100001");
+
+		System.out.println(ids.size() + "!!");
+
+		if (ids.size() > 0) {
+			return listIn("generalizeId", ids.toArray(new String[ids.size()]));
+		}
+		return null;
+	}
+
+	// 获取直推会员
+	@Override
+	public List<Member> getSons1(Member member) {
+		List<Member> members = listEq("referrerGeneralizeId", member.getGeneralizeId());
+		return members;
 	}
 
 }
