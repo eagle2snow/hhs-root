@@ -111,6 +111,18 @@
 				</ul>
 				</div>
 			</div>
+
+				<div id="Popup6" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 450px;height: 200px;position: fixed;top:34%;left: 42%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 16px;border-top-left-radius:5px;border-top-right-radius:5px;font-weight: bold;">提示</li>
+				<li style="height: 131px;width:450px;background: #fff;text-align: center;font-size: 20px;line-height: 131px;">数据执行中请稍等片刻
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off5" style="line-height: 40px;cursor: pointer;width: 450px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;"></span></li>
+				</ul>
+				</div>
+			</div>
 		
 		</div>
 		<%@ include file="/common/admin/footer.jsp"%>
@@ -181,24 +193,30 @@
 		
 		<script type="text/javascript">
 		function go(){
+			document.getElementById('Popup6').style.display = '';	
 			 $.getJSON("${ctx}admin/mysql/backup",
 					function(date) {
 			//alert(date);
 						if(date == "0") {
+							document.getElementById('Popup6').style.display = 'none';
 							document.getElementById('Popup2').style.display = '';					
 						}else{
+							document.getElementById('Popup6').style.display = 'none';
 							document.getElementById('Popup4').style.display = '';
 						}
 						
 						}); 
 		}
 		function go1(){
+			document.getElementById('Popup6').style.display = '';
 			 $.getJSON("${ctx}admin/mysql/restore",
 					function(date) {
 			//alert(date);
 						if(date == "0") {
+							document.getElementById('Popup6').style.display = 'none';
 							document.getElementById('Popup3').style.display = '';					
 						}else{
+							document.getElementById('Popup6').style.display = 'none';
 							document.getElementById('Popup5').style.display = '';
 						}
 						
