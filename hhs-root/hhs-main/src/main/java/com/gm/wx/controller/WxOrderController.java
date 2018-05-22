@@ -70,10 +70,10 @@ public class WxOrderController extends WeixinBaseController {
 	@GetMapping("lookOrder/{orderId}")
 	public String lookOrderView(@PathVariable Integer orderId) {
 		System.out.println(orderId);
-		return PATH+"lookOrder";
+		return PATH + "lookOrder";
 	}
 
-	//给我加急
+	// 给我加急
 	@ResponseBody
 	@RequestMapping("urgent/{orderId}")
 	public Map<String, Object> urgent(@PathVariable Integer orderId) {
