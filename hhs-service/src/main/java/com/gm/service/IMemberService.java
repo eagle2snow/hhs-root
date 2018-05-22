@@ -27,7 +27,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @Title: returnFiveMoney   
 	 * @Description: 返 5(元/人)
 	 */
-	void returnFiveMoney(Integer memberId);
+	void returnFiveMoney(String memberId);
 	
 	/**
 	 * @Title: returnMeal   
@@ -37,7 +37,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @return: BigDecimal      
 	 * @throws
 	 */
-	BigDecimal returnMeal(Integer memberId);
+	BigDecimal returnMeal(String openId);
 	
 	
 	/**
@@ -48,7 +48,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @return: Commodity      
 	 * @throws
 	 */
-	void tenReturnOne(Integer memberId);
+	void tenReturnOne(Integer orderId);
 
 	/**
 	 * 

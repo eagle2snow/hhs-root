@@ -20,9 +20,14 @@ import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IMemberDao;
 import com.gm.base.dao.ITenReturnOneDao;
+import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
+import com.gm.base.model.Order;
+import com.gm.base.model.OrderItem;
 import com.gm.base.model.TenReturnOne;
 import com.gm.service.IMemberService;
+import com.gm.service.IOrderItemService;
+import com.gm.service.IOrderService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
 import com.gm.utils.StringUtil;
@@ -35,6 +40,12 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Resource
 	private IMemberDao dao;
+
+	@Resource
+	private IOrderItemService orderItemService;
+
+	@Resource
+	private IOrderService orderService;
 
 	@Resource
 	private ITenReturnOneDao tenReturnOneDao;
@@ -85,18 +96,17 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public Member genCodeAndQrCode(Member member, HttpServletRequest request) {
 		logger.info("genCodeAndQrCode:Start");
 		String path = request.getServletContext().getRealPath(File.separator) + File.separator;
-		logger.info("path={}",path);
-		
+		logger.info("path={}", path);
+
 		String domain = request.getScheme() + "://" + request.getServerName();
-		logger.info("domain={}",domain);
-		
+		logger.info("domain={}", domain);
+
 		String generalizeId = AESCoder.encryptResultStr(member.getGeneralizeId(), Const.PASSWORD_SECRET);
-		logger.info("generalizeId={}",generalizeId);
-		
-		String createQrcode = QRCodeUtils.createQrcode(path + "static" + File.separator + "member" + File.separator + "qrcode"
-				+ File.separator + generalizeId + ".png", domain + "/wx/index?generalizeId=" + generalizeId);
-		logger.info("createQrcode={}",createQrcode);
-		
+		logger.info("generalizeId={}", generalizeId);
+
+		String createQrcode = QRCodeUtils.createQrcode(path + "static" + File.separator + "member" + File.separator
+				+ "qrcode" + File.separator + generalizeId + ".png", domain + "/wx/index?generalizeId=" + generalizeId);
+		logger.info("createQrcode={}", createQrcode);
 
 		if (StringUtils.isEmpty(member.getQrCode())) {
 			member.setQrCode("/static/member/qrcode/" + generalizeId + ".png");
@@ -158,27 +168,44 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void tenReturnOne(Integer memberId) {
+	public void tenReturnOne(Integer orderId) {
 		// ① 判断会员等级
-		Member member = dao.get(memberId);
+		Order order = orderService.get(orderId);
+		Member member = order.getMember();
+
+		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+
 		if (!StringUtils.isEmpty(member) && member.getLevel() != 1) { // 判断等级 除了 游客外
-			TenReturnOne tenReturnOne = tenReturnOneDao.getOne("member.id", memberId);
-			Integer time = tenReturnOne.getTime();
-			if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
-				// 通过次数获取会员
-				TenReturnOne one = tenReturnOneDao.getOne("time", time);
-				Member thisTimeMember = one.getThisTimeMember();
-				// 设置会员的十返一字段 空：设置， 非空：取出来再加
-				if (StringUtils.isEmpty(thisTimeMember.getTenReturnOne())) {
-					thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
-				} else {
-					thisTimeMember.setTenReturnOne(
-							thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
-				}
-			}
 			try {
+				TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeMember", member);
+				if (StringUtils.isEmpty(tenReturnOne)) {
+					for (OrderItem item : listEq) {
+						tenReturnOne = new TenReturnOne();
+						Commodity commodity = item.getCommodity();
+						tenReturnOne.setThisTimeCommodity(commodity);
+						if (StringUtils.isEmpty(tenReturnOne.getTime())) {
+							tenReturnOne.setTime(1);
+						} else {
+							tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+						}
+						tenReturnOne.setThisTimeMember(member);
+						tenReturnOneDao.add(tenReturnOne);
+					}
+				}
+				Integer time = tenReturnOne.getTime();
+				if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
+					// 通过次数获取会员
+					TenReturnOne one = tenReturnOneDao.getOne("time", time);
+					Member thisTimeMember = one.getThisTimeMember();
+					// 设置会员的十返一字段 空：设置， 非空：取出来再加
+					if (StringUtils.isEmpty(thisTimeMember.getTenReturnOne())) {
+						thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
+					} else {
+						thisTimeMember.setTenReturnOne(
+								thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
+					}
+				}
 				dao.update(member);
-				tenReturnOneDao.update(tenReturnOne);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -192,9 +219,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 
 	 */
 	@Override
-	public void returnFiveMoney(Integer memberId) {
+	public void returnFiveMoney(String openid) {
 
-		Member member = dao.getOne("openid", memberId);
+		Member member = dao.getOne("openid", openid);
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 3) { // 直推十人
@@ -208,20 +235,17 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 		}
 
-		if (!list.isEmpty() && list.size() > Const.betweenMember) {// 间间代理100人
-			if (!StringUtils.isEmpty(member.getGeneralizeCost())) {
+		if (!StringUtils.isEmpty(list)) {
+			if (list.size() > Const.betweenMember) {
 				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
 				member.setLevel(4); // 城市经理
 			} else {
 				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
 				member.setLevel(4); // 城市经理
-
 			}
+
+			dao.update(member);
 		}
-
-		dao.update(member);
-
-		logger.info("returnFiveMoney:The List size is size = {}", list.size());
 
 	}
 
@@ -231,19 +255,22 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * ②判断直推会员是否是十的倍数
 	 */
 	@Override
-	public BigDecimal returnMeal(Integer openid) {
+	public BigDecimal returnMeal(String openid) {
 		Member member = dao.getOne("openid", openid);
 		BigDecimal balance = member.getBalance();
 		List<Member> list = null;
-		if (!StringUtils.isEmpty(member.getSetMeal()) && member.getSetMeal() == 2) { // 购买套餐了
+
+		if (member.getSetMeal() == 2) { // 购买套餐了
 			Member parent1 = getParent1(member);
 			if (!StringUtils.isEmpty(parent1)) {
 				list = new ArrayList<>();
 				list.add(parent1);
 			}
 		}
-		if (!list.isEmpty() && list.size() >= Const.directMember) {
-			member.setSetMeal(3);// 返套餐钱
+		if (!StringUtils.isEmpty(list)) {
+			if (list.size() >= Const.directMember) {
+				member.setSetMeal(3);// 返套餐钱
+			}
 		}
 		if (member.getSetMeal() == 3) {
 			balance.add(Const.MEMBER_AMOUNT);
