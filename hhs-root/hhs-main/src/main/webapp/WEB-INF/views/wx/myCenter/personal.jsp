@@ -102,11 +102,11 @@
 	</ul>
 	
 	<ul class="gonavlist">
-		<li class="gonavitem"><a href="${adp}draw/drawLog" class="gonavdl">
-				<div class="dt">可提现金额</div> <span class="primarytxt"><span
-					class="mr10 fz30">${member.balance}</span>元</span> <i class="rgt"></i>
+		<li class="gonavitem"><a href="${adp}profile" class="gonavdl">
+				<div class="dt">公司简介</div> <i class="rgt"></i>
 		</a></li>
 	</ul>
+	
 	
 	<ul class="gonavlist">
 		<li class="gonavitem"><a href="${ctx}/wx/chat" class="gonavdl">
