@@ -193,7 +193,9 @@
 											</td>
 											<td>
 												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
+												<!--  
 												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
+												-->
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>
