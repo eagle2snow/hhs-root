@@ -24,6 +24,7 @@ import com.gm.api.baidu.ueditor.define.ActionMap;
 public final class ConfigManager {
 
 	private final String rootPath;
+	private String localSavePathPrefix;
 	private final String originalPath;
 	private final String contextPath;
 	private static final String configFileName = "ueditor" + File.separator + "config.json";
@@ -106,6 +107,7 @@ public final class ConfigManager {
 			conf.put("maxSize", this.jsonConfig.getLong("imageMaxSize"));
 			conf.put("allowFiles", this.getArray("imageAllowFiles"));
 			conf.put("fieldName", this.jsonConfig.getString("imageFieldName"));
+			localSavePathPrefix = this.jsonConfig.getString("localSavePathPrefix");
 			savePath = this.jsonConfig.getString("imagePathFormat");
 			break;
 
@@ -148,8 +150,9 @@ public final class ConfigManager {
 		}
 
 		conf.put("savePath", savePath);
+		conf.put("localSavePathPrefix", localSavePathPrefix);
 		conf.put("rootPath", this.rootPath);
-
+		
 		return conf;
 
 	}
