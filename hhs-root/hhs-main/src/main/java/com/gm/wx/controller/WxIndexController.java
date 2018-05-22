@@ -152,7 +152,7 @@ public class WxIndexController extends WeixinBaseController {
 	 * @param model
 	 * @return String
 	 */
-	@RequestMapping("/profile")
+	@RequestMapping("/myCenter/profile")
 	public String setProfileView(ModelMap model) {
 		model.put("member", this.getCurMember());
 		model.put("path", PATH);
