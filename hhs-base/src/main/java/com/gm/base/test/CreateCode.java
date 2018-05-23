@@ -2,7 +2,6 @@ package com.gm.base.test;
 
 import java.io.IOException;
 
-import com.gm.base.model.TestTime;
 import com.gm.gencode.Build;
 
 import freemarker.template.TemplateException;

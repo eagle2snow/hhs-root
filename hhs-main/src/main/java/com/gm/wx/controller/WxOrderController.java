@@ -1,6 +1,7 @@
 package com.gm.wx.controller;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,27 +70,37 @@ public class WxOrderController extends WeixinBaseController {
 	private IMemberAddressService memberAddressService;
 
 	private static final String PATH = "/wx/order/";
-
+	
 	// 查看订单
 	@GetMapping("lookOrder/{orderId}")
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		Order order = orderService.get(orderId);
-		
 		if (order == null)
 			return "error/404";
-		BigDecimal sum = new BigDecimal(0);
 		
+		BigDecimal sum = new BigDecimal(0);
 		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
-
 		if (items == null)
 			return "error/404";
 		for (OrderItem item : items)
 			sum = sum.add(item.getOriginalPrice());
+		
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", items.size());
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
-		model.addAttribute("discount", sum.subtract(order.getTotalMoney()));
+		BigDecimal discount = sum.subtract(order.getTotalMoney());
+		model.addAttribute("discount", discount.compareTo(new BigDecimal(0)) < 0 ? 0 : discount);
+		
+		if (order.getCreateTime() != null)
+			model.addAttribute("createTime", order.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		else
+			model.addAttribute("createTime", "");
+		
+		if (order.getPaymentTime() != null)
+			model.addAttribute("paymentTime", order.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+		else
+			model.addAttribute("paymentTime", "");
 		
 		return PATH + "lookOrder";
 	}
