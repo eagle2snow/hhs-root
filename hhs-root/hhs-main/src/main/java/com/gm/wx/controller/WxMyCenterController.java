@@ -120,10 +120,15 @@ public class WxMyCenterController extends WeixinBaseController {
 	 */
 	@RequestMapping("myMembers/{type}")
 	public String myMembers(ModelMap map, @PathVariable Integer type) {
-		Member member = getCurMember();
-		@SuppressWarnings("rawtypes")
-		List list = memberService.go().pq("nickname").pq("mobile").pq("createTime").pq("level")
-				.eq("referrerGeneralizeId", member.getGeneralizeId()).pqList();
+		List<Member> list = null;
+		String generalizeId = getCurMember().getGeneralizeId();
+		if (type == 1) {
+			list = memberService.list(" from member m where m.deleted=1 and m.referrerGeneralizeId='" + generalizeId
+					+ "' and m.setMeal=1");
+		} else if (2 == type) {
+			list = memberService.list(" from member m where m.deleted=1 and m.referrerGeneralizeId='" + generalizeId
+					+ "' and (m.setMeal=2 or m.setMeal=3)");
+		}
 		map.put("list", list);
 		map.put("path", PATH);
 		logger.info("会员下属列表 {}.", JSON.toJSON(list));
@@ -147,11 +152,8 @@ public class WxMyCenterController extends WeixinBaseController {
 	}
 
 	/**
-	 * @Title: checkPhone   
-	 * @Description: ajax验证手机号是否已经存在
-	 * @return      
-	 * @return: Map<String,Object>      
-	 * @throws
+	 * @Title: checkPhone @Description: ajax验证手机号是否已经存在 @return @return:
+	 *         Map<String,Object> @throws
 	 */
 	@ResponseBody
 	@PostMapping("checkPhone")
@@ -247,11 +249,16 @@ public class WxMyCenterController extends WeixinBaseController {
 
 	/**
 	 * 
-	 *<p>Title:replyMessage</p>
-	 *<p>Description:我的评论</p>
+	 * <p>
+	 * Title:replyMessage
+	 * </p>
+	 * <p>
+	 * Description:我的评论
+	 * </p>
 	 *
 	 * @param map
-	 * @param type	1： 评论	2：回复
+	 * @param type
+	 *            1： 评论 2：回复
 	 * @return
 	 */
 	@RequestMapping("replyMessage/{type}")
@@ -267,17 +274,22 @@ public class WxMyCenterController extends WeixinBaseController {
 
 	/**
 	 * 
-	 *<p>Title:deleteComment</p>
-	 *<p>Description:删除评论</p>
+	 * <p>
+	 * Title:deleteComment
+	 * </p>
+	 * <p>
+	 * Description:删除评论
+	 * </p>
 	 *
 	 * @param map
-	 * @param type id
+	 * @param type
+	 *            id
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("deleteComment/{id}")
 	public Map<String, Object> deleteComment(@PathVariable Integer id) {
-		
+
 		HashMap<String, Object> map = this.getMap();
 
 		if (commodityAppraiseService.deleteById(id, true)) {
@@ -289,7 +301,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		}
 
 		logger.info("deleteComment:the Map to Json is map = {}", JSON.toJSON(map));
-		
+
 		return map;
 
 	}
@@ -405,12 +417,12 @@ public class WxMyCenterController extends WeixinBaseController {
 	@RequestMapping("myQrCode")
 	public String myQrCode(HttpSession session, HttpServletRequest request) {
 		Member member = getRealMember();
-		
+
 		if (StringUtil.strNullOrEmpty(member.getQrCode())) {
-			
+
 			if (!StringUtil.strNullOrEmpty(member.getGeneralizeId())) {
 				member = memberService.genCodeAndQrCode(member, request);
-				
+
 				memberService.update(member);
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
