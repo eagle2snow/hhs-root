@@ -75,7 +75,7 @@ public class WxCommodityController extends WeixinBaseController {
 	public String commodityDetail(ModelMap map, @PathVariable Integer id) {
 
 		Commodity commodity = commodityService.get(id);
-		logger.info("commodityDetail:The Commodity to json is {}", JSON.toJSON(commodity));
+		logger.info("commodityDetail:The Commodity to json is {}", JSON.toJSON(commodity.getName()));
 		if (!StringUtils.isEmpty(commodity.getBrowse())) {
 			commodity.setBrowse(commodity.getBrowse() + 1);
 		} else {
