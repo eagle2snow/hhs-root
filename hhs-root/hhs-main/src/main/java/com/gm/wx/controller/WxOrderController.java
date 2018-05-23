@@ -74,15 +74,19 @@ public class WxOrderController extends WeixinBaseController {
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		System.out.println(orderId);
 		Order order = orderService.get(orderId);
+		if (order == null)
+			return "error/404";
 		BigDecimal sum = new BigDecimal(0);
 		List<OrderItem> items = order.getItems();
+		if (items == null)
+			return "error/404";
 		for (OrderItem item : items)
 			sum = sum.add(item.getOriginalPrice());
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", items.size());
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
-		model.addAttribute("discount", 111);
+		model.addAttribute("discount", sum.subtract(order.getTotalMoney()));
 		PayBill payBill = order.getPayBill();
 		return PATH + "lookOrder";
 	}
