@@ -72,7 +72,6 @@ public class WxOrderController extends WeixinBaseController {
 	// 查看订单
 	@GetMapping("lookOrder/{orderId}")
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
-		System.out.println(orderId);
 		Order order = orderService.get(orderId);
 		if (order == null)
 			return "error/404";
