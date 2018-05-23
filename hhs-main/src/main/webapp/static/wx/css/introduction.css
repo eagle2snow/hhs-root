@@ -15,15 +15,15 @@ body{
 .span1{
 	display: block;
 	float: left;
-	margin-top: 1rem;
-	font-size: 2rem;
+	margin-top: 0.2rem;
+	font-size: 1.2rem;
 	color: #ff9900;
 }
 .span2{
 	display: block;
 	float: left;
-	margin-top: 1rem;
-	font-size: 2rem;
+	margin-top: 0.2rem;
+	font-size: 1.2rem;
 	color: #999999;
 	margin-left: 2rem;
 }
@@ -38,10 +38,10 @@ body{
 	list-style: none;
 }
 .content>ul>li{
-	font-size:  1rem ;
+	font-size:  1.4rem ;
 	color: #333333;
-	line-height: 4rem ;
-	margin-top: 3rem;
+	line-height: 2rem ;
+	margin-top: 2rem;
 }
 .content>ul>li>span{
 	color: #000000;
@@ -50,14 +50,14 @@ body{
 .span3{
 	font-weight: normal !important;
 	display: block;
-	height: 6rem;
-	width: 23rem;
+	height: 3rem;
+	width: 13rem;
 	background: #8fbb26;	
 	border-radius: 9px;
-	font-size:2.8rem;
+	font-size:1.4rem;
 	color: #fff !important;
 	text-align: center;
-	line-height: 6rem;
+	line-height: 3rem;
 	margin-left: auto;
 	margin-right: auto;
 }
