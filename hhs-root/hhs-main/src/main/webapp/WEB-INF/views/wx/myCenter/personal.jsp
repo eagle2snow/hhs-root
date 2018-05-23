@@ -101,12 +101,6 @@
 		</a></li>
 	</ul>
 	
-	<ul class="gonavlist">
-		<li class="gonavitem"><a href="${adp}profile" class="gonavdl">
-				<div class="dt">公司简介</div> <i class="rgt"></i>
-		</a></li>
-	</ul>
-	
 	
 	<ul class="gonavlist">
 		<li class="gonavitem"><a href="${ctx}/wx/chat" class="gonavdl">

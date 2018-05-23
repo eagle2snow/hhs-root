@@ -121,13 +121,15 @@
 						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退换货中</span>
 					</c:if>
 
-					<c:if test="${order.status==4 and order.appraise==1 }">
-						<span <%-- onclick="lookAppraise(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
-						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
+					<c:if test="${order.status==10 and order.appraise==1 }">
+						<span onclick="lookAppraise()"  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
+						<span   class="defaultlinebtn radiusbtn msbtn">订单完成</span>
+						
 					</c:if>
 
 					<c:if test="${order.status==10 and order.appraise==0}">
-						<span onclick="comments(${item.id})" style="margin-left: 45%;" class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
+						<span onclick="comments(${order.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
+						<span   class="defaultlinebtn radiusbtn msbtn">订单完成</span>
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 
@@ -164,9 +166,13 @@
 		document.addEventListener("touchstart", function() {
 		}, true);
 		
-		//即刻评价 1
+		//查看评价
+		function lookAppraise(){ 
+			location.href='${ctx}wx/myCenter/replyMessage/1';
+		}
+		
+		//即刻评价 
 		function comments(orderId){
-			//alert(orderId);
 			location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
 		}
 		
@@ -183,7 +189,6 @@
 					$.alert(data.msg);
 					re();
 				}
-				$.alert(data.msg);
 					
 			});
 		}
@@ -191,8 +196,8 @@
 		//给我加急
 		function urgent(orderId){
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
+				$.alert(data.msg);
 				if(data.status == 1){
-					$.alert(data.msg);
 					$("#urgent").text("已加急"); 
 					re();
 				}else{

@@ -106,9 +106,9 @@
 										<c:forEach items="${page.list}" var="model">
 										<tr>
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
-											<td>${model.id}</td>
+											<td>${model.orderNo}</td>
 											
-											 <th>${model.name}</th>
+											 <th>${model.nickname}</th>
 											
 											 <th>${model.member.name}</th>
 											

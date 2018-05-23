@@ -75,7 +75,7 @@
 											<th >订单号</th>
 											<!-- <th>名称</th> -->
 											<th>订单状态</th>
-											<th>会员昵称</th>
+											<th>会员名字</th>
 											<th>订单总额</th>
 											<!-- <th>邮费</th> -->
 											<th>支付方式</th>
@@ -114,7 +114,7 @@
 										<c:forEach items="${page.list}" var="model">
 										<tr>
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
-											<td>${model.id}</td>
+											<td>${model.orderNo}</td>
 											
 											 <%-- <th>${model.name}</th> --%>
 											

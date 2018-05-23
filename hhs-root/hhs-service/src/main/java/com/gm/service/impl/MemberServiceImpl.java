@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.sse.Sse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -192,12 +193,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 						tenReturnOne = new TenReturnOne();
 						Commodity commodity = item.getCommodity();
 						tenReturnOne.setThisTimeCommodity(commodity);
-						if (StringUtils.isEmpty(tenReturnOne.getTime())) {
+						tenReturnOne.setThisTimeMember(member);
+
+						List<TenReturnOne> listEq2 = tenReturnOneDao.listEq("thisTimeCommodity.id", commodity.getId());
+						List<Integer> list = null;
+						if (!StringUtils.isEmpty(listEq2)) {
+							for (TenReturnOne tenReturnOne2 : listEq2) {
+								list = new ArrayList<>();
+								list.add(tenReturnOne2.getTime());
+							}
+						}
+						if (StringUtils.isEmpty(list) || list.size() == 0) {
+
 							tenReturnOne.setTime(1);
 						} else {
-							tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+							tenReturnOne.setTime(list.size() + 1);
 						}
-						tenReturnOne.setThisTimeMember(member);
+
 						tenReturnOneDao.add(tenReturnOne);
 					}
 				}
