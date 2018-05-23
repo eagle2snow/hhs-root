@@ -240,7 +240,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	public void payOrderSuccess(String orderNo) {
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
-		logger.info("payBill={}", JSON.toJSON(payBill));
+		logger.info("payBill={}", JSON.toJSON(payBill.getOrderNo()));
 
 		Order order = getOne("orderNo", orderNo);
 		List<OrderItem> listEq = null;
@@ -259,7 +259,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
 			}
-			logger.info("commodity={}", JSON.toJSON(commodity));
+			logger.info("commodity={}", JSON.toJSON(commodity.getName()));
 			commodityService.update(commodity);
 		}
 
@@ -268,7 +268,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		order.setPostageMoney(BigDecimal.valueOf(0));// 包邮
 		order.setPaymentTime(LocalDateTime.now());// 付款时间
 		order.setPayPathway(1);// 支付方式
-		logger.info("order={}", JSON.toJSON(order));
 		update(order);
 
 		// saveMemberBuy(order);
@@ -284,7 +283,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Order order = orderService.get(orderId);
 
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
-		logger.info("payBill={}", JSON.toJSON(payBill));
 
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
@@ -293,7 +291,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			// 商品的设置
 			commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
 			commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
-			logger.info("commodity={}", JSON.toJSON(commodity));
 			commodityService.update(commodity);
 		}
 
@@ -303,7 +300,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		}
 		order.setStatus("4"); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
-		logger.info("order={}", JSON.toJSON(order));
 		update(order);
 
 		// 规定七天后若是没有客户要求退货就执行订单完成方法
@@ -355,7 +351,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
 				member.setLevel(2);// 等级
 			}
-			logger.info("member={}", JSON.toJSON(member));
+			// logger.info("member={}", JSON.toJSON(member));
 			memberService.update(member);
 
 		} catch (Exception e) {
