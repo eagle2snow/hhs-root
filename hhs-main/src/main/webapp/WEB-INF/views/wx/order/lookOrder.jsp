@@ -54,10 +54,9 @@
 	<!--单号-->
 	<div class="footer">
 		<ul>
-			<li style="padding-top: 2rem;">订单编号：<span>
-					15624598252165362063</span></li>
+			<li style="padding-top: 2rem;">订单编号：<span>${order["orderNo"]}</span></li>
 			<li>微信支付： <span>2018052115624598252165362063</span></li>
-			<li>创建时间：<span> 2018-05-21 13：56：55</span></li>
+			<li>创建时间：<span> ${order["createTime"]}</span></li>
 			<li style="margin-bottom: 2rem;">付款时间： <span>2018-05-21
 					13：56：55</span></li>
 		</ul>

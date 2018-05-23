@@ -134,8 +134,7 @@ public class Order extends Model {
 
 	private PayBill payBill;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = "order_id", nullable = true)
+	@ManyToOne
 	public PayBill getPayBill() {
 		return payBill;
 	}
