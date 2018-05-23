@@ -44,7 +44,7 @@
 	<!--价格-->
 	<div class="content2">
 		<ul>
-			<li>运费（快递）<span>￥0.00</span></li>
+			<li>运费（快递）<span>￥ ${order["postageMoney"]}</span></li>
 			<li style="padding-top: 1.5rem;">优惠价<span>-￥ ${discount}
 			</span></li>
 			<li style="color: #333333; padding-bottom: 1.5rem">订单总价<span>￥
@@ -77,8 +77,7 @@
 			<li style="padding-top: 2rem;">订单编号：<span>${order["orderNo"]}</span></li>
 			<li>微信支付：<span>${order["orderNo"]}</span></li>
 			<li>创建时间：<span> ${order["createTime"]}</span></li>
-			<li style="margin-bottom: 2rem;">付款时间： <span>2018-05-21
-					13：56：55</span></li>
+			<li style="margin-bottom: 2rem;">付款时间： <span>${order["paymentTime"]}</span></li>
 		</ul>
 	</div>
 

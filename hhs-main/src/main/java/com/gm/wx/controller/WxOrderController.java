@@ -82,8 +82,7 @@ public class WxOrderController extends WeixinBaseController {
 			return "error/404";
 		BigDecimal sum = new BigDecimal(0);
 		
-		PayBill payBill = payBillService.getOne("t_pay_bill.order_no", order.getOrderNo());
-		List<OrderItem> items = orderItemService.listEq("order.order_no", order.getOrderNo());
+		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
 
 		if (items == null)
 			return "error/404";
