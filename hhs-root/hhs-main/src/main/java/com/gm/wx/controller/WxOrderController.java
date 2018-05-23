@@ -87,10 +87,14 @@ public class WxOrderController extends WeixinBaseController {
 			sum = sum.add(item.getOriginalPrice());
 		
 		List<PayBill> bills = payBillService.listEq("orderNo", order.getOrderNo());
-		if (bills == null || bills.size() != 1)
+		if (bills == null || bills.size() != 1) {
 			model.addAttribute("transactionId", "");
-		else
+			model.addAttribute("reaFee", "");
+		} else {
 			model.addAttribute("transactionId", bills.get(0).getTransactionId());
+			model.addAttribute("reaFee", bills.get(0).getReaFee());
+		}
+
 		
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", items.size());
