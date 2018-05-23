@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-
 @Component
 public class SuperTree {
 
@@ -30,9 +28,6 @@ public class SuperTree {
 			Node node = (Node) iterator.next();
 			// 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
 			if (!"".equals(node.getParentId()) && nodeId.equals(node.getId())) {
-				
-				System.out.println("********");
-				
 				recursionFn(list, node);
 			}
 		}
@@ -42,8 +37,6 @@ public class SuperTree {
 	private void recursionFn(List<Node> list, Node node) {
 		List<Node> childList = getChildList(list, node);// 得到子节点列表
 		if (hasChild(list, node)) {// 判断是否有子节点
-			
-			System.out.println("aaaa");
 			sonList.add(node.getId());
 			Iterator<Node> it = childList.iterator();
 			while (it.hasNext()) {
@@ -51,9 +44,6 @@ public class SuperTree {
 				recursionFn(list, n);
 			}
 		} else {
-			
-			System.out.println("bbb");
-			
 			sonList.add(node.getId());
 		}
 	}
@@ -81,13 +71,10 @@ public class SuperTree {
 	// 得到子节点列表
 	private List<Node> getChildList(List<Node> list, Node node) {
 		List<Node> nodeList = new ArrayList<Node>();
-		
-		System.out.println("son size = "+list.size());
-		
 		Iterator<Node> it = list.iterator();
 		while (it.hasNext()) {
 			Node n = (Node) it.next();
-			if (n.getParentId() == node.getId()) {
+			if (n.getParentId().equals(node.getId())) {
 				nodeList.add(n);
 			}
 		}
