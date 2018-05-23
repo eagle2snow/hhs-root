@@ -395,5 +395,12 @@ public class WxOrderController extends WeixinBaseController {
 		map.put("path", PATH);
 		return PATH + "payFail";
 	}
+	
+	@RequestMapping("pushOrders")
+	public String pushOrders(ModelMap map, Integer orderId) {
+		map.put("orderId", orderId);
+		map.put("path", PATH);
+		return PATH + "pushOrders";
+	}
 
 }

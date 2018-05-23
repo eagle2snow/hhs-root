@@ -72,7 +72,7 @@
 				class="order_mbico mbico"></i>
 				<div class="dt">我的订单</div>
 		</a></li>
-		<li class="ordernavitem"><a href="###" class="ordernavpro"> <i
+		<li class="ordernavitem"><a href="${adp }order/pushOrders" class="ordernavpro"> <i
 				class="commission_mbico mbico"></i>
 				<div class="dt">提成订单</div>
 		</a></li>
@@ -98,6 +98,13 @@
 		<li class="gonavitem"><a href="${adp}shippingAddress"
 			class="gonavdl">
 				<div class="dt">收货地址</div> <i class="rgt"></i>
+		</a></li>
+	</ul>
+	
+	<ul class="gonavlist">
+		<li class="gonavitem"><a href="${adp}draw/drawLog" class="gonavdl">
+				<div class="dt">可提现金额</div> <span class="primarytxt"><span
+					class="mr10 fz30">${member.balance}</span>元</span> <i class="rgt"></i>
 		</a></li>
 	</ul>
 	
