@@ -81,20 +81,6 @@ public class WxIndexController extends WeixinBaseController {
 		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
 
-		Member m = memberService.get(14);
-
-		List<Member> members = memberService.getAllSons(m);
-
-		for (Member member : members) {
-			System.out.println(member.getId());
-		}
-
-		List<Member> members1 = memberService.getSons1(m);
-
-		for (Member member : members1) {
-			System.err.println(member.getId());
-		}
-
 		return PATH + "/index";
 	}
 
@@ -102,13 +88,13 @@ public class WxIndexController extends WeixinBaseController {
 	public String index(@PathVariable Integer id) {
 		Member m = memberService.get(id);
 		List<Member> members = memberService.getAllSons(m);
-//		for (Member member : members) {
-//			System.out.println(member.getId());
-//		}
-//		List<Member> members1 = memberService.getSons1(m);
-//		for (Member member : members1) {
-//			System.err.println(member.getId());
-//		}
+		// for (Member member : members) {
+		// System.out.println(member.getId());
+		// }
+		// List<Member> members1 = memberService.getSons1(m);
+		// for (Member member : members1) {
+		// System.err.println(member.getId());
+		// }
 		return PATH + "/index";
 	}
 
@@ -182,7 +168,7 @@ public class WxIndexController extends WeixinBaseController {
 	 * @param model
 	 * @return String
 	 */
-	@RequestMapping("/myCenter/profile")
+	@RequestMapping("profile")
 	public String setProfileView(ModelMap model) {
 		model.put("member", this.getCurMember());
 		model.put("path", PATH);
