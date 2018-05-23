@@ -263,10 +263,10 @@ public class WxOrderController extends WeixinBaseController {
 
 		List addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
 				.pq("defaultAddress").eq("member.id", member.getId()).pqList();
-		map.put("addressList", JSON.toJSONString(addressList));
-		map.put("order", JSON.toJSONString(order));
+		map.put("addressList", JSON.toJSON(addressList));
+		map.put("order", JSON.toJSON(order));
 		List<OrderItem> items = orderItemService.listEq("order.id", orderId);
-		map.put("items", JSON.toJSONString(items));
+		map.put("items", JSON.toJSON(items));
 		map.put("path", PATH);
 		map.put("orderId", orderId);
 		if (null != order.getMemberAddress()) {

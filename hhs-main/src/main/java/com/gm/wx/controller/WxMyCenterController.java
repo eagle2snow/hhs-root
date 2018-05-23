@@ -126,7 +126,7 @@ public class WxMyCenterController extends WeixinBaseController {
 				.eq("referrerGeneralizeId", member.getGeneralizeId()).pqList();
 		map.put("list", list);
 		map.put("path", PATH);
-		logger.info("会员下属列表 {}.", JSON.toJSONString(list));
+		logger.info("会员下属列表 {}.", JSON.toJSON(list));
 		return PATH + "myMembers";
 	}
 
@@ -239,8 +239,8 @@ public class WxMyCenterController extends WeixinBaseController {
 
 		}
 
-		logger.info("updateAction: the curMember to json is {}.", JSON.toJSONString(curMember));
-		logger.info("updateAction: the Map to json is {}.", JSON.toJSONString(map));
+		logger.info("updateAction: the curMember to json is {}.", JSON.toJSON(curMember));
+		logger.info("updateAction: the Map to json is {}.", JSON.toJSON(map));
 
 		return map;
 	}
@@ -319,7 +319,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		logger.info("editReferrerAction: the realMember  is {}.", JSON.toJSON(realMember));
 
 		Member member = memberService.getOne("generalizeId", referrerGeneralizeId);
-		logger.info("editReferrerAction: the member  is {}.", JSON.toJSONString(member));
+		logger.info("editReferrerAction: the member  is {}.", JSON.toJSON(member));
 
 		HashMap<String, Object> map = this.getMap();
 
@@ -343,17 +343,17 @@ public class WxMyCenterController extends WeixinBaseController {
 							memberService.update(realMember);
 
 							map.put("msg", "1");// 修改成功
-							logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSONString(map));
+							logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSON(map));
 							getRequest().getSession().setAttribute(Const.CUR_WX_MEMBER, realMember);
 						} else {
 							map.put("msg", "2");// 不存在该推荐人
-							logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSONString(map));
+							logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSON(map));
 
 						}
 
 					} else {
 						map.put("msg", "3");// 推荐人已经更改过,不可再一次更改了。
-						logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSONString(map));
+						logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSON(map));
 					}
 				} else {
 					map.put("msg", "4");// 推荐人不可以更改为自己的直推代理
@@ -373,22 +373,22 @@ public class WxMyCenterController extends WeixinBaseController {
 						memberService.update(realMember);
 
 						map.put("msg", "1");// 修改成功
-						logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSONString(map));
+						logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSON(map));
 						getRequest().getSession().setAttribute(Const.CUR_WX_MEMBER, realMember);
 					} else {
 						map.put("msg", "2");// 不存在该推荐人
-						logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSONString(map));
+						logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSON(map));
 
 					}
 
 				} else {
 					map.put("msg", "3");// 推荐人已经更改过,不可再一次更改了。
-					logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSONString(map));
+					logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSON(map));
 				}
 			}
 
 		}
-		logger.info("editReferrerAction: ④ the map to json  is {}.", JSON.toJSONString(map));
+		logger.info("editReferrerAction: ④ the map to json  is {}.", JSON.toJSON(map));
 		return map;
 
 	}
