@@ -55,18 +55,18 @@
 
 	<div
 		style="width: 100%; height: 4rem; background: #fff; margin-top: 0.1rem;">
-		<span style="color: #333333; font-size: 1.5rem; margin-left: 2rem;">实付款</span>
-		<span style="color: #8fbb26; font-size: 1.5rem; margin-left: 57%;">￥
+		<span style="float: left;display: block;color: #333333; font-size: 1.5rem; margin-left: 2rem;margin-top: 1rem;">实付款</span>
+		<span style="color: #8fbb26; font-size: 1.5rem;float: right;margin-right: 2rem">￥
 			<span style="font-size: 2.5rem;">${order["totalMoney"]}</span>
 		</span>
 
 
 		<div
-			style="width: 100%; height: 6rem; padding-top: 1rem; background: #fff; margin-top: 0.4rem;">
+			style="width: 100%; height: 6rem; padding-top: 5rem; background: #fff; margin-top: 0.4rem;">
 			<span class="span1"><img
-				src="/static/wx/images/details/contentSeller.png" /><a>联系卖家</a></span> <span
+				src="/static/wx/images/details/contentSeller.png" /><a href="/wx/chat">联系卖家</a></span> <span
 				class="span2"><img
-				src="/static/wx/images/details/personal.png" /><a>个人中心</a></span>
+				src="/static/wx/images/details/personal.png" /><a href="/wx/myCenter/index">个人中心</a></span>
 		</div>
 
 	</div>
@@ -77,7 +77,7 @@
 			<li style="padding-top: 2rem;">订单编号：<span>${order["orderNo"]}</span></li>
 			<li>微信支付：<span>${order["orderNo"]}</span></li>
 			<li>创建时间：<span> ${order["createTime"]}</span></li>
-			<li style="margin-bottom: 2rem;">付款时间： <span>${order["paymentTime"]}</span></li>
+			<li style="margin-bottom: 2rem;">付款时间：<span>${order["paymentTime"]}</span></li>
 		</ul>
 	</div>
 
