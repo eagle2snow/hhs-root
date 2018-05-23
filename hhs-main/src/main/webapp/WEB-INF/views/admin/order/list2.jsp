@@ -41,7 +41,7 @@
 													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
 												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
 													添加</button> --%></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
-											</span>
+											</span> 
 										</div>
 									</div>
 									<div class="col-sm-6">

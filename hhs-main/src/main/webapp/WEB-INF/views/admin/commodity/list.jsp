@@ -38,7 +38,7 @@
 											<span class="l"><a href="javascript:;"
 												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
 													class="glyphicon glyphicon-trash"></i> 批量删除</a> <button
-													onclick="opens('添加',900,900,'${adp}add.htm')"
+													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
 												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
 													添加</button></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
 											</span>
