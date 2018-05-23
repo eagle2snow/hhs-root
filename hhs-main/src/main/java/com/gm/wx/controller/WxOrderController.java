@@ -1,5 +1,6 @@
 package com.gm.wx.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,11 +74,15 @@ public class WxOrderController extends WeixinBaseController {
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		System.out.println(orderId);
 		Order order = orderService.get(orderId);
+		BigDecimal sum = new BigDecimal(0);
 		List<OrderItem> items = order.getItems();
-		model.addAttribute("foo", "bar");
+		for (OrderItem item : items)
+			sum = sum.add(item.getOriginalPrice());
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", items.size());
 		model.addAttribute("order", order);
+		model.addAttribute("sum", sum);
+		model.addAttribute("discount", 111);
 		PayBill payBill = order.getPayBill();
 		return PATH + "lookOrder";
 	}
