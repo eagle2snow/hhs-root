@@ -106,7 +106,8 @@
 					</c:if>
 					
 					<c:if test="${order.status==3}">
-						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">确认收货</span> 
+						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" >查看快递</span> 
+						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" >确认收货</span> 
 					</c:if>
 
 					<c:if test="${order.status==7}">
@@ -151,6 +152,21 @@
 		</ul>
 		<!-- end 一行 -->
 		<!--end 中间-->
+		
+		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display: ;">
+				<div style="width: 300px;height: 200px;position: fixed;top:20%;left: 15%;">
+				<ul>
+				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 2rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递</li>
+				<li style="height: 131px;width:300px;background: #fff">
+					<span style="display: block;float: left;font-size: 2rem;margin-left: 35%;margin-top: 5%;">快递公司</span><br>
+					<span style="display: block;float: left;font-size: 2rem;margin-left: 10%;margin-top: 5%">4651654619656164</span>
+				</li>
+				<li style="background: #fff;">
+				<span id="Popup_off" style="line-height: 40px;cursor: pointer;width: 300px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">复制单号</span></li>
+				</ul>
+				</div>
+			</div>
+		
 
 		<%@ include file="/common/wx/js.jsp"%>
 		<%@ include file="/common/wx/socket.jsp"%>
@@ -236,7 +252,13 @@
 			
 		}
 	</script>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	  $("#Popup_off").click(function(){
+	  $("#Popup").fadeToggle(500);
+	  });
+});
+</script>
 
 </body>
 </html>
