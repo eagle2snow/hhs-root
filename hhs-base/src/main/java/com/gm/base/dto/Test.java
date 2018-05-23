@@ -9,12 +9,12 @@ public class Test {
 	public static void main(String[] args) {
 		List<Node> nodeList = new ArrayList<Node>();
 
-		Node node1 = new Node("1100", "1");
-		Node node2 = new Node("1110", "1");
-		Node node3 = new Node("1111", "1");
-		Node node4 = new Node("2200", "2");
-		Node node5 = new Node("2220", "2");
-		Node node6 = new Node("3300", "3");
+		Node node1 = new Node("1100", "10000");
+		Node node2 = new Node("1110", "10000");
+		Node node3 = new Node("1111", "10000");
+		Node node4 = new Node("2200", "20000");
+		Node node5 = new Node("2220", "20000");
+		Node node6 = new Node("3300", "30000");
 		// Node node4 = new Node("100004", "100001");
 		// Node node5 = new Node("100005", "100002");
 		// Node node6 = new Node("100006", "100002");
