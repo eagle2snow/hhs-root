@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.gm.base.model.Member;
 import com.gm.base.model.MemberAddress;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
+import com.gm.base.model.PayBill;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberAddressService;
@@ -68,8 +70,15 @@ public class WxOrderController extends WeixinBaseController {
 
 	// 查看订单
 	@GetMapping("lookOrder/{orderId}")
-	public String lookOrderView(@PathVariable Integer orderId) {
+	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		System.out.println(orderId);
+		Order order = orderService.get(orderId);
+		List<OrderItem> items = order.getItems();
+		model.addAttribute("foo", "bar");
+		model.addAttribute("items", items);
+		model.addAttribute("itemSize", items.size());
+		model.addAttribute("order", order);
+		PayBill payBill = order.getPayBill();
 		return PATH + "lookOrder";
 	}
 
