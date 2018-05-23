@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -125,8 +129,20 @@ public class Order extends Model {
 	private String wxNumber;// 微信单号
 
 	private String orderNo;// 订单号
-	
+
 	private List<OrderItem> items = new ArrayList<>();
+
+	private PayBill payBill;
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "order_id", nullable = true)
+	public PayBill getPayBill() {
+		return payBill;
+	}
+
+	public void setPayBill(PayBill payBill) {
+		this.payBill = payBill;
+	}
 
 	@ManyToOne
 	public Member getMember() {
@@ -169,12 +185,6 @@ public class Order extends Model {
 		this.orderRemarks = orderRemarks;
 	}
 
-	
-
-	
-
-	
-
 	/**
 	 * @return the paymentTime
 	 */
@@ -183,7 +193,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param paymentTime the paymentTime to set
+	 * @param paymentTime
+	 *            the paymentTime to set
 	 */
 	public void setPaymentTime(LocalDateTime paymentTime) {
 		this.paymentTime = paymentTime;
@@ -197,7 +208,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param shipmentsTime the shipmentsTime to set
+	 * @param shipmentsTime
+	 *            the shipmentsTime to set
 	 */
 	public void setShipmentsTime(LocalDateTime shipmentsTime) {
 		this.shipmentsTime = shipmentsTime;
@@ -211,7 +223,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param receivingTime the receivingTime to set
+	 * @param receivingTime
+	 *            the receivingTime to set
 	 */
 	public void setReceivingTime(LocalDateTime receivingTime) {
 		this.receivingTime = receivingTime;
@@ -225,7 +238,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param applyForTime the applyForTime to set
+	 * @param applyForTime
+	 *            the applyForTime to set
 	 */
 	public void setApplyForTime(LocalDateTime applyForTime) {
 		this.applyForTime = applyForTime;
@@ -239,7 +253,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param checkTime the checkTime to set
+	 * @param checkTime
+	 *            the checkTime to set
 	 */
 	public void setCheckTime(LocalDateTime checkTime) {
 		this.checkTime = checkTime;
@@ -253,7 +268,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param buyerDshipmentsTime the buyerDshipmentsTime to set
+	 * @param buyerDshipmentsTime
+	 *            the buyerDshipmentsTime to set
 	 */
 	public void setBuyerDshipmentsTime(LocalDateTime buyerDshipmentsTime) {
 		this.buyerDshipmentsTime = buyerDshipmentsTime;
@@ -267,7 +283,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param refundTime the refundTime to set
+	 * @param refundTime
+	 *            the refundTime to set
 	 */
 	public void setRefundTime(LocalDateTime refundTime) {
 		this.refundTime = refundTime;
@@ -281,7 +298,8 @@ public class Order extends Model {
 	}
 
 	/**
-	 * @param finishTime the finishTime to set
+	 * @param finishTime
+	 *            the finishTime to set
 	 */
 	public void setFinishTime(LocalDateTime finishTime) {
 		this.finishTime = finishTime;
@@ -441,7 +459,8 @@ public class Order extends Model {
 		this.orderNo = orderNo;
 	}
 
-	@Transient
+	@OneToMany(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "order_id")
 	public List<OrderItem> getItems() {
 		return items;
 	}
