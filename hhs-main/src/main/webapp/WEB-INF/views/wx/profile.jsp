@@ -17,6 +17,7 @@
 	<script src="${ctx}static/wx/js/tool.js"></script>
 	<center>
 		<h1>公司简介页面</h1>
+		<h2>公司简介页面</h2>
 	</center>
 </body>
 </html>
