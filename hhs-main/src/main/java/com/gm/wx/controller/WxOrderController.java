@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
+import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
 import com.gm.base.model.MemberAddress;
 import com.gm.base.model.Order;
@@ -32,6 +33,7 @@ import com.gm.service.IMemberAddressService;
 import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
+import com.gm.service.IPayBillService;
 import com.gm.utils.StringUtil;
 
 /**
@@ -55,6 +57,8 @@ public class WxOrderController extends WeixinBaseController {
 	private static final Logger logger = LoggerFactory.getLogger(WxOrderController.class);
 
 	@Resource
+	private IPayBillService payBillService;
+	@Resource
 	private ICommodityService commodityService;
 	@Resource
 	private ICartService cartService;
@@ -73,10 +77,14 @@ public class WxOrderController extends WeixinBaseController {
 	@GetMapping("lookOrder/{orderId}")
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		Order order = orderService.get(orderId);
+		
 		if (order == null)
 			return "error/404";
 		BigDecimal sum = new BigDecimal(0);
-		List<OrderItem> items = order.getItems();
+		
+		PayBill payBill = payBillService.getOne("t_pay_bill.order_no", order.getOrderNo());
+		List<OrderItem> items = orderItemService.listEq("order.order_no", order.getOrderNo());
+
 		if (items == null)
 			return "error/404";
 		for (OrderItem item : items)
@@ -86,7 +94,7 @@ public class WxOrderController extends WeixinBaseController {
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
 		model.addAttribute("discount", sum.subtract(order.getTotalMoney()));
-		PayBill payBill = order.getPayBill();
+		
 		return PATH + "lookOrder";
 	}
 
