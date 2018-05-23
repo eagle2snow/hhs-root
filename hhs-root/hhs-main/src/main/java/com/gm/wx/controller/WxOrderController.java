@@ -25,6 +25,7 @@ import com.gm.base.model.Member;
 import com.gm.base.model.MemberAddress;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
+import com.gm.base.model.PayBill;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberAddressService;
@@ -84,6 +85,12 @@ public class WxOrderController extends WeixinBaseController {
 			return "error/404";
 		for (OrderItem item : items)
 			sum = sum.add(item.getOriginalPrice());
+		
+		List<PayBill> bills = payBillService.listEq("orderNo", order.getOrderNo());
+		if (bills == null || bills.size() != 1)
+			model.addAttribute("transactionId", "");
+		else
+			model.addAttribute("transactionId", bills.get(0).getTransactionId());
 		
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", items.size());
