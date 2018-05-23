@@ -25,11 +25,11 @@
 
     <c:forEach items="${items}" var="oneItem">
         <div class="item">
-            <img src=${oneItem["imgerPath"]}/>
+            <img src=${oneItem.imgerPath}/>
             <ul>
-                <li>${oneItem["name"]}</li>
+                <li>${oneItem.name}</li>
                 <li style="margin-top: 1rem; color: #999999; font-size: 1.3rem;">
-                        ${oneItem["specifications"]}</li>
+                        ${oneItem.specifications}</li>
                 <li style="margin-top: 1rem; height: 5rem;">单价：${oneItem.originalPrice}<span>X
                         ${oneItem.buyCount}</span></li>
             </ul>
