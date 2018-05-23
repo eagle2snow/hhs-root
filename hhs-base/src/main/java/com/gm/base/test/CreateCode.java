@@ -2,11 +2,7 @@ package com.gm.base.test;
 
 import java.io.IOException;
 
-import com.gm.base.model.Draw;
-import com.gm.base.model.MemberBuy;
-import com.gm.base.model.OrderItem;
-import com.gm.base.model.PayBill;
-import com.gm.base.model.TenReturnOne;
+import com.gm.base.model.TestTime;
 import com.gm.gencode.Build;
 
 import freemarker.template.TemplateException;
@@ -33,8 +29,8 @@ public class CreateCode {
 		// Build.buildCode(OrderItem.class, "idao,dao,si,is");
 
 		// Build.buildCode(TenReturnOne.class, "idao,dao,si,is");
-		
-		//Build.buildCode(PayBill.class, "idao,dao,si,is");
+
+		// Build.buildCode(TestTime.class, "update");
 
 	}
 

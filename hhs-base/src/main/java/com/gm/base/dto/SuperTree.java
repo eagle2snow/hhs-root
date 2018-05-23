@@ -82,7 +82,7 @@ public class SuperTree {
 	private List<Node> getChildList(List<Node> list, Node node) {
 		List<Node> nodeList = new ArrayList<Node>();
 		
-		System.out.println(list.size()+"%%%");
+		System.out.println("son size = "+list.size());
 		
 		Iterator<Node> it = list.iterator();
 		while (it.hasNext()) {

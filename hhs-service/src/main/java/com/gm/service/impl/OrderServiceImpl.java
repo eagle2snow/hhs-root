@@ -341,21 +341,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			for (OrderItem item : listEq) {
 				Commodity commodity = item.getCommodity();
 				if (null != commodity) {
-					TenReturnOne tenReturnOne = oneDao.getOne("thisTimeCommodity", commodity);
-
-					if (tenReturnOne.getTime() != null) {
-						tenReturnOne.setTime(tenReturnOne.getTime() + 1);
-					} else {
-						tenReturnOne.setTime(1);
-					}
-					tenReturnOne.setThisTimeCommodity(commodity);
-					tenReturnOne.setThisTimeMember(member);
 					list = new ArrayList<>();
 					list.add(commodity);
-					oneDao.save(tenReturnOne);
+
 				}
 			}
-
 			member.setLove(member.getLove() + list.size());// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
