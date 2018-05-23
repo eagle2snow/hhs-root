@@ -286,7 +286,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
-			logger.info("orderItem={}", JSON.toJSON(item));
+			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
 			commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
