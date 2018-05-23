@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -44,14 +45,12 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	private static final Logger logger = LoggerFactory.getLogger(WxCommodityCommentsController.class);
 	private static final String PATH = "wx/comments/";
 
-	@Autowired
+	@Resource
 	private IOrderItemService itemService;
 
 	@Autowired
 	private ICommodityAppraiseService appraiseService;
 
-	@Autowired
-	private CommodityEvaluationServiceImpl commodityEvaluationService;
 
 	@Autowired
 	private CommodityAppraiseServiceImpl appraiseServiceImpl;
@@ -113,12 +112,14 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		}
 
 		// List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
-		OrderItem orderItems = itemService.get(orderId);
+		OrderItem orderItems = itemService.getOne("order.id", orderId);
 		logger.info("toCommondityComment:the pojo OrderItem = {}", JSON.toJSON(orderItems));
 
 		map.put("orderItems", orderItems);
 		map.put("orderId", orderId);
 		map.put("path", PATH);
+		
+		
 
 		return PATH + "commodityComments";
 	}
