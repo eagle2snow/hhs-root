@@ -69,10 +69,10 @@
 <!--单号-->
 <div class="footer">
     <ul>
-        <li style="padding-top: 2rem;">订单编号：<span>${order.orderNo}</span></li>
-        <li>微信支付：<span>${transactionId}</span></li>
-        <li>创建时间：<span> ${createTime}</span></li>
-        <li style="margin-bottom: 2rem;">付款时间：<span>${paymentTime}</span></li>
+        <li style="padding-top: 2rem;">创建时间：<span>${createTime}</span></li>
+        <li >付款时间：<span>${paymentTime}</span></li>
+        <li >订单编号：<span>${order.orderNo}</span></li>
+        <li style="margin-bottom: 2rem;">微信支付：<span>${transactionId}</span></li>
     </ul>
 </div>
 
