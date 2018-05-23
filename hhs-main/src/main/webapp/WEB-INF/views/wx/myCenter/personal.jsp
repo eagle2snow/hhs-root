@@ -72,7 +72,7 @@
 				class="order_mbico mbico"></i>
 				<div class="dt">我的订单</div>
 		</a></li>
-		<li class="ordernavitem"><a href="${adp }order/pushOrders" class="ordernavpro"> <i
+		<li class="ordernavitem"><a href="${adp }order/pushOrders/1" class="ordernavpro"> <i
 				class="commission_mbico mbico"></i>
 				<div class="dt">提成订单</div>
 		</a></li>
