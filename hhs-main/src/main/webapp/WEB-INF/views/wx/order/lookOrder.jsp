@@ -14,7 +14,10 @@
 
 	<!--订单LOGO-->
 	<div class="content">
-		<img src="/static/wx/images/details/01.png" /> <span>查看订单</span>
+		<img src="/static/wx/images/details/01.png" />
+		<!--
+		<span>查看订单</span> 
+		 -->
 	</div>
 
 	<!--商品-->
