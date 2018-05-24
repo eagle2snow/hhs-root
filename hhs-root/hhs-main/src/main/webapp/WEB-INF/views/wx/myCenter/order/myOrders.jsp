@@ -152,7 +152,7 @@
 		<!-- end 一行 -->
 		<!--end 中间-->
 		
-		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display: ;">
+		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 73%;height: 12.5rem;position: fixed;top:20%;left: 15%;">
 				<ul>
 				<li style="padding-left: 2rem;background: #8fbb26; height: 2.5rem;text-align: center;line-height: 2.5rem;color: #fff;font-size: 1.5rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递
