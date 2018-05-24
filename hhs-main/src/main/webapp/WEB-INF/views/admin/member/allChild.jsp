@@ -23,7 +23,7 @@
         <c:forEach items="${allChild}" var="one">
             <tr>
                 <td>${one.nickname}</td>
-                <td>${one.gender}</td>
+                <td>${one.gender eq 1?'男':(one.gender eq 2?'女':'不详')}</td>
                 <td>${one.country}</td>
                 <td>${one.province}</td>
                 <td>${one.city}</td>
