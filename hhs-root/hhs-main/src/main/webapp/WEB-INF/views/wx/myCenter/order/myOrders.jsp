@@ -91,7 +91,7 @@
 					</c:forEach>
 				</li>
 
-				<li style="background-color: #fff;padding-left: 55%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
+				<li style="background-color: #fff;padding-left: 52%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
 
 					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span>
 						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
