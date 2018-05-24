@@ -126,6 +126,8 @@ public class Order extends Model {
 
 	private String orderNo;// 订单号
 	
+	private String exchange = "0";//0未兑换  1已兑换
+	
 	private List<OrderItem> items = new ArrayList<>();
 
 	@ManyToOne
@@ -448,6 +450,23 @@ public class Order extends Model {
 
 	public void setItems(List<OrderItem> items) {
 		this.items = items;
+	}
+
+	/**
+	 * @return the exchange
+	 */
+	@Column(name="exchange" ,length=2 )
+	public String getExchange() {
+		if(this.exchange == null) {return "0";}else {
+			return this.exchange;
+		}
+	}
+
+	/** 
+	 * @param exchange the exchange to set
+	 */
+	public void setExchange(String exchange) {
+		this.exchange = exchange;
 	}
 
 }
