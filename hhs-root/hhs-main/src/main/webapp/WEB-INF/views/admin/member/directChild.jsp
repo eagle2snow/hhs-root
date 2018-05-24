@@ -16,6 +16,7 @@
             <th>省份</th>
             <th>城市</th>
             <th>手机号</th>
+            <th>最后登录时间</th>
         </tr>
         </thead>
 
@@ -28,6 +29,7 @@
                 <td>${one.province}</td>
                 <td>${one.city}</td>
                 <td>${one.mobile}</td>
+                <td>${one.loginTime}</td>
             </tr>
         </c:forEach>
         </tbody>
