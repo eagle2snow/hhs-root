@@ -10,10 +10,9 @@
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
+            <th>姓名</th>
             <th>昵称</th>
             <th>性别</th>
-            <th>国家</th>
-            <th>省份</th>
             <th>城市</th>
             <th>手机号</th>
             <th>最后登录时间</th>
@@ -23,10 +22,9 @@
         <tbody>
         <c:forEach items="${allChild}" var="one">
             <tr>
+                <td>${one.name}</td>
                 <td>${one.nickname}</td>
                 <td>${one.gender eq 1?'男':(one.gender eq 2?'女':'不详')}</td>
-                <td>${one.country}</td>
-                <td>${one.province}</td>
                 <td>${one.city}</td>
                 <td>${one.mobile}</td>
                 <td>${one.loginTime}</td>
