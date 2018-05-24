@@ -93,8 +93,8 @@
 
 				<li style="background-color: #fff;padding-left: 52%;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
 
-					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn">马上付款</span>
-						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">取消订单</span>
+					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">马上付款</span>
+						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;">取消订单</span>
 					</c:if>
 
 					<c:if test="${order.status ne 1 and order.status ne 2 and order.status ne 4}">
@@ -102,35 +102,34 @@
 					</c:if>
 
 					<c:if test="${order.status==9}">
-						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退款成功</span>
+						<span class="defaultlinebtn radiusbtn msbtn"  style="float: right;margin-right: 2rem;">退款成功</span>
 					</c:if>
 					
 					<c:if test="${order.status==3}">
-						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" >查看快递</span> 
-						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" >确认收货</span> 
+						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;" >确认收货</span> 
+						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;" >查看快递</span> 
 					</c:if>
 
 					<c:if test="${order.status==7}">
-						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">待卖家收货</span>
+						<span class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">待卖家收货</span>
 					</c:if>
 
 					<c:if test="${order.status==6}">
-						<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">我要退货</span>
+						<span <%-- onclick="exitGoods(${order.id})" --%>  class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">我要退货</span>
 					</c:if>
 
 					<c:if test="${order.status==5}">
-						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left:45%;">退换货中</span>
+						<span class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">退换货中</span>
 					</c:if>
 
 					<c:if test="${order.status==10 and order.appraise==1 }">
-						<span onclick="lookAppraise()"  class="defaultlinebtn radiusbtn msbtn">查看评价</span>
-						<span   class="defaultlinebtn radiusbtn msbtn">订单完成</span>
-						
+						<span   class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">订单完成</span>
+						<span onclick="lookAppraise()"  class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;">查看评价</span>
 					</c:if>
 
 					<c:if test="${order.status==10 and order.appraise==0}">
-						<span onclick="comments(${order.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''}>即刻评价</span>
-						<span   class="defaultlinebtn radiusbtn msbtn">订单完成</span>
+						<span   class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">订单完成</span>
+						<span onclick="comments(${order.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
 						<%-- 						<span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 
@@ -140,10 +139,10 @@
 
 
 					<c:if test="${order.status==2}">
-						<span id="urgent" onclick="urgent(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="margin-left: 45%;">给我加急</span>
+						<span id="urgent" onclick="urgent(${order.id})" class="defaultlinebtn radiusbtn msbtn" >给我加急</span>
 					</c:if>
 					<c:if test="${order.status==11}">
-						<span class="defaultlinebtn radiusbtn msbtn" style="margin-left: 52%;">加急中</span>
+						<span class="defaultlinebtn radiusbtn msbtn">加急中</span>
 					</c:if>
 				</li>
 
