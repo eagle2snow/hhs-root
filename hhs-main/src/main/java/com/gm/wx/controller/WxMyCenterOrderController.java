@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -201,4 +202,27 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 		return map;
 	}
 
+	/**
+	 * 
+	 *<p>Title:pushOrders</p>
+	 *<p>Description:提成订单</p>
+	 *
+	 * @param map
+	 * @param type 1:未确认 2:已确认
+	 * @return
+	 */
+	@RequestMapping("pushOrders/{type}")
+	public String pushOrders(ModelMap map, @PathVariable Integer type) {
+		String generalizeId = this.getCurMember().getGeneralizeId();
+		List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
+		logger.info("下级会员列表 = {}",JSON.toJSON(list));
+		List<Order> listEq = new ArrayList<>();
+		for (Member order : list) {
+			listEq.addAll(orderService.listEq("member.id", order.getId()));
+		}
+		logger.info("下级购买商品列表 = {}",JSON.toJSON(listEq));
+		map.put("order", listEq);
+		map.put("path", PATH);
+		return PATH + "pushOrders";
+	}
 }
