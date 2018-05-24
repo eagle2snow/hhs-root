@@ -1,6 +1,10 @@
 package com.gm.wx.controller;
 
+import java.io.File;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.enums.OauthScope;
+import com.github.sd4324530.fastweixin.api.enums.QrcodeType;
+import com.github.sd4324530.fastweixin.api.response.QrcodeResponse;
 import com.gm.api.sms.BSSendSms;
 import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
@@ -33,6 +39,9 @@ import com.gm.service.IOrderService;
 import com.gm.service.impl.CommodityAppraiseServiceImpl;
 import com.gm.service.impl.MemberServiceImpl;
 import com.gm.utils.StringUtil;
+import com.xiaoleilu.hutool.http.HttpUtil;
+import com.xiaoleilu.hutool.io.FileUtil;
+import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 /**
@@ -415,20 +424,47 @@ public class WxMyCenterController extends WeixinBaseController {
 	 * @param request
 	 * @return
 	 */
+	/*
+	 * @RequestMapping("myQrCode") public String myQrCode(HttpSession session,
+	 * HttpServletRequest request) { Member member = getRealMember();
+	 * 
+	 * if (StringUtil.strNullOrEmpty(member.getQrCode())) {
+	 * 
+	 * if (!StringUtil.strNullOrEmpty(member.getGeneralizeId())) { member =
+	 * memberService.genCodeAndQrCode(member, request);
+	 * 
+	 * memberService.update(member); session.setAttribute(Const.CUR_WX_MEMBER,
+	 * member); } } return PATH + "myQrCode"; }
+	 */
+
 	@RequestMapping("myQrCode")
 	public String myQrCode(HttpSession session, HttpServletRequest request) {
 		Member member = getRealMember();
-
-		if (StringUtil.strNullOrEmpty(member.getQrCode())) {
-
-			if (!StringUtil.strNullOrEmpty(member.getGeneralizeId())) {
-				member = memberService.genCodeAndQrCode(member, request);
-
-				memberService.update(member);
-				session.setAttribute(Const.CUR_WX_MEMBER, member);
+		String generalizeId = member.getGeneralizeId();
+		if (!StringUtil.strNullOrEmpty(generalizeId)) {
+			if (!StringUtil.strNullOrEmpty(member.getQrCode())) {
+				LocalDateTime lastUpdateQrCode = member.getLastUpdateQrCode();
+				if (null == lastUpdateQrCode || lastUpdateQrCode.plusDays(25).isBefore(LocalDateTime.now())) {
+					genQrCode(session, request, member, generalizeId);
+				}
+			} else {
+				genQrCode(session, request, member, generalizeId);
 			}
 		}
 		return PATH + "myQrCode";
+	}
+
+	// 生成二维码
+	private void genQrCode(HttpSession session, HttpServletRequest request, Member member, String generalizeId) {
+		QrcodeResponse qrcode = WeiXinApi.getQrcodeAPI().createQrcode(QrcodeType.QR_SCENE, generalizeId, 2592000);
+		String path = request.getServletContext().getRealPath(File.separator) + File.separator;
+		path = path + "static" + File.separator + "member" + File.separator + "qrcode" + File.separator + generalizeId
+				+ ".png";
+		HttpUtil.downloadFile("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrcode.getTicket(), path);
+		member.setLastUpdateQrCode(LocalDateTime.now());
+		member.setQrCode("/static/member/qrcode/" + generalizeId + ".png");
+		memberService.update(member);
+		session.setAttribute(Const.CUR_WX_MEMBER, member);
 	}
 
 }
