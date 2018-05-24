@@ -66,7 +66,8 @@
 					</div>
 				</div>
 				<div class="comment_mc">
-					<p class="para">酒很好喝，是正品，还会来买的！</p>
+					<p class="para">${model.code eq "1"? "酒很好喝，是正品，还会来买的！":"纸的质量还真不错，下次推荐朋友来购买！"}</p>
+
 				</div>
 				<div class="comment_mb">
 					<div class="comment_mbcont">
