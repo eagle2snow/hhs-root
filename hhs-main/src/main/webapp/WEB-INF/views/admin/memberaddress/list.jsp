@@ -68,11 +68,11 @@
 											<th>收货人</th>
 											<th>所属会员</th>
 											<th>手机号</th>
-											<th>固话</th>
-											<th>邮编</th>
-											<th>省份</th>
-											<th>城市</th>
-											<th>区域</th>
+                                            <%--<th>固话</th>--%>
+                                            <%--<th>邮编</th>--%>
+                                            <%--<th>省份</th>--%>
+                                            <%--<th>城市</th>--%>
+                                            <%--<th>区域</th>--%>
 											<th>详细地址</th>
 											<th>默认地址</th>
 											<th width="130">创建时间</th>
@@ -93,16 +93,15 @@
 											 <th>${model.member.name}</th>
 											
 											 <th>${model.mobile}</th>
-											
-											 <th>${model.phone}</th>
-											
-											 <th>${model.postcode}</th>
-											
-											 <th>${model.province}</th>
-											
-											 <th>${model.city}</th>
-											
-											 <th>${model.area}</th>
+
+                                            <th>${model.pca}</th>
+
+                                                <%--<th>${model.phone}</th>--%>
+                                                <%--<th>${model.postcode}</th>--%>
+
+                                                <%--<th>${model.province}</th>--%>
+                                                <%--<th>${model.city}</th>--%>
+                                                <%--<th>${model.area}</th>--%>
 											
 											 <th>${model.address}</th>
 											
