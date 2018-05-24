@@ -153,16 +153,16 @@
 		<!-- end 一行 -->
 		<!--end 中间-->
 		
-		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display: ;">
-				<div style="width: 300px;height: 200px;position: fixed;top:20%;left: 15%;">
+		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
+				<div style="width: 73%;height: 12.5rem;position: fixed;top:20%;left: 15%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 40px;text-align: center;line-height: 45px;color: #fff;font-size: 2rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递</li>
-				<li style="height: 131px;width:300px;background: #fff">
-					<span style="display: block;float: left;font-size: 2rem;margin-left: 35%;margin-top: 5%;">快递公司</span><br>
-					<span style="display: block;float: left;font-size: 2rem;margin-left: 10%;margin-top: 5%">4651654619656164</span>
+				<li style="background: #3c8dbc; height: 2.5rem;text-align: center;line-height: 2.5rem;color: #fff;font-size: 1.5rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递<span id="off" style="position: relative;left: 33%;">X</span></li>
+				<li style="height: 10rem;background: #fff">
+					<span style="display: block;float: left;font-size: 2rem;margin-left: 35%;margin-top: 8%;">顺丰快递</span><br>
+					<span style="display: block;float: left;font-size: 2rem;margin-left: 20%;">51654619656164</span>
 				</li>
 				<li style="background: #fff;">
-				<span id="Popup_off" style="line-height: 40px;cursor: pointer;width: 300px;float: left;display:block;font-size: 18px;text-align: center;border-left: 1px solid #ccc;height: 40px;background:#3c8dbc;color: #fff;">复制单号</span></li>
+				<span id="Popup_off" style="line-height: 3rem;cursor: pointer;width: 100%;float: left;display:block;font-size: 1.8rem;text-align: center;height: 3rem;background:#3c8dbc;color: #fff;">复制单号</span></li>
 				</ul>
 				</div>
 			</div>
@@ -257,6 +257,9 @@ $(document).ready(function(){
 	  $("#Popup_off").click(function(){
 	  $("#Popup").fadeToggle(500);
 	  });
+	  $("#off").click(function(){
+		  $("#Popup").fadeToggle(500);
+		  });
 });
 </script>
 
