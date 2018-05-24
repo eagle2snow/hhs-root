@@ -34,7 +34,7 @@
 					<a href="${adp}myOrders/3">待收货</a>
 				</li>
 				<li ${status==10? 'class="on"': '' }>
-					<a href="${adp}myOrders/10">待评价</a>
+					<a href="${adp}myOrders/10">评价</a>
 				</li>
 			</ul>
 		</nav>
@@ -42,7 +42,7 @@
 		<!-- 一行 -->
 		<ul class="mt16 orderlist">
 			<c:forEach items="${orders }" var='order'>
-				<li data-state="finish" class="orderitem">
+				<li  data-state="finish" class="orderitem">
 					<div class="order_mt">
 						<span class="t">订单号：${order.orderNo }</span>
 						<div class="order_mtcont">
@@ -94,7 +94,7 @@
 					</c:forEach>
 				</li>
 
-				<li ${order.status==10 or order.status==8 or order.status==4 ?  'style="display:none;"':''}  style="background-color: #fff;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
+				<li ${order.status==10 and order.appraise==0 or order.status==8 or order.status==4 ?  'style="display:none;"':''}  style="background-color: #fff;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
 
 					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">马上付款</span>
 						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;">取消订单</span>
