@@ -110,7 +110,7 @@
 					
 					<c:if test="${order.status==3}">
 						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;" >确认收货</span> 
-						<span onclick="confirmGoods(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;" >查看快递</span> 
+						<span onclick="lookExpressage(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;" >查看快递</span> 
 					</c:if>
 
 					<c:if test="${order.status==7}">
@@ -183,12 +183,22 @@
 		
 		//查看评价
 		function lookAppraise(){ 
-			location.href='${ctx}wx/myCenter/replyMessage/1';
+			$.confirm("确定查看请假么?", function() {
+				  //点击确认后的回调函数
+					location.href='${ctx}wx/myCenter/replyMessage/1';
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
 		}
 		
 		//即刻评价 
 		function comments(orderId){
-			location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
+			$.confirm("确定即刻评价么?", function() {
+				  //点击确认后的回调函数
+					location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
 		}
 		
 		//我要退货 
@@ -216,16 +226,23 @@
 		
 		//给我加急
 		function urgent(orderId){
-			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
-				$.alert(data.msg);
-				if(data.status == 1){
-					$("#urgent").text("已加急"); 
-					re();
-				}else{
-					$.alert("网络出错，请稍后再试。");
-					
-				}
-			});
+			$.confirm("确定给你加急么?", function() {
+				  //点击确认后的回调函数
+					$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
+						$.alert(data.msg);
+						if(data.status == 1){
+							$("#urgent").text("已加急"); 
+							re();
+						}else{
+							$.alert("网络出错，请稍后再试。");
+							
+						}
+					});
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
+			
+			
 		}
 		
 		//物流查询
@@ -236,24 +253,36 @@
 		
 		//马上付款 1
 		function payMoney(orderId){
-			location.href="${ctx}wx/order/confirmOrder/"+orderId
+			$.confirm("确定马上付款么?", function() {
+				  //点击确认后的回调函数
+					location.href="${ctx}wx/order/confirmOrder/"+orderId
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
+			
 		}
 		
 		//取消订单 1
 		function cancelOrder(orderId){
+			$.confirm("确定取消订单么?", function() {
+				  //点击确认后的回调函数
+					$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
+						console.log(data);
+						if(data.status == 1){
+							layer.msg(data.msg,{icon:6});
+							re();
+						}
+						if(data.status == 2){
+							layer.msg(data.msg,{icon:5});
+							re();
+							
+						}
+					});
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
 			
-			$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
-				console.log(data);
-				if(data.status == 1){
-					layer.msg(data.msg,{icon:6});
-					re();
-				}
-				if(data.status == 2){
-					layer.msg(data.msg,{icon:5});
-					re();
-					
-				}
-			});
+			
 			
 		}
 	</script>

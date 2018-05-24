@@ -100,7 +100,8 @@ public class WxOrderController extends WeixinBaseController {
 		model.addAttribute("itemSize", items.size());
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
-		BigDecimal discount = sum.subtract(order.getTotalMoney());
+		BigDecimal discount = sum.subtract(bills.get(0).getReaFee());
+//		BigDecimal discount = sum.subtract(order.getTotalMoney());
 		model.addAttribute("discount", discount.compareTo(new BigDecimal(0)) < 0 ? 0 : discount);
 		
 		if (order.getCreateTime() != null)

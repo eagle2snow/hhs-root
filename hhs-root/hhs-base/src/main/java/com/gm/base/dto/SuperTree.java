@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.gm.utils.StringUtil;
+
 @Component
 public class SuperTree {
 
@@ -27,7 +29,8 @@ public class SuperTree {
 		for (Iterator<Node> iterator = list.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
 			// 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-			if (!"".equals(node.getParentId()) && nodeId.equals(node.getParentId())) {
+			if (null != node.getParentId() && !"".equals(node.getParentId().trim())
+					&& nodeId.equals(node.getParentId())) {
 				recursionFn(list, node);
 			}
 		}
@@ -74,7 +77,7 @@ public class SuperTree {
 		Iterator<Node> it = list.iterator();
 		while (it.hasNext()) {
 			Node n = (Node) it.next();
-			if (n.getParentId().equals(node.getId())) {
+			if (null != n.getParentId() && !"".equals(n.getParentId().trim()) && n.getParentId().equals(node.getId())) {
 				nodeList.add(n);
 			}
 		}

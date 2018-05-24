@@ -318,6 +318,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	// 获取直系会员
 	@Override
 	public List<Member> getAllSons(Member member) {
+
+		if (null == member.getGeneralizeId()) {
+			return null;
+		}
+
 		List<Member> members = list();
 		List<Node> nodes = members.stream().map(m -> new Node(m)).collect(Collectors.toList());
 		SuperTree superTree = new SuperTree();
