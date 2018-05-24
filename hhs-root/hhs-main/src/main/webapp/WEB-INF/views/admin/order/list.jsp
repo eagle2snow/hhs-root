@@ -108,7 +108,7 @@
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
 											<td>${model.orderNo}</td>
 											
-											 <th>${model.nickname}</th>
+											 <th>${model.member.nickname}</th>
 											
 											 <th>${model.member.name}</th>
 											
