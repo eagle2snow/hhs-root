@@ -116,10 +116,16 @@ document.addEventListener("touchstart", function(){}, true);
 <script type="text/javascript">
 
 function deletes(id){
-	alert(1);
+	$.confirm("确定删除吗", function() {
+		  //点击确认后的回调函数
 	$.getJSON("${adp}deleteComment/"+id, function(data) {
-		alert(data.msg);
+
+			window.location.reload();
+		//alert(data.msg);
 	});
+		  }, function() {
+		  //点击取消后的回调函数
+		  });
 }
 </script>
 
