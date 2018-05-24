@@ -41,14 +41,11 @@
 
 
 			<c:forEach items="${list}" var="user">
-
-				<c:if test="${user.level eq 0}">
-					<tr>
-						<td>${user.nickname}</td>
-						<td>${user.mobile}</td>
-						<td>${user.createTime}</td>
-					</tr>
-				</c:if>
+				<tr>
+					<td>${user.nickname}</td>
+					<td>${user.mobile}</td>
+					<td>${user.createTime}</td>
+				</tr>
 			</c:forEach>
 
 		</table>

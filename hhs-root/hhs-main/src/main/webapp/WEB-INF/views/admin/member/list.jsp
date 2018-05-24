@@ -35,13 +35,17 @@
 								<div class="row">
 									<div class="col-sm-6">
 										<div class="cl pd-5 bg-1 bk-gray mt-20">
-											<span class="l"><a href="javascript:;"
-												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
-													class="glyphicon glyphicon-trash"></i> 批量删除</a> <button
-													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
-												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
-													添加</button></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
+											<span class="l">
+												<a href="javascript:;" onclick="delByIds('${adp}')" class="btn btn-danger radius">
+													<i class="glyphicon glyphicon-trash"></i> 
+													批量删除
+												</a> 
+													<button onclick="openPerRe('添加',90,90,'${adp}add.htm')" class="btn btn-primary radius">
+													<i class="glyphicon glyphicon-plus"></i>
+														添加
+													</button>
 											</span>
+											<span class="r">共有数据：<strong id="count">${page.count}</strong> 条</span>
 										</div>
 									</div>
 									<div class="col-sm-6">
@@ -74,7 +78,8 @@
 											<th>推荐人昵称</th>
 											<th>创建时间</th>
 											<th width="100">状态</th>
-											<th width="150">操作</th>
+											<th width="150" style="text-align: right;">上家 | 直推 | 直系</th>
+											<th width="150">详情 | 编辑 | 删除</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -108,9 +113,14 @@
 																class="swbtn" />
 														</div>
 											</td>
-											<td>
+											<td style="text-align: right;">
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-up" title="上家"></i></button>
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-down" title="直推"></i></button>
+												<button onclick="del(${model.id})" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-triangle-bottom " title="直系"></i></button>
+											</td>
+											<td >
 												<button onclick="details(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>

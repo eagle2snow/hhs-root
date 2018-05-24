@@ -125,13 +125,14 @@ public class WxMyCenterController extends WeixinBaseController {
 		if (type == 1) {
 			list = memberService.list(" from member m where m.deleted=1 and m.referrerGeneralizeId='" + generalizeId
 					+ "' and m.setMeal=1");
+			logger.info("未购买会员下属列表 {}.", JSON.toJSON(list.size()));
 		} else if (2 == type) {
 			list = memberService.list(" from member m where m.deleted=1 and m.referrerGeneralizeId='" + generalizeId
 					+ "' and (m.setMeal=2 or m.setMeal=3)");
+			logger.info("已购买会员下属列表 {}.", JSON.toJSON(list.size()));
 		}
 		map.put("list", list);
 		map.put("path", PATH);
-		logger.info("会员下属列表 {}.", JSON.toJSON(list));
 		return PATH + "myMembers";
 	}
 

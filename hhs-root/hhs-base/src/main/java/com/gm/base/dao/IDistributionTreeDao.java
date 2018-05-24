@@ -1,6 +1,5 @@
 package com.gm.base.dao;
 
-import com.gm.base.dao.IBaseDao;
 import com.gm.base.model.DistributionTree;
 
 
