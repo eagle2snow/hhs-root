@@ -32,7 +32,7 @@
 				</li>
 				<li ${status==3? 'class="on"': '' }>
 					<a href="${adp}myOrders/3">待收货</a>
-				</li>
+				</li> 
 				<li ${status==10? 'class="on"': '' }>
 					<a href="${adp}myOrders/10">评价</a>
 				</li>
@@ -155,10 +155,13 @@
 		<div id="Popup" style="width: 100%;height: 100%;background: rgba(0,0,0,0.4);z-index: 99;position: fixed;top: 0;left: 0;display:none ;">
 				<div style="width: 73%;height: 12.5rem;position: fixed;top:20%;left: 15%;">
 				<ul>
-				<li style="background: #3c8dbc; height: 2.5rem;text-align: center;line-height: 2.5rem;color: #fff;font-size: 1.5rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递<span id="off" style="position: relative;left: 33%;">X</span></li>
-				<li style="height: 10rem;background: #fff">
-					<span style="display: block;float: left;font-size: 2rem;margin-left: 35%;margin-top: 8%;">顺丰快递</span><br>
-					<span style="display: block;float: left;font-size: 2rem;margin-left: 20%;">51654619656164</span>
+				<li style="padding-left: 2rem;background: #3c8dbc; height: 2.5rem;text-align: center;line-height: 2.5rem;color: #fff;font-size: 1.5rem;border-top-left-radius:5px;border-top-right-radius:5px;">查看快递
+				<span id="off" style="float: right;padding-right: 1rem;">X</span></li>
+				<li style="height: 4rem;background: #fff;padding-top: 1rem;">
+					<span style="display: block;width: 31%;font-size: 2rem;margin-right: auto;margin-left: auto;width: 31%;">顺丰快递</span><br>
+				</li>
+				<li style="height: 5rem;background: #fff">
+					<span style="display: block;font-size: 2rem;width: 63%;margin-left: auto;margin-right: auto;">51654619656164</span>
 				</li>
 				<li style="background: #fff;">
 				<span id="Popup_off" style="line-height: 3rem;cursor: pointer;width: 100%;float: left;display:block;font-size: 1.8rem;text-align: center;height: 3rem;background:#3c8dbc;color: #fff;">复制单号</span></li>
@@ -226,23 +229,16 @@
 		
 		//给我加急
 		function urgent(orderId){
-			$.confirm("确定给你加急么?", function() {
-				  //点击确认后的回调函数
-					$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
-						$.alert(data.msg);
-						if(data.status == 1){
-							$("#urgent").text("已加急"); 
-							re();
-						}else{
-							$.alert("网络出错，请稍后再试。");
-							
-						}
-					});
-				  }, function() {
-				  //点击取消后的回调函数
-				  });
-			
-			
+			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
+				$.alert(data.msg);
+				if(data.status == 1){
+					$("#urgent").text("已加急"); 
+					re();
+				}else{
+					$.alert("网络出错，请稍后再试。");
+					
+				}
+			});
 		}
 		
 		//物流查询
@@ -253,36 +249,24 @@
 		
 		//马上付款 1
 		function payMoney(orderId){
-			$.confirm("确定马上付款么?", function() {
-				  //点击确认后的回调函数
-					location.href="${ctx}wx/order/confirmOrder/"+orderId
-				  }, function() {
-				  //点击取消后的回调函数
-				  });
-			
+			location.href="${ctx}wx/order/confirmOrder/"+orderId
 		}
 		
 		//取消订单 1
 		function cancelOrder(orderId){
-			$.confirm("确定取消订单么?", function() {
-				  //点击确认后的回调函数
-					$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
-						console.log(data);
-						if(data.status == 1){
-							layer.msg(data.msg,{icon:6});
-							re();
-						}
-						if(data.status == 2){
-							layer.msg(data.msg,{icon:5});
-							re();
-							
-						}
-					});
-				  }, function() {
-				  //点击取消后的回调函数
-				  });
 			
-			
+			$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
+				console.log(data);
+				if(data.status == 1){
+					layer.msg(data.msg,{icon:6});
+					re();
+				}
+				if(data.status == 2){
+					layer.msg(data.msg,{icon:5});
+					re();
+					
+				}
+			});
 			
 		}
 	</script>
