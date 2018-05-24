@@ -83,7 +83,7 @@
 											数量：${item.buyCount }
 										</div>
 									<c:if test="${order.status==10 and order.appraise==0}">
-											<span onclick="comments(${order.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
+											<span onclick="comments(${item.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
 											<%-- <span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 									</div>
