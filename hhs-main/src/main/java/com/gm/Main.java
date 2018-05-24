@@ -45,6 +45,8 @@ public class Main extends SpringBootServletInitializer {
 	@ResponseBody
 	public String index(@PathVariable Integer id) {
 		Member m = memberService.get(id);
+		System.out.println("1111111111111111111111111111111111");
+		JSON.toJSON(m);
 		List<Member> members = memberService.getAllSons(m);
 		// for (Member member : members) {
 		// System.out.println(member.getId());
