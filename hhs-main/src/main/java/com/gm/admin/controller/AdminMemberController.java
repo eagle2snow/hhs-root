@@ -36,6 +36,46 @@ public class AdminMemberController extends BaseAdminController {
 	@Resource
 	private IMemberService memberService;
 
+	//查看上家会员
+	@RequestMapping("upperRelate/{id}.htm")
+	public String getUpperRelate(ModelMap mm, @PathVariable Integer id)
+	{
+		Member myself = memberService.get(id);
+		if (myself != null) {
+			Member upperRelate = memberService.getParent1(myself);
+			if (upperRelate != null)
+				mm.addAttribute("upperRelate", upperRelate);
+			return path + "upperRelate";
+		}
+		return "error/404";
+	}
+
+	//直推会员
+	@RequestMapping("directChild/{id}.htm")
+	public String getDirectChild(ModelMap mm, @PathVariable Integer id)
+	{
+		Member myself = memberService.get(id);
+		if (myself != null) {
+			List<Member> direceChild = memberService.getSons1(myself);
+			mm.addAttribute("direceChild", direceChild);
+			return path + "directChild";
+		}
+		return "error/404";
+	}
+
+	//直系会员
+	@RequestMapping("allChild/{id}.htm")
+	public String getAllChild(ModelMap mm, @PathVariable Integer id)
+	{
+		Member myself = memberService.get(id);
+		if (myself != null) {
+			List<Member> allChild = memberService.getAllSons(myself);
+			mm.addAttribute("allChild", allChild);
+			return path + "allChild";
+		}
+		return "error/404";
+	}
+
 	@RequestMapping("add.htm")
 	// @RequiresPermissions("admin:member:add")
 	public String addView(ModelMap map) {
