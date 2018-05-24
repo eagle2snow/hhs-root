@@ -27,7 +27,7 @@ public class SuperTree {
 		for (Iterator<Node> iterator = list.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
 			// 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-			if (!"".equals(node.getParentId()) && nodeId.equals(node.getId())) {
+			if (!"".equals(node.getParentId()) && nodeId.equals(node.getParentId())) {
 				recursionFn(list, node);
 			}
 		}

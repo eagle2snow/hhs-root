@@ -199,13 +199,19 @@
 		//确认收货 
 		function confirmGoods(orderId){
 // 			location.href="${ctx}wx/order/confirmGoods/"+orderId
-			$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
-				if(data.status == 1){
-					$.alert(data.msg);
-					re();
-				}
-					
-			});
+			$.confirm("确认收货么?", function() {
+			  //点击确认后的回调函数
+				$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
+					if(data.status == 1){
+						$.alert(data.msg);
+						re();
+					}
+						
+				});
+			  }, function() {
+			  //点击取消后的回调函数
+			  });
+			
 		}
 		
 		//给我加急
