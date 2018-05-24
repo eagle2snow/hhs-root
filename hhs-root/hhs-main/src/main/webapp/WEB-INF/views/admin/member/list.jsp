@@ -114,9 +114,9 @@
 														</div>
 											</td>
 											<td style="text-align: right;">
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-up" title="上家"></i></button>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-down" title="直推"></i></button>
-												<button onclick="del(${model.id})" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-triangle-bottom " title="直系"></i></button>
+												<button onclick="getUpperRelate(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-up" title="上家"></i></button>
+												<button onclick="getDirectChild(${model.id})"  class="btn btn-sm btn-info"><i class="glyphicon glyphicon-menu-down" title="直推"></i></button>
+												<button onclick="getAllChild(${model.id})" class="btn btn-sm btn-success"><i class="glyphicon glyphicon-triangle-bottom " title="直系"></i></button>
 											</td>
 											<td >
 												<button onclick="details(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
@@ -205,9 +205,24 @@
 		//开关回调
 		/* var enableFun = function(){
 		} */
-		
-		
 
+		//上家会员
+		function getUpperRelate(id)
+		{
+            openPerRe("上家会员信息", 90,　90, '${adp}upperRelate/' + id + '.htm');
+		}
+
+		//直推会员
+		function getDirectChild(id)
+		{
+            openPerRe("直推会员信息", 90, 90, '${adp}directChild/' + id + '.htm');
+		}
+
+		//直系会员
+		function getAllChild(id)
+		{
+            openPerRe("直系会员信息", 90, 90, '${adp}allChild/' + id + '.htm');
+		}
 		</script>
 	</body>
 
