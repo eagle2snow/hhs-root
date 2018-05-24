@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.github.sd4324530.fastweixin.api.response.OauthGetTokenResponse;
 import com.github.sd4324530.fastweixin.message.BaseMsg;
 import com.github.sd4324530.fastweixin.message.TextMsg;
+import com.github.sd4324530.fastweixin.message.req.BaseEvent;
 import com.github.sd4324530.fastweixin.message.req.TextReqMsg;
-import com.github.sd4324530.fastweixin.servlet.WeixinControllerSupport;
 import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
 import com.gm.base.model.Member;
@@ -60,10 +61,18 @@ public class WeixinController extends WeixinControllerSupport {
 
 	// 重写父类方法，处理对应的微信消息
 	@Override
-	protected BaseMsg handleTextMsg(TextReqMsg msg) {
+	public BaseMsg handleTextMsg(TextReqMsg msg) {
 		String content = msg.getContent();
 		log.info("收到消息：" + content);
 		return new TextMsg("http://aijfc.iask.in/wx/index");
+	}
+
+	@Override
+	public BaseMsg handleSubscribe(BaseEvent event) {
+
+		System.out.println(JSON.toJSON(event));
+
+		return new TextMsg("感谢您的关注!");
 	}
 
 	@RequestMapping("/testLogin/{memberId}")
