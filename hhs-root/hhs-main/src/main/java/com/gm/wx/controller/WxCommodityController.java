@@ -26,8 +26,6 @@ import com.gm.service.IMemberService;
 import com.gm.service.impl.CommodityAppraiseServiceImpl;
 import com.gm.utils.DateUtil;
 
-import net.bytebuddy.asm.Advice.This;
-
 /**
  * 
  * <p>
