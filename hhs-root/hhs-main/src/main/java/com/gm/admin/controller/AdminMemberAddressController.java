@@ -78,6 +78,7 @@ public class AdminMemberAddressController extends BaseAdminController{
 	@ResponseBody
 	public Map<String, Object> updateAction(MemberAddress model) {
 		Map<String, Object> map = new HashMap<>();
+		model.setPca(model.getProvince() + " " + model.getCity() + " " + model.getArea());
 		if (memberAddressService.update(model)) {
 			map.put("status", "ok");
 		} else {
@@ -106,6 +107,13 @@ public class AdminMemberAddressController extends BaseAdminController{
 			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
 		}
 		Page<MemberAddress> list = memberAddressService.list(dc, pageIndex, pageSize);
+		for (MemberAddress one : list.getList())
+			System.out.println(one.getPca());
+		System.out.println("------------------------");
+		System.out.println("------------------------");
+		System.out.println("------------------------");
+		System.out.println("------------------------");
+		System.out.println("------------------------");
 		map.put("page", list);
 		map.put("path", path);
 		map.put("key", k);
