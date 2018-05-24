@@ -4,6 +4,7 @@ import com.github.sd4324530.fastweixin.api.JsAPI;
 import com.github.sd4324530.fastweixin.api.MaterialAPI;
 import com.github.sd4324530.fastweixin.api.MediaAPI;
 import com.github.sd4324530.fastweixin.api.OauthAPI;
+import com.github.sd4324530.fastweixin.api.QrcodeAPI;
 import com.github.sd4324530.fastweixin.api.UserAPI;
 import com.github.sd4324530.fastweixin.api.config.ApiConfig;
 import com.gm.base.consts.Const;
@@ -60,6 +61,11 @@ public class WeiXinApi {
 	public static MaterialAPI getMaterialAPI() {
 		MaterialAPI materialAPI = new MaterialAPI(getApiConfig());
 		return materialAPI;
+	}
+
+	public static QrcodeAPI getQrcodeAPI() {
+		QrcodeAPI qrcodeAPI = new QrcodeAPI(getApiConfig());
+		return qrcodeAPI;
 	}
 
 }
