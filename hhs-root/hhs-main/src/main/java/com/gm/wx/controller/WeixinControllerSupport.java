@@ -37,7 +37,8 @@ public abstract class WeixinControllerSupport extends WeixinSupport {
 		if (isLegal(request)) {
 			// 绑定微信服务器成功
 			try {
-				response.getWriter().print(request.getParameter("echostr"));
+				//response.getWriter().print(request.getParameter("echostr"));
+				response.getWriter().write(request.getParameter("echostr"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
