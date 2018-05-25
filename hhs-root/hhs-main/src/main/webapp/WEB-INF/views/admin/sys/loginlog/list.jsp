@@ -72,7 +72,7 @@
 												<th>管理员</th>
 												<th>登录ip</th>
 												<th width="150">登录时间</th>
-												<th width="100">操作</th>
+												<th width="100">编辑 | 删除</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -93,8 +93,8 @@
 
 													<td>
 														<button onclick="edit(${model.id})"
-															class="btn btn-sm btn-primary">
-															<i class="glyphicon glyphicon-cog" title="修改"></i>
+															class="btn btn-sm btn-warning">
+															<i class="glyphicon glyphicon-pencil" title="修改"></i>
 														</button>
 														<button onclick="del(${model.id})"
 															class="btn btn-sm btn-danger">

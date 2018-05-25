@@ -86,7 +86,7 @@
 											<th>规格</th>
 											<th width="130">创建时间</th>
 											<th width="100">状态</th>
-											<th width="150">操作</th>
+											<th width="150">详情 | 编辑 | 删除</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -153,7 +153,7 @@
 											</td>
 											<td>
 												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>
