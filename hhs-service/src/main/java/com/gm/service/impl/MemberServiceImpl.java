@@ -347,8 +347,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	// 获取直推会员
 	@Override
 	public List<Member> getSons1(Member member) {
-		List<Member> members = listEq("referrerGeneralizeId", member.getGeneralizeId());
-		return members;
+		if (StringUtil.strNullOrEmpty(member.getGeneralizeId()))
+			return new ArrayList<>();
+		return listEq("referrerGeneralizeId", member.getGeneralizeId());
 	}
 
 	@Override
