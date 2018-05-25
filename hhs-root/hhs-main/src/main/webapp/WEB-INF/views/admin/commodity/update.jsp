@@ -66,14 +66,14 @@
 										<div class="col-sm-8">
 											<select name="code" style="width: 100% !important;" class="form-control select2" id="code">
 													<option value="${model.code}">
-														${model.code eq "1"? "酒":"纸"}
+														${model.code eq "1"? "抽纸":"手帕纸"}
 													</option>
 												
 													<option value="1">
-														酒
+														抽纸
 													</option>
 													<option value="2">
-														纸
+														手帕纸
 													</option>
  
 											</select>
