@@ -125,9 +125,9 @@
 			</li>
 			<li class="showdtitem">
 				<div class="dl">
-					<div class="dt">折扣券</div>
+					<div class="dt">折扣</div>
 					<div class="dd">
-						-&yen;<span class="insm">0.00</span>
+						-&yen;<span class="insm" v-text='disconut'></span>
 					</div>
 				</div>
 			</li>
@@ -144,7 +144,7 @@
 					<div class="dt">应付金额</div>
 					<div class="dd">
 						<ins>
-							&yen;<span class="insm" v-text='totalAmount'></span>
+							&yen;<span class="insm" v-text='realTotalAmount'></span>
 						</ins>
 					</div>
 				</div>
@@ -211,6 +211,14 @@
 	<script src="/static/wx/js/pay.js"></script>
 
 	<script type="text/javascript">
+	
+	Number.prototype.toFixed = function(s)  
+	{  
+	    return (parseInt(this * Math.pow( 10, s ) + 0.5)/ Math.pow( 10, s )).toString();  
+	} 
+	
+	
+	
 var orderVue = new Vue({
 	el : '#orderBody',
 	data : {
@@ -218,7 +226,7 @@ var orderVue = new Vue({
 		items : ${items},
 		addressList:${addressList},
 		orderAddress:'${orderAddressId}',
-		content:''
+		content:'',
 	},
 	methods : {
 		addNum : function(item) {
@@ -287,6 +295,22 @@ var orderVue = new Vue({
 		  this.items.forEach(item => t += parseFloat((item.commodity.showPrice * item.buyCount).toFixed(2)));
 		  return t.toFixed(2);
 		},
+		
+		disconut:function(){
+			var t = parseFloat(0);
+			if(${curMember.setMeal}==2){
+				t = this.totalAmount*0.2;
+				return t.toFixed(2);
+			}else{
+				return t;
+			}
+		},
+		realTotalAmount:function(){
+			var t = parseFloat(0);
+			t=this.totalAmount-this.disconut;
+			return t.toFixed(2);
+		},
+		
 		checkAllItem:function(){
 			var all =  this.items.length;
 			var chk = this.items.filter(item => item.had).length; 
@@ -304,7 +328,7 @@ document.addEventListener("touchstart", function() {
 //(String orderNo, String orderName, BigDecimal amount
 
 function prePay() {
-	$.getJSON('/wx/pay/prePayOrder',{'orderNo':orderVue.order.orderNo,'orderName':'购买商品','amount':orderVue.totalAmount}, function(res) {
+	$.getJSON('/wx/pay/prePayOrder',{'orderNo':orderVue.order.orderNo,'orderName':'购买商品','amount':orderVue.realTotalAmount}, function(res) {
 		if(res.s===1){
 			var appId = res.data.appId;
 			var timeStamp = res.data.timeStamp;
