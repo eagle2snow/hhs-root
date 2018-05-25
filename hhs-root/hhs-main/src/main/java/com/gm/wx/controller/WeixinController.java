@@ -70,16 +70,28 @@ public class WeixinController extends WeixinControllerSupport {
 
 	@Override
 	public BaseMsg handleSubscribe(BaseEvent event) {
-		QrCodeEvent qrCodeEvent = (QrCodeEvent) event;
-		String openid = qrCodeEvent.getFromUserName();
-		Member member = memberService.getOne("openid", openid);
-		if (null == member) {
-			String key = qrCodeEvent.getEventKey();
-			String referrerGeneralizeId = key.substring(8);
-			member = memberService.saveWeixinMember(openid, referrerGeneralizeId);
-			return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
-		} else {
-			return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+		if (event instanceof QrCodeEvent) {// 扫描会员的二维码
+			QrCodeEvent qrCodeEvent = (QrCodeEvent) event;
+			String openid = qrCodeEvent.getFromUserName();
+			Member member = memberService.getOne("openid", openid);
+			if (null == member) {
+				String key = qrCodeEvent.getEventKey();
+				String referrerGeneralizeId = key.substring(8);
+				member = memberService.saveWeixinMember(openid, referrerGeneralizeId);
+				return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
+			} else {
+				return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+			}
+		} else {// 扫描官方二维码或者通过搜索关注的
+			String openid = event.getFromUserName();
+			Member member = memberService.getOne("openid", openid);
+			if (null == member) {
+				member = memberService.saveWeixinMember(openid);
+				return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
+			} else {
+				return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+			}
+
 		}
 	}
 

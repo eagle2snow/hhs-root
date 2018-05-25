@@ -43,5 +43,6 @@ public class Const {
 	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);// 会员套餐价格，單位（元）
 	public static final Integer directMember = 10;// 直推人数
 	public static final Integer betweenMember = 100;// 直系人数
+	public static final BigDecimal discount = BigDecimal.valueOf(0.8);// 直系人数
 
 }
