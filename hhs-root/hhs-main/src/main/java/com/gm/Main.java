@@ -41,21 +41,21 @@ public class Main extends SpringBootServletInitializer {
 		SpringApplication.run(Main.class, args);
 	}
 
-	@RequestMapping("/test/{id}")
-	@ResponseBody
-	public String index(@PathVariable Integer id) {
-		Member m = memberService.get(id);
-		System.out.println("1111111111111111111111111111111111");
-		JSON.toJSON(m);
-		List<Member> members = memberService.getAllSons(m);
-		// for (Member member : members) {
-		// System.out.println(member.getId());
-		// }
-		// List<Member> members1 = memberService.getSons1(m);
-		// for (Member member : members1) {
-		// System.err.println(member.getId());
-		// }
-		return JSON.toJSONString(members);
-	}
+	// @RequestMapping("/test/{id}")
+	// @ResponseBody
+	// public String index(@PathVariable Integer id) {
+	// Member m = memberService.get(id);
+	// System.out.println("1111111111111111111111111111111111");
+	// JSON.toJSON(m);
+	// List<Member> members = memberService.getAllSons(m);
+	// // for (Member member : members) {
+	// // System.out.println(member.getId());
+	// // }
+	// // List<Member> members1 = memberService.getSons1(m);
+	// // for (Member member : members1) {
+	// // System.err.println(member.getId());
+	// // }
+	// return JSON.toJSONString(members);
+	// }
 
 }
