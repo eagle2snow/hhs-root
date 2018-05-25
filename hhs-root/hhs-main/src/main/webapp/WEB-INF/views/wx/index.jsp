@@ -88,16 +88,15 @@
 							class="back_mico mico"></i>退&nbsp;货</span></span>
 				</div>
 				<div class="dd">
-					<div class="sec" style="margin-bottom: 4rem;">
+					<div class="sec">
 						<p>产品没有拆开，不影响二次销售的情况下，</p>
 						<p>拍下货物15天内可以无条件退货；</p>
 						<p>非质量问题退货，需承担发货和退货产生的快递费用；</p>
 						<p>系统确认收货后，非质量原因概不办理退款退货；</p>
 						<p>如因质量问题需退货，请拍照联系客服。</p>
-						<p style="margin-top: 2rem;color: #8fbb26;">地址：上海市上海市上海市上海市上海市</p>
 					</div>
-					<div class="sec">
-						<span class="primarytxt"><i class="local_sico sico"></i>如果产品严重破损，请拒收。</span>
+					<div class="sec" style="margin-bottom: 8rem;">
+						<span class="primarytxt"><i class="local_sico sico"></i>地址：上海市上海市上海市上海市上海市</span>
 					</div>
 				</div>
 			</div>
