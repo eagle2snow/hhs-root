@@ -50,7 +50,7 @@
 				<div class="weui-cell__bd">
 					<a href="" class="">
 						<div class="sendcard_mt">
-							<span>收货人：{{ad.name}}</span><span class="itm">{{ad.mobile}}</span>
+							<span>收货人：${ad.name}</span><span class="itm">${ad.mobile}</span>
 						</div>
 						<div class="sendcard_mb">
 							<i class="local_mbico mbico"></i>
