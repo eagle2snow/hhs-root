@@ -45,10 +45,10 @@
 													</option>
 												
 													<option value="1">
-														酒
+														抽纸
 													</option>
 													<option value="2">
-														纸
+														手帕纸
 													</option>
  
 											</select>
