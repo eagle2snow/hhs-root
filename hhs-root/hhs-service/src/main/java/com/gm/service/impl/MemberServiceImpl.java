@@ -351,4 +351,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return members;
 	}
 
+	@Override
+	public Member saveWeixinMember(String openid, String referrerGeneralizeId) {
+		Member member = new Member();
+		member.setOpenid(openid);
+		member.setGender(0);
+		member.setReferrerGeneralizeId(referrerGeneralizeId);
+		Integer memberId = saveReturnId(member);
+		member.setId(memberId);
+		return member;
+	}
+
 }
