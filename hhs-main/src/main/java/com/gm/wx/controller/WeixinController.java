@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +18,7 @@ import com.github.sd4324530.fastweixin.api.response.OauthGetTokenResponse;
 import com.github.sd4324530.fastweixin.message.BaseMsg;
 import com.github.sd4324530.fastweixin.message.TextMsg;
 import com.github.sd4324530.fastweixin.message.req.BaseEvent;
+import com.github.sd4324530.fastweixin.message.req.QrCodeEvent;
 import com.github.sd4324530.fastweixin.message.req.TextReqMsg;
 import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
@@ -32,7 +32,7 @@ import com.gm.utils.StringUtil;
  * @author ying-pc
  *
  */
-@Controller
+@RestController
 @RequestMapping("/wx")
 public class WeixinController extends WeixinControllerSupport {
 	private static final Logger log = LoggerFactory.getLogger(WeixinController.class);
@@ -65,15 +65,22 @@ public class WeixinController extends WeixinControllerSupport {
 	public BaseMsg handleTextMsg(TextReqMsg msg) {
 		String content = msg.getContent();
 		log.info("收到消息：" + content);
-		return new TextMsg("http://aijfc.iask.in/wx/index");
+		return new TextMsg("哈哈啊");
 	}
 
 	@Override
 	public BaseMsg handleSubscribe(BaseEvent event) {
-
-		System.out.println(JSON.toJSON(event));
-
-		return new TextMsg("感谢您的关注!");
+		QrCodeEvent qrCodeEvent = (QrCodeEvent) event;
+		String openid = qrCodeEvent.getFromUserName();
+		Member member = memberService.getOne("openid", openid);
+		if (null == member) {
+			String key = qrCodeEvent.getEventKey();
+			String referrerGeneralizeId = key.substring(8);
+			member = memberService.saveWeixinMember(openid, referrerGeneralizeId);
+			return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
+		} else {
+			return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+		}
 	}
 
 	@RequestMapping("/testLogin/{memberId}")

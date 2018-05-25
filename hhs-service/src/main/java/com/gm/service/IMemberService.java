@@ -189,4 +189,6 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 */
 	List<Member> getSons1(Member member);
 
+	Member saveWeixinMember(String openid, String referrerGeneralizeId);
+
 }

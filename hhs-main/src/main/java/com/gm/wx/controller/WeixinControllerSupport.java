@@ -31,13 +31,9 @@ public abstract class WeixinControllerSupport extends WeixinSupport {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	protected final void bind(HttpServletRequest request, HttpServletResponse response) {
-		
-		System.out.println("----------------------");
-		
 		if (isLegal(request)) {
 			// 绑定微信服务器成功
 			try {
-				//response.getWriter().print(request.getParameter("echostr"));
 				response.getWriter().write(request.getParameter("echostr"));
 			} catch (IOException e) {
 				e.printStackTrace();
