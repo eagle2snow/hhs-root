@@ -41,13 +41,19 @@ public class AdminMemberController extends BaseAdminController {
 	public String getUpperRelate(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself != null) {
-			Member upperRelate = memberService.getParent1(myself);
-			if (upperRelate != null)
-				mm.addAttribute("upperRelate", upperRelate);
-			return path + "upperRelate";
+		if (myself == null) {
+		    logger.info("getUpperRelate::memberService.get(id) == null");
+        } else {
+			Member upperRelate;
+			try {
+                upperRelate = memberService.getParent1(myself);
+                mm.addAttribute("upperRelate", upperRelate);
+            } catch (Exception e) {
+			    logger.info("getUpperRelate");
+			    logger.info(e.toString());
+            }
 		}
-		return "error/404";
+        return path + "upperRelate";
 	}
 
 	//直推会员
@@ -55,12 +61,19 @@ public class AdminMemberController extends BaseAdminController {
 	public String getDirectChild(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself != null) {
-			List<Member> direceChild = memberService.getSons1(myself);
-			mm.addAttribute("direceChild", direceChild);
-			return path + "directChild";
+		if (myself == null) {
+            logger.info("getDirectChild::memberService.get(id) == null");
+        } else {
+            List<Member> direceChild;
+            try {
+                direceChild = memberService.getSons1(myself);
+                mm.addAttribute("direceChild", direceChild);
+            } catch (Exception e) {
+                logger.info("memberService.getSons1");
+                logger.info(e.toString());
+            }
 		}
-		return "error/404";
+		return path + "directChild";
 	}
 
 	//直系会员
@@ -68,12 +81,19 @@ public class AdminMemberController extends BaseAdminController {
 	public String getAllChild(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself != null) {
-			List<Member> allChild = memberService.getAllSons(myself);
-			mm.addAttribute("allChild", allChild);
-			return path + "allChild";
+		if (myself == null) {
+            logger.info("getAllChild::memberService.get(id) == null");
+        } else {
+			List<Member> allChild;
+			try {
+                allChild = memberService.getAllSons(myself);
+                mm.addAttribute("allChild", allChild);
+            } catch (Exception e) {
+                logger.info("memberService.getAllSons");
+                logger.info(e.toString());
+            }
 		}
-		return "error/404";
+        return path + "allChild";
 	}
 
 	@RequestMapping("add.htm")
