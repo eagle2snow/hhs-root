@@ -242,7 +242,7 @@
 		//给我加急
 		function urgent(orderId){
 			
-			$.confirm("确定即刻评价吗?", function() {
+			$.confirm("确定要加急吗?", function() {
 				  //点击确认后的回调函数
 				$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
 					$.alert(data.msg);
