@@ -322,7 +322,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public List<Member> getAllSons(Member member) {
 		Map<Integer,Member> members = new HashMap<>();
 		members.put(member.getId(), member);
-
 		if (StringUtil.strNullOrEmpty(member.getGeneralizeId())
 				|| member.getId() == null)
 			return new ArrayList<>();
