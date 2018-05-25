@@ -41,17 +41,11 @@ public class AdminMemberController extends BaseAdminController {
 	public String getUpperRelate(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself == null) {
+		if (myself == null)
 		    logger.info("getUpperRelate::memberService.get(id) == null");
-        } else {
-			Member upperRelate;
-			try {
-                upperRelate = memberService.getParent1(myself);
-                mm.addAttribute("upperRelate", upperRelate);
-            } catch (Exception e) {
-			    logger.info("getUpperRelate");
-			    logger.info(e.toString());
-            }
+        else {
+			Member upperRelate = memberService.getParent1(myself);
+            mm.addAttribute("upperRelate", upperRelate);
 		}
         return path + "upperRelate";
 	}
@@ -61,17 +55,11 @@ public class AdminMemberController extends BaseAdminController {
 	public String getDirectChild(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself == null) {
+		if (myself == null)
             logger.info("getDirectChild::memberService.get(id) == null");
-        } else {
-            List<Member> direceChild;
-            try {
-                direceChild = memberService.getSons1(myself);
-                mm.addAttribute("direceChild", direceChild);
-            } catch (Exception e) {
-                logger.info("memberService.getSons1");
-                logger.info(e.toString());
-            }
+        else {
+            List<Member> direceChild = memberService.getSons1(myself);
+            mm.addAttribute("direceChild", direceChild);
 		}
 		return path + "directChild";
 	}
@@ -81,17 +69,11 @@ public class AdminMemberController extends BaseAdminController {
 	public String getAllChild(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
-		if (myself == null) {
+		if (myself == null)
             logger.info("getAllChild::memberService.get(id) == null");
-        } else {
-			List<Member> allChild;
-			try {
-                allChild = memberService.getAllSons(myself);
-                mm.addAttribute("allChild", allChild);
-            } catch (Exception e) {
-                logger.info("memberService.getAllSons");
-                logger.info(e.toString());
-            }
+        else {
+			List<Member> allChild = memberService.getAllSons(myself);
+			mm.addAttribute("allChild", allChild);
 		}
         return path + "allChild";
 	}
