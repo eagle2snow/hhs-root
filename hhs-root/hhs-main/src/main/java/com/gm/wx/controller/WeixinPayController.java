@@ -67,8 +67,6 @@ public class WeixinPayController extends WeixinBaseController {
 
 		if (null != getCurMember().getSetMeal() && this.getCurMember().getSetMeal() == 2) { // 已经购买套餐
 			
-			
-			
 			amount = amount.multiply(Const.discount);
 		}
 		
