@@ -322,13 +322,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public List<Member> getAllSons(Member member) {
 		Map<Integer,Member> members = new HashMap<>();
 		members.put(member.getId(), member);
-		if (member.getGeneralizeId() == null || member.getId() == null)
+
+		if (StringUtil.strNullOrEmpty(member.getGeneralizeId())
+				|| member.getId() == null)
 			return new ArrayList<>();
 
 		List<Member> direct = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
 		for (Member d : direct) {
-			String generalizeId = d.getGeneralizeId();
-			if (generalizeId == null)
+			if (StringUtil.strNullOrEmpty(d.getGeneralizeId()))
 				continue;
 			List<Member> inDirect = dao.listEq("referrerGeneralizeId", d.getGeneralizeId());
 			for (Member d2 : inDirect) {
