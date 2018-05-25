@@ -440,15 +440,17 @@ public class WxMyCenterController extends WeixinBaseController {
 	@RequestMapping("myQrCode")
 	public String myQrCode(HttpSession session, HttpServletRequest request) {
 		Member member = getRealMember();
-		String generalizeId = member.getGeneralizeId();
-		if (!StringUtil.strNullOrEmpty(generalizeId)) {
-			if (!StringUtil.strNullOrEmpty(member.getQrCode())) {
-				LocalDateTime lastUpdateQrCode = member.getLastUpdateQrCode();
-				if (null == lastUpdateQrCode || lastUpdateQrCode.plusDays(25).isBefore(LocalDateTime.now())) {
+		if (!StringUtils.isEmpty(member)) {
+			String generalizeId = member.getGeneralizeId();
+			if (!StringUtil.strNullOrEmpty(generalizeId)) {
+				if (!StringUtil.strNullOrEmpty(member.getQrCode())) {
+					LocalDateTime lastUpdateQrCode = member.getLastUpdateQrCode();
+					if (null == lastUpdateQrCode || lastUpdateQrCode.plusDays(25).isBefore(LocalDateTime.now())) {
+						genQrCode(session, request, member, generalizeId);
+					}
+				} else {
 					genQrCode(session, request, member, generalizeId);
 				}
-			} else {
-				genQrCode(session, request, member, generalizeId);
 			}
 		}
 		return PATH + "myQrCode";
