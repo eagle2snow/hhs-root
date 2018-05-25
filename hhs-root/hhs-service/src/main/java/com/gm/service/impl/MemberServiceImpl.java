@@ -3,7 +3,9 @@ package com.gm.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -318,18 +320,28 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	// 获取直系会员
 	@Override
 	public List<Member> getAllSons(Member member) {
-		List<Member> members = new ArrayList<>();
-		if (null == member.getGeneralizeId())
-			return members;
-		List<Member> first = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
-		for (Member member1 : first) {
-			if (member1.getGeneralizeId() == null || member1.getId().equals(member.getId()))
+		Map<Integer,Member> members = new HashMap<>();
+		members.put(member.getId(), member);
+		if (member.getGeneralizeId() == null || member.getId() == null)
+			return new ArrayList<>();
+
+		List<Member> direct = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
+		for (Member d : direct) {
+			String generalizeId = d.getGeneralizeId();
+			if (generalizeId == null)
 				continue;
-			List<Member> second = dao.listEq("referrerGeneralizeId", member1.getGeneralizeId());
-			for (Member m : second)
-				members.add(m);
+			List<Member> inDirect = dao.listEq("referrerGeneralizeId", d.getGeneralizeId());
+			for (Member d2 : inDirect) {
+				if (members.containsKey(d2.getId()))
+					continue;
+				members.put(d2.getId(), d2);
+			}
 		}
-		return members;
+		List<Member> all = new ArrayList<>();
+		members.remove(member.getId());
+		for (Map.Entry<Integer, Member> entry : members.entrySet())
+			all.add(entry.getValue());
+		return all;
 	}
 
 	// 获取直推会员
