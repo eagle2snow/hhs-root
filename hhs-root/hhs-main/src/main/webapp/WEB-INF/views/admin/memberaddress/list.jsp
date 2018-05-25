@@ -105,9 +105,10 @@
 											
 											 <th>${model.address}</th>
 											
-											 <th>${model.defaultAddress eq 1 ? "是":"否"}</th>
+
 											
 											<td><javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+											<th>${model.defaultAddress eq 1 ? "是":"否"}</th>
 											<td class="td-status">
 														<div class="switch switchevent" data-on="primary"
 															lang="${model.id}" title="${model.enable}"
