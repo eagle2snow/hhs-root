@@ -227,6 +227,19 @@
 			
 		}
 		
+		//查看快递 
+		function lookExpressage(orderId){
+				$.getJSON("${ctx}/wx/myCenter/order/lookExpressage/"+orderId,function (data){
+					$.alert({
+						  title: '快递信息',
+						  text: data.name,
+						  onOK: function () {
+						    //点击确认
+						  }
+						});
+		});
+		}
+		
 		//给我加急
 		function urgent(orderId){
 			$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
