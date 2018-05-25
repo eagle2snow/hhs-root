@@ -85,7 +85,7 @@
 									<c:if test="${order.status==10 and order.appraise==0}">
 											<span onclick="comments(${item.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
 											<%-- <span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
-					</c:if>
+								</c:if>
 									</div>
 
 								</div>
@@ -186,7 +186,7 @@
 		
 		//查看评价
 		function lookAppraise(){ 
-			$.confirm("确定查看请假么?", function() {
+			$.confirm("确定查看评价吗?", function() {
 				  //点击确认后的回调函数
 					location.href='${ctx}wx/myCenter/replyMessage/1';
 				  }, function() {
@@ -196,7 +196,7 @@
 		
 		//即刻评价 
 		function comments(orderId){
-			$.confirm("确定即刻评价么?", function() {
+			$.confirm("确定即刻评价吗?", function() {
 				  //点击确认后的回调函数
 					location.href='${ctx}wx/comments/toCommondityComment/'+orderId;
 				  }, function() {
@@ -212,7 +212,7 @@
 		//确认收货 
 		function confirmGoods(orderId){
 // 			location.href="${ctx}wx/order/confirmGoods/"+orderId
-			$.confirm("确认收货么?", function() {
+			$.confirm("确认收货吗?", function() {
 			  //点击确认后的回调函数
 				$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
 					if(data.status == 1){
