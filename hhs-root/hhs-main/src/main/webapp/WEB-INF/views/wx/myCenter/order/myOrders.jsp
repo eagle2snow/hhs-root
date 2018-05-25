@@ -210,7 +210,6 @@
 		
 		//确认收货 
 		function confirmGoods(orderId){
-// 			location.href="${ctx}wx/order/confirmGoods/"+orderId
 			$.confirm("确认收货吗?", function() {
 			  //点击确认后的回调函数
 				$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
@@ -242,23 +241,21 @@
 		//给我加急
 		function urgent(orderId){
 			
-			$.confirm("确定要加急吗?", function() {
+			$.confirm("确定要加急么?", function() {
 				  //点击确认后的回调函数
-				$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
-					$.alert(data.msg);
-					if(data.status == 1){
-						$("#urgent").text("已加急"); 
-						re();
-					}else{
-						$.alert("网络出错，请稍后再试。");
-						
-					}
-				});
+					$.getJSON("${ctx}wx/order/urgent/"+orderId,function (data){
+						$.alert(data.msg);
+						if(data.status == 1){
+							$("#urgent").text("已加急"); 
+							re();
+						}else{
+							$.alert("网络出错，请稍后再试。");
+							
+						}
+					});
 				  }, function() {
 				  //点击取消后的回调函数
 				  });
-			
-			
 		}
 		
 		//物流查询
@@ -267,26 +264,41 @@
 		}
 		
 		
-		//马上付款 1
+		//马上付款 
 		function payMoney(orderId){
-			location.href="${ctx}wx/order/confirmOrder/"+orderId
+			
+			$.confirm("确定马上付款么?", function() {
+				  //点击确认后的回调函数
+				  location.href="${ctx}wx/order/confirmOrder/"+orderId
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
+			
+			
 		}
 		
-		//取消订单 1
+		//取消订单 
 		function cancelOrder(orderId){
 			
-			$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
-				console.log(data);
-				if(data.status == 1){
-					layer.msg(data.msg,{icon:6});
-					re();
-				}
-				if(data.status == 2){
-					layer.msg(data.msg,{icon:5});
-					re();
-					
-				}
-			});
+			$.confirm("确定取消订单么?", function() {
+				  //点击确认后的回调函数
+					$.getJSON("${ctx}wx/order/cancelOrder/"+orderId,function (data){
+						console.log(data);
+						if(data.status == 1){
+							layer.msg(data.msg,{icon:6});
+							re();
+						}
+						if(data.status == 2){
+							layer.msg(data.msg,{icon:5});
+							re();
+							
+						}
+					});
+				  }, function() {
+				  //点击取消后的回调函数
+				  });
+			
+			
 			
 		}
 	</script>
