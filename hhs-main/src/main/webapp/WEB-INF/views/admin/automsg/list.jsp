@@ -81,7 +81,7 @@
 												<th>提问次数</th>
 												<th width="130">创建时间</th>
 												<th width="100">状态</th>
-												<th width="100">操作</th>
+												<th width="100">编辑 | 删除</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -113,7 +113,7 @@
 													</td>
 													<td>
 														<button onclick="edit(${model.id})"
-															class="btn btn-sm btn-primary">
+															class="btn btn-sm btn-warning">
 															<i class="glyphicon glyphicon-pencil" title="修改"></i>
 														</button>
 														<button onclick="del(${model.id})"
