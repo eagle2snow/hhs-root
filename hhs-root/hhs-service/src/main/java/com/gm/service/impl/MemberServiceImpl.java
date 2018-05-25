@@ -323,7 +323,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return members;
 		List<Member> first = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
 		for (Member member1 : first) {
-			if (member1.getGeneralizeId() == null)
+			if (member1.getGeneralizeId() == null || member1.getId().equals(member.getId()))
 				continue;
 			List<Member> second = dao.listEq("referrerGeneralizeId", member1.getGeneralizeId());
 			for (Member m : second)
