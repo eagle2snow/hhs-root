@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,7 @@ import com.gm.base.model.PayBill;
 import com.gm.service.IMemberService;
 import com.gm.service.IPayBillService;
 import com.gm.service.impl.OrderServiceImpl;
+import com.gm.utils.StringUtil;
 
 /**
  * 
@@ -44,7 +46,7 @@ public class WeixinPayController extends WeixinBaseController {
 
 	@Resource
 	private IPayBillService payBillService;
-	
+
 	@Resource
 	private IMemberService memberService;
 
@@ -63,10 +65,17 @@ public class WeixinPayController extends WeixinBaseController {
 	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount) {
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 
+		if (null != getCurMember().getSetMeal() && this.getCurMember().getSetMeal() == 2) { // 已经购买套餐
+			
+			
+			
+			amount = amount.multiply(Const.discount);
+		}
+		
 		amount = BigDecimal.valueOf(0.01);
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
-		
+
 		if (null == payBill) {
 			payBill = new PayBill();
 			payBill.setOrderNo(orderNo);
@@ -77,14 +86,13 @@ public class WeixinPayController extends WeixinBaseController {
 			payBillService.save(payBill);
 		}
 		logger.info("setMeal is setMeal={}", this.getCurMember().getSetMeal());
-		
+
 		Map<String, Object> map = getMap();
 		try {
-			
-				PayResponse res = WeixinPayApi.pay(orderNo, orderName, amount, getCurMember().getOpenid());
-				map.put("s", 1);
-				map.put("data", res);
-			
+
+			PayResponse res = WeixinPayApi.pay(orderNo, orderName, amount, getCurMember().getOpenid());
+			map.put("s", 1);
+			map.put("data", res);
 
 		} catch (BestPayException e) {
 			e.printStackTrace();
@@ -121,14 +129,14 @@ public class WeixinPayController extends WeixinBaseController {
 		payBill.setPreFee(Const.MEMBER_AMOUNT);
 		payBillService.save(payBill);
 		try {
-			if (member.getSetMeal()==1) {
+			if (member.getSetMeal() == 1) {
 				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, openid);
 				map.put("s", 1);
 				map.put("data", res);
-				
-			}else {
+
+			} else {
 				map.put("s", "您已购买，请勿重新购买套餐!");
-				
+
 			}
 		} catch (BestPayException e) {
 			e.printStackTrace();

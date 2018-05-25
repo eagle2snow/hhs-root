@@ -27,8 +27,8 @@
 			<div class="showdtitem">
 				<a href="###" class="dl">
 					<p>
-						首单支付后，重复消费<span class="secondtxt">立减80%</span>，相当于<span
-							class="secondtxt">8折优惠</span>
+						<span class="secondtxt">购买套餐后，</span>再次消费商城所有商品，一律<span
+							class="secondtxt">八折。</span>
 					</p>
 				</a>
 			</div>
