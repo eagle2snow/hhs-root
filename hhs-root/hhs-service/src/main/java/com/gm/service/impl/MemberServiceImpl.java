@@ -318,25 +318,18 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	// 获取直系会员
 	@Override
 	public List<Member> getAllSons(Member member) {
-
-		if (null == member.getGeneralizeId()) {
-			return null;
+		List<Member> members = new ArrayList<>();
+		if (null == member.getGeneralizeId())
+			return members;
+		List<Member> first = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
+		for (Member member1 : first) {
+			if (member1.getGeneralizeId() == null)
+				continue;
+			List<Member> second = dao.listEq("referrerGeneralizeId", member1.getGeneralizeId());
+			for (Member m : second)
+				members.add(m);
 		}
-
-		List<Member> members = list();
-		List<Node> nodes = members.stream().map(m -> new Node(m)).collect(Collectors.toList());
-		SuperTree superTree = new SuperTree();
-		List<String> ids = superTree.getChildNodes(nodes, member.getGeneralizeId());
-		if (ids.size() > 0) {
-			boolean p = ids.contains(member.getGeneralizeId());
-			if (p) {
-				ids.remove(ids.get(ids.indexOf(member.getGeneralizeId())));
-			}
-			if (ids.size() > 0) {
-				return listIn("generalizeId", ids.toArray(new String[ids.size()]));
-			}
-		}
-		return null;
+		return members;
 	}
 
 	// 获取直推会员
