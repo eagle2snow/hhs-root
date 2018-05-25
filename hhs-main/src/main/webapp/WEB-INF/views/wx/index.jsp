@@ -27,6 +27,10 @@
 	<!-- banner -->
 	<!-- 中间 -->
 	<!-- 一行 -->
+	
+	<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzUxNjczODQ3Nw==#wechat_redirect">一点关注微信</a>
+	
+	
 	<ul class="showpiclist">
 		<c:forEach items="${page.list }" var='p'>
 			<li class="showpicitem"><a
