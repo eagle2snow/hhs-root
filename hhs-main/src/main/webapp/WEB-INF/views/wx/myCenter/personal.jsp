@@ -110,7 +110,7 @@
 	
 	
 	<ul class="gonavlist">
-		<li class="gonavitem"><a href="${ctx}/wx/chat" class="gonavdl">
+		<li class="gonavitem" style="margin-bottom: 6rem;"><a href="${ctx}/wx/chat" class="gonavdl">
 				<div class="dt">联系客服</div> <i class="rgt"></i>
 		</a></li>
 	</ul>
