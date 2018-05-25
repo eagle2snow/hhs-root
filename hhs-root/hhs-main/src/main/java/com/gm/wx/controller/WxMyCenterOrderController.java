@@ -228,15 +228,15 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	
 	/**
 	 * 
-	 *<p>Title:confirmGood</p>
+	 *<p>Title:lookExpressage</p>
 	 *<p>Description:查看快递</p>
 	 *
 	 * @param orderId 
 	 * @return name：快递名称 ：快递单号
 	 */
 	@ResponseBody
-	@RequestMapping("confirmGood/{orderId}")
-	public HashMap<String, Object> confirmGood( @PathVariable Integer orderId) {
+	@RequestMapping("lookExpressage/{orderId}")
+	public HashMap<String, Object> lookExpressage( @PathVariable Integer orderId) {
 		HashMap<String, Object> map = new HashMap();
 		Order order = orderService.get(orderId);
 		String name="";
