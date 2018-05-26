@@ -22,10 +22,10 @@
 
 <!--商品-->
 <div class="content1">
-
+<%   int i=0;%>
     <c:forEach items="${items}" var="oneItem">
         <div class="item">
-            <img src=${oneItem.imgerPath}/>
+            <img src="${oneItem.imgerPath}"/>
             <ul>
                 <li>${oneItem.name}</li>
                 <li style="margin-top: 1rem; color: #999999; font-size: 1.3rem;">
