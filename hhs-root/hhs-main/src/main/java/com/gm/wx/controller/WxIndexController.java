@@ -1,5 +1,6 @@
 package com.gm.wx.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -180,8 +182,23 @@ public class WxIndexController extends WeixinBaseController {
 	 */
 	@RequestMapping("/payMemberSuccess")
 	public String payMemberSuccess(ModelMap model) {
+		Member curMember = this.getCurMember();
 		model.put("path", PATH);
-		memberService.genCodeAndQrCode(getCurMember());
+		model.put("member", curMember);
+
+		System.out.println("购买套餐成功");
+		
+		if (StringUtils.isEmpty(curMember.getConsume())) {
+			curMember.setConsume(Const.MEMBER_AMOUNT);
+		} else {
+			curMember.setConsume(curMember.getConsume().add(Const.MEMBER_AMOUNT));
+		}
+		if (StringUtils.isEmpty(curMember.getLove())) {
+			curMember.setLove(1);
+		} else {
+			curMember.setLove(curMember.getLove() + 1);
+		}
+
 		return PATH + "payMemberSuccess";
 	}
 

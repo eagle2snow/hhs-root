@@ -199,12 +199,20 @@ public class WxMyCenterController extends WeixinBaseController {
 		logger.info("getVerificationCode:The Member curMember={}", JSON.toJSON(curMember));
 
 		String param = RandomUtil.randomNumbers(6);
-		semdSms.sendSms(mobile, param);
+		Map<String, Object> sendSms = semdSms.sendSms(mobile, param);
+		Integer status = (Integer) sendSms.get("status");
 
-		this.getRequest().getSession().setAttribute(Const.verificationCode2Session, param);
+		if (status == 1) {
 
-		map.put("status", 1);
-		map.put("msg", "验证码发送成功！");
+			this.getRequest().getSession().setAttribute(Const.verificationCode2Session, param);
+
+			map.put("status", 1);
+			map.put("msg", "验证码发送成功！");
+		} else {
+			map.put("status", 2);
+			map.put("msg", "验证码发送失败！");
+
+		}
 
 		logger.info("getVerificationCode:The Map map={}", JSON.toJSON(map));
 		return map;
@@ -335,7 +343,7 @@ public class WxMyCenterController extends WeixinBaseController {
 	@ResponseBody
 	@RequestMapping("editReferrerAction/{referrerGeneralizeId}")
 	public Map<String, Object> editReferrerAction(@PathVariable String referrerGeneralizeId) {
-		logger.info("editReferrerAction: the ages  is{}.", referrerGeneralizeId);
+		logger.info("editReferrerAction: the ages  is {}.", referrerGeneralizeId);
 
 		Member realMember = this.getRealMember();
 		logger.info("editReferrerAction: the realMember  is {}.", JSON.toJSON(realMember));

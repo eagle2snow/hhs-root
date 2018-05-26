@@ -65,7 +65,7 @@ public class WeixinController extends WeixinControllerSupport {
 	public BaseMsg handleTextMsg(TextReqMsg msg) {
 		String content = msg.getContent();
 		log.info("收到消息：" + content);
-		return new TextMsg("哈哈啊");
+		return new TextMsg("我不太明白您的意思，请进首页 ->右下角的客服咨询。");
 	}
 
 	@Override
@@ -78,18 +78,18 @@ public class WeixinController extends WeixinControllerSupport {
 				String key = qrCodeEvent.getEventKey();
 				String referrerGeneralizeId = key.substring(8);
 				member = memberService.saveWeixinMember(openid, referrerGeneralizeId);
-				return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
+				return new TextMsg("感谢您的关注，祝您购物愉快。");// 数据库没有此会员 信息
 			} else {
-				return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+				return new TextMsg("感谢您再次关注竹语商城，祝您购物愉快。");// 娄据库已有此会员 信息
 			}
 		} else {// 扫描官方二维码或者通过搜索关注的
 			String openid = event.getFromUserName();
 			Member member = memberService.getOne("openid", openid);
 			if (null == member) {
 				member = memberService.saveWeixinMember(openid);
-				return new TextMsg("感谢您的关注!");// 数据库没有此会员 信息
+				return new TextMsg("感谢您的关注，祝您购物愉快。");// 数据库没有此会员 信息
 			} else {
-				return new TextMsg("感谢您注!");// 娄据库已有此会员 信息
+				return new TextMsg("感谢您再次关注竹语商城，祝您购物愉快。");// 娄据库已有此会员 信息
 			}
 
 		}

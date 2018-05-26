@@ -1,7 +1,5 @@
 package com.gm;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.boot.SpringApplication;
@@ -11,12 +9,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
-import com.gm.base.model.Member;
 import com.gm.service.IMemberService;
 
 @SpringBootApplication

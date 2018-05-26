@@ -28,8 +28,13 @@ public class Const {
 	public static final String PASSWORD_SECRET = "qweoxm235DHG24!@#$xss";// 密钥
 	public static final String MCHID = "1502723581"; // 商户id
 	public static final String MCHKEY = "a74srx89fxadcgq0ertcAQEXqxdQs541";// 商户key
-	public static final String NOTIFY_URL = "http://aijfc.iask.in/wx/pay/paySuccess";// 支付成功后回调
-	public static final String RETURN_URL = "http://aijfc.iask.in/wx/index";// 支付完成后的同步返回地址
+	// public static final String NOTIFY_URL =
+	// "http://aijfc.iask.in/wx/pay/paySuccess";// 支付成功后回调
+	// public static final String RETURN_URL = "http://aijfc.iask.in/wx/index";//
+	// 支付完成后的同步返回地址
+
+	public static final String NOTIFY_URL = "/wx/pay/paySuccess";// 支付成功后回调
+	public static final String RETURN_URL = "/wx/index";// 支付完成后的同步返回地址
 
 	// 一下为短信方向参数
 	public static final String userId = "8131";// 企业id
@@ -43,6 +48,6 @@ public class Const {
 	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);// 会员套餐价格，單位（元）
 	public static final Integer directMember = 10;// 直推人数
 	public static final Integer betweenMember = 100;// 直系人数
-	public static final BigDecimal discount = BigDecimal.valueOf(0.8);// 直系人数
+	public static final BigDecimal discount = BigDecimal.valueOf(0.8);// 折扣数
 
 }

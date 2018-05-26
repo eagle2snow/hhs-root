@@ -91,9 +91,9 @@
 			//微信签名 
 			}, function(res) {
 				if (res.err_msg == "get_brand_wcpay_request:ok") {
-					location.href = '${adp}payMemberSuccess';
+					location.href = '/wx/payMemberSuccess';
 				} else {
-					location.href = '${adp}payMemberFail';
+					location.href = '/wx/payMemberFail';
 				}
 			});
 			if (typeof WeixinJSBridge == "undefined") {
