@@ -1,5 +1,7 @@
 package com.gm.wx.controller;
 
+import java.io.File;
+
 import javax.annotation.Resource;
 
 import com.gm.base.consts.Const;
@@ -59,6 +61,19 @@ public class WeixinBaseController extends BaseController {
 
 	public Integer getMid() {
 		return getCurMember().getId();
+	}
+
+	/**
+	 * 获取域名
+	 * @Title: getDomain   
+	 * @Description: 
+	 * @return      
+	 * @return: String      
+	 * @throws
+	 */
+	public String getDomain() {
+		String domain = getRequest().getScheme() + "://" + getRequest().getServerName();
+		return domain;
 	}
 
 }

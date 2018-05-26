@@ -62,14 +62,14 @@ public class WeixinPayController extends WeixinBaseController {
 	 */
 	@RequestMapping("/prePayOrder")
 	@ResponseBody
-	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount) {
+	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount, HttpServletRequest request) {
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 
 		if (null != getCurMember().getSetMeal() && this.getCurMember().getSetMeal() == 2) { // 已经购买套餐
-			
+
 			amount = amount.multiply(Const.discount);
 		}
-		
+
 		amount = BigDecimal.valueOf(0.01);
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
@@ -88,7 +88,7 @@ public class WeixinPayController extends WeixinBaseController {
 		Map<String, Object> map = getMap();
 		try {
 
-			PayResponse res = WeixinPayApi.pay(orderNo, orderName, amount, getCurMember().getOpenid());
+			PayResponse res = WeixinPayApi.pay(orderNo, orderName, amount, getCurMember().getOpenid(), getDomain());
 			map.put("s", 1);
 			map.put("data", res);
 
@@ -126,9 +126,11 @@ public class WeixinPayController extends WeixinBaseController {
 		payBill.setOpenid(openid);
 		payBill.setPreFee(Const.MEMBER_AMOUNT);
 		payBillService.save(payBill);
+		
 		try {
 			if (member.getSetMeal() == 1) {
-				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, openid);
+				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, openid,
+						getDomain());
 				map.put("s", 1);
 				map.put("data", res);
 
@@ -164,7 +166,7 @@ public class WeixinPayController extends WeixinBaseController {
 		}
 		instream.close();
 
-		PayResponse response2 = WeixinPayApi.getBestPayServiceImpl().asyncNotify(sb.toString());
+		PayResponse response2 = WeixinPayApi.getBestPayServiceImpl(getDomain()).asyncNotify(sb.toString());
 
 		String orderId = response2.getOrderId();
 		Double amount = response2.getOrderAmount();

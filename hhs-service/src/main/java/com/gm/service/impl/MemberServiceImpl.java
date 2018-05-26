@@ -144,7 +144,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setGeneralizeId(StringUtil.get8UUID());
 		member.setLove(member.getLove() + 1);
 		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
-		genCodeAndQrCode(member);
 
 		logger.info("payMemberSuccess:The Member member={}", JSON.toJSON(member));
 

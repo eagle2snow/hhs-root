@@ -24,7 +24,7 @@ public class WeixinPayApi {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public static WxPayH5Config getWxPayH5Config() {
+	public static WxPayH5Config getWxPayH5Config(String domain) {
 		if (wxPayH5Config == null) {
 			synchronized (WeixinPayApi.class) {
 				if (wxPayH5Config == null) {
@@ -33,8 +33,8 @@ public class WeixinPayApi {
 					wxPayH5Config.setAppSecret(Const.SECRET);
 					wxPayH5Config.setMchId(Const.MCHID);
 					wxPayH5Config.setMchKey(Const.MCHKEY);
-					wxPayH5Config.setNotifyUrl(Const.NOTIFY_URL);
-					wxPayH5Config.setReturnUrl(Const.RETURN_URL);
+					wxPayH5Config.setNotifyUrl(domain + Const.NOTIFY_URL);
+					wxPayH5Config.setReturnUrl(domain + Const.RETURN_URL);
 				}
 			}
 		}
@@ -59,7 +59,7 @@ public class WeixinPayApi {
 	 * 
 	 * @version 1.0
 	 */
-	public static PayResponse pay(String orderNo, String orderName, BigDecimal amount, String openid)
+	public static PayResponse pay(String orderNo, String orderName, BigDecimal amount, String openid, String domain)
 			throws BestPayException {
 		PayRequest payRequest = new PayRequest();
 		payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
@@ -67,13 +67,13 @@ public class WeixinPayApi {
 		payRequest.setOrderName(orderName);
 		payRequest.setOrderAmount(amount.doubleValue());
 		payRequest.setOpenid(openid);
-		PayResponse response = getBestPayServiceImpl().pay(payRequest);
+		PayResponse response = getBestPayServiceImpl(domain).pay(payRequest);
 		return response;
 	}
 
-	public static BestPayServiceImpl getBestPayServiceImpl() {
+	public static BestPayServiceImpl getBestPayServiceImpl(String domain) {
 		BestPayServiceImpl bestPayService = new BestPayServiceImpl();
-		bestPayService.setWxPayH5Config(getWxPayH5Config());
+		bestPayService.setWxPayH5Config(getWxPayH5Config(domain));
 		return bestPayService;
 	}
 

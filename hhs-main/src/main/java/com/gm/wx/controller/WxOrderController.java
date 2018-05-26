@@ -50,7 +50,7 @@ import com.gm.utils.StringUtil;
  * @date 2018年4月23日
  */
 @Controller
-@RequestMapping("/wx/order")
+@RequestMapping("wx/order")
 public class WxOrderController extends WeixinBaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(WxOrderController.class);

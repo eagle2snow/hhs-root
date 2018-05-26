@@ -48,7 +48,7 @@
 		<div class="tborder dl">
 			<div class="min120 dt"></div>
 			<div class="ar dd">
-				<input id="verificationCode" name="verificationCode" type="text" placeholder="点击输入验证码" class="dtint">
+				<input id="verificationCode" name="verificationCode" type="text" placeholder="请输入验证码" class="dtint">
 			</div>
 			<a onclick="getVerificationCode()" class="ml20 primarybtn mbtn">点击获取验证码</a>
 		</div>

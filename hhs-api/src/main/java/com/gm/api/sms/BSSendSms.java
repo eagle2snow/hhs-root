@@ -45,7 +45,7 @@ public class BSSendSms {
 	 * @param param
 	 * @return
 	 */
-	public  Map<String, Object> sendSms(String mobile, String param) {
+	public Map<String, Object> sendSms(String mobile, String param) {
 
 		Map<String, Object> map = new HashMap<>();
 
@@ -63,8 +63,7 @@ public class BSSendSms {
 			String dateTime = DateUtil.dateToStr(new Date(), "yyyy年MM月dd日HH:mm分");
 
 			String sign = Md5Util.getMD5(username + password + timestamp);
-
-			String content = "【竹语商城】 验证码:" + param + "，您于" + dateTime + "进行修改个人信息,注意保密哦!                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ";
+			String content = "【竹语商城】 验证码:" + param + "，您于" + dateTime + "进行修改个人信息,注意保密哦!";
 			String sendTime = "";
 			String action = "send";
 			String extno = "";
