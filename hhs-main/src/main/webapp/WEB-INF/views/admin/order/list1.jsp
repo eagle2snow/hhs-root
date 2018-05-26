@@ -106,7 +106,7 @@
 											<th>微信交易号</th> -->
 											<th width="130">创建时间</th>
 											<!-- <th width="100">状态</th> -->
-											<th width="150">详情 | 编辑 | 删除</th>
+											<th width="150">详情 | 发货 | 删除</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -201,7 +201,7 @@
 											</td> --%>
 											<td>
 												<button onclick="details(${model.id})" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-list" title="详情"></i></button>
-												<button onclick="ok(${model.id})"  class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-pencil" title="确认发货"></i></button>
+												<button onclick="ok(${model.id})"  class="btn btn-sm btn-success"><i class="glyphicon glyphicon-ok" title="确认发货"></i></button>
 												<button onclick="bz(${model.id})" class="btn btn-sm btn-danger"  ><i class="glyphicon glyphicon-trash" title="备注"></i></button>
 											</td>
 										</tr>
