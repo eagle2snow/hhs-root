@@ -80,11 +80,15 @@ public class WxOrderController extends WeixinBaseController {
 			return "error/404";
 		
 		BigDecimal sum = new BigDecimal(0);
+		int itemSize = 0;
 		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
 		if (items == null)
 			return "error/404";
-		for (OrderItem item : items)
-			sum = sum.add(item.getOriginalPrice());
+		for (OrderItem item : items) {
+			sum = sum.add(item.getOriginalPrice().multiply(new BigDecimal(item.getBuyCount())));
+			itemSize +=item.getBuyCount();
+		}
+
 		
 		List<PayBill> bills = payBillService.listEq("orderNo", order.getOrderNo());
 		if (bills == null || bills.size() != 1) {
@@ -97,7 +101,7 @@ public class WxOrderController extends WeixinBaseController {
 
 		
 		model.addAttribute("items", items);
-		model.addAttribute("itemSize", items.size());
+		model.addAttribute("itemSize", itemSize);
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
 		BigDecimal discount = sum.subtract(bills.get(0).getReaFee());
@@ -280,7 +284,7 @@ public class WxOrderController extends WeixinBaseController {
 			}
 		}
 
-		List addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
+		List<MemberAddress> addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
 				.pq("defaultAddress").eq("member.id", member.getId()).pqList();
 		map.put("addressList", JSON.toJSON(addressList));
 		map.put("order", JSON.toJSON(order));
@@ -291,6 +295,7 @@ public class WxOrderController extends WeixinBaseController {
 		if (null != order.getMemberAddress()) {
 			map.put("orderAddressId", order.getMemberAddress().getId());
 		}
+		logger.info("支付表内容:{}." + JSON.toJSONString(map));
 		return PATH + "confirmOrder";
 	}
 
