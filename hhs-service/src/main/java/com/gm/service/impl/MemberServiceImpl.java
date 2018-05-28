@@ -143,7 +143,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Member member = getOne("openid", openid);
 		member.setSetMeal(2);
 		member.setLevel(3);
-		member.setGeneralizeId(RandomUtil.randomNumbers(6));
+		if (StringUtils.isEmpty(member.getGeneralizeId())) {
+			member.setGeneralizeId(RandomUtil.randomNumbers(6));
+		}
 		member.setLove(member.getLove() + 1);
 		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 
