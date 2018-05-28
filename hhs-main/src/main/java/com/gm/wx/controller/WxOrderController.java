@@ -392,8 +392,9 @@ public class WxOrderController extends WeixinBaseController {
 	public String paySuccess(ModelMap map, Integer orderId, String amount) {
 		logger.info("paySuccess:The args orderId={},amount={}", orderId, amount);
 
+		PayBill payBill = payBillService.getOne("orderNo", orderId);
 		map.put("orderId", orderId);
-		map.put("amount", amount);
+		map.put("amount", payBill.getReaFee());
 		map.put("path", PATH);
 
 		return PATH + "paySuccess";
