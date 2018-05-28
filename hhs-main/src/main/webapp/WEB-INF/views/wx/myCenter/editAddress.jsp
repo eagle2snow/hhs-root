@@ -36,10 +36,9 @@
 			</div>
 			<div class="setitem">
 				<div class="dl">
-					<div class="min120 dt">联系电话</div>
+					<div class="min120 dt">联系方式</div>
 					<div class="dd">
-						<input type="tel" value="${model.mobile}" class="dtint"
-							name="mobile" datatype="m" errormsg="请输入正确的手机号">
+						<input type="tel" value="${model.mobile}" class="dtint mmobile" name="mobile" datatype="m" errormsg="请输入正确的手机号">
 					</div>
 				</div>
 			</div>
@@ -96,8 +95,14 @@
 			postonce : true,
 			ajaxPost : true,
 			beforeCheck : function(curform) {
+                var str = curform.find('.mmobile')[0].value
+                str = str.replace(/\s+/g, "")
+                curform.find('.mmobile')[0].value = str
 			},
 			beforeSubmit : function(curform) {
+                var str = curform.find('.mmobile')[0].value
+                str = str.replace(/\s+/g, "")
+                curform.find('.mmobile')[0].value = str
             },
 			callback : function(res) {
 				if(res.msg=="ok"){
