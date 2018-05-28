@@ -18,7 +18,7 @@
 				<img src="${member.iocUrl}" alt="">
 			</div>
 			<div class="cutuser_cont">
-				<div class="tr">会员昵称：${member.nickname}</div>
+				<div class="tr">会员昵称：${member.name}</div>
 				<div class="tr">
 				会员等级：
 				<c:choose>

@@ -16,7 +16,7 @@
 	<div class="setitem">
 		<div class="dl">
 			<div class="min120 dt">头像</div>
-			<div class="ar dd"><span id="iocUrl" class="setitem_avator"><img id="iocUrl" src="${model.iocUrl }" alt=""><input type="file" class="hidel"></span></div>
+			<div class="ar dd"><span id="iocUrl" class="setitem_avator"><img id="iocUrl" src="${model.iocUrl }" alt=""><input type="file" disabled="disabled" class="hidel"></span></div>
 		</div>
 	</div>
 	<div class="setitem">
