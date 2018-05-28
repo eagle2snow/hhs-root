@@ -96,7 +96,7 @@
 						<p>如因质量问题需退货，请拍照联系客服。</p>
 					</div>
 					<div class="sec" style="margin-bottom: 8rem;">
-						<span class="primarytxt"><i class="local_sico sico"></i>地址：上海市上海市上海市上海市上海市</span>
+						<span class="primarytxt"><i class="local_sico sico"></i>地址：桂林市金融中心1506</span>
 					</div>
 				</div>
 			</div>
