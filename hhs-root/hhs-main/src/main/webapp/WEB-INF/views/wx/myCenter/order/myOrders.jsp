@@ -214,9 +214,9 @@
 			  //点击确认后的回调函数
 				$.getJSON("${ctx}wx/order/confirmGoods/"+orderId,function (data){
 					if(data.status == 1){
-						$.alert(data.msg);
 						re();
 					}
+					$.alert(data.msg);
 						
 				});
 			  }, function() {
