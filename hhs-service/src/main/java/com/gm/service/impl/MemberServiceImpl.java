@@ -39,6 +39,7 @@ import com.gm.service.IOrderService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
 import com.gm.utils.StringUtil;
+import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
 @Service("memberSercive")
@@ -118,6 +119,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		String createQrcode = QRCodeUtils.createQrcode(path + "static" + File.separator + "member" + File.separator
 				+ "qrcode" + File.separator + generalizeId + ".png", domain + "/wx/index?generalizeId=" + generalizeId);
 		logger.info("createQrcode={}", createQrcode);
+		System.out.println("memberServiceImpl genCodeAndCode:generalizeId = " + generalizeId);
 
 		if (StringUtils.isEmpty(member.getQrCode())) {
 			member.setQrCode("/static/member/qrcode/" + generalizeId + ".png");
@@ -141,7 +143,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Member member = getOne("openid", openid);
 		member.setSetMeal(2);
 		member.setLevel(3);
-		member.setGeneralizeId(StringUtil.get8UUID());
+		member.setGeneralizeId(RandomUtil.randomNumbers(6));
 		member.setLove(member.getLove() + 1);
 		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 
@@ -313,16 +315,12 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		}
 	}
 
-	public static void main(String[] args) {
-	}
-
 	// 获取直系会员
 	@Override
 	public List<Member> getAllSons(Member member) {
-		Map<Integer,Member> members = new HashMap<>();
+		Map<Integer, Member> members = new HashMap<>();
 		members.put(member.getId(), member);
-		if (StringUtil.strNullOrEmpty(member.getGeneralizeId())
-				|| member.getId() == null)
+		if (StringUtil.strNullOrEmpty(member.getGeneralizeId()) || member.getId() == null)
 			return new ArrayList<>();
 
 		List<Member> direct = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
@@ -360,6 +358,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Integer memberId = saveReturnId(member);
 		member.setId(memberId);
 		return member;
+	}
+
+	public static void main(String[] args) {
 	}
 
 }
