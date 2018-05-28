@@ -123,7 +123,10 @@
 	}
 	
 	function getVerificationCode(){
-		var mobile   = document.getElementById("mobile").value;
+		var mobile = document.getElementById("mobile").value;
+
+        mobile = mobile.replace(/\s+/g, "")
+        document.getElementById("mobile").value = mobile
 		
 		if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))) {
 			$.alert("手机号格式不正确，请重新输入！");
@@ -137,7 +140,6 @@
 				layer.msg(data.msg,{icon:5}); 
 			}
 		});
-		
 	}
 	
 </script>
