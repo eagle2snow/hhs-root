@@ -242,7 +242,7 @@ public class WxMyCenterController extends WeixinBaseController {
 			if (code2session.equals(code)) {
 				this.getRequest().getSession().setAttribute(Const.verificationCode2Session, null);
 
-				curMember.setNickname(nickname);
+				curMember.setName(nickname);
 				curMember.setMobile(mobile);
 				memberService.update(curMember);
 				map.put("status", 1);
