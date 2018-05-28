@@ -177,7 +177,7 @@ public class WxMemberAddressController extends WeixinBaseController {
 
 		Map<String, Object> map = new HashMap<>();
 
-		if (!StringUtil.isMobileValid(address.getMobile())) {
+		if (!StringUtil.isMobile(address.getMobile())) {
 			map.put("msg", "no");
 			return map;
 		}
