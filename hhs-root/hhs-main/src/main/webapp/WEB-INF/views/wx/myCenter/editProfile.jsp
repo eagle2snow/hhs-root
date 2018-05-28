@@ -103,7 +103,7 @@
 		var code   = document.getElementById("verificationCode").value;
 		
 		
-		if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))) {
+		if (!(/^1[34578]\d{9}$/.test(mobile))) {
 			alert("手机号格式不正确，请重新输入！");
 			return false;
 		}
@@ -128,7 +128,7 @@
         mobile = mobile.replace(/\s+/g, "")
         document.getElementById("mobile").value = mobile
 		
-		if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))) {
+		if (!(/^1[34578]\d{9}$/.test(mobile))) {
 			$.alert("手机号格式不正确，请重新输入！");
 			return false;
 		}
