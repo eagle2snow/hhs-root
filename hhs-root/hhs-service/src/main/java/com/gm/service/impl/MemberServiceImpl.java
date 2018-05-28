@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
+import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IMemberDao;
@@ -71,7 +72,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public Member saveWeixinMember(String openid) {
 		Member member = new Member();
 		member.setOpenid(openid);
-		member.setGender(0);
+		GetUserInfoResponse userInfo = WeiXinApi.getUserAPI().getUserInfo(openid);
+		member.setCountry(userInfo.getCountry());
+		member.setProvince(userInfo.getProvince());
+		member.setCity(userInfo.getCity());
+		member.setGender(userInfo.getSex());
+		member.setNickname(userInfo.getNickname());
+		member.setIocUrl(userInfo.getHeadimgurl());
 		Integer memberId = saveReturnId(member);
 		member.setId(memberId);
 		return member;
