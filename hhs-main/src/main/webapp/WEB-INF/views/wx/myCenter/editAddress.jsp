@@ -96,11 +96,8 @@
 			postonce : true,
 			ajaxPost : true,
 			beforeCheck : function(curform) {
-			    console.log(curform)
-			    // return false
 			},
 			beforeSubmit : function(curform) {
-			    // return false
             },
 			callback : function(res) {
 				if(res.msg=="ok"){
