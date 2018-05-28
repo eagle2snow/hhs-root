@@ -464,6 +464,8 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
 	 * @return
 	 */
 	public static boolean isMobile(String str) {
+		if (str == null)
+			return false;
 		Pattern p = null;
 		Matcher m = null;
 		boolean b = false;
