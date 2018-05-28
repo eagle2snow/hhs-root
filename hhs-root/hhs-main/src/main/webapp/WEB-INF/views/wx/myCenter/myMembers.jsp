@@ -44,7 +44,7 @@
 				<tr>
 					<td>${user.nickname}</td>
 					<td>${user.mobile}</td>
-					<td>${user.createTime}</td>
+					<td><javatime:format value="${user.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				</tr>
 			</c:forEach>
 
