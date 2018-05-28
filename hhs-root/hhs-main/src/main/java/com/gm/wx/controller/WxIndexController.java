@@ -1,8 +1,5 @@
 package com.gm.wx.controller;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
