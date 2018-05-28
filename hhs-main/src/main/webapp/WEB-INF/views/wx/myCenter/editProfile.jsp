@@ -35,7 +35,7 @@
 	<div class="setitem">
 		<div class="dl">
 			<div class="min120 dt">修改昵称</div>
-			<div class="ar dd"><input onfocus="OnEnter(this)" onblur="OnExit(this)" name="nickname" id="nickname" type="text" value="${model.nickname}" placeholder="例如：竹语小fans" class="dtint"></div>
+			<div class="ar dd"><input onfocus="OnEnter(this)" onblur="OnExit(this)" name="nickname" id="nickname" type="text" value="${model.name}" placeholder="例如：竹语小fans" class="dtint"></div>
 		</div>
 	</div>
 	<div class="setitem">
