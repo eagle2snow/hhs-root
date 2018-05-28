@@ -281,23 +281,24 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	public void confirmGoods(Integer orderId) {
 
 		Order order = orderService.get(orderId);
-		System.out.println("confirmGoods:Order order = "+JSON.toJSON(order));
 
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
-		System.out.println("confirmGoods:PayBill payBill = "+JSON.toJSON(payBill));
 
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
-			System.out.println("OrderServiceImpl -> confirmGoods:Commodity commodity① = "+JSON.toJSON(commodity));
-			
+			logger.info("商品内容={}",JSON.toJSONString(commodity));
 			// 商品的设置
-			commodity.setTotalStock(commodity.getTotalStock() - 1); // 库存
-			commodity.setSalesVolume(commodity.getSalesVolume() + 1);// 销量
-			boolean update = commodityService.update(commodity);
-			System.out.println("OrderServiceImpl -> confirmGoods:boolean update = "+JSON.toJSON(update));
-			System.out.println("OrderServiceImpl -> confirmGoods:Commodity commodity② = "+JSON.toJSON(commodity));
+			if(commodity.getTotalStock()!=0) {
+			commodity.setTotalStock(commodity.getTotalStock() - 1); }// 库存
+			
+			if(commodity.getSalesVolume() != null) {
+				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
+				}// 销量
+				commodity.setSalesVolume(1);
+
+			commodityService.update(commodity);
 		}
 
 		// 设置订单相关属性
@@ -317,7 +318,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 订单完成
 	 */
 	private void finishGoods(Integer orderId) {
-
 		try {
 			Order order = orderService.get(orderId);
 			order.setStatus("10");
