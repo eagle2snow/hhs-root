@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gm.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,20 +177,20 @@ public class WxMemberAddressController extends WeixinBaseController {
 
 		Map<String, Object> map = new HashMap<>();
 
+		if (!StringUtil.isMobileValid(address.getMobile())) {
+			map.put("msg", "no");
+			return map;
+		}
 
-		
 		if ("on".equals(defautlocal)) {
 			address.setDefaultAddress(1);
-			
 		} else {
 			address.setDefaultAddress(2);
 
 		}
 
-
 		if (memberAddressService.update(address)) {
 			map.put("msg", "ok");
-
 		} else {
 			map.put("msg", "no");
 		}
