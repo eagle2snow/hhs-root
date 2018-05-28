@@ -99,7 +99,7 @@
                 var str = curform.find('.mmobile')[0].value
                 str = str.replace(/\s+/g, "")
                 curform.find('.mmobile')[0].value = str
-                if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(str))) {
+                if (!(/^1[34578]\d{9}$/.test(str))) {
                     $.alert("手机号格式不正确，请重新输入！");
                     return false;
                 }
@@ -116,18 +116,7 @@
 				}
 			}
 		});
-		
-		function valitateMobile(){
-			var mobile   = document.getElementById("mobileId").value;
-			
-			if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(mobile))) {
-				$.alert("手机号格式不正确，请重新输入！","温馨提示");
-				return false;
-			}	
-		}
 	</script>
-
-
 
 </body>
 </html>
