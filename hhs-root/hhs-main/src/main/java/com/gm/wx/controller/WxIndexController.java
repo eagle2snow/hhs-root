@@ -72,6 +72,7 @@ public class WxIndexController extends WeixinBaseController {
 			Member member = getRealMember();
 			if (StringUtil.strNullOrEmpty(member.getReferrerGeneralizeId())) {
 				member.setReferrerGeneralizeId(AESCoder.decryptResultStr(generalizeId, Const.PASSWORD_SECRET));
+				member.setReferrerNickname(member.getNickname());
 				memberService.update(member);
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
@@ -105,6 +106,7 @@ public class WxIndexController extends WeixinBaseController {
 			Member member = getRealMember();
 			if (StringUtil.strNullOrEmpty(member.getReferrerGeneralizeId())) {
 				member.setReferrerGeneralizeId(AESCoder.decryptResultStr(generalizeId, Const.PASSWORD_SECRET));
+				member.setReferrerNickname(member.getNickname());
 				memberService.update(member);
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
