@@ -146,8 +146,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
 			member.setGeneralizeId(RandomUtil.randomNumbers(6));
 		}
-		member.setLove(member.getLove() + 1);
-		member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
+		if (StringUtils.isEmpty(member.getLove()) || member.getLove() == 0) {
+			member.setLove(1);
+		} else {
+			member.setLove(member.getLove() + 1);
+		}
+		if (StringUtils.isEmpty(member.getConsume()) || member.getConsume().equals(BigDecimal.ZERO)) {
+			member.setConsume(Const.MEMBER_AMOUNT);
+		} else {
+			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
+		}
 
 		logger.info("payMemberSuccess:The Member member={}", JSON.toJSON(member));
 
