@@ -167,7 +167,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			return map;
 		}
 
-		updateByHql(String.format("update order o set o.memberAddress.id = %d where o.member.id = %d", addressId, member.getId()));
+		updateByHql(String.format("update order o set o.memberAddress.id = %d where o.id = %d", addressId, orderId));
 
 		if (orderItemDtos == null || orderItemDtos.size() == 0) {
 			map.put("s", "noItem");
