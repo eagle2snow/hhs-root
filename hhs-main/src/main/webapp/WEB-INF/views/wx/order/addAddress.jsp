@@ -66,7 +66,7 @@
 				<a href="javascript:void(0);" class="secondbtn radiusbtn mdbtn">清除信息</a>
 			</div>
 			<div class="spcbtnrow_item">
-				<a href="javascript:void(0);" class="primarybtn radiusbtn mdbtn" onclick="getVerificationCode()">保存地址</a>
+				<a href="javascript:void(0);" class="primarybtn radiusbtn mdbtn">保存地址</a>
 			</div>
 		</div>
 		<!-- end 一行 -->
