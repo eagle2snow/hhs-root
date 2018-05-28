@@ -100,6 +100,13 @@ public class WxMemberAddressController extends WeixinBaseController {
 
 		Map<String, Object> map = new HashMap<>();
 
+		if (!StringUtil.isMobile(address.getMobile())) {
+			map.put("addressId", 0);
+			map.put("msg", "no");
+			return map;
+		}
+
+
 		Member member = this.getCurMember();
 		logger.info("addAddressAction: the Member to json is {}.", JSON.toJSONString(member));
 
