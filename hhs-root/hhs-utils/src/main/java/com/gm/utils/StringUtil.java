@@ -469,7 +469,7 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
 		Pattern p = null;
 		Matcher m = null;
 		boolean b = false;
-		p = Pattern.compile("^1[0-9]{10}$"); // 验证手机号
+		p = Pattern.compile("^1[34578]\\d{9}$"); // 验证手机号
 		m = p.matcher(str);
 		b = m.matches();
 		return b;

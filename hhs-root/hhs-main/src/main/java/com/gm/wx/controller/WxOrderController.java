@@ -324,6 +324,12 @@ public class WxOrderController extends WeixinBaseController {
 	@RequestMapping("/addAddressAction")
 	public Map<String, Object> addAddressAction(MemberAddress address, String defautlocal) {
 		Map<String, Object> map = new HashMap<>();
+
+		if (!StringUtil.isMobile(address.getMobile())) {
+			map.put("addressId", 0);
+			return map;
+		}
+
 		Member member = getCurMember();
 		if ("on".equals(defautlocal)) {
 			address.setDefaultAddress(1);
