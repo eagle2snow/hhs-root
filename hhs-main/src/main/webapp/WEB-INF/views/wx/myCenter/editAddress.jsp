@@ -38,7 +38,7 @@
 				<div class="dl">
 					<div class="min120 dt">联系方式</div>
 					<div class="dd">
-						<input type="tel" value="${model.mobile}" class="dtint mmobile" name="mobile" datatype="m" errormsg="请输入正确的手机号">
+						<input type="tel" value="${model.mobile}" class="dtint mmobile" name="mobile">
 					</div>
 				</div>
 			</div>
@@ -98,11 +98,13 @@
                 var str = curform.find('.mmobile')[0].value
                 str = str.replace(/\s+/g, "")
                 curform.find('.mmobile')[0].value = str
+                if (!(/^1[3|4|5|8][0-9]\d{4,8}$/.test(str))) {
+                    $.alert("手机号格式不正确，请重新输入！");
+                    return false;
+                }
 			},
 			beforeSubmit : function(curform) {
-                var str = curform.find('.mmobile')[0].value
-                str = str.replace(/\s+/g, "")
-                curform.find('.mmobile')[0].value = str
+
             },
 			callback : function(res) {
 				if(res.msg=="ok"){
