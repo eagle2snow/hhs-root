@@ -79,6 +79,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setGender(userInfo.getSex());
 		member.setNickname(userInfo.getNickname());
 		member.setIocUrl(userInfo.getHeadimgurl());
+		member.setName(userInfo.getNickname());
 		Integer memberId = saveReturnId(member);
 		member.setId(memberId);
 		return member;
@@ -93,6 +94,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setCity(response.getCity());
 		member.setGender(response.getSex());
 		member.setNickname(response.getNickname());
+		member.setName(response.getNickname());
 		member.setIocUrl(response.getHeadimgurl());
 		Integer memberId = saveReturnId(member);
 		member.setId(memberId);
@@ -106,6 +108,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setCity(response.getCity());
 		member.setGender(response.getSex());
 		member.setNickname(response.getNickname());
+		member.setName(response.getNickname());
 		member.setIocUrl(response.getHeadimgurl());
 		update(member);
 		return member;
@@ -378,6 +381,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setCity(userInfo.getCity());
 		member.setGender(userInfo.getSex());
 		member.setNickname(userInfo.getNickname());
+		member.setName(userInfo.getNickname());
 		member.setIocUrl(userInfo.getHeadimgurl());
 		member.setReferrerNickname(memberNickName.getNickname());
 		Integer memberId = saveReturnId(member);
