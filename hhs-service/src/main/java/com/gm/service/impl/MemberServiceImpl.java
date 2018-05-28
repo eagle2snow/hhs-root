@@ -369,6 +369,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public Member saveWeixinMember(String openid, String referrerGeneralizeId) {
 		Member member = new Member();
+		Member memberNickName = getOne("generalizeId", referrerGeneralizeId);
+		
 		member.setOpenid(openid);
 		GetUserInfoResponse userInfo = WeiXinApi.getUserAPI().getUserInfo(openid);
 		member.setCountry(userInfo.getCountry());
@@ -377,6 +379,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setGender(userInfo.getSex());
 		member.setNickname(userInfo.getNickname());
 		member.setIocUrl(userInfo.getHeadimgurl());
+		member.setReferrerNickname(memberNickName.getNickname());
 		Integer memberId = saveReturnId(member);
 		member.setReferrerGeneralizeId(referrerGeneralizeId);
 		member.setId(memberId);
