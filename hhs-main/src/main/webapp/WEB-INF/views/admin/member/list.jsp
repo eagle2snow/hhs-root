@@ -74,7 +74,6 @@
 											<th>性别</th>
 											<th>省份</th>
 											<th>城市</th>
-											<th>所在区域</th>
 											<th>推荐人昵称</th>
 											<th>创建时间</th>
 											<th width="100">状态</th>
@@ -100,7 +99,6 @@
 											
 											 <th>${model.city}</th>
 											
-											 <th>${model.area}</th>
 											
 											 <th>${model.referrerNickname}</th>
 											
