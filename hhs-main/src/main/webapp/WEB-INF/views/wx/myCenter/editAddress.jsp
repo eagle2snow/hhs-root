@@ -39,7 +39,7 @@
 					<div class="min120 dt">联系电话</div>
 					<div class="dd">
 						<input type="tel" value="${model.mobile}" class="dtint"
-							name="mobile">
+							name="mobile" datatype="m" errormsg="请输入正确的手机号">
 					</div>
 				</div>
 			</div>
