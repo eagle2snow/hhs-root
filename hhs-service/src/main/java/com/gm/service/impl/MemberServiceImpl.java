@@ -370,9 +370,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public Member saveWeixinMember(String openid, String referrerGeneralizeId) {
 		Member member = new Member();
 		member.setOpenid(openid);
-		member.setGender(0);
-		member.setReferrerGeneralizeId(referrerGeneralizeId);
+		GetUserInfoResponse userInfo = WeiXinApi.getUserAPI().getUserInfo(openid);
+		member.setCountry(userInfo.getCountry());
+		member.setProvince(userInfo.getProvince());
+		member.setCity(userInfo.getCity());
+		member.setGender(userInfo.getSex());
+		member.setNickname(userInfo.getNickname());
+		member.setIocUrl(userInfo.getHeadimgurl());
 		Integer memberId = saveReturnId(member);
+		member.setReferrerGeneralizeId(referrerGeneralizeId);
 		member.setId(memberId);
 		return member;
 	}
