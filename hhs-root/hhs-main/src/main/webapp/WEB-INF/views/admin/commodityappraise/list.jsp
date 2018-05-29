@@ -100,7 +100,7 @@
 														</div>
 											</td> --%>
 											<td>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-success"><i class="glyphicon glyphicon-pencil" title="回复"></i></button>
+												<button onclick="edit(${model.id})"  class="btn btn-sm btn-success"><i class="glyphicon glyphicon-send" title="回复"></i></button>
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>
