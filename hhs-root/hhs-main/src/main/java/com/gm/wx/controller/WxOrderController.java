@@ -201,6 +201,24 @@ public class WxOrderController extends WeixinBaseController {
 		HashMap<String, Object> map = this.getMap();
 
 		try {
+			//取消订单要加回商品数量
+			Order order = orderService.get(orderId);
+			if (order == null)
+				throw new Exception("订单不存在");
+
+			List<OrderItem> items = orderItemService.listEq("order.id", orderId);
+			if (items != null) {
+				for (OrderItem item : items) {
+					Commodity commodity = commodityService.get(item.getCommodity().getId());
+					if (commodity == null
+                            || commodity.getTotalStock() == null
+                            || item.getBuyCount() == null)
+					    continue;
+					commodity.setTotalStock(commodity.getTotalStock() + item.getBuyCount());
+					commodityService.update(commodity);
+				}
+			}
+
 			// 通过关联的实体删除实体
 			orderItemService.deleteByParm("order.id", orderId, true);
 			orderService.deleteById(orderId, true);
