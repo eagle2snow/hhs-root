@@ -112,7 +112,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		}
 
 		// List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
-		OrderItem orderItems = itemService.getOne("order.id", orderId);
+		OrderItem orderItems = itemService.getOne("id", orderId);
 		logger.info("toCommondityComment:the pojo OrderItem = {}", JSON.toJSON(orderItems));
 
 		map.put("orderItems", orderItems);
