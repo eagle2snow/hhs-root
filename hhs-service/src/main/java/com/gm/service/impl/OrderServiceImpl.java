@@ -241,8 +241,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	{
 		Order order = getOne("orderNo", orderNo);
 		//防止购买成功后多次回掉
-		if (order.getStatus().trim().equals("2"))
+		if (order.getStatus().trim().equals("2")) {
+			logger.info("微信多次回掉");
 			return;
+		}
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
 		logger.info("payBill={}", JSON.toJSON(payBill.getOrderNo()));
