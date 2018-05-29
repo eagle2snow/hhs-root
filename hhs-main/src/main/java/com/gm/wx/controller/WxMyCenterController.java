@@ -98,6 +98,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		map.put("member", member);
 
 		logger.info("-------------------------");
+		logger.info(member.getId().toString());
 		logger.info(member.getConsume().toString());
 
 		if (StringUtil.strNullOrEmpty(member.getNickname())) {
