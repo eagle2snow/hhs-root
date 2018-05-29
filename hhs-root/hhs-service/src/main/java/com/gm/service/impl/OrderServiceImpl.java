@@ -353,7 +353,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			member.setLove(member.getLove() + list.size());// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
-			BigDecimal add = consume.add(totalMoney); // null 一个订单多个商品 会报：Error info is query did not return a unique
+			BigDecimal add = consume.add(totalMoney); 
 			member.setConsume(add);// 消费额 null?
 
 			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员

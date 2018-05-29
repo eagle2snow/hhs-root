@@ -295,7 +295,6 @@ public class WxOrderController extends WeixinBaseController {
 		if (null != order.getMemberAddress()) {
 			map.put("orderAddressId", order.getMemberAddress().getId());
 		}
-		logger.info("支付表内容:{}." + JSON.toJSONString(map));
 		return PATH + "confirmOrder";
 	}
 
