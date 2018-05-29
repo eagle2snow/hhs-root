@@ -117,7 +117,6 @@ public class WxIndexController extends WeixinBaseController {
 		}
 		map.put("page", getCommodityData(id));
 		map.put("path", PATH);
-		logger.info("Map map = {}", JSON.toJSON(map));
 		return PATH + "/index";
 	}
 
@@ -185,19 +184,7 @@ public class WxIndexController extends WeixinBaseController {
 		model.put("path", PATH);
 		model.put("member", curMember);
 
-		System.out.println("购买套餐成功");
-		
-		if (StringUtils.isEmpty(curMember.getConsume())) {
-			curMember.setConsume(Const.MEMBER_AMOUNT);
-		} else {
-			curMember.setConsume(curMember.getConsume().add(Const.MEMBER_AMOUNT));
-		}
-		if (StringUtils.isEmpty(curMember.getLove())) {
-			curMember.setLove(1);
-		} else {
-			curMember.setLove(curMember.getLove() + 1);
-		}
-
+		System.out.println("WxIndexController -> payMemberSuccess:购买套餐成功");
 		return PATH + "payMemberSuccess";
 	}
 
