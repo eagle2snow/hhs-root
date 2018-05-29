@@ -259,7 +259,6 @@ public class WxMyCenterController extends WeixinBaseController {
 
 		}
 
-		logger.info("updateAction: the curMember to json is {}.", JSON.toJSON(curMember));
 		logger.info("updateAction: the Map to json is {}.", JSON.toJSON(map));
 
 		return map;
