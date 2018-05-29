@@ -81,12 +81,10 @@
 										<div class="cutdcont">数量：${item.buyCount }</div>
 										
 										<c:if test="${order.status==10 and order.appraise==0}">
-											<span onclick="comments(${item.id})" class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right; margin-right: 1rem;">即刻评价</span>
-											<span class="radiusbtn msbtn">订单完成</span>
+											<span onclick="comments(${item.id})" class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right; margin-right: 2rem;">即刻评价</span>
 										</c:if>
 										<c:if test="${order.status==10 and order.appraise==1 }">
-											<span onclick="comments(${item.id})" class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "0"? 'style="display:none"': ''} style="float: right; margin-right: 1rem;">查看评价</span>
-											<span class="defaultlinebtn radiusbtn msbtn" style="float: right; margin-right: 2rem; box-shadow: none;">订单完成</span>
+											<span onclick="lookAppraise()"  class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">查看评价</span>
 										</c:if>
 									</div>
 
@@ -132,6 +130,7 @@
 						<span class="defaultlinebtn radiusbtn msbtn" style="float: right; margin-right: 2rem; box-shadow: none;">加急中</span>
 					</c:if>
 				</li>
+				
 
 			</c:forEach>
 
