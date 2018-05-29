@@ -86,27 +86,31 @@
 				 $.alert("系统出错");
 			}	
 		});  */
-		       alert($("#commodityid").html());   
-	 	 $.ajax({
-		      type: "POST",
-		      url: "${ctx}wx/comments/confirmComments/",
-		      data: {"xx":a,"text":$("#text").val(),"memberId":$("#memberId").html(),
-		    	  	 "orderid":$("#orderid").html(),"commodityid":$("#commodityid").html()},
-		      dataType : "json",
-		      success: function(date){
-		      alert(date);  
-		    	   if(date=='ok'){
-						location.href='${ctx}wx/comments/commentSucceed';
-					
-					}else if(date=='no'){
-						location.href='${ctx}wx/comments/commentFailure/'+${orderId};
-					
-					}else{
-						 $.alert("系统出错");
-					}	   
-		      },
+		       //alert($("#commodityid").html());   
+		if($("#text").val() == ""||$.trim($("#text").val()) == ''){
+				$.alert("请输入评价内容", "提示");
+			}else{
+			 	 $.ajax({
+				      type: "POST",
+				      url: "${ctx}wx/comments/confirmComments/",
+				      data: {"xx":a,"text":$("#text").val(),"memberId":$("#memberId").html(),
+				    	  	 "orderid":$("#orderid").html(),"commodityid":$("#commodityid").html()},
+				      dataType : "json",
+				      success: function(date){
+				      //alert(date);  
+				    	   if(date=='ok'){
+								location.href='${ctx}wx/comments/commentSucceed';
+							
+							}else if(date=='no'){
+								location.href='${ctx}wx/comments/commentFailure/'+${orderId};
+							
+							}else{
+								 $.alert("系统出错");
+							}	   
+				      },
 		   });  
 		
+		}
 	}
 	
 	var a="";
