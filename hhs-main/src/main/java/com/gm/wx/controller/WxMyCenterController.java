@@ -95,11 +95,9 @@ public class WxMyCenterController extends WeixinBaseController {
 	public String toMyCenterIndex(ModelMap map, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		Member member = getCurMember();
-		map.put("member", member);
 
-		logger.info("-------------------------");
-		logger.info(member.getId().toString());
-		logger.info(member.getConsume().toString());
+		member = memberService.get(member.getId());
+		map.put("member", member);
 
 		if (StringUtil.strNullOrEmpty(member.getNickname())) {
 			String domain = request.getScheme() + "://" + request.getServerName();
