@@ -133,7 +133,7 @@ public class WxOrderController extends WeixinBaseController {
 		orderService.update(order);
 		map.put("status", 1);
 		map.put("msg", "加急请求已送达，请耐心等候！");
-		logger.info("urgent:Order order = {}", JSON.toJSON(order));
+		logger.info("urgent:Order order = {}", JSON.toJSON(order.getId()));
 
 		return map;
 	}
