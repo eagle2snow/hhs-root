@@ -26,12 +26,12 @@
 		<!-- 一行 -->
 		<div class="profocus">
 			<img src="${model.imgerPath }" alt="">
-		</div>
-		<div class="profocus_bdecs">
+			<div class="profocus_bdecs">
 				<div class="wb">
 					<i class="mr10 translate_bsico bsico"></i>
 					<div class="wbw">新疆、西藏补差15元新疆、西藏补差15元新疆、西藏补差15元</div>
 				</div>
+			</div>
 		</div>
 		<!-- end 一行 -->
 	</div>
