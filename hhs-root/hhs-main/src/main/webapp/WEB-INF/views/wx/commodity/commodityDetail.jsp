@@ -48,10 +48,10 @@
 			<li class="comment">
 				<div class="comment_mt">
 					<div class="comment_avator">
-						<img src="${member.iocUrl}" alt="">
+						<img src="${model.code eq '1'? '/usr/static/img/ioc/213.jpg':'/usr/static/img/ioc/321.jpg'}" alt="">
 					</div>
 					<div class="comment_mtcont">
-						<span class="itm">${member.nickname}</span>
+						<span class="itm">${model.code eq "1"? "飞翔的梦想":"紫萱"}</span>
 <!-- 						<span class="itm"> -->
 <!-- 							会员等级： -->
 <%-- 							<c:choose> --%>
