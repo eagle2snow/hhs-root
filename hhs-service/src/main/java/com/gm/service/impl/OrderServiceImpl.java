@@ -183,11 +183,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		for (OrderItemDto orderItemDto : orderItemDtos) {
 			for (OrderItem item : orderItems) {
 				if (item.getId().equals(orderItemDto.getOrderItemId())
-						&& orderItemDto.getBuyCount().compareTo(item.getCommodity().getTotalStock()) > 0) {
+					&& (item.getBuyCount() - orderItemDto.getBuyCount() - item.getCommodity().getTotalStock()) > 0) {
 					orderItems2.add(item);
 				}
 			}
 		}
+
+
 
 		if (orderItems2.size() > 0) {
 			List<OrderItemDto> noItems = orderItems2.stream().map(p -> {
