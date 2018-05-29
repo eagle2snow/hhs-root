@@ -201,17 +201,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			map.put("s", "no");// 库存不足
 			map.put("noItems", noItems);// 库存不足的商品
 		} else {
-
 			BigDecimal total = BigDecimal.ZERO;
-
 			for (OrderItemDto orderItemDto : orderItemDtos) {
 				for (OrderItem orderItem : orderItems) {
 					if (orderItem.getId().equals(orderItemDto.getOrderItemId())) {
 						Commodity commodity = orderItem.getCommodity();
+
 						// 更新库存
-						commodity.setTotalStock(
-								commodity.getTotalStock() + orderItem.getBuyCount() - orderItemDto.getBuyCount());
-						commodityService.update(commodity);
+						 commodity.setTotalStock(
+						 commodity.getTotalStock() + orderItem.getBuyCount() - orderItemDto.getBuyCount());
+						 commodityService.update(commodity);
 
 						// 更新购买数量
 						orderItem.setBuyCount(orderItemDto.getBuyCount());
@@ -257,10 +256,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		for (OrderItem item : listEq) {
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
-			if (!StringUtils.isEmpty(commodity.getTotalStock())) {
 
-				commodity.setTotalStock(commodity.getTotalStock() - 1);
-			}
+			// 这里不能更新库存　前面加入购物车时已经更新过了
+			// if (!StringUtils.isEmpty(commodity.getTotalStock())) {
+			//     commodity.setTotalStock(commodity.getTotalStock() - item.getBuyCount());
+			// }
+
 			if (!StringUtils.isEmpty(commodity.getSalesVolume())) {
 
 				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
