@@ -38,7 +38,7 @@
 					<c:if test="${member.changReferrer == 0 }">
 						<span id="spanId"
 							onclick="document.getElementById('refereecpop').classList.add('show');"
-							class="ml20 primarybtn msbtn">更&ensp;改
+							class="ml2 primarybtn msbtn">更&ensp;改
 						</span>
 					</c:if>
 				
