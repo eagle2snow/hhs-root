@@ -16,7 +16,7 @@ body{
 .content>span{
 	position: relative;
 	font-size: 3rem;
-    top: -11rem;
+    top: -7rem;
     left: 9rem;
     color: #fff;
 }
@@ -36,7 +36,7 @@ body{
 }
 .item>ul{
 	list-style: none;
-	width: 70%;
+	width: 60%;
     float: right;
 }
 .item>ul>li{
