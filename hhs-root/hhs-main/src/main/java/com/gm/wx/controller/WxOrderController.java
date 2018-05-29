@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.gm.base.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,11 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
-import com.gm.base.model.Member;
-import com.gm.base.model.MemberAddress;
-import com.gm.base.model.Order;
-import com.gm.base.model.OrderItem;
-import com.gm.base.model.PayBill;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberAddressService;
