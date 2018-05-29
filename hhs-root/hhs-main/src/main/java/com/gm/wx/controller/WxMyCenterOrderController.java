@@ -32,8 +32,6 @@ import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
-import com.gm.service.impl.CommodityAppraiseServiceImpl;
-import com.gm.service.impl.CommodityEvaluationServiceImpl;
 import com.gm.service.impl.MemberServiceImpl;
 import com.gm.utils.PathUtil;
 import com.gm.utils.StringUtil;
@@ -58,12 +56,6 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 
 	@Autowired
 	private MemberServiceImpl memberService;
-
-	@Autowired
-	private CommodityEvaluationServiceImpl commodityEvaluationService;
-
-	@Autowired
-	private CommodityAppraiseServiceImpl commodityAppraiseService;
 
 	@Resource
 	private IOrderService orderService;
@@ -91,32 +83,28 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 		Member member = getCurMember();
 
 		List<Order> orders = new ArrayList<>();
-		
-//		logger.info("myOrders:The args stattus = {}",status);
+
+		logger.info("myOrders:The args stattus = {}", status);
 
 		if (0 != status) {
 			orders = orderService.list(
 					"from order o where o.member.id=" + member.getId() + " and o.deleted=1 and o.status=" + status);
-//			logger.info("myOrders:The List<Order> orders = {}",JSON.toJSON(orders));
-			
+
 		} else {
 			orders = orderService.list("from order o where o.member.id=" + member.getId() + " and o.deleted=1");
-			logger.info("myOrders:The List<Order> orders = {}",JSON.toJSON(orders));
-			
+
 		}
 		if (orders.size() > 0) {
 			List<Integer> orderIds = orders.parallelStream().map(Order::getId).collect(Collectors.toList());
 			List<OrderItem> items = orderItemService.listIn("order.id", orderIds);
 			orders.forEach(p -> p.setItems(
 					items.stream().filter(q -> q.getOrder().getId().equals(p.getId())).collect(Collectors.toList())));
-//			logger.info("myOrders:The List<Integer> orderIds = {}",JSON.toJSON(orderIds));
-//			logger.info("myOrders:The List<OrderItem> items = {}",JSON.toJSON(items));
-			
+
 		}
-		
+
 		map.put("orders", orders);
 		map.put("path", PATH);
-		
+
 		return PATH + "myOrders";
 	}
 
@@ -215,17 +203,17 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	public String pushOrders(ModelMap map, @PathVariable Integer type) {
 		String generalizeId = this.getCurMember().getGeneralizeId();
 		List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
-		logger.info("下级会员列表 = {}",JSON.toJSON(list));
+		logger.info("下级会员列表 = {}", JSON.toJSON(list));
 		List<Order> listEq = new ArrayList<>();
 		for (Member order : list) {
 			listEq.addAll(orderService.listEq("member.id", order.getId()));
 		}
-		logger.info("下级购买商品列表 = {}",JSON.toJSON(listEq));
+		logger.info("下级购买商品列表 = {}", JSON.toJSON(listEq));
 		map.put("order", listEq);
 		map.put("path", PATH);
 		return PATH + "pushOrders";
 	}
-	
+
 	/**
 	 * 
 	 *<p>Title:lookExpressage</p>
@@ -236,11 +224,11 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("lookExpressage/{orderId}")
-	public HashMap<String, Object> lookExpressage( @PathVariable Integer orderId) {
-		HashMap<String, Object> map = new HashMap();
+	public HashMap<String, Object> lookExpressage(@PathVariable Integer orderId) {
+		HashMap<String, Object> map = this.getMap();
 		Order order = orderService.get(orderId);
-		String name="";
-			name = order.getExpressName()+":"+order.getExpressNo();
+		String name = "";
+		name = order.getExpressName() + ":" + order.getExpressNo();
 		map.put("name", name);
 		return map;
 	}

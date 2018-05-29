@@ -31,7 +31,10 @@
 				
 				</div>
 				<div  class="tr">
-					<span id="referrerName">推&ensp;荐&ensp;人：${member.referrerNickname}</span> 
+					<span id="referrerName">推&ensp;荐&ensp;人：
+						<c:if test="${not empty member.referrerNickname}">${member.referrerNickname}</c:if>
+						<c:if test="${empty member.referrerNickname}">漓江竹语</c:if>
+					</span> 
 					<c:if test="${member.changReferrer == 0 }">
 						<span id="spanId"
 							onclick="document.getElementById('refereecpop').classList.add('show');"
