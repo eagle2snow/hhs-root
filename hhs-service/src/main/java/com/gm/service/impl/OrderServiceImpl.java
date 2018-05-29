@@ -237,12 +237,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 支付成功之后的相关设置
 	 */
 	@Override
-	public void payOrderSuccess(String orderNo) {
+	public void payOrderSuccess(String orderNo)
+	{
+		Order order = getOne("orderNo", orderNo);
+		//防止购买成功后多次回掉
+		if (order.getStatus().trim().equals("2"))
+			return;
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
 		logger.info("payBill={}", JSON.toJSON(payBill.getOrderNo()));
 
-		Order order = getOne("orderNo", orderNo);
 		List<OrderItem> listEq = null;
 		if (!StringUtils.isEmpty(order)) {
 			listEq = orderItemService.listEq("order.id", order.getId());
