@@ -6,6 +6,8 @@ import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,15 +185,17 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	{
 		if (member.getSetMeal() == 2) { //购买套餐
 			Member m = member;
-			for (int i = 1; i <= 4; ++i) {
+			for (int i = 1; i <= 3; ++i) {
 				m = memberService.getParent(m, 1);
 				if (m == null)
 					break;
-				if (i != 3)
+				if (i != 2)
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
 				else
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 			}
+			logger.info(m.getNickname(), m.getGeneralizeCost());
+			dao.update(m);
 		}
 	}
 
@@ -218,6 +222,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			if (current.getLevel() < 4)
 				current.setLevel(4);
+			logger.info(current.getNickname(), current.getGeneralizeCost());
 			dao.update(current);
 		}
 	}
