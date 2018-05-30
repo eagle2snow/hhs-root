@@ -182,14 +182,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 		for (OrderItemDto orderItemDto : orderItemDtos) {
 			for (OrderItem item : orderItems) {
-				if (item.getId().equals(orderItemDto.getOrderItemId())
-					&& (item.getBuyCount() - orderItemDto.getBuyCount() - item.getCommodity().getTotalStock()) > 0) {
+				if (item.getId().equals(orderItemDto.getOrderItemId()) && (item.getBuyCount()
+						- orderItemDto.getBuyCount() - item.getCommodity().getTotalStock()) > 0) {
 					orderItems2.add(item);
 				}
 			}
 		}
-
-
 
 		if (orderItems2.size() > 0) {
 			List<OrderItemDto> noItems = orderItems2.stream().map(p -> {
@@ -210,9 +208,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 						Commodity commodity = orderItem.getCommodity();
 
 						// 更新库存
-						 commodity.setTotalStock(
-						 commodity.getTotalStock() + orderItem.getBuyCount() - orderItemDto.getBuyCount());
-						 commodityService.update(commodity);
+						commodity.setTotalStock(
+								commodity.getTotalStock() + orderItem.getBuyCount() - orderItemDto.getBuyCount());
+						commodityService.update(commodity);
 
 						// 更新购买数量
 						orderItem.setBuyCount(orderItemDto.getBuyCount());
@@ -238,10 +236,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 支付成功之后的相关设置
 	 */
 	@Override
-	public void payOrderSuccess(String orderNo)
-	{
+	public void payOrderSuccess(String orderNo) {
 		Order order = getOne("orderNo", orderNo);
-		//防止购买成功后多次回掉
+		// 防止购买成功后多次回掉
 		if (order.getStatus().trim().equals("2")) {
 			logger.info("微信多次回掉");
 			return;
@@ -259,9 +256,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
 
-			// 这里不能更新库存　前面加入购物车时已经更新过了
+			// 这里不能更新库存 前面加入购物车时已经更新过了
 			// if (!StringUtils.isEmpty(commodity.getTotalStock())) {
-			//     commodity.setTotalStock(commodity.getTotalStock() - item.getBuyCount());
+			// commodity.setTotalStock(commodity.getTotalStock() - item.getBuyCount());
 			// }
 
 			if (!StringUtils.isEmpty(commodity.getSalesVolume())) {
@@ -298,15 +295,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
-			logger.info("商品内容={}",JSON.toJSONString(commodity));
+			logger.info("商品内容={}", JSON.toJSONString(commodity));
 			// 商品的设置
-			if(commodity.getTotalStock()!=0) {
-			commodity.setTotalStock(commodity.getTotalStock() - 1); }// 库存
-			
-			if(commodity.getSalesVolume() != null) {
+			if (commodity.getTotalStock() != 0) {
+				commodity.setTotalStock(commodity.getTotalStock() - 1);
+			} // 库存
+
+			if (commodity.getSalesVolume() != null) {
 				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
-				}// 销量
-				commodity.setSalesVolume(1);
+			} // 销量
+			commodity.setSalesVolume(1);
 
 			commodityService.update(commodity);
 		}
@@ -345,8 +343,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
 
-			memberService.threeLevel(member.getId()); // 三级分润
-
 			member.setBalance(balance); // 设置可提现余额
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
@@ -362,7 +358,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			member.setLove(member.getLove() + list.size());// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
-			BigDecimal add = consume.add(totalMoney); 
+			BigDecimal add = consume.add(totalMoney);
 			member.setConsume(add);// 消费额 null?
 
 			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员

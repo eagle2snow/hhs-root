@@ -62,6 +62,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Autowired
 	private SuperTree superTree;
+	
+	@Resource
+	private IMemberService memberService;
+
 
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
@@ -166,10 +170,30 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		} else {
 			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 		}
+		
+		threeMoney(member);
 
 		logger.info("payMemberSuccess:The Member member={}", JSON.toJSON(member));
+		
+		
 
 		update(member);
+	}
+	private void threeMoney(Member member) {
+		if (member.getSetMeal() == 2) { //购买套餐
+			Member member2 = memberService.getOne("generalizeId", member.getReferrerGeneralizeId()); //上家
+			if (null!=member2) {
+				member2.setGeneralizeCost(member2.getGeneralizeCost().add(BigDecimal.valueOf(50)));
+			}
+			Member member3 = memberService.getOne("generalizeId", member2.getReferrerGeneralizeId()); //上上家
+			if (null!=member3) {
+				member3.setGeneralizeCost(member3.getGeneralizeCost().add(BigDecimal.valueOf(60)));
+			}
+			Member member4 = memberService.getOne("generalizeId", member3.getReferrerGeneralizeId()); //上上上家
+			if (null!=member4) {
+				member4.setGeneralizeCost(member4.getGeneralizeCost().add(BigDecimal.valueOf(50)));
+			}
+		}
 	}
 
 	@Override
