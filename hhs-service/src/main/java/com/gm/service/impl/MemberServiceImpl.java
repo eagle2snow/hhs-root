@@ -159,7 +159,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setSetMeal(2);
 		member.setLevel(3);
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
-			member.setGeneralizeId(RandomUtil.randomNumbers(6));
+
+			String randomNumbers = RandomUtil.randomNumbers(6);
+			if (randomNumbers.charAt(0) != '0') {
+				member.setGeneralizeId(RandomUtil.randomNumbers(6));
+			} else {
+				member.setGeneralizeId("1" + RandomUtil.randomNumbers(5));
+			}
+
 		}
 		if (StringUtils.isEmpty(member.getLove()) || member.getLove() == 0) {
 			member.setLove(1);
@@ -412,7 +419,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (!b && membezzrNickName.getNickname() != null) {
 			member.setReferrerNickname(membezzrNickName.getNickname());
 		}
-		
+
 		Integer memberId = saveReturnId(member);
 		member.setReferrerGeneralizeId(referrerGeneralizeId);
 		member.setId(memberId);
