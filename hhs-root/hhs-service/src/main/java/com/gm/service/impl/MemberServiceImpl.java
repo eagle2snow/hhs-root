@@ -173,30 +173,41 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Member getParent1(Member member) {// 获取张三的推荐人 50 三级代理 上家
+	public List<Member> getParent1(Member member) {// 获取张三的推荐人 50 三级代理 上家
+		List<Member> list = new ArrayList<>();
 		Member parent1 = getOne("generalizeId", member.getReferrerGeneralizeId());
-		return parent1;
+		if (!StringUtils.isEmpty(parent1)) {
+			list.add(parent1);
+		}
+		return list;
 	}
 
 	@Override
-	public Member getParent2(Member member) {// 获取张三的推介人的推介人 60 二级代理 上上家
-		Member parent1 = getParent1(member);
-		if (parent1 != null) {
-			Member parent2 = getOne("generalizeId", parent1.getReferrerGeneralizeId());
-			return parent2;
+	public List<Member> getParent2(Member member) {// 获取张三的推介人的推介人 60 二级代理 上上家
+
+		List<Member> parent1 = getParent1(member);
+		List<Member> list = new ArrayList<>();
+		for (Member parent : parent1) {
+			if (!StringUtils.isEmpty(parent)) {
+				Member parent2 = getOne("generalizeId", parent.getReferrerGeneralizeId());
+				list.add(parent2);
+			}
 		}
-		return null;
+		return list;
 	}
 
 	@Override
-	public Member getParent3(Member member) {// 获取张三推荐人的推荐人的推荐人 50 一级代理 上上上家
+	public List<Member> getParent3(Member member) {// 获取张三推荐人的推荐人的推荐人 50 一级代理 上上上家
 
-		Member parent2 = getParent2(member);
-		if (parent2 != null) {
-			Member parent3 = getOne("generalizeId", parent2.getReferrerGeneralizeId());
-			return parent3;
+		List<Member> parent2 = getParent2(member);
+		List<Member> list = new ArrayList<>();
+		for (Member member2 : parent2) {
+			if (StringUtils.isEmpty(member2)) {
+				Member parent3 = getOne("generalizeId", member2.getReferrerGeneralizeId());
+				list.add(parent3);
+			}
 		}
-		return null;
+		return list;
 	}
 
 	@Override
@@ -259,14 +270,24 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 3) { // 直推十人
-			Member parent2 = getParent2(member);
-			Member parent3 = getParent3(member);
-
-			if (!StringUtils.isEmpty(parent2) || !StringUtils.isEmpty(parent3)) {
-				list = new ArrayList<>();
-				list.add(parent2);
-				list.add(parent3);
+			
+			List<Member> parent2 = getParent2(member);
+			List<Member> parent3 = getParent3(member);
+			
+			for (Member member2 : parent2) {
+				if (!StringUtils.isEmpty(member2) ) {
+					list = new ArrayList<>();
+					list.add(member2);
+				}
 			}
+			
+			for (Member member3 : parent3) {
+				if (!StringUtils.isEmpty(member3) ) {
+					list = new ArrayList<>();
+					list.add(member3);
+				}
+			}
+
 		}
 
 		if (!StringUtils.isEmpty(list)) {
@@ -293,10 +314,12 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 2) { // 购买套餐了
-			Member parent1 = getParent1(member);
-			if (!StringUtils.isEmpty(parent1)) {
-				list = new ArrayList<>();
-				list.add(parent1);
+			List<Member> parent1 = getParent1(member);
+			for (Member member2 : parent1) {
+				if (!StringUtils.isEmpty(parent1)) {
+					list = new ArrayList<>();
+					list.add(member2);
+				}
 			}
 		}
 		if (!StringUtils.isEmpty(list)) {
@@ -316,23 +339,34 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public void threeLevel(Integer memberId) {
 
 		Member member = dao.getOne("id", memberId);
-		Member parent1 = getParent1(member);// 上一级
-		Member parent2 = getParent2(member);// 上二级
-		Member parent3 = getParent3(member);// 上三级
-
-		// 三级分润
-		if (parent1 != null) {
-			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
-			update(parent1);
+		List<Member> parent1 = getParent1(member);// 上一级
+		List<Member> parent2 = getParent2(member);// 上二级
+		List<Member> parent3 = getParent3(member);// 上三级
+		
+		for (Member member1 : parent1) {
+			if (StringUtils.isEmpty(member1)) {
+				member1.setBalance(member1.getBalance().add(BigDecimal.valueOf(50)));
+				update(member1);
+				
+			}
 		}
-		if (parent2 != null) {
-			parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
-			update(parent2);
+		
+		for (Member member2 : parent2) {
+			if (StringUtils.isEmpty(member2)) {
+				member2.setBalance(member2.getBalance().add(BigDecimal.valueOf(50)));
+				update(member2);
+				
+			}
 		}
-		if (parent3 != null) {
-			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
-			update(parent3);
+		
+		for (Member member3 : parent3) {
+			if (StringUtils.isEmpty(member3)) {
+				member3.setBalance(member3.getBalance().add(BigDecimal.valueOf(50)));
+				update(member3);
+				
+			}
 		}
+		
 	}
 
 	// 获取直系会员
@@ -373,7 +407,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public Member saveWeixinMember(String openid, String referrerGeneralizeId) {
 		Member member = new Member();
 		Member memberNickName = getOne("generalizeId", referrerGeneralizeId);
-		
+
 		member.setOpenid(openid);
 		GetUserInfoResponse userInfo = WeiXinApi.getUserAPI().getUserInfo(openid);
 		member.setCountry(userInfo.getCountry());

@@ -144,7 +144,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * 
 	 * @version 1.0
 	 */
-	Member getParent1(Member member);
+	List<Member> getParent1(Member member);
 
 	/**
 	 * <p>
@@ -157,7 +157,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * 
 	 * @version 1.0
 	 */
-	Member getParent2(Member member);
+	List<Member> getParent2(Member member);
 
 	/**
 	 * 
@@ -171,7 +171,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * 
 	 * @version 1.0
 	 */
-	Member getParent3(Member member);
+	List<Member> getParent3(Member member);
 
 	/**
 	 * 根据会员获取直系会员
