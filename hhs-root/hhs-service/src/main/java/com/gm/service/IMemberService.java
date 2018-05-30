@@ -134,20 +134,13 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	Member getParent(Member member, int level);
 
 	/**
-	 * 根据会员获取直系会员
-	 * 
+	 * 获取会员level级下家
+	 * 例如 level == 1 也称为直推会员
+	 * 	　　level == 2 也称为直系会员
 	 * @param member
-	 * @return
+	 * @param level
 	 */
-	List<Member> getAllSons(Member member);
-
-	/**
-	 * 根据会员获取直推会员
-	 * 
-	 * @param member
-	 * @return
-	 */
-	List<Member> getSons1(Member member);
+	List<Member> getChildren(Member member, int level);
 
 	Member saveWeixinMember(String openid, String referrerGeneralizeId);
 

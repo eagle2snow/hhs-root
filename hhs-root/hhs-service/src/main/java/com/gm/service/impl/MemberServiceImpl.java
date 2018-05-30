@@ -2,10 +2,7 @@ package com.gm.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -313,38 +310,53 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return balance;
 	}
 
-	// 获取直系会员
 	@Override
-	public List<Member> getAllSons(Member member) {
-		Map<Integer, Member> members = new HashMap<>();
-		members.put(member.getId(), member);
-		if (StringUtil.strNullOrEmpty(member.getGeneralizeId()) || member.getId() == null)
-			return new ArrayList<>();
+	public List<Member> getChildren(Member member, int level)
+	{
+		List<Member> members = new LinkedList<>();
+		if (member == null || member.getId() == null)
+			return members;
 
-		List<Member> direct = dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
-		for (Member d : direct) {
-			if (StringUtil.strNullOrEmpty(d.getGeneralizeId()))
-				continue;
-			List<Member> inDirect = dao.listEq("referrerGeneralizeId", d.getGeneralizeId());
-			for (Member d2 : inDirect) {
-				if (members.containsKey(d2.getId()))
-					continue;
-				members.put(d2.getId(), d2);
-			}
-		}
-		List<Member> all = new ArrayList<>();
-		members.remove(member.getId());
-		for (Map.Entry<Integer, Member> entry : members.entrySet())
-			all.add(entry.getValue());
-		return all;
+		Map<Integer, Member> results = new HashMap<>();
+		doGetChildren(results, member, level);
+		if (results.containsKey(member.getId()))
+			results.remove(member.getId());
+
+		for (Map.Entry<Integer, Member> r : results.entrySet())
+			members.add(r.getValue());
+		return members;
 	}
 
-	// 获取直推会员
-	@Override
-	public List<Member> getSons1(Member member) {
-		if (StringUtil.strNullOrEmpty(member.getGeneralizeId()))
-			return new ArrayList<>();
-		return listEq("referrerGeneralizeId", member.getGeneralizeId());
+	private void doGetChildren(Map<Integer, Member> results, Member member, int level)
+	{
+		if (level == 1) {
+			List<Member> children = doGetChildren(member);
+			if (children != null) {
+				for (Member c : children) {
+					if (c == null || c.getId() == null)
+						continue;
+					if (results.containsKey(c.getId()))
+						continue;
+					results.put(c.getId(), c);
+				}
+			}
+			return;
+		}
+		List<Member> children = doGetChildren(member);
+		if (children == null)
+			return;
+		for (Member c : children) {
+			if (c == null || c.getId() == null)
+				continue;
+			doGetChildren(results, c, level - 1);
+		}
+	}
+
+	private List<Member> doGetChildren(Member member)
+	{
+		if (StringUtils.isEmpty(member.getGeneralizeId()))
+			return null;
+		return dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
 	}
 
 	@Override

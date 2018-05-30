@@ -59,7 +59,7 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
             logger.info("getDirectChild::memberService.get(id) == null");
         else {
-            List<Member> directChild = memberService.getSons1(myself);
+            List<Member> directChild = memberService.getChildren(myself, 1);
             mm.addAttribute("directChild", directChild);
 		}
 		return path + "directChild";
@@ -73,7 +73,7 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
             logger.info("getAllChild::memberService.get(id) == null");
         else {
-			List<Member> allChild = memberService.getAllSons(myself);
+			List<Member> allChild = memberService.getChildren(myself, 2);
 			mm.addAttribute("allChild", allChild);
 		}
         return path + "allChild";
