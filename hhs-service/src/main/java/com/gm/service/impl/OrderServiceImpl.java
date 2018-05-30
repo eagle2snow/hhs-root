@@ -369,6 +369,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
 					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			// logger.info("member={}", JSON.toJSON(member));
+			System.out.println("OrderServiceImpl -> finishGoods:order.getTotalMoney() = " + order.getTotalMoney());
 			memberService.update(member);
 
 		} catch (Exception e) {
