@@ -220,18 +220,22 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member) {
 		// 直推且购买过套餐大于等于十人
-		if (member.getSetMeal() != 3)
-			return;
+//		if (member.getSetMeal() != 3)
+//			return;
 
 		Map<Integer, Integer> memento = new HashMap<>();
 		Member current = getParent(member, 1);
+		boolean gt = false;
 		for (; current != null; current = getParent(current, 1)) {
-			Set<Integer> visited = new HashSet<>();
-			Set<Integer> add = new HashSet<>();
-			int childrenCount = memberService.getChildrenCount(current, memento, visited, add);
-			logger.info("childrenCount", childrenCount);
-			if (childrenCount < Const.betweenMember)
-				continue;
+			if (!gt) {
+				Set<Integer> visited = new HashSet<>();
+				Set<Integer> add = new HashSet<>();
+				int childrenCount = memberService.getChildrenCount(current, memento, visited, add);
+				logger.info("childrenCount", childrenCount);
+				if (childrenCount < Const.betweenMember)
+					continue;
+				gt = true;
+			}
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			if (current.getLevel() < 4)
 				current.setLevel(4);
