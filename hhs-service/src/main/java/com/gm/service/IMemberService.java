@@ -2,9 +2,9 @@ package com.gm.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
-
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.model.Member;
 
@@ -135,8 +135,6 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 */
 	List<Member> getChildren(Member member, int level);
 
-	Member saveWeixinMember(String openid, String referrerGeneralizeId);
-
 	/**
 	 *<p>Title:updateGeneralizeCost</p>
 	 *<p>Description:下家购买商品返上家订单总额1%到推广费</p>
@@ -145,5 +143,14 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @param multiply 本次获得推广费
 	 */
 	void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply);
+
+	/**
+	 * 获取一个会员的所有下家个数
+	 * @param memento 加速用 notnull
+	 * @member 会员
+	 */
+	int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited);
+
+	Member saveWeixinMember(String openid, String referrerGeneralizeId);
 
 }
