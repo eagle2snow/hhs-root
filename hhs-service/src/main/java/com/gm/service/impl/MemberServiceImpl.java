@@ -196,27 +196,24 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member)
 	{
-		List<Member> list = null;
-
-//		if (member.getSetMeal() == 3) { // 直推且购买过套餐大于等于十人
-//			Member current = getParent(member, 1);
-//			if (current == null)
-//				return;
-//			for (; current != null; current = getParent(current, 1)) {
-//				int sum = 0;
-//				for ( ; sum <= Const.betweenMember; ) {
-//					List<Member> children = getChildren(current, 1);
-//					sum += children.size();
-//					for (Member c : children) {
-//
-//					}
-//				}
-//				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
-//				if (member.getLevel() < 4)
-//					member.setLevel(4);
-//				dao.update(member);
-//			}
-//		}
+		if (member.getSetMeal() == 3) { // 直推且购买过套餐大于等于十人
+			boolean gtBetweenMember = false;
+			List<Member> children = new LinkedList<>();
+			for (Member current = getParent(member, 1);
+				 current != null;
+				 current = getParent(current, 1)) {
+				if (!gtBetweenMember)
+					children = getChildren(current, Const.betweenMember);
+				if (children.size() >= Const.betweenMember)
+					gtBetweenMember = true;
+				if (!gtBetweenMember)
+					continue;
+				current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
+				if (current.getLevel() < 4)
+					current.setLevel(4);
+				dao.update(current);
+			}
+		}
 	}
 
 	@Override
