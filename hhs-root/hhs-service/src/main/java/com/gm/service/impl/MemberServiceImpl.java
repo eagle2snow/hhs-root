@@ -177,19 +177,19 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		update(member);
 	}
-	private void threeMoney(Member member) {
+
+	private void threeMoney(Member member)
+	{
 		if (member.getSetMeal() == 2) { //购买套餐
-			Member member2 = memberService.getOne("generalizeId", member.getReferrerGeneralizeId()); //上家
-			if (null!=member2) {
-				member2.setGeneralizeCost(member2.getGeneralizeCost().add(BigDecimal.valueOf(50)));
-			}
-			Member member3 = memberService.getOne("generalizeId", member2.getReferrerGeneralizeId()); //上上家
-			if (null!=member3) {
-				member3.setGeneralizeCost(member3.getGeneralizeCost().add(BigDecimal.valueOf(60)));
-			}
-			Member member4 = memberService.getOne("generalizeId", member3.getReferrerGeneralizeId()); //上上上家
-			if (null!=member4) {
-				member4.setGeneralizeCost(member4.getGeneralizeCost().add(BigDecimal.valueOf(50)));
+			Member m = member;
+			for (int i = 1; i <= 4; ++i) {
+				m = memberService.getParent(m, 1);
+				if (m == null)
+					break;
+				if (i != 3)
+					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
+				else
+					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 			}
 		}
 	}
@@ -271,13 +271,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 3) { // 直推十人
-			int c = getAllSons().size() - last;//Const.betweenMember;
-			if (c > 0) {
-				member.getGeneralizeCost() = (BigDecimal.valueOf(5.0) * c));
-				member.setLevel(4); // 城市经理
-				dao.update(member);
-
-			}
+//			int c = getAllSons().size() - last;//Const.betweenMember;
+//			if (c > 0) {
+//				member.getGeneralizeCost() = (BigDecimal.valueOf(5.0) * c));
+//				member.setLevel(4); // 城市经理
+//				dao.update(member);
+//
+//			}
 		}
 
 		if (!StringUtils.isEmpty(list)) {
@@ -287,7 +287,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
 				member.setLevel(4); // 城市经理
 			}
-
 		}
 
 	}
@@ -312,39 +311,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			balance.add(Const.MEMBER_AMOUNT);
 		dao.update(member);
 		return balance;
-
-	}
-
-	@Override
-	public void threeLevel(Integer memberId) {
-
-		Member member = dao.getOne("id", memberId);
-		Member parent1 = getParent(member, 1);
-		Member parent2 = getParent(member, 2);
-		Member parent3 = getParent(member, 3);
-
-		if (parent1 != null) {
-			parent1.setBalance(parent1.getBalance().add(BigDecimal.valueOf(50)));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent1.getId()));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent1.getNickname()));
-			update(parent1);
-		}
-
-		if (parent2 != null) {
-			parent2.setBalance(parent2.getBalance().add(BigDecimal.valueOf(60)));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent2.getId()));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent2.getNickname()));
-			update(parent2);
-
-		}
-
-		if (parent3 != null) {
-			parent3.setBalance(parent3.getBalance().add(BigDecimal.valueOf(50)));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent3.getId()));
-			logger.info("threeLevel:Member member1 = {}",JSON.toJSON(parent3.getNickname()));
-			update(parent3);
-
-		}
 	}
 
 	// 获取直系会员

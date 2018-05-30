@@ -90,9 +90,9 @@ public class Member extends Model {
 
 	private String qrCode;// 推广二维码
 
-	private Integer changReferrer = 0;// 是否更改过推荐人 ：未更改 0 ,已更改1
+	private Integer changReferrer = 0;// 是否更改过推荐人 ：0 未更改, 1 已更改
 
-	private Integer setMeal = 1;// 套餐类型 ：未购买 |1 ,已购买|2 ,返套餐金额 |3
+	private Integer setMeal = 1;// 套餐类型 ：1 未购买, 2 已购买, 3 返套餐金额
 
 	@FormField(type = FieldType.TEXTINPUT, label = "十返一")
 	private BigDecimal tenReturnOne = BigDecimal.ZERO;
