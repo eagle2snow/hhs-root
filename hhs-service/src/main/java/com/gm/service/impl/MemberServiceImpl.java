@@ -224,14 +224,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return;
 
 		Map<Integer, Integer> memento = new HashMap<>();
-		Member current = getParent(member, 1);
+		Set<Integer> visited = new HashSet<>();
+		Set<Integer> added = new HashSet<>();
+		Set<Integer> visitedParents = new HashSet<>();
 		boolean gt = false;
-		for (; current != null; current = getParent(current, 1)) {
+		for (Member current = getParent(member, 1);
+			 current != null && !visitedParents.contains(current.getId());
+			 current = getParent(current, 1)) {
+			visitedParents.add(current.getId());
 			if (!gt) {
-				Set<Integer> visited = new HashSet<>();
-				Set<Integer> add = new HashSet<>();
-				int childrenCount = memberService.getChildrenCount(current, memento, visited, add);
-				logger.info("childrenCount", childrenCount);
+				int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
 				if (childrenCount < Const.betweenMember)
 					continue;
 				gt = true;
@@ -246,7 +248,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public Member getParent(Member member, int level) {
-		if (level == 1)
+		if (member == null)
+			return null;
+		if (level <= 1)
 			return doGetParent(member);
 		Member parent = doGetParent(member);
 		if (parent == null)
@@ -256,6 +260,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	private Member doGetParent(Member member) {
 		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
+		if (parent != null && parent.getId() == member.getId())
+			return null;
 		return parent;
 	}
 
@@ -336,14 +342,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> got) {
+	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> added) {
 		if (member == null || member.getId() == null)
 			return 0;
 		if (memento.containsKey(member.getId()))
 			return memento.get(member.getId());
-		if (got.contains(member.getId()))
+		if (added.contains(member.getId()))
 			return 0;
-		got.add(member.getId());
+		added.add(member.getId());
 		List<Member> members = doGetChildren(member);
 		if (members == null)
 			return 0;
@@ -351,7 +357,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (Member m : members) {
 			if (!visited.contains(m.getId())) {
 				visited.add(m.getId());
-				sum += getChildrenCount(m, memento, visited, got);
+				sum += getChildrenCount(m, memento, visited, added);
 			}
 		}
 		memento.put(member.getId(), sum);
