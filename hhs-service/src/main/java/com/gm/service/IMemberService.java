@@ -16,13 +16,6 @@ import com.gm.base.model.Member;
  *
  */
 public interface IMemberService extends IBaseService<Member, Integer> {
-
-	/**
-	 * @Title: returnFiveMoney
-	 * @Description: 返 5(元/人)
-	 */
-	void returnFiveMoney(String memberId);
-
 	/**
 	 * @Title: returnMeal @Description: 返套餐金额 @param mealMemberNumber
 	 *         直推业务经理人数 @return 套餐金额 @return: BigDecimal @throws

@@ -147,8 +147,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void payMemberSuccess(String openid)
 	{
-		//TODO
-		//增加拦截 防止微信多次回调
+		//TODO　增加拦截 防止微信多次回调
 		Member member = getOne("openid", openid);
 		member.setSetMeal(2);
 		member.setLevel(3);
@@ -167,10 +166,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		}
 		
 		threeMoney(member);
+		logger.info("threeMoney", JSON.toJSON(member));
 
-		logger.info("payMemberSuccess:The Member member={}", JSON.toJSON(member));
-		
-		
+		returnFiveMoney(member);
+		logger.info("returnFiveMoney", JSON.toJSON(member));
 
 		update(member);
 	}
@@ -189,6 +188,35 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 			}
 		}
+	}
+
+	/**
+	 * 返 5 元/人
+	 *
+	 */
+	public void returnFiveMoney(Member member)
+	{
+		List<Member> list = null;
+
+//		if (member.getSetMeal() == 3) { // 直推且购买过套餐大于等于十人
+//			Member current = getParent(member, 1);
+//			if (current == null)
+//				return;
+//			for (; current != null; current = getParent(current, 1)) {
+//				int sum = 0;
+//				for ( ; sum <= Const.betweenMember; ) {
+//					List<Member> children = getChildren(current, 1);
+//					sum += children.size();
+//					for (Member c : children) {
+//
+//					}
+//				}
+//				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
+//				if (member.getLevel() < 4)
+//					member.setLevel(4);
+//				dao.update(member);
+//			}
+//		}
 	}
 
 	@Override
@@ -255,37 +283,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 
 		}
-	}
-
-	/**
-	 * 返 5 元/人
-	 * 
-	 */
-	@Override
-	public void returnFiveMoney(String openid) {
-
-		Member member = dao.getOne("openid", openid);
-		List<Member> list = null;
-
-		if (member.getSetMeal() == 3) { // 直推十人
-//			int c = getAllSons().size() - last;//Const.betweenMember;
-//			if (c > 0) {
-//				member.getGeneralizeCost() = (BigDecimal.valueOf(5.0) * c));
-//				member.setLevel(4); // 城市经理
-//				dao.update(member);
-//
-//			}
-		}
-
-		if (!StringUtils.isEmpty(list)) {
-			if (list.size() > Const.betweenMember) {
-
-			} else {
-				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
-				member.setLevel(4); // 城市经理
-			}
-		}
-
 	}
 
 	/**
