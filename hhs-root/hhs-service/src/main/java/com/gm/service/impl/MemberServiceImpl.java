@@ -228,7 +228,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (; current != null; current = getParent(current, 1)) {
 			Set<Integer> visited = new HashSet<>();
 			Set<Integer> add = new HashSet<>();
-			int childrenCount = memberService.getChildrenCount(member, memento, visited, add);
+			int childrenCount = memberService.getChildrenCount(current, memento, visited, add);
 			logger.info("childrenCount", childrenCount);
 			if (childrenCount < Const.betweenMember)
 				continue;
@@ -426,9 +426,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setReferrerGeneralizeId(referrerGeneralizeId);
 		member.setId(memberId);
 		return member;
-	}
-
-	public static void main(String[] args) {
 	}
 
 	/* (non-Javadoc)
