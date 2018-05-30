@@ -151,6 +151,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	{
 		Member member = getOne("openid", openid);
 
+		if (member == null) {
+			logger.info("payMemberSuccess", "member == null");
+			return;
+		}
+
 		if (member.getSetMeal() != 1) 	{
 			logger.info("微信多次回调啦");
 			return;
@@ -325,24 +330,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> add)
+	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> got)
 	{
-		int sum = 0;
 		if (member == null || member.getId() == null)
 			return 0;
 		if (memento.containsKey(member.getId()))
 			return memento.get(member.getId());
+		if (got.contains(member.getId()))
+			return 0;
+		got.add(member.getId());
 		List<Member> members = doGetChildren(member);
 		if (members == null)
 			return 0;
-		if (!add.contains(member.getId())) {
-			add.add(member.getId());
-			sum += members.size();
-		}
+		int sum = members.size();
 		for (Member m : members) {
 			if (!visited.contains(m.getId())) {
 				visited.add(m.getId());
-				sum += getChildrenCount(m, memento, visited, add);
+				sum += getChildrenCount(m, memento, visited, got);
 			}
 		}
 		memento.put(member.getId(), sum);
