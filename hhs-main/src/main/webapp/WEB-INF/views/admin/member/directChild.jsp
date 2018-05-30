@@ -20,7 +20,7 @@
         </thead>
 
         <tbody>
-        <c:forEach items="${direceChild}" var="one">
+        <c:forEach items="${directChild}" var="one">
             <tr>
                 <td>${one.name}</td>
                 <td>${one.nickname}</td>
