@@ -389,8 +389,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply) {
 		Member one = dao.getOne("generalizeId", referrerGeneralizeId);
+		if(one != null) {
 		one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
 		dao.update(one);
+		}
 		
 	}
 
