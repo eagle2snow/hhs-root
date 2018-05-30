@@ -348,6 +348,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				member1.setBalance(member1.getBalance().add(BigDecimal.valueOf(50)));
 				
 				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member1.getId()));
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member1.getNickname()));
 				update(member1);
 				
 			}
@@ -358,6 +359,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				member2.setBalance(member2.getBalance().add(BigDecimal.valueOf(50)));
 				
 				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member2.getId()));
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member2.getNickname()));
 				update(member2);
 				
 			}
@@ -368,6 +370,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				member3.setBalance(member3.getBalance().add(BigDecimal.valueOf(50)));
 				
 				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member3.getId()));
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member3.getNickname()));
 				update(member3);
 				
 			}
