@@ -327,6 +327,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 */
 	private void finishGoods(Integer orderId) {
 		try {
+
 			Order order = orderService.get(orderId);
 			order.setStatus("10");
 			order.setFinishTime(LocalDateTime.now());
@@ -339,9 +340,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			memberService.tenReturnOne(orderId);
 			balance.add(member.getTenReturnOne()); // 十件商品返一件
 
-			//memberService.returnFiveMoney(member.getOpenid()); // 返5元
+			// memberService.returnFiveMoney(member.getOpenid()); // 返5元
 
-//			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
+			// balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
 
 			member.setBalance(balance); // 设置可提现余额
 
@@ -364,6 +365,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
 				member.setLevel(2);// 等级
 			}
+			// 返订单总额0.01%给上家
+			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			// logger.info("member={}", JSON.toJSON(member));
 			memberService.update(member);
 
