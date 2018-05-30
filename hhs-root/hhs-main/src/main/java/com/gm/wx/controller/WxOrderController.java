@@ -67,14 +67,14 @@ public class WxOrderController extends WeixinBaseController {
 	private IMemberAddressService memberAddressService;
 
 	private static final String PATH = "/wx/order/";
-	
+
 	// 查看订单
 	@GetMapping("lookOrder/{orderId}")
 	public String lookOrderView(@PathVariable Integer orderId, Model model) {
 		Order order = orderService.get(orderId);
 		if (order == null)
 			return "error/404";
-		
+
 		BigDecimal sum = new BigDecimal(0);
 		int itemSize = 0;
 		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
@@ -82,10 +82,9 @@ public class WxOrderController extends WeixinBaseController {
 			return "error/404";
 		for (OrderItem item : items) {
 			sum = sum.add(item.getOriginalPrice().multiply(new BigDecimal(item.getBuyCount())));
-			itemSize +=item.getBuyCount();
+			itemSize += item.getBuyCount();
 		}
 
-		
 		List<PayBill> bills = payBillService.listEq("orderNo", order.getOrderNo());
 		if (bills == null || bills.size() != 1) {
 			model.addAttribute("transactionId", "");
@@ -95,25 +94,26 @@ public class WxOrderController extends WeixinBaseController {
 			model.addAttribute("reaFee", bills.get(0).getReaFee());
 		}
 
-		
 		model.addAttribute("items", items);
 		model.addAttribute("itemSize", itemSize);
 		model.addAttribute("order", order);
 		model.addAttribute("sum", sum);
 		BigDecimal discount = sum.subtract(bills.get(0).getReaFee());
-//		BigDecimal discount = sum.subtract(order.getTotalMoney());
+		// BigDecimal discount = sum.subtract(order.getTotalMoney());
 		model.addAttribute("discount", discount.compareTo(new BigDecimal(0)) < 0 ? 0 : discount);
-		
+
 		if (order.getCreateTime() != null)
-			model.addAttribute("createTime", order.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			model.addAttribute("createTime",
+					order.getCreateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		else
 			model.addAttribute("createTime", "");
-		
+
 		if (order.getPaymentTime() != null)
-			model.addAttribute("paymentTime", order.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			model.addAttribute("paymentTime",
+					order.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 		else
 			model.addAttribute("paymentTime", "");
-		
+
 		return PATH + "lookOrder";
 	}
 
@@ -155,8 +155,6 @@ public class WxOrderController extends WeixinBaseController {
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
-			//返订单总额0.01%给上家
-			memberService.updateGeneralizeCost(this.getCurMember().getReferrerGeneralizeId(),order.getTotalMoney().multiply(new BigDecimal(0.01)));
 
 		} catch (Exception e) {
 			map.put("status", 2);
@@ -199,7 +197,7 @@ public class WxOrderController extends WeixinBaseController {
 		HashMap<String, Object> map = this.getMap();
 
 		try {
-			//取消订单要加回商品数量
+			// 取消订单要加回商品数量
 			Order order = orderService.get(orderId);
 			if (order == null)
 				throw new Exception("订单不存在");
@@ -208,10 +206,8 @@ public class WxOrderController extends WeixinBaseController {
 			if (items != null) {
 				for (OrderItem item : items) {
 					Commodity commodity = commodityService.get(item.getCommodity().getId());
-					if (commodity == null
-                            || commodity.getTotalStock() == null
-                            || item.getBuyCount() == null)
-					    continue;
+					if (commodity == null || commodity.getTotalStock() == null || item.getBuyCount() == null)
+						continue;
 					commodity.setTotalStock(commodity.getTotalStock() + item.getBuyCount());
 					commodityService.update(commodity);
 				}
@@ -300,8 +296,8 @@ public class WxOrderController extends WeixinBaseController {
 			}
 		}
 
-		List<MemberAddress> addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca").pq("address")
-				.pq("defaultAddress").eq("member.id", member.getId()).pqList();
+		List<MemberAddress> addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca")
+				.pq("address").pq("defaultAddress").eq("member.id", member.getId()).pqList();
 		map.put("addressList", JSON.toJSON(addressList));
 		map.put("order", JSON.toJSON(order));
 		List<OrderItem> items = orderItemService.listEq("order.id", orderId);
@@ -412,9 +408,8 @@ public class WxOrderController extends WeixinBaseController {
 	@RequestMapping("/paySuccess")
 	public String paySuccess(ModelMap map, Integer orderId, String amount) {
 		logger.info("paySuccess:The args orderId={},amount={}", orderId, amount);
-		
-		Order order = orderService.getOne("id",orderId);
-		
+
+		Order order = orderService.getOne("id", orderId);
 
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		map.put("orderId", orderId);
@@ -444,7 +439,7 @@ public class WxOrderController extends WeixinBaseController {
 		map.put("path", PATH);
 		return PATH + "payFail";
 	}
-	
+
 	@RequestMapping("pushOrders")
 	public String pushOrders(ModelMap map, Integer orderId) {
 		map.put("orderId", orderId);
