@@ -394,7 +394,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setName(userInfo.getNickname());
 		member.setIocUrl(userInfo.getHeadimgurl());
 
-		if (b && membezzrNickName.getNickname() != null) {
+		if (!b && membezzrNickName.getNickname() != null) {
 			member.setReferrerNickname(membezzrNickName.getNickname());
 		}
 		
