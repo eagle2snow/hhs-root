@@ -219,19 +219,18 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member)
 	{
+		// 直推且购买过套餐大于等于十人
 		if (member.getSetMeal() != 3)
 			return;
 
-		// 直推且购买过套餐大于等于十人
-		boolean gtBetweenMember = false;
-		List<Member> children = new LinkedList<>();
+		Map<Integer, Integer> memento = new HashMap<>();
 		Member current = getParent(member, 1);
 		for (; current != null; current = getParent(current, 1)) {
-			if (!gtBetweenMember)
-				children = getChildren(current, Const.betweenMember);
-			if (children.size() >= Const.betweenMember)
-				gtBetweenMember = true;
-			if (!gtBetweenMember)
+			Set<Integer> visited = new HashSet<>();
+			Set<Integer> add = new HashSet<>();
+			int childrenCount = memberService.getChildrenCount(member, memento, visited, add);
+			logger.info("childrenCount", childrenCount);
+			if (childrenCount < Const.betweenMember)
 				continue;
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			if (current.getLevel() < 4)
