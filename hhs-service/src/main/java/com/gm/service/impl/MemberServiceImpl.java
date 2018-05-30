@@ -329,7 +329,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	private void doGetChildren(Map<Integer, Member> results, Member member, int level)
 	{
-		if (level == 1) {
+		if (level <= 1) {
 			List<Member> children = doGetChildren(member);
 			if (children != null) {
 				for (Member c : children) {
