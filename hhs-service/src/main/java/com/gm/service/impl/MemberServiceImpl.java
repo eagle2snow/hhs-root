@@ -339,13 +339,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public void threeLevel(Integer memberId) {
 
 		Member member = dao.getOne("id", memberId);
-		List<Member> parent1 = getParent1(member);// 上一级
-		List<Member> parent2 = getParent2(member);// 上二级
-		List<Member> parent3 = getParent3(member);// 上三级
+		List<Member> parent1 = getParent1(member);
+		List<Member> parent2 = getParent2(member);
+		List<Member> parent3 = getParent3(member);
 		
 		for (Member member1 : parent1) {
 			if (StringUtils.isEmpty(member1)) {
 				member1.setBalance(member1.getBalance().add(BigDecimal.valueOf(50)));
+				
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member1.getId()));
 				update(member1);
 				
 			}
@@ -354,6 +356,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (Member member2 : parent2) {
 			if (StringUtils.isEmpty(member2)) {
 				member2.setBalance(member2.getBalance().add(BigDecimal.valueOf(50)));
+				
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member2.getId()));
 				update(member2);
 				
 			}
@@ -362,6 +366,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (Member member3 : parent3) {
 			if (StringUtils.isEmpty(member3)) {
 				member3.setBalance(member3.getBalance().add(BigDecimal.valueOf(50)));
+				
+				logger.info("threeLevel:Member member1 = {}",JSON.toJSON(member3.getId()));
 				update(member3);
 				
 			}
