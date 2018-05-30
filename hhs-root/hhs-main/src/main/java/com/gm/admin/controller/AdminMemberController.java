@@ -45,7 +45,7 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
 		    logger.info("getUpperRelate::memberService.get(id) == null");
         else {
-			Member upperRelate = memberService.getParent1(myself);
+			Member upperRelate = memberService.getParent(myself, 1);
 			mm.addAttribute("upperRelate", upperRelate);
 		}
         return path + "upperRelate";

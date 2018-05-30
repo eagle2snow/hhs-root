@@ -133,45 +133,13 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	void payMemberSuccess(String openid);
 
 	/**
-	 * 
-	 * <p>
-	 * 描述: 获取上一级
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月4日
-	 * 
-	 * @version 1.0
+	 * 获取会员level级上家
+	 * 例如 level == 1 是上家
+	 * 		level == 2 是上上家
+	 * @param member
+	 * @param level
 	 */
-	Member getParent1(Member member);
-
-	/**
-	 * <p>
-	 * 描述: 获取上两级
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月4日
-	 * 
-	 * @version 1.0
-	 */
-	List<Member> getParent2(Member member);
-
-	/**
-	 * 
-	 * <p>
-	 * 描述:获取上三级
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月4日
-	 * 
-	 * @version 1.0
-	 */
-	List<Member> getParent3(Member member);
+	Member getParent(Member member, int level);
 
 	/**
 	 * 根据会员获取直系会员
