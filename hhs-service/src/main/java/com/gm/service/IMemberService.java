@@ -149,7 +149,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @param memento 加速用 notnull
 	 * @member 会员
 	 */
-	int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited);
+	int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> add);
 
 	Member saveWeixinMember(String openid, String referrerGeneralizeId);
 

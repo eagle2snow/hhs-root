@@ -1,8 +1,6 @@
 package com.gm.admin.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -56,6 +54,13 @@ public class AdminMemberController extends BaseAdminController {
 	public String getDirectChild(ModelMap mm, @PathVariable Integer id)
 	{
 		Member myself = memberService.get(id);
+
+		Map<Integer, Integer> map = new HashMap<>();
+		Set<Integer> visited = new HashSet<>();
+		Set<Integer> add = new HashSet<>();
+		int childrenCount = memberService.getChildrenCount(myself, map, visited, add);
+		System.out.println(childrenCount);
+
 		if (myself == null)
             logger.info("getDirectChild::memberService.get(id) == null");
         else {
