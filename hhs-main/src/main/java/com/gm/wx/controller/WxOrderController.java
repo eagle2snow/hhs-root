@@ -155,6 +155,8 @@ public class WxOrderController extends WeixinBaseController {
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
+			//返订单总额0.01%给上家
+			memberService.updateGeneralizeCost(this.getCurMember().getReferrerGeneralizeId(),order.getTotalMoney().multiply(new BigDecimal(0.01)));
 
 		} catch (Exception e) {
 			map.put("status", 2);
