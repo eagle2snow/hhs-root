@@ -194,8 +194,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				else
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 				logger.info(m.getNickname(), m.getGeneralizeCost());
+				dao.update(m);
 			}
-			dao.update(m);
 		}
 	}
 
@@ -330,7 +330,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (Member m : members) {
 			if (!visited.contains(m.getId())) {
 				visited.add(m.getId());
-				getChildrenCount(m, memento, visited);
+				sum += getChildrenCount(m, memento, visited);
 			}
 		}
 		memento.putIfAbsent(member.getId(), sum);
