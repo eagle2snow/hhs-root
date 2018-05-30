@@ -40,7 +40,7 @@
 	<div class="wbox">
 		<div class="boxmt">
 			<div class="boxmt_cont">
-				<h3 class="boxmtitle">评论（${model.appraiseCount}）</h3>
+				<h3 class="boxmtitle">评论（${model.comment}）</h3>
 			</div>
 			<a href="${ctx}wx/comments/allComments/${model.id }" class="boxmtmore">查看全部评论<i class="rgt"></i></a>
 		</div>
