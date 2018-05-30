@@ -147,8 +147,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void payMemberSuccess(String openid)
 	{
-		//TODO　增加拦截 防止微信多次回调
 		Member member = getOne("openid", openid);
+
+		if (member.getSetMeal() != 1) {
+			logger.info("微信多次回调啦");
+			return;
+		}
+
 		member.setSetMeal(2);
 		member.setLevel(3);
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
@@ -196,23 +201,24 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member)
 	{
-		if (member.getSetMeal() == 3) { // 直推且购买过套餐大于等于十人
-			boolean gtBetweenMember = false;
-			List<Member> children = new LinkedList<>();
-			for (Member current = getParent(member, 1);
-				 current != null;
-				 current = getParent(current, 1)) {
-				if (!gtBetweenMember)
-					children = getChildren(current, Const.betweenMember);
-				if (children.size() >= Const.betweenMember)
-					gtBetweenMember = true;
-				if (!gtBetweenMember)
-					continue;
-				current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
-				if (current.getLevel() < 4)
-					current.setLevel(4);
-				dao.update(current);
-			}
+		if (member.getSetMeal() != 3)
+			return;
+
+		// 直推且购买过套餐大于等于十人
+		boolean gtBetweenMember = false;
+		List<Member> children = new LinkedList<>();
+		Member current = getParent(member, 1);
+		for (; current != null; current = getParent(current, 1)) {
+			if (!gtBetweenMember)
+				children = getChildren(current, Const.betweenMember);
+			if (children.size() >= Const.betweenMember)
+				gtBetweenMember = true;
+			if (!gtBetweenMember)
+				continue;
+			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
+			if (current.getLevel() < 4)
+				current.setLevel(4);
+			dao.update(current);
 		}
 	}
 
