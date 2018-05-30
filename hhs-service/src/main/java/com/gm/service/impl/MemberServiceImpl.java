@@ -441,7 +441,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (one != null) {
 			one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
 			dao.update(one);
+		} else {
+			System.out.println("MemberServiceImpl NULL pointer");
 		}
+
+		System.out.println("MemberServiceImpl -> updateGeneralizeCost:" + referrerGeneralizeId + "," + multiply);
 
 	}
 
