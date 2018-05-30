@@ -383,4 +383,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public static void main(String[] args) {
 	}
 
+	/* (non-Javadoc)
+	 * @see com.gm.service.IMemberService#updateGeneralizeCost(java.lang.String, java.math.BigDecimal)
+	 */
+	@Override
+	public void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply) {
+		Member one = dao.getOne("generalizeId", referrerGeneralizeId);
+		one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
+		dao.update(one);
+		
+	}
+
 }
