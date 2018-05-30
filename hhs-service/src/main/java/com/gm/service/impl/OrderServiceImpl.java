@@ -341,7 +341,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			//memberService.returnFiveMoney(member.getOpenid()); // 返5元
 
-			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
+//			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
 
 			member.setBalance(balance); // 设置可提现余额
 
