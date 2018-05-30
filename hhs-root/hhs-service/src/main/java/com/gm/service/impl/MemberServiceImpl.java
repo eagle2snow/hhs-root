@@ -57,9 +57,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Autowired
 	private SuperTree superTree;
-
+	
 	@Resource
 	private IMemberService memberService;
+
 
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
@@ -146,10 +147,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void payMemberSuccess(String openid) {
+	public void payMemberSuccess(String openid)
+	{
 		Member member = getOne("openid", openid);
 
-		if (member.getSetMeal() != 1) {
+		if (member.getSetMeal() != 1) 	{
 			logger.info("微信多次回调啦");
 			return;
 		}
@@ -169,7 +171,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		} else {
 			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 		}
-
+		
 		threeMoney(member);
 		logger.info("threeMoney", JSON.toJSON(member));
 
@@ -179,20 +181,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		update(member);
 	}
 
-	private void threeMoney(Member member) {
-		if (member.getSetMeal() == 2) { // 购买套餐
-			Member m = member;
-			for (int i = 1; i <= 3; ++i) {
-				m = memberService.getParent(m, 1);
-				if (m == null)
-					break;
-				if (i != 2)
-					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
-				else
-					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
-				logger.info(m.getNickname(), m.getGeneralizeCost());
-				dao.update(m);
-			}
+	private void threeMoney(Member member)
+	{
+		//购买套餐
+		if (member.getSetMeal() != 2)
+			return;
+
+		Member m = member;
+		for (int i = 1; i <= 3; ++i) {
+			m = memberService.getParent(m, 1);
+			if (m == null)
+				break;
+			if (i != 2)
+				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
+			else
+				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
+			logger.info(m.getNickname(), m.getGeneralizeCost());
+			dao.update(m);
 		}
 	}
 
@@ -200,7 +205,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 返 5 元/人
 	 *
 	 */
-	public void returnFiveMoney(Member member) {
+	public void returnFiveMoney(Member member)
+	{
 		if (member.getSetMeal() != 3)
 			return;
 
@@ -224,7 +230,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Member getParent(Member member, int level) {
+	public Member getParent(Member member, int level)
+	{
 		if (level == 1)
 			return doGetParent(member);
 		Member parent = doGetParent(member);
@@ -233,7 +240,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return getParent(parent, --level);
 	}
 
-	private Member doGetParent(Member member) {
+	private Member doGetParent(Member member)
+	{
 		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
 		return parent;
 	}
@@ -310,7 +318,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited) {
+	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> add)
+	{
 		int sum = 0;
 		if (member == null || member.getId() == null)
 			return 0;
@@ -319,19 +328,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<Member> members = doGetChildren(member);
 		if (members == null)
 			return 0;
-		sum += members.size();
+		if (!add.contains(member.getId())) {
+			add.add(member.getId());
+			sum += members.size();
+		}
 		for (Member m : members) {
 			if (!visited.contains(m.getId())) {
 				visited.add(m.getId());
-				sum += getChildrenCount(m, memento, visited);
+				sum += getChildrenCount(m, memento, visited, add);
 			}
 		}
-		memento.putIfAbsent(member.getId(), sum);
+		memento.put(member.getId(), sum);
 		return sum;
 	}
 
 	@Override
-	public List<Member> getChildren(Member member, int level) {
+	public List<Member> getChildren(Member member, int level)
+	{
 		List<Member> members = new LinkedList<>();
 		if (member == null || member.getId() == null)
 			return members;
@@ -346,7 +359,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return members;
 	}
 
-	private void doGetChildren(Map<Integer, Member> results, Member member, int level) {
+	private void doGetChildren(Map<Integer, Member> results, Member member, int level)
+	{
 		if (level <= 1) {
 			List<Member> children = doGetChildren(member);
 			if (children != null) {
@@ -370,7 +384,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		}
 	}
 
-	private List<Member> doGetChildren(Member member) {
+	private List<Member> doGetChildren(Member member)
+	{
 		if (StringUtils.isEmpty(member.getGeneralizeId()))
 			return null;
 		return dao.listEq("referrerGeneralizeId", member.getGeneralizeId());
