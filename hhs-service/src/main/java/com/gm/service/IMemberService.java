@@ -137,4 +137,13 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 
 	Member saveWeixinMember(String openid, String referrerGeneralizeId);
 
+	/**
+	 *<p>Title:updateGeneralizeCost</p>
+	 *<p>Description:下家购买商品返上家订单总额1%到推广费</p>
+	 *
+	 * @param referrerGeneralizeId 推广id
+	 * @param multiply 本次获得推广费
+	 */
+	void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply);
+
 }
