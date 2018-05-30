@@ -151,7 +151,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	{
 		Member member = getOne("openid", openid);
 
-		if (member.getSetMeal() != 1) {
+		if (member.getSetMeal() != 1) 	{
 			logger.info("微信多次回调啦");
 			return;
 		}
@@ -193,8 +193,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
 				else
 					m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
+				logger.info(m.getNickname(), m.getGeneralizeCost());
 			}
-			logger.info(m.getNickname(), m.getGeneralizeCost());
 			dao.update(m);
 		}
 	}
