@@ -220,8 +220,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member) {
 		// 直推且购买过套餐大于等于十人
-//		if (member.getSetMeal() != 3)
-//			return;
+		if (member.getSetMeal() != 3)
+			return;
 
 		Map<Integer, Integer> memento = new HashMap<>();
 		Member current = getParent(member, 1);
