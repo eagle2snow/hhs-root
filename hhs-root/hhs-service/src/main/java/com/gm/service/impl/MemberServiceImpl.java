@@ -316,6 +316,28 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
+	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited)
+	{
+		int sum = 0;
+		if (member == null || member.getId() == null)
+			return 0;
+		if (memento.containsKey(member.getId()))
+			return memento.get(member.getId());
+		List<Member> members = doGetChildren(member);
+		if (members == null)
+			return 0;
+		sum += members.size();
+		for (Member m : members) {
+			if (!visited.contains(m.getId())) {
+				visited.add(m.getId());
+				getChildrenCount(m, memento, visited);
+			}
+		}
+		memento.putIfAbsent(member.getId(), sum);
+		return sum;
+	}
+
+	@Override
 	public List<Member> getChildren(Member member, int level)
 	{
 		List<Member> members = new LinkedList<>();
