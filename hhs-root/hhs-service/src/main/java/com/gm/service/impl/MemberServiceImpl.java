@@ -148,8 +148,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void payMemberSuccess(String openid) {
-
+	public void payMemberSuccess(String openid)
+	{
+		//TODO
+		//增加拦截 防止微信多次回调
 		Member member = getOne("openid", openid);
 		member.setSetMeal(2);
 		member.setLevel(3);
@@ -269,21 +271,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 3) { // 直推十人
-			
-			;
+			int c = getAllSons().size() - last;//Const.betweenMember;
+			if (c > 0) {
+				member.getGeneralizeCost() = (BigDecimal.valueOf(5.0) * c));
+				member.setLevel(4); // 城市经理
+				dao.update(member);
 
+			}
 		}
 
 		if (!StringUtils.isEmpty(list)) {
 			if (list.size() > Const.betweenMember) {
-				member.setGeneralizeCost(member.getGeneralizeCost().add(BigDecimal.valueOf(5.0)));
-				member.setLevel(4); // 城市经理
+
 			} else {
 				member.setGeneralizeCost(BigDecimal.valueOf(5.0));
 				member.setLevel(4); // 城市经理
 			}
 
-			dao.update(member);
 		}
 
 	}
@@ -302,15 +306,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			if (parent1 != null)
 				list.add(parent1);
 		}
-
-		if (!StringUtils.isEmpty(list)) {
-			if (list.size() >= Const.directMember) {
-				member.setSetMeal(3);// 返套餐钱
-			}
-		}
-		if (member.getSetMeal() == 3) {
+		if (list != null && list.size() >= Const.directMember)
+			member.setSetMeal(3);// 返套餐钱
+		if (member.getSetMeal() == 3)
 			balance.add(Const.MEMBER_AMOUNT);
-		}
 		dao.update(member);
 		return balance;
 
