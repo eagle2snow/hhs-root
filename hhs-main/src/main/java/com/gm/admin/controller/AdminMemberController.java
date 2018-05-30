@@ -12,6 +12,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,8 +45,12 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
 		    logger.info("getUpperRelate::memberService.get(id) == null");
         else {
-			Member upperRelate = memberService.getParent1(myself);
-            mm.addAttribute("upperRelate", upperRelate);
+			List<Member> upperRelate = memberService.getParent1(myself);
+			for (Member member : upperRelate) {
+				if (StringUtils.isEmpty(upperRelate)) {
+					mm.addAttribute("upperRelate", member);
+				}
+			}
 		}
         return path + "upperRelate";
 	}
