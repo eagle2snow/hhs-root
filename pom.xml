@@ -32,6 +32,12 @@
 
 	<dependencies>
 
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+		<!--</dependency>-->
+
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<!-- 主要用于通过注解自动生成 get set 方法 用法参照：https://www.zhihu.com/question/42348457 -->
 		<dependency>
