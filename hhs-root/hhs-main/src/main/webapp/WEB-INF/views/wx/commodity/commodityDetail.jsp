@@ -75,7 +75,7 @@
 						<span class="date">${date}</span>
 					</div>
 					<span class="vitm"><span class="num">${model.browse/1000}K</span>浏览</span> 
-					<span class="vitm"><span class="num">${model.appraiseCount/1000}K</span>评论</span> 
+					<span class="vitm"><span class="num">${model.comment/1000}K</span>评论</span> 
 					<span class="vitm"><span class="num">${model.praise}</span>赞</span>
 				</div>
 				
