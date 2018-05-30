@@ -18,14 +18,6 @@ import com.gm.base.model.Member;
 public interface IMemberService extends IBaseService<Member, Integer> {
 
 	/**
-	 * @Title: threeLevel
-	 * @Description: 三级分润
-	 * @param openid
-	 *            会员开发id
-	 */
-	void threeLevel(Integer memberId);
-
-	/**
 	 * @Title: returnFiveMoney
 	 * @Description: 返 5(元/人)
 	 */
