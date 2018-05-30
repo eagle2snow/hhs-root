@@ -238,7 +238,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	@Override
 	public void payOrderSuccess(String orderNo) {
 		Order order = getOne("orderNo", orderNo);
-		// 防止购买成功后多次回掉
+		// 防止购买成功后多次回调
 		if (order.getStatus().trim().equals("2")) {
 			logger.info("微信多次回掉");
 			return;
@@ -339,7 +339,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			memberService.tenReturnOne(orderId);
 			balance.add(member.getTenReturnOne()); // 十件商品返一件
 
-			memberService.returnFiveMoney(member.getOpenid()); // 返5元
+			//memberService.returnFiveMoney(member.getOpenid()); // 返5元
 
 			balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
 
