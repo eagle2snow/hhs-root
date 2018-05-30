@@ -45,12 +45,8 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
 		    logger.info("getUpperRelate::memberService.get(id) == null");
         else {
-			List<Member> upperRelate = memberService.getParent1(myself);
-			for (Member member : upperRelate) {
-				if (StringUtils.isEmpty(upperRelate)) {
-					mm.addAttribute("upperRelate", member);
-				}
-			}
+			Member upperRelate = memberService.getParent1(myself);
+			mm.addAttribute("upperRelate", upperRelate);
 		}
         return path + "upperRelate";
 	}
@@ -63,8 +59,8 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
             logger.info("getDirectChild::memberService.get(id) == null");
         else {
-            List<Member> direceChild = memberService.getSons1(myself);
-            mm.addAttribute("direceChild", direceChild);
+            List<Member> directChild = memberService.getSons1(myself);
+            mm.addAttribute("directChild", directChild);
 		}
 		return path + "directChild";
 	}

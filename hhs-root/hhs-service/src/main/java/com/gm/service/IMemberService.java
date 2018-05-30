@@ -144,7 +144,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * 
 	 * @version 1.0
 	 */
-	List<Member> getParent1(Member member);
+	Member getParent1(Member member);
 
 	/**
 	 * <p>
