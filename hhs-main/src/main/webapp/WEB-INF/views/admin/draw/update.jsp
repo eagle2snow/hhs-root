@@ -21,13 +21,13 @@
 					<div class="box-header with-border">
 						<h3 class="box-title">编辑</h3>
 					</div>
-							<div class="form-group">
+							<%-- <div class="form-group">
 								<label class="col-sm-2 control-label"><i class="red">*</i>名称:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.name}"
 							        placeholder="名称" id="name" name="name" datatype="*" errormsg="请输入名称"         />
 								</div>
-							</div>
+							</div> --%>
                         
                         
 						
@@ -46,12 +46,12 @@
 						
 						
                         
-	                               <div class="form-group">
+	                           <!--     <div class="form-group">
 										<label class="col-sm-2 control-label">内容:</label>
 										<div class="col-sm-8">
 											 <script id="content" name="content" type="text/plain" class="ue-editor" style="width:100%; height: 400px;"> ${model.content} </script>
 										</div>
-								</div>
+								</div> -->
 			                
 			                
 			                
@@ -71,7 +71,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">会员:</label>
 										<div class="col-sm-8">
-											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member">
+											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member" style="border: none;" readonly="readonly">
 												<c:forEach items="${memberList}" var="m">
 													<option    ${model.member.id==m.id?'selected':'' }  value="${m.id}">
 														${m.name}
@@ -89,7 +89,8 @@
 								<label class="col-sm-2 control-label">提现金额:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.amount}"
-							        placeholder="提现金额" id="amount" name="amount"           />
+							        placeholder="提现金额" id="amount" name="amount"   
+							        style="border: none;" readonly="readonly"        />
 								</div>
 							</div>
                         
@@ -160,13 +161,13 @@
 							
 							
 							
-									<div class="form-group">
+									<%-- <div class="form-group">
 										<label class="col-sm-2 control-label">备注:</label>
 										<div class="col-sm-8">
 			<textarea name="oprator" class="form-control" id="oprator" rows="3" placeholder="Enter ..."          >${model.oprator}</textarea>									
 											
 									</div>
-								</div>
+								</div> --%>
 			                
 							<div class="box-body">
 							<div class="form-group">
