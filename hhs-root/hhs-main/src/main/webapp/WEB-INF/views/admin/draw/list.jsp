@@ -67,6 +67,8 @@
 											<th width="40">ID</th>
 											<!-- <th>名称</th> -->
 											<th>会员</th>
+											<th>银行卡号</th>
+											<th>持卡人</th>
 											<th>提现金额</th>
 											<th>状态</th>
 											<th>银行流水号</th>
@@ -87,6 +89,8 @@
 											
 											
 											 <th>${model.member.name}</th>
+											 <th>${model.cardNo}</th>
+											 <th>${model.cardUser}</th>
 											
 											 <th>${model.amount}</th>
 											
