@@ -30,7 +30,6 @@
  
 						<c:if test="${not empty draw.dealDate}"><span>处理时间：${draw.dealDate}</span></c:if>
 					</div>
-						<span>drwa= ${draw.status}</span>
 					<c:if test="${draw.status==1 or draw.status==2}">
 						<div class="addressitem_tool">
 							<a href="javascript:void(0);" onclick="cancelDraw(${draw.id})"
