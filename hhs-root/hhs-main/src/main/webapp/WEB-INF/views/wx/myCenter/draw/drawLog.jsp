@@ -14,9 +14,9 @@
 		<c:forEach items="${list }" var='draw'>
 			<li class="addressitem">
 				<div class="addressitem_info">
-					<span class="name">${draw.cardUser}</span> <span class="ins">${draw.amount}</span>
+					<span class="name">${draw.cardUser}</span> <span class="ins">${draw.amount}元</span>
 				</div>
-				<div class="addressitem_local">${draw.cardNo}</div>
+				<div class="addressitem_local">银行卡号：${draw.cardNo}</div>
 				<div class="addressitem_mb">
 					<div class="addressitem_sel">
 						<c:choose>
@@ -26,6 +26,8 @@
 							<c:when test="${draw.status==4}">已打款</c:when>
 							<c:when test="${draw.status==5}">已作废</c:when>
 						</c:choose>
+						&nbsp;&nbsp;&nbsp;&nbsp;${draw.oprator}&nbsp;&nbsp;&nbsp;&nbsp;<br>						
+						<c:if test="${not empty draw.dealDate}">处理时间：${draw.dealDate}</c:if> 
 					</div>
 
 					<c:if test="${draw.status==1}">
