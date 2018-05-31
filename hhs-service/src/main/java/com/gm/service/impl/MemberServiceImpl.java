@@ -239,6 +239,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				gt = true;
 			}
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
+			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
 			if (current.getLevel() < 4)
 				current.setLevel(4);
 			logger.info(current.getNickname(), current.getGeneralizeCost());
