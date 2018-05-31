@@ -217,11 +217,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 返 5 元/人
 	 *
 	 */
-	public void returnFiveMoney(Member member) {
-		// 直推且购买过套餐大于等于十人
-		if (member.getSetMeal() != 3)
-			return;
-
+	public void returnFiveMoney(Member member)
+	{
 		Map<Integer, Integer> memento = new HashMap<>();
 		Set<Integer> visited = new HashSet<>();
 		Set<Integer> added = new HashSet<>();
@@ -237,6 +234,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					continue;
 				gt = true;
 			}
+			if (current.getSetMeal() != 3)
+				continue;
+
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
 			if (current.getLevel() < 4)
