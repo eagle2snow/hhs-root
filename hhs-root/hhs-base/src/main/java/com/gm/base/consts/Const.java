@@ -47,7 +47,7 @@ public class Const {
 	public static final String verificationCode2Session = "";// 验证码
 	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);// 会员套餐价格，單位（元）
 	public static final Integer directMember = 2;// 直推人数
-	public static final Integer betweenMember = 3;// 直系人数
+	public static final Integer betweenMember = 1;// 直系人数
 	public static final BigDecimal discount = BigDecimal.valueOf(0.8);// 折扣数
 
 }
