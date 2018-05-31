@@ -258,7 +258,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return getParent(parent, --level);
 	}
 
-	private Member doGetParent(Member member) {
+	private Member doGetParent(Member member)
+	{
+		if (StringUtils.isEmpty(member.getReferrerGeneralizeId()))
+			return null;
 		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
 		if (parent != null && parent.getId() == member.getId())
 			return null;
