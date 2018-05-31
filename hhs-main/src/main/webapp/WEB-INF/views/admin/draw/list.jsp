@@ -89,7 +89,13 @@
 											
 											 <th>${model.amount}</th>
 											
-											 <th>${model.status}</th>
+											 <th>
+											 	<c:if test="${model.status eq 1}">待审核</c:if>
+											 	<c:if test="${model.status eq 2}">拒绝提现</c:if>
+											 	<c:if test="${model.status eq 3}">待打款</c:if>
+											 	<c:if test="${model.status eq 4}">已打款</c:if>
+											 	<c:if test="${model.status eq 5}">已作废</c:if>
+											 </th>
 											
 											 <th>${model.flowNo}</th>
 											
