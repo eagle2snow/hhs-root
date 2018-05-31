@@ -23,7 +23,7 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 * @param t
 	 * @return
 	 */
-	public abstract boolean add(T t);
+	boolean add(T t);
 
 	/**
 	 * 新增，功能和add(T t)一样。
