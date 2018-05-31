@@ -125,10 +125,12 @@ public class WxOrderController extends WeixinBaseController {
 
 		HashMap<String, Object> map = this.getMap();
 		Order order = orderService.get(orderId);
-		order.setStatus("11");// 加急
-		orderService.update(order);
-		map.put("status", 1);
-		map.put("msg", "加急请求已送达，请耐心等候！");
+		if (!order.getStatus().equals("10")) {
+			order.setStatus("11");// 加急
+			orderService.update(order);
+			map.put("status", 1);
+			map.put("msg", "加急请求已送达，请耐心等候！");
+		}
 		logger.info("urgent:Order order = {}", JSON.toJSON(order.getId()));
 
 		return map;

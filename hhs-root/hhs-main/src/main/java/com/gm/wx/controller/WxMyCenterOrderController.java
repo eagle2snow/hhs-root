@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.DownloadMediaResponse;
 import com.github.sd4324530.fastweixin.api.response.GetSignatureResponse;
 import com.gm.api.wx.WeiXinApi;
@@ -203,12 +202,10 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	public String pushOrders(ModelMap map, @PathVariable Integer type) {
 		String generalizeId = this.getCurMember().getGeneralizeId();
 		List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
-		logger.info("下级会员列表 = {}", JSON.toJSON(list));
 		List<Order> listEq = new ArrayList<>();
 		for (Member order : list) {
 			listEq.addAll(orderService.listEq("member.id", order.getId()));
 		}
-		logger.info("下级购买商品列表 = {}", JSON.toJSON(listEq));
 		map.put("order", listEq);
 		map.put("path", PATH);
 		return PATH + "pushOrders";
