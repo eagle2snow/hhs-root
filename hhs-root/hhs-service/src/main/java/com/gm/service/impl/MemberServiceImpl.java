@@ -161,15 +161,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		member.setSetMeal(2);
 		member.setLevel(3);
+		update(member);
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
-
 			String randomNumbers = RandomUtil.randomNumbers(6);
 			if (randomNumbers.charAt(0) != '0') {
 				member.setGeneralizeId(RandomUtil.randomNumbers(6));
 			} else {
 				member.setGeneralizeId("1" + RandomUtil.randomNumbers(5));
 			}
-
 		}
 		if (StringUtils.isEmpty(member.getLove()) || member.getLove() == 0) {
 			member.setLove(1);
@@ -189,10 +188,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		logger.info("returnFiveMoney", JSON.toJSON(member));
 
 		// 返套餐
-		member.setBalance(returnMeal(member.getOpenid()));
-
-		update(member);
-
+		returnMeal(member.getOpenid());
 	}
 
 	private void threeMoney(Member member) {
@@ -322,28 +318,22 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 返套餐金额 ①判断是否购买套餐 ②判断直推会员是否是十的倍数
 	 */
 	@Override
-	public BigDecimal returnMeal(String openid) {
-		Member member = dao.getOne("openid", openid);
-		BigDecimal balance = member.getBalance();
-		balance = member.getGeneralizeCost();
-		List<Member> list = null;
+	public void returnMeal(String openid) {
+		Member myself = dao.getOne("openid", openid);
+		if (myself.getSetMeal() != 2)  // 购买套餐了
+			return;
 
-		if (member.getSetMeal() == 2) { // 购买套餐了
-			List<Member> children = getChildren(member, 1);
-			for (Member c : children) {
-				if (c.getSetMeal() == 2) {
-					list = new ArrayList<>();
-					list.add(c);
-				}
+		Member parent = getParent(myself, 1);
+		if (parent == null)
+			return;
+		List<Member> children = getChildren(parent, 1);
+		if (children != null && children.size() >= Const.directMember) {
+			if (myself.getSetMeal() != 3) {
+				myself.setBalance(myself.getBalance().add(Const.MEMBER_AMOUNT));
+				myself.setSetMeal(3);
+				dao.update(myself);
 			}
-
 		}
-		if (list != null && list.size() >= Const.directMember)
-			member.setSetMeal(3);// 返套餐钱
-		if (member.getSetMeal() == 3)
-			balance.add(Const.MEMBER_AMOUNT);
-		dao.update(member);
-		return balance;
 	}
 
 	@Override

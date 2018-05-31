@@ -20,7 +20,7 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 * @Title: returnMeal @Description: 返套餐金额 @param mealMemberNumber
 	 *         直推业务经理人数 @return 套餐金额 @return: BigDecimal @throws
 	 */
-	BigDecimal returnMeal(String openId);
+	void returnMeal(String openId);
 
 	/**
 	 * @Title: tenReturnOne @Description: "十送一" @param memberId 会员ID @return
