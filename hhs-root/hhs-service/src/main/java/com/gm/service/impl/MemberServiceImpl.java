@@ -359,6 +359,29 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return sum;
 	}
 
+	public List<Member> getIndirectChildren(Member member)
+	{
+		List<Member> list = getChildren(member, 2);
+		if (list == null)
+			return new LinkedList<>();
+
+		Set<Integer> visited = new HashSet<>();
+		Queue<Member> queue = new LinkedList<>();
+		queue.addAll(list);
+		list.clear();
+		while (!queue.isEmpty()) {
+			Member poll = queue.poll();
+			if (visited.contains(poll.getId()))
+				continue;
+			list.add(poll);
+			visited.add(poll.getId());
+			List<Member> childs = getChildren(poll, 1);
+			if (childs != null)
+				queue.addAll(childs);
+		}
+		return list;
+	}
+
 	@Override
 	public List<Member> getChildren(Member member, int level) {
 		List<Member> members = new LinkedList<>();

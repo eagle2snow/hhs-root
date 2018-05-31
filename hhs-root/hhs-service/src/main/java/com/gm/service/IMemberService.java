@@ -129,11 +129,16 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	/**
 	 * 获取会员level级下家
 	 * 例如 level == 1 也称为直推会员
-	 * 	　　level == 2 也称为直系会员
 	 * @param member
 	 * @param level
 	 */
 	List<Member> getChildren(Member member, int level);
+
+	/**
+	 * 获取直系会员
+	 *
+	 */
+	List<Member> getIndirectChildren(Member member);
 
 	/**
 	 *<p>Title:updateGeneralizeCost</p>
