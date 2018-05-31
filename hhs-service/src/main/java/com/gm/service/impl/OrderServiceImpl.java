@@ -313,7 +313,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		if (payBill != null) {
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 		}
-		order.setStatus("4"); // 4|已收货
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		update(order);
 
