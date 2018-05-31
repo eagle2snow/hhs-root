@@ -43,9 +43,8 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 				System.out.println("PayBillServiceImpl paySuccess: ================套餐========================");
 			} else if (payBill.getType() == 2) {// 购买商品
 				orderService.payOrderSuccess(payBill.getOrderNo());
-				System.out.println("PayBillServiceImpl paySuccess: ===================商品=====================");
+				System.out.println("PayBillServiceImpl paySuccess: ================商品========================");
 			}
-			System.out.println("PayBillServiceImpl paySuccess: ==========================22222==============");
 
 		}
 	}
