@@ -27,10 +27,11 @@
 							<c:when test="${draw.status==5}">已作废</c:when>
 						</c:choose>
 						&nbsp;&nbsp;&nbsp;&nbsp;${draw.oprator}&nbsp;&nbsp;&nbsp;&nbsp;<br>						
-						<c:if test="${not empty draw.dealDate}">处理时间：${draw.dealDate}</c:if> 
+ 
+						<c:if test="${not empty draw.dealDate}"><span>处理时间：${draw.dealDate}</span></c:if>
 					</div>
-
-					<c:if test="${draw.status==1}">
+						<span>drwa= ${draw.status}</span>
+					<c:if test="${draw.status==1 or draw.status==2}">
 						<div class="addressitem_tool">
 							<a href="javascript:void(0);" onclick="cancelDraw(${draw.id})"
 								class="addressitem_edit">取消</a>
