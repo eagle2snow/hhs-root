@@ -205,10 +205,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			m = memberService.getParent(m, 1);
 			if (m == null)
 				break;
-			if (i != 2)
+			if (i != 2) {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
-			else
+				m.setBalance(m.getBalance().add(BigDecimal.valueOf(50)));
+				}else {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
+				m.setBalance(m.getBalance().add(BigDecimal.valueOf(60)));
+				}
 			logger.info(m.getNickname(), m.getGeneralizeCost());
 			dao.update(m);
 		}
