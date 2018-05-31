@@ -186,28 +186,22 @@
 		var referrerGeneralizeId = $("input[ name='referrerGeneralizeId' ] ").val()
 		
 		$.getJSON("${adp}editReferrerAction/"+referrerGeneralizeId,
-				function(date) {
-					console.log(date.msg);
-					if(date.msg == "1") {
-						var dt = document.getElementById('referrerName');
-						
-						dt.innerHTML = "推&ensp;荐&ensp;人："+date.newName;
-						$.alert("更改完成!");
-						re();
-					}else if(date.msg == "2"){
-						$.alert("不存在或是本人，请重新更改! ");
-// 						re();
-					}else if(date.msg == "3"){
-						$.alert("推荐人只能修改一次，请勿重复修改!");
-// 						re();
-					}else if(date.msg == "4"){
-						$.alert("推荐人不可以是自己的直推代理!");
-// 						re();
-					}else {
-						$.alert("系统有点忙，等会再来试试吧!");
-// 						re();
-					}
-			});
+			function(date) {
+				if (date.s == "1")
+					$.alert("推广码有误，请检查!");
+				else if (date.s == "2")
+					$.alert("不存在推荐人，请重新更改!");
+				else if(date.s == "3")
+					$.alert("推荐人只能修改一次，请勿重复修改!");
+				else if(date.s == "4")
+					$.alert("推荐人不可以是自己!");
+				else if (date.s == "5")
+					$.alert("系统有点忙 等会再来试试吧!");
+				else if (date.s == "6")
+                    $.alert("系统有点忙，等会再来试试吧!");
+				else if (date.s == "7")
+                    $.alert("更改完成!");
+		});
 	}
 	
 	
