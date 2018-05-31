@@ -93,7 +93,7 @@
 											
 											 <th>${model.level}</th>
 											
-											 <th>${model.gender eq 1?'男':(model.gender eq 2?'女':'不详')}</th>
+											 <th>${model.gender eq 1?'男':(model.gender eq 2?'女':'')}</th>
 											
 											 <th>${model.province}</th>
 											
