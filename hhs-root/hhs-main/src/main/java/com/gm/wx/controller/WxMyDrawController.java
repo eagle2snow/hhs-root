@@ -133,7 +133,7 @@ public class WxMyDrawController extends WeixinBaseController {
 	public Map<String, Object> cancelDraw(@PathVariable Integer id, HttpSession session) {
 		Map<String, Object> map = getMap();
 		Draw draw = drawService.get(id);
-		if (draw.getStatus() == 1) {
+		if (draw.getStatus() == 1 ||draw.getStatus() == 2) {
 			draw.setStatus(5);
 			drawService.update(draw);
 			memberService.updateByHql(
