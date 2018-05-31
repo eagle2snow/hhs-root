@@ -47,7 +47,7 @@ public class Draw extends Model {
 	@FormField(type = FieldType.TEXTINPUT, label = "银行流水号")
 	private String flowNo;
 	@FormField(type = FieldType.TEXTAREA, label = "备注")
-	private User oprator;
+	private String oprator;
 
 	private LocalDateTime dealDate;// 处理时间
 
@@ -94,12 +94,12 @@ public class Draw extends Model {
 		this.remark = remark;
 	}
 
-	@ManyToOne
-	public User getOprator() {
+	
+	public String getOprator() {
 		return oprator;
 	}
 
-	public void setOprator(User oprator) {
+	public void setOprator(String oprator) {
 		this.oprator = oprator;
 	}
 
