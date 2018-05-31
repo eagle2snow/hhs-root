@@ -338,12 +338,20 @@ public class WxMyCenterController extends WeixinBaseController {
 
 	private static Map<Integer, Map<String, Object>> status = new HashMap<>();
 	static {
-		for (int i = 1; i <=6; ++i) {
+		for (int i = 1; i <= 7; ++i) {
 			Map<String, Object> m = new HashMap<>();
-			m.put("s", String.valueOf(1));
+			m.put("s", String.valueOf(i));
 			status.put(i, m);
 		}
+		//推广码有误，请检查!
+		//不存在推荐人，请重新更改!
+		//推荐人只能修改一次，请勿重复修改!
+		//推荐人不可以是自己!
+		//系统有点忙 等会再来试试吧!
+		//系统有点忙，等会再来试试吧!
+		//更改完成!
 	}
+
 	/**
 	 * @Title: editReferrerAction
 	 * @Description: 修改推荐人
@@ -365,14 +373,17 @@ public class WxMyCenterController extends WeixinBaseController {
 		if (myself.getChangReferrer().equals(1))
 			return status.get(3);
 
+		if (myself.getId().equals(other.getId()))
+			return status.get(4);
+
 		Member parent = memberService.getParent(other, 1);
 		for (Set<Integer> visited = new HashSet<>();
 			 parent != null;
 			 parent = memberService.getParent(other, 1)) {
 			if (parent.getId().equals(other.getId()))
-				return status.get(4);
-			if (visited.contains(parent.getId()))
 				return status.get(5);
+			if (visited.contains(parent.getId()))
+				return status.get(6);
 			visited.add(parent.getId());
 		}
 
@@ -381,7 +392,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		myself.setChangReferrer(1);
 		memberService.update(myself);
 
-		return status.get(6);
+		return status.get(7);
 	}
 
 	/**
