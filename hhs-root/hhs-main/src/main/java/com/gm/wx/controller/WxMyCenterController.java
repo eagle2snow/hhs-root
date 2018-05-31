@@ -5,9 +5,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -338,6 +336,14 @@ public class WxMyCenterController extends WeixinBaseController {
 		return member.getQrCode();
 	}
 
+	private static Map<Integer, Map<String, Object>> status = new HashMap<>();
+	static {
+		for (int i = 1; i <=6; ++i) {
+			Map<String, Object> m = new HashMap<>();
+			m.put("s", String.valueOf(1));
+			status.put(i, m);
+		}
+	}
 	/**
 	 * @Title: editReferrerAction
 	 * @Description: 修改推荐人
@@ -347,85 +353,35 @@ public class WxMyCenterController extends WeixinBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("editReferrerAction/{referrerGeneralizeId}")
-	public Map<String, Object> editReferrerAction(@PathVariable String referrerGeneralizeId) {
-		logger.info("editReferrerAction: the ages  is {}.", referrerGeneralizeId);
+	public Map<String, Object> editReferrerAction(@PathVariable String referrerGeneralizeId)
+	{
+		if (StringUtils.isEmpty(referrerGeneralizeId))
+			return status.get(1);
+		Member other = memberService.getOne("generalizeId", referrerGeneralizeId);
+		if (other == null)
+			return status.get(2);
 
-		Member realMember = this.getRealMember();
-		logger.info("editReferrerAction: the realMember  is {}.", JSON.toJSON(realMember));
+		Member myself = getRealMember();
+		if (myself.getChangReferrer().equals(1))
+			return status.get(3);
 
-		Member member = memberService.getOne("generalizeId", referrerGeneralizeId);
-		logger.info("editReferrerAction: the member  is {}.", JSON.toJSON(member));
-
-		HashMap<String, Object> map = this.getMap();
-
-		// 不能填写代理推广ID
-		if (!StringUtil.strNullOrEmpty(referrerGeneralizeId)) {
-
-			if (!StringUtil.strNullOrEmpty(realMember.getAgencyId())) {
-
-				if (!realMember.getAgencyId().equals(referrerGeneralizeId)) {
-					Integer changReferrer = realMember.getChangReferrer();
-					logger.info("editReferrerAction: the getChangReferrer()  is {}.", changReferrer);
-
-					if (changReferrer == 0) {
-
-						if (null != member && !realMember.getGeneralizeId().equals(referrerGeneralizeId)) {
-
-							realMember.setReferrerGeneralizeId(referrerGeneralizeId);
-							realMember.setReferrerNickname(member.getNickname());
-							realMember.setChangReferrer(1);
-
-							memberService.update(realMember);
-
-							map.put("msg", "1");// 修改成功
-							logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSON(map));
-							getRequest().getSession().setAttribute(Const.CUR_WX_MEMBER, realMember);
-						} else {
-							map.put("msg", "2");// 不存在该推荐人
-							logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSON(map));
-
-						}
-
-					} else {
-						map.put("msg", "3");// 推荐人已经更改过,不可再一次更改了。
-						logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSON(map));
-					}
-				} else {
-					map.put("msg", "4");// 推荐人不可以更改为自己的直推代理
-				}
-			} else {
-				Integer changReferrer = realMember.getChangReferrer();
-				logger.info("editReferrerAction: the getChangReferrer()  is {}.", changReferrer);
-
-				if (changReferrer == 0) {
-
-					if (null != member && !realMember.getGeneralizeId().equals(referrerGeneralizeId)) {
-
-						realMember.setReferrerGeneralizeId(referrerGeneralizeId);
-						realMember.setReferrerNickname(member.getNickname());
-						realMember.setChangReferrer(1);
-
-						memberService.update(realMember);
-
-						map.put("msg", "1");// 修改成功
-						logger.info("editReferrerAction: ① the map to json  is {}.", JSON.toJSON(map));
-						getRequest().getSession().setAttribute(Const.CUR_WX_MEMBER, realMember);
-					} else {
-						map.put("msg", "2");// 不存在该推荐人
-						logger.info("editReferrerAction: ② the map to json  is {}.", JSON.toJSON(map));
-
-					}
-
-				} else {
-					map.put("msg", "3");// 推荐人已经更改过,不可再一次更改了。
-					logger.info("editReferrerAction: ③ the map to json  is {}.", JSON.toJSON(map));
-				}
-			}
-
+		Member parent = memberService.getParent(other, 1);
+		for (Set<Integer> visited = new HashSet<>();
+			 parent != null;
+			 parent = memberService.getParent(other, 1)) {
+			if (parent.getId().equals(other.getId()))
+				return status.get(4);
+			if (visited.contains(parent.getId()))
+				return status.get(5);
+			visited.add(parent.getId());
 		}
-		logger.info("editReferrerAction: ④ the map to json  is {}.", JSON.toJSON(map));
-		return map;
 
+		myself.setReferrerGeneralizeId(referrerGeneralizeId);
+		myself.setReferrerNickname(other.getNickname());
+		myself.setChangReferrer(1);
+		memberService.update(myself);
+
+		return status.get(6);
 	}
 
 	/**
