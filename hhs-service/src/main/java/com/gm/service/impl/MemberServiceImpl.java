@@ -325,6 +325,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public BigDecimal returnMeal(String openid) {
 		Member member = dao.getOne("openid", openid);
 		BigDecimal balance = member.getBalance();
+		balance = member.getGeneralizeCost();
 		List<Member> list = null;
 
 		if (member.getSetMeal() == 2) { // 购买套餐了
