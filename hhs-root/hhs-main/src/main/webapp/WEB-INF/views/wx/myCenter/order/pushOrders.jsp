@@ -33,7 +33,7 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${order}" var="o">
-			<tr ${o.exchange eq "1" and type==1 ? 'style="display: none"':''}, ${o.exchange eq "0" and type==2 ? 'style="display: none"':''} >
+			<tr ${o.status ne '10' and type==1 ? 'style="display: none"':''}, ${o.status eq '10' and type==2 ? 'style="display: none"':''} >
 				<td>${o.member.nickname }</td>
 				<td>${o.orderNo } </td>
 				<td>${o.totalMoney }/${o.totalMoney /100}</td>
