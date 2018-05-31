@@ -328,10 +328,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return;
 		List<Member> children = getChildren(parent, 1);
 		if (children != null && children.size() >= Const.directMember) {
-			if (myself.getSetMeal() != 3) {
-				myself.setBalance(myself.getBalance().add(Const.MEMBER_AMOUNT));
-				myself.setSetMeal(3);
-				dao.update(myself);
+			if (parent.getSetMeal() != 3) {
+				parent.setBalance(parent.getBalance().add(Const.MEMBER_AMOUNT));
+				parent.setSetMeal(3);
+				dao.update(parent);
 			}
 		}
 	}
