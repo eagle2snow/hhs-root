@@ -2,6 +2,7 @@ package com.gm.base.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -49,7 +50,7 @@ public class Draw extends Model {
 	@FormField(type = FieldType.TEXTAREA, label = "备注")
 	private String oprator;
 
-	private LocalDateTime dealDate;// 处理时间
+	private Date dealDate;// 处理时间
 
 	private String remark;
 
@@ -103,11 +104,11 @@ public class Draw extends Model {
 		this.oprator = oprator;
 	}
 
-	public LocalDateTime getDealDate() {
+	public Date getDealDate() {
 		return dealDate;
 	}
 
-	public void setDealDate(LocalDateTime dealDate) {
+	public void setDealDate(Date dealDate) {
 		this.dealDate = dealDate;
 	}
 
