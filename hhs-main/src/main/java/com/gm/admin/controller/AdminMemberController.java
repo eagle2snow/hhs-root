@@ -71,7 +71,7 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
             logger.info("getAllChild::memberService.get(id) == null");
         else {
-			List<Member> allChild = memberService.getChildren(myself, 2);
+			List<Member> allChild = memberService.getIndirectChildren(myself);
 			mm.addAttribute("allChild", allChild);
 		}
         return path + "allChild";
