@@ -104,9 +104,10 @@ public class WxIndexController extends WeixinBaseController {
 	public String index(ModelMap map, String generalizeId, HttpSession session) {
 		if (!StringUtil.strNullOrEmpty(generalizeId)) {
 			Member member = getRealMember();
+			Member one = memberService.getOne("generalizeId", generalizeId);
 			if (StringUtil.strNullOrEmpty(member.getReferrerGeneralizeId())) {
 				member.setReferrerGeneralizeId(AESCoder.decryptResultStr(generalizeId, Const.PASSWORD_SECRET));
-				member.setReferrerNickname(member.getNickname());
+				member.setReferrerNickname(one.getNickname());
 				memberService.update(member);
 				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
