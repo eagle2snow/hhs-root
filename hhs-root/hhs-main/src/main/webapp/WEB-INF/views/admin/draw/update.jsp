@@ -161,13 +161,13 @@
 							
 							
 							
-									<%-- <div class="form-group">
+									<div class="form-group">
 										<label class="col-sm-2 control-label">备注:</label>
 										<div class="col-sm-8">
 			<textarea name="oprator" class="form-control" id="oprator" rows="3" placeholder="Enter ..."          >${model.oprator}</textarea>									
 											
 									</div>
-								</div> --%>
+								</div>
 			                
 							<div class="box-body">
 							<div class="form-group">
