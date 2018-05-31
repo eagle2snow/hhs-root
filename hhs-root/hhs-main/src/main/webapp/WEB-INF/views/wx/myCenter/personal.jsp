@@ -196,9 +196,9 @@
 				else if(date.s == "4")
 					$.alert("推荐人不可以是自己!");
 				else if (date.s == "5")
-					$.alert("系统有点忙 等会再来试试吧!");
+					$.alert("推荐关系是环形！请重新选择！");
 				else if (date.s == "6")
-                    $.alert("系统有点忙，等会再来试试吧!");
+                    $.alert("推荐关系是环形　请重新选择！");
 				else if (date.s == "7")
                     $.alert("更改完成!");
 		});
