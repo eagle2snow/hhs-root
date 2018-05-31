@@ -37,10 +37,10 @@
 										<div class="cl pd-5 bg-1 bk-gray mt-20">
 											<span class="l"><a href="javascript:;"
 												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
-													class="glyphicon glyphicon-trash"></i> 批量删除</a> <button
+													class="glyphicon glyphicon-trash"></i> 批量删除</a> <%-- <button
 													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
 												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
-													添加</button></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
+													添加</button> --%></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
 											</span>
 										</div>
 									</div>
@@ -65,7 +65,7 @@
 										<tr>
 											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
 											<th width="40">ID</th>
-											<th>名称</th>
+											<!-- <th>名称</th> -->
 											<th>会员</th>
 											<th>提现金额</th>
 											<th>状态</th>
@@ -82,7 +82,7 @@
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
 											<td>${model.id}</td>
 											
-											 <th>${model.name}</th>
+											 <%-- <th>${model.name}</th> --%>
 											
 											
 											 <th>${model.member.name}</th>
