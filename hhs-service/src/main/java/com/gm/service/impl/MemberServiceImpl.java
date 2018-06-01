@@ -204,10 +204,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			if (i != 2) {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(50)));
-				}else {
+			} else {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(60)));
-				}
+			}
 			logger.info(m.getNickname(), m.getGeneralizeCost());
 			dao.update(m);
 		}
@@ -217,16 +217,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 返 5 元/人
 	 *
 	 */
-	public void returnFiveMoney(Member member)
-	{
+	public void returnFiveMoney(Member member) {
 		Map<Integer, Integer> memento = new HashMap<>();
 		Set<Integer> visited = new HashSet<>();
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
 		boolean gt = false;
-		for (Member current = getParent(member, 1);
-			 current != null && !visitedParents.contains(current.getId());
-			 current = getParent(current, 1)) {
+		for (Member current = getParent(member, 1); current != null
+				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
 			visitedParents.add(current.getId());
 			if (!gt) {
 				int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
@@ -258,8 +256,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return getParent(parent, --level);
 	}
 
-	private Member doGetParent(Member member)
-	{
+	private Member doGetParent(Member member) {
 		if (StringUtils.isEmpty(member.getReferrerGeneralizeId()))
 			return null;
 		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
@@ -274,46 +271,47 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Order order = orderService.get(orderId);
 		Member member = order.getMember();
 		if (member == null) {
-		    logger.error("member == null");
-            return;
-        }
+			logger.error("member == null");
+			return;
+		}
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
-        try {
-            for (OrderItem orderItem : listEq) {
-                Commodity commodity = orderItem.getCommodity();
-                TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
-                logger.info("TenReturnOne tenReturnOne = {}",JSON.toJSON(tenReturnOne));
-                if (tenReturnOne == null) {
-                    tenReturnOne = new TenReturnOne();
-                    tenReturnOne.setThisTimeCommodity(commodity);
-                    tenReturnOne.setThisTimeMember(member);
-                    tenReturnOne.setTime(1);
-                    tenReturnOneDao.add(tenReturnOne);
-                } else {
-                    tenReturnOne.setThisTimeCommodity(commodity);
-                    tenReturnOne.setThisTimeMember(member);
-                    tenReturnOne.setTime(tenReturnOne.getTime() + 1);
-                    tenReturnOneDao.add(tenReturnOne);
+		try {
+			for (OrderItem orderItem : listEq) {
+				Commodity commodity = orderItem.getCommodity();
+				TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
+				logger.info("TenReturnOne tenReturnOne = {}", JSON.toJSON(tenReturnOne));
+				if (tenReturnOne == null) {
+					tenReturnOne = new TenReturnOne();
+					tenReturnOne.setThisTimeCommodity(commodity);
+					tenReturnOne.setThisTimeMember(member);
+					tenReturnOne.setTime(1);
+					tenReturnOneDao.add(tenReturnOne);
+				} else {
+					tenReturnOne.setThisTimeCommodity(commodity);
+					tenReturnOne.setThisTimeMember(member);
+					tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+					tenReturnOneDao.add(tenReturnOne);
 
-                }
-                
-                Integer time = tenReturnOne.getTime();
-                if (time % Const.returnOne == 0 && time >= Const.returnOne) { // 次数是十的倍数
-                    // 通过次数获取会员
-                    TenReturnOne one = tenReturnOneDao.getOne("time", time);
-                    Member thisTimeMember = one.getThisTimeMember();
-                    // 设置会员的十返一字段 空：设置， 非空：取出来再加
-                    if (thisTimeMember.getTenReturnOne() == null) {
-                        thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
-                    } else {
-                        thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
-                    }
-                }
-                dao.update(member);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+				}
+
+				Integer time = tenReturnOne.getTime();
+				if (time % Const.returnOne == 0 && time >= Const.returnOne) { // 次数是十的倍数
+					// 通过次数获取会员
+					TenReturnOne one = tenReturnOneDao.getOne("time", time);
+					Member thisTimeMember = one.getThisTimeMember();
+					// 设置会员的十返一字段 空：设置， 非空：取出来再加
+					if (thisTimeMember.getTenReturnOne() == null) {
+						thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
+					} else {
+						thisTimeMember.setTenReturnOne(
+								thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
+					}
+					dao.update(member);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -322,7 +320,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Override
 	public void returnMeal(String openid) {
 		Member myself = dao.getOne("openid", openid);
-		if (myself.getSetMeal() != 2)  // 购买套餐了
+		if (myself.getSetMeal() != 2) // 购买套餐了
 			return;
 
 		Member parent = getParent(myself, 1);
@@ -339,7 +337,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> added) {
+	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited,
+			Set<Integer> added) {
 		if (member == null || member.getId() == null)
 			return 0;
 		if (memento.containsKey(member.getId()))
@@ -361,8 +360,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return sum;
 	}
 
-	public List<Member> getIndirectChildren(Member member)
-	{
+	public List<Member> getIndirectChildren(Member member) {
 		List<Member> list = getChildren(member, 2);
 		if (list == null)
 			return new LinkedList<>();
