@@ -74,7 +74,7 @@
 
     <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
         <input  type="file" name="uploadFile" accept="image/*" class="hiddenInput leftIcon">
-        <input type="text" hidden="hidden" name="orderid" name="orderId">
+        <input type="text" hidden="hidden" name="orderId" class="orderid">
         <img src="/static/wx/images/icon/folder.png" class="leftIcon">
     </form>
     <span id="leftFile">
@@ -83,7 +83,7 @@
 
     <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
         <input type="file" name="uploadFile" accept="image/*" capture='camera' class="hiddenInput rightIcon">
-        <input type="text" hidden="hidden" class="orderid" name="orderId">
+        <input type="text" hidden="hidden" name="orderId" class="orderid">
         <img src="/static/wx/images/icon/cam.png" class="rightIcon">
     </form>
     <span id="rightFile">
