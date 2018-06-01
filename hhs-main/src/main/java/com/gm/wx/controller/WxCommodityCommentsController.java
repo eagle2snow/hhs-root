@@ -93,7 +93,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	 */
 	@RequestMapping("toCommondityComment/{orderId}")
 	public String toCommondityComment(ModelMap map, @PathVariable Integer orderId) {
-		logger.info("toCommondityComment:the args orderId = {}", orderId);
 
 		if (null == orderId) {
 			logger.error("toCommondityComment:the args orderId = null");
@@ -110,7 +109,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 		// List<OrderItem> orderItems = itemService.listEq("order.id", orderId);
 		OrderItem orderItems = itemService.getOne("id", orderId);
-		logger.info("toCommondityComment:the pojo OrderItem = {}", JSON.toJSON(orderItems));
 
 		map.put("orderItems", orderItems);
 		map.put("orderId", orderId);
@@ -145,7 +143,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		String orderid = request.getParameter("orderid");
 		int cid = Integer.valueOf(commodityid).intValue();
 		int oid = Integer.valueOf(orderid).intValue();
-		logger.info("request列表 {}.", JSON.toJSONString(map));
 
 		OrderItem order = itemService.getOne("id", oid);
 		Commodity commodity = commodityService.get(cid);
@@ -198,8 +195,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		map.put("model", appraiseService.listEqDc("commodity.id", type, "createTime", "desc"));
 		map.put("path", PATH);
 		map.put("cid", type);
-		logger.info("全部评论列表 {}.",
-				JSON.toJSONString(appraiseService.listEqDc("commodity.id", type, "createTime", "desc")));
+
 		return PATH + "allComments";
 	}
 }
