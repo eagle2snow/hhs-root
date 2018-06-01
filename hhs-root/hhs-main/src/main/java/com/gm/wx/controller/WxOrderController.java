@@ -148,11 +148,8 @@ public class WxOrderController extends WeixinBaseController {
 	@GetMapping("confirmGoods/{orderId}")
 	public Map<String, Object> confirmGoods(@PathVariable Integer orderId)
 	{
-		HashMap<String, Object> map = this.getMap();
+		HashMap<String, Object> map = new HashMap<>();
 		try {
-			Order order = orderService.get(orderId);
-			order.setStatus("4");
-			// 调用订单确认收货处理器
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
