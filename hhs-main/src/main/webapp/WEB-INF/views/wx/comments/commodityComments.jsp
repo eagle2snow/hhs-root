@@ -17,11 +17,13 @@
             left: 3rem;
             display: block;
         }
+
         #leftFile {
             position: absolute;
             top: 30rem;
             left: 5rem;
         }
+
         .rightIcon {
             width: 7rem;
             height: 7rem;
@@ -30,11 +32,13 @@
             left: 19rem;
             display: block;
         }
+
         #rightFile {
             position: absolute;
             top: 30rem;
             left: 21rem;
         }
+
         .hiddenInput {
             opacity: 0;
             z-index: 99;
@@ -72,23 +76,24 @@
         </div>
     </form>
 
-    <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
-        <input  type="file" name="uploadFile" accept="image/*" class="hiddenInput leftIcon">
-        <input type="text" hidden="hidden" name="orderId" class="orderid">
-        <img src="/static/wx/images/icon/folder.png" class="leftIcon">
-    </form>
-    <span id="leftFile">
+    <div hidden="hidden">
+        <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
+            <input type="file" name="uploadFile" accept="image/*" class="hiddenInput leftIcon">
+            <input type="text" hidden="hidden" name="orderId" class="orderid">
+            <img src="/static/wx/images/icon/folder.png" class="leftIcon">
+        </form>
+        <span id="leftFile"></span>
+    </div>
 
-    </span>
 
-    <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
-        <input type="file" name="uploadFile" accept="image/*" capture='camera' class="hiddenInput rightIcon">
-        <input type="text" hidden="hidden" name="orderId" class="orderid">
-        <img src="/static/wx/images/icon/cam.png" class="rightIcon">
-    </form>
-    <span id="rightFile">
-
-    </span>
+    <div hidden="hidden">
+        <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
+            <input type="file" name="uploadFile" accept="image/*" capture='camera' class="hiddenInput rightIcon">
+            <input type="text" hidden="hidden" name="orderId" class="orderid">
+            <img src="/static/wx/images/icon/cam.png" class="rightIcon">
+        </form>
+        <span id="rightFile"></span>
+    </div>
 </div>
 <div class="fbottom">
     <nav class="btool">
@@ -101,18 +106,18 @@
 
 <script src="/static/wx/js/tool.js"></script>
 <script type="text/javascript">
-    window.onload = () => {
-        $("#uploadFile .hiddenInput")[0].onchange = () => {
-            $("#leftFile").html('已选择文件')
-            $("#rightFile").html('')
-            console.log($("#leftFile").html().length)
-            console.log($("#rightFile").html().length)
-        }
-        $("#takenPicture .hiddenInput")[0].onchange = () => {
-            $("#rightFile").html('已选择文件')
-            $("#leftFile").html('')
-        }
-    }
+    // window.onload = () => {
+    //     $("#uploadFile .hiddenInput")[0].onchange = () => {
+    //         $("#leftFile").html('已选择文件')
+    //         $("#rightFile").html('')
+    //         console.log($("#leftFile").html().length)
+    //         console.log($("#rightFile").html().length)
+    //     }
+    //     $("#takenPicture .hiddenInput")[0].onchange = () => {
+    //         $("#rightFile").html('已选择文件')
+    //         $("#leftFile").html('')
+    //     }
+    // }
 
     function confirmComments() {
         if ($("#text").val() == "" || $.trim($("#text").val()) == '') {
@@ -141,6 +146,9 @@
             })
         }).then(data => {
             if (data == 'ok') {
+                location.href = '${ctx}wx/comments/commentSucceed'
+                return
+
                 let id = $("#orderid").html()
                 let order = $(".orderid")
                 order[0].value = id
