@@ -237,11 +237,9 @@ public class AdminOrderController extends BaseAdminController{
 	
 	@ResponseBody
 	@RequestMapping("updateNotes")
-	public String updateNotes(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		String content = request.getParameter("content");
-		int oid = Integer.valueOf(id).intValue();
-		Order order = orderService.get(oid);
+	public String updateNotes(Integer id, String content)
+    {
+		Order order = orderService.get(id);
 		order.setBusinessRemarks(content);
 		if(orderService.update(order)) {
 			return "0";
@@ -252,12 +250,9 @@ public class AdminOrderController extends BaseAdminController{
 	
 	@ResponseBody
 	@RequestMapping("updateExpress")
-	public String updateExpress(HttpServletRequest request) {
-		String id = request.getParameter("id");
-		String express = request.getParameter("express");
-		String numbers = request.getParameter("numbers");
-		int oid = Integer.valueOf(id).intValue();
-		Order order = orderService.get(oid);
+	public String updateExpress(Integer id, String express, String numbers)
+    {
+		Order order = orderService.get(id);
 		order.setExpressName(express);
 		order.setExpressNo(numbers);
 		order.setStatus("3");
