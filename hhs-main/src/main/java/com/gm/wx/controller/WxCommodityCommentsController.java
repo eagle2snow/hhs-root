@@ -39,8 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("wx/comments/")
 public class WxCommodityCommentsController extends WeixinBaseController {
-
 	private static final Logger logger = LoggerFactory.getLogger(WxCommodityCommentsController.class);
+
 	private static final String PATH = "wx/comments/";
 
 	@Resource
@@ -68,6 +68,19 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	public String commentSucceedView() {
 
 		return PATH + "commentSucceed";
+	}
+
+	@ResponseBody
+	@RequestMapping("uploadFile")
+	public String foo(@RequestParam(value = "uploadFile") MultipartFile image)
+	{
+		try {
+			File file = new File("foooooo");
+			image.transferTo(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "ok";
 	}
 
 	/**
@@ -117,19 +130,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 
 		return PATH + "commodityComments";
-	}
-
-	@ResponseBody
-	@RequestMapping("uploadFile")
-	public String foo(@RequestParam(value = "uploadFile") MultipartFile image)
-	{
-        try {
-            File file = new File("foooooo");
-            image.transferTo(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ok";
 	}
 
 	@ResponseBody

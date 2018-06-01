@@ -65,7 +65,8 @@ public class WeixinController extends WeixinControllerSupport {
 	public BaseMsg handleTextMsg(TextReqMsg msg) {
 		String content = msg.getContent();
 		log.info("收到消息：" + content);
-		return new TextMsg("我不太明白您的意思，请进首页 ->右下角的客服咨询。");
+		return new TextMsg("亲爱的会员您好，公众号会话功能未开启，有问题请点击下面链接进入客服系统进行咨询^_^\n" +
+				"http://zhuyu.tiexinxi.cn/wx/chat");
 	}
 
 	@Override
