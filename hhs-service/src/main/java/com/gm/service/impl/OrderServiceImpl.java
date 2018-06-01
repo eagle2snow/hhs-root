@@ -288,7 +288,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	public void confirmGoods(Integer orderId)
     {
 		Order order = orderService.get(orderId);
-
 		//防止客户端多次确认
         String status = order.getStatus();
         if (!status.equals("3")) {
@@ -313,29 +312,27 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		if (payBill != null) {
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 		}
-		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
+		order.setReceivingTime(LocalDateTime.now());
+		order.setFinishTime(LocalDateTime.now());
+        order.setStatus("10");
+		Member member = order.getMember();
 		update(order);
-		finishGoods(orderId);
+		finishGoods(member, order);
 	}
 
 	/**
 	 * 订单完成
 	 */
-	private void finishGoods(Integer orderId) {
+	private void finishGoods(Member member, Order order)
+	{
 		try {
-			Order order = orderService.get(orderId);
-			order.setStatus("10");
-			order.setFinishTime(LocalDateTime.now());
-			orderService.update(order);
-
-			Member member = order.getMember();
 			BigDecimal balance = member.getBalance();
+			memberService.tenReturnOne(order.getId());
+			// 十件商品返一件
+			// 设置可提现余额
+			member.setBalance(balance.add(member.getTenReturnOne()));
 
-			memberService.tenReturnOne(orderId);
-			balance.add(member.getTenReturnOne()); // 十件商品返一件
-			member.setBalance(balance); // 设置可提现余额
-
-			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
 			if (listEq != null) {
                 for (OrderItem item : listEq)
@@ -347,9 +344,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			BigDecimal add = consume.add(totalMoney);
 			member.setConsume(add);// 消费额 null?
 
-			if (member.getLevel() == 1) {// 如果是访客，升级为普通会员
+			if (member.getLevel() == 1) // 如果是访客，升级为普通会员
 				member.setLevel(2);// 等级
-			}
+
 			// 返订单总额0.01%给上家
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(), order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.update(member);
