@@ -246,6 +246,18 @@
 			location.href="${ctx}wx/order/logisticsQuery/"+orderId
 		}
 		
+		//查看快递 
+		function lookExpressage(orderId){
+				$.getJSON("${ctx}/wx/myCenter/order/lookExpressage/"+orderId,function (data){
+					$.alert({
+						  title: '快递信息',
+						  text: data.name,
+						  onOK: function () {
+						    //点击确认
+						  }
+						});
+		});
+		}
 		
 		//马上付款 1
 		function payMoney(orderId){
