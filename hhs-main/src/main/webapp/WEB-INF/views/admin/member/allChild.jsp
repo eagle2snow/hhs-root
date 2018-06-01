@@ -33,7 +33,7 @@
         </tbody>
     </table>
 </section>
-<span ${empty allChild ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp;&nbsp; 没有直系</span>
+<span ${empty allChild ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp; 没有直系</span>
 <%@ include file="/common/admin/my_js.jsp" %>
 </body>
 </html>
