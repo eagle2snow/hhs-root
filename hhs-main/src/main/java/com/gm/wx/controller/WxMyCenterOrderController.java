@@ -133,64 +133,6 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 
 	/**
 	 * 
-	 * <p>
-	 * 描述:退货申请提交
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月3日
-	 * 
-	 * @version 1.0
-	 */
-	@RequestMapping("backOrder")
-	@ResponseBody
-	public Map<String, Object> backOrder(Integer orderId, String reason, String mark, String pics) {
-		Map<String, Object> map = getMap();
-		Order order = orderService.get(orderId);
-		if (order.getStatus() == "3" || order.getStatus() == "4") {
-			order.setStatus("5");
-			order.setApplyForTime(LocalDateTime.now());
-			order.setRefundReason(reason);
-			order.setRefundRemarks(mark);
-
-			System.out.println(pics);
-
-			if (!StringUtil.strNullOrEmpty(pics)) {
-				String[] arr = StringUtil.split(pics, "|");
-				List<String> imgs = new ArrayList<>();
-				for (int i = 0; i < arr.length; i++) {
-					String mediaId = arr[i];
-					DownloadMediaResponse res = WeiXinApi.getMediaAPI().downloadMedia(mediaId);
-					try {
-						FileOutputStream out = new FileOutputStream(
-								FileUtil.touch(PathUtil.getRealRootPath(getRequest()) + "static" + File.separator
-										+ "order" + File.separator + res.getFileName()));
-						imgs.add("/static/order/" + res.getFileName());
-						try {
-							res.writeTo(out);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-				}
-				order.setImageUrl(String.join("|", imgs));
-			}
-			if (orderService.update(order)) {
-				map.put("s", 1);
-			} else {
-				map.put("s", 2);
-			}
-		} else {
-			map.put("s", 3);
-		}
-		return map;
-	}
-
-	/**
-	 * 
 	 *<p>Title:pushOrders</p>
 	 *<p>Description:提成订单</p>
 	 *
