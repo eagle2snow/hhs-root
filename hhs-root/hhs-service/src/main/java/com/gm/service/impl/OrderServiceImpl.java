@@ -288,7 +288,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	public void confirmGoods(Integer orderId)
     {
 		Order order = orderService.get(orderId);
-		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+
+		//防止客户端多次确认
+        String status = order.getStatus();
+        if (!status.equals("3")) {
+            logger.error("客户端多次确认啦");
+            return;
+        }
+
+        List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
@@ -307,7 +315,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		}
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		update(order);
-		// 规定七天后若是没有客户要求退货就执行订单完成方法
 		finishGoods(orderId);
 	}
 
@@ -349,6 +356,5 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 }
