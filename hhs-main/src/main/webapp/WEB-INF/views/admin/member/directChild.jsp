@@ -6,7 +6,8 @@
     <%@ include file="/common/admin/head.jsp" %>
 </head>
 <body>
-<section class="content">
+<span ${empty directChild ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp; 没有直推</span>
+<section class="content" ${empty directChild ? "style='display: none'":""}>
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
