@@ -49,5 +49,6 @@ public class Const {
 	public static final Integer directMember = 2;// 直推人数
 	public static final Integer betweenMember = 1;// 直系人数
 	public static final BigDecimal discount = BigDecimal.valueOf(0.8);// 折扣数
+	public static final Integer returnOnew= 2;// 十件商品返一件
 
 }
