@@ -6,8 +6,7 @@
     <%@ include file="/common/admin/head.jsp" %>
 </head>
 <body>
-
-<section class="content">
+<section class="content" ${empty upperRelate.id ? "style='display: none'":""} >
     <form class="form-horizontal" method="post" id="form-admin-add"
           action="${adp}details.json">
         <input type="hidden" name="id" value="${upperRelate.id}"/>
@@ -154,7 +153,7 @@
         </div>
     </form>
 </section>
-
+<span ${empty upperRelate.id ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp;&nbsp; 没有上家</span>
 <%@ include file="/common/admin/my_js.jsp" %>
 </body>
 </html>
