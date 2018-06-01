@@ -42,12 +42,14 @@
     <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
         <input type="file" name="uploadFile" class="takephoto_bsico bsico">
         <input type="text" hidden="hidden" class="orderid" name="orderId">
+        <img src="/static/wx/images/icon/folder.png">
         <p>添加图片</p>
     </form>
 
     <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
         <input type="file" id='image' accept="image/*" capture='camera'>
         <input type="text" hidden="hidden" class="orderid" name="orderId">
+        <img src="/static/wx/images/icon/cam.png">
         <p>照相机</p>
     </form>
 </div>
