@@ -127,8 +127,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
             if (File.separator.equals("/") || true) {
             	String fileName = String.format("/usr/static/comment/%s%s", orderId, image.getName());
                 File file = new File(fileName);
-                if (!file.exists())
-                	file.createNewFile();
                 image.transferTo(file);
             } else
                 logger.error("windows platform");
