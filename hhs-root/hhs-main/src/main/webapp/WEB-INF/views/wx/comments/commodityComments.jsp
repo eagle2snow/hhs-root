@@ -41,18 +41,15 @@
 
     <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
         <input type="file" name="uploadFile" class="takephoto_bsico bsico">
+        <input type="text" hidden="hidden" class="orderid" name="orderId">
         <p>添加图片</p>
     </form>
 
-
-    <form>
-        <input id="takepicture" type="file" accept="image/*" capture="camera">
-        <p>拍照</p>
+    <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
+        <input type="file" id='image' accept="image/*" capture='camera'>
+        <input type="text" hidden="hidden" class="orderid" name="orderId">
+        <p>照相机</p>
     </form>
-
-    <label>照相机</label>
-    <input type="file" id='image' accept="image/*" capture='camera'>
-
 </div>
 <div class="fbottom">
     <nav class="btool">
@@ -65,36 +62,54 @@
 
 <script src="/static/wx/js/tool.js"></script>
 <script type="text/javascript">
-    
     function confirmComments() {
-        URL.createObjectURL()
         if ($("#text").val() == "" || $.trim($("#text").val()) == '') {
             $.alert("请输入评价内容", "提示");
             return
         }
 
-        $("#uploadFile").submit()
+        new Promise((resolve, reject) => {
+            $.ajax({
+                type: "POST",
+                url: "${ctx}wx/comments/confirmComments/",
+                data: {
+                    "xx": a,
+                    "text": $("#text").val(),
+                    "memberId": $("#memberId").html(),
+                    "orderid": $("#orderid").html(),
+                    "commodityid": $("#commodityid").html()
+                },
+                dataType: "json",
+                success: data => {
+                    resolve(data)
+                },
+                error: data => {
+                    reject(data)
+                }
+            })
+        }).then(data => {
+            alert('hello')
+            if (data == 'ok') {
+                let id = $("#orderid").html()
+                let order = $(".orderid")
+                order[0].value = id
+                order[1].value = id
 
-        $.ajax({
-            type: "POST",
-            url: "${ctx}wx/comments/confirmComments/",
-            data: {
-                "xx": a,
-                "text": $("#text").val(),
-                "memberId": $("#memberId").html(),
-                "orderid": $("#orderid").html(),
-                "commodityid": $("#commodityid").html()
-            },
-            dataType: "json",
-            success: function (date) {
-                if (date == 'ok')
-                    location.href = '${ctx}wx/comments/commentSucceed';
-                else if (date == 'no')
-                    location.href = '${ctx}wx/comments/commentFailure/' +${orderId};
-                else
-                    $.alert("系统出错");
-            }
-        });
+                var selectedPic = $("#uploadFile input")[0]
+                if (selectedPic.files.length > 0) {
+                    $("#uploadFile").submit()
+                } else {
+                    var takenPicture = $("#takenPicture")
+                    if (takenPicture.files.length > 0)
+                        takenPicture.submit()
+                    else
+                        location.href = '${ctx}wx/comments/commentSucceed';
+                }
+            } else
+                location.href = '${ctx}wx/comments/commentFailure/' +${orderId};
+        }).catch(data => {
+            $.alert("系统出错");
+        })
     }
 
     var a = "";
