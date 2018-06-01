@@ -1,24 +1,22 @@
 package com.gm.wx.controller;
 
-import java.time.LocalDateTime;
+import java.io.File;
+import java.io.IOException;
+
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -31,7 +29,7 @@ import com.gm.service.ICommodityService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.service.impl.CommodityAppraiseServiceImpl;
-import com.gm.service.impl.CommodityEvaluationServiceImpl;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author eagle
@@ -64,7 +62,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	/**
 	 * @Title: commentSucceedView
 	 * @Description: 提交评价成功页面
-	 * @param map
 	 * @return String
 	 */
 	@RequestMapping("commentSucceed")
@@ -118,20 +115,25 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		map.put("orderItems", orderItems);
 		map.put("orderId", orderId);
 		map.put("path", PATH);
-		
-		
+
+
 
 		return PATH + "commodityComments";
 	}
 
-	/**
-	 * 
-	 *<p>Title:confirmComments</p>
-	 *<p>Description:会员评价</p>
-	 *
-	 * @param request
-	 * @return
-	 */
+	@ResponseBody
+	@RequestMapping("uploadFile")
+	public String foo(@RequestParam(value = "uploadFile") MultipartFile image)
+	{
+        try {
+            File file = new File("foooooo");
+            image.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "ok";
+	}
+
 	@ResponseBody
 	@RequestMapping("confirmComments")
 	public String confirmComments(HttpServletRequest request) {
@@ -183,7 +185,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	}
 
 	/**
-	 * 
+	 *
 	 *<p>Title:allComments</p>
 	 *<p>Description:查看全部评论</p>
 	 *
