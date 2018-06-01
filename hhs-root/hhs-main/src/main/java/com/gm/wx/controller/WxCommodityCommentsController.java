@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import com.gm.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("wx/comments/")
 public class WxCommodityCommentsController extends WeixinBaseController {
-	private static final Logger logger = LoggerFactory.getLogger(WxCommodityCommentsController.class);
 
+	private static final Logger logger = LoggerFactory.getLogger(WxCommodityCommentsController.class);
 	private static final String PATH = "wx/comments/";
 
 	@Resource
@@ -68,19 +70,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	public String commentSucceedView() {
 
 		return PATH + "commentSucceed";
-	}
-
-	@ResponseBody
-	@RequestMapping("uploadFile")
-	public String foo(@RequestParam(value = "uploadFile") MultipartFile image)
-	{
-		try {
-			File file = new File("foooooo");
-			image.transferTo(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "ok";
 	}
 
 	/**
@@ -130,6 +119,26 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 
 		return PATH + "commodityComments";
+	}
+
+	@RequestMapping("uploadFile")
+	public String uploadFile(@RequestParam(value = "uploadFile") MultipartFile image, Integer orderId)
+	{
+		if (orderId == null)
+			return "redirect:/error/404";
+        try {
+            if (File.separator.equals("/")) {
+            	String fileName = String.format("/usr/static/comment/%s%s", orderId, image.getName());
+                File file = new File(fileName);
+                image.transferTo(file);
+            } else
+                logger.error("windows platform");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("uploadFile error", e);
+            return "redirect:../commentFailure/" + orderId;
+        }
+        return "redirect:../commentSucceed";
 	}
 
 	@ResponseBody
