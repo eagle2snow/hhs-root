@@ -84,11 +84,10 @@
                     resolve(data)
                 },
                 error: data => {
-                    reject(data)
+                    $.alert('系统出错　请稍后再试')
                 }
             })
         }).then(data => {
-            alert('hello')
             if (data == 'ok') {
                 let id = $("#orderid").html()
                 let order = $(".orderid")
@@ -99,7 +98,7 @@
                 if (selectedPic.files.length > 0) {
                     $("#uploadFile").submit()
                 } else {
-                    var takenPicture = $("#takenPicture")
+                    var takenPicture = $("#takenPicture input")[0]
                     if (takenPicture.files.length > 0)
                         takenPicture.submit()
                     else
@@ -108,7 +107,7 @@
             } else
                 location.href = '${ctx}wx/comments/commentFailure/' +${orderId};
         }).catch(data => {
-            $.alert("系统出错");
+            $.alert('系统出错　请稍后再试')
         })
     }
 
