@@ -186,7 +186,7 @@
 		
 		//查看评价
 		function lookAppraise(){ 
-			$.confirm("确定查看请假么?", function() {
+			$.confirm("确定查看评价么?", function() {
 				  //点击确认后的回调函数
 					location.href='${ctx}wx/myCenter/replyMessage/1';
 				  }, function() {
