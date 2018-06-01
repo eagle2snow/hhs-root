@@ -236,10 +236,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 支付成功之后的相关设置
 	 */
 	@Override
-	public void payOrderSuccess(String orderNo) {
+	public void payOrderSuccess(String orderNo)
+	{
 		Order order = getOne("orderNo", orderNo);
 		// 防止购买成功后多次回调
-		if (order.getStatus().trim().equals("2")) {
+		if (!order.getStatus().trim().equals("1")) {
 			logger.info("微信多次回掉");
 			return;
 		}
@@ -255,17 +256,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		for (OrderItem item : listEq) {
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
-
-			// 这里不能更新库存 前面加入购物车时已经更新过了
-			// if (!StringUtils.isEmpty(commodity.getTotalStock())) {
-			// commodity.setTotalStock(commodity.getTotalStock() - item.getBuyCount());
-			// }
-
-			if (!StringUtils.isEmpty(commodity.getSalesVolume())) {
-
-				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
-			}
-			logger.info("commodity={}", JSON.toJSON(commodity.getName()));
+			if (commodity.getSalesVolume() != null)
+				commodity.setSalesVolume(commodity.getSalesVolume() + item.getBuyCount());
 			commodityService.update(commodity);
 		}
 
@@ -276,9 +268,6 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		order.setPayPathway(1);// 支付方式
 		order.setTotalMoney(payBill.getReaFee().multiply(BigDecimal.valueOf(100)));
 		update(order);
-
-		// saveMemberBuy(order);
-		// returnSingleItemPrice(order);
 	}
 
 	/**
@@ -290,7 +279,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		Order order = orderService.get(orderId);
 		//防止客户端多次确认
         String status = order.getStatus();
-        if (!status.equals("3")) {
+        if (!status.trim().equals("3")) {
             logger.error("客户端多次确认啦");
             return;
         }
