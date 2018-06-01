@@ -296,7 +296,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                     tenReturnOneDao.add(tenReturnOne);
 
                     Integer time = tenReturnOne.getTime();
-                    if (time % 10 == 0 && time >= Const.returnOnew) { // 次数是十的倍数
+                    if (time % 10 == 0 && time >= Const.returnOne) { // 次数是十的倍数
                         // 通过次数获取会员
                         TenReturnOne one = tenReturnOneDao.getOne("time", time);
                         Member thisTimeMember = one.getThisTimeMember();
@@ -306,6 +306,12 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                         } else {
                             thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
                         }
+                        if (thisTimeMember.getBalance() == null) {
+                        	thisTimeMember.setBalance(one.getThisTimeCommodity().getShowPrice());
+                        } else {
+                        	thisTimeMember.setBalance(thisTimeMember.getBalance().add(one.getThisTimeCommodity().getShowPrice()));
+                        }
+                        
                     }
                     dao.update(member);
                 }
