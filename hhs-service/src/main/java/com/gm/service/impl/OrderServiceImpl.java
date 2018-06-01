@@ -285,40 +285,30 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 确认收货之后的相关设置
 	 */
 	@Override
-	public void confirmGoods(Integer orderId) {
-
+	public void confirmGoods(Integer orderId)
+    {
 		Order order = orderService.get(orderId);
-
-		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
-
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
-			logger.info("商品内容={}", JSON.toJSONString(commodity));
 			// 商品的设置
-			if (commodity.getTotalStock() != 0) {
-				commodity.setTotalStock(commodity.getTotalStock() - 1);
-			} // 库存
-
-			if (commodity.getSalesVolume() != null) {
-				commodity.setSalesVolume(commodity.getSalesVolume() + 1);
-			} // 销量
-			commodity.setSalesVolume(1);
-
+			if (commodity.getSalesVolume() != null)
+				commodity.setSalesVolume(commodity.getSalesVolume() + item.getBuyCount());
+			else
+			    commodity.setSalesVolume(1);
 			commodityService.update(commodity);
 		}
 
+        PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		// 设置订单相关属性
 		if (payBill != null) {
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 		}
 		order.setReceivingTime(LocalDateTime.now());// 确认收货时间
 		update(order);
-
 		// 规定七天后若是没有客户要求退货就执行订单完成方法
-		this.finishGoods(orderId);
-
+		finishGoods(orderId);
 	}
 
 	/**
@@ -326,36 +316,25 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 */
 	private void finishGoods(Integer orderId) {
 		try {
-
 			Order order = orderService.get(orderId);
 			order.setStatus("10");
 			order.setFinishTime(LocalDateTime.now());
 			orderService.update(order);
 
 			Member member = order.getMember();
-
 			BigDecimal balance = member.getBalance();
 
 			memberService.tenReturnOne(orderId);
 			balance.add(member.getTenReturnOne()); // 十件商品返一件
-
-			// memberService.returnFiveMoney(member.getOpenid()); // 返5元
-
-			// balance.add(memberService.returnMeal(member.getOpenid())); // 返套餐
-
 			member.setBalance(balance); // 设置可提现余额
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
-			List<Commodity> list = null;
-			for (OrderItem item : listEq) {
-				Commodity commodity = item.getCommodity();
-				if (null != commodity) {
-					list = new ArrayList<>();
-					list.add(commodity);
-
-				}
-			}
-			member.setLove(member.getLove() + list.size());// 爱心资助
+			int size = 0;
+			if (listEq != null) {
+                for (OrderItem item : listEq)
+                    size += item.getBuyCount();
+            }
+			member.setLove(member.getLove() + size);// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
 			BigDecimal add = consume.add(totalMoney);
@@ -365,17 +344,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 			}
 			// 返订单总额0.01%给上家
-			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().add(BigDecimal.valueOf(1000))).multiply(new BigDecimal(0.01)));
-			// logger.info("member={}", JSON.toJSON(member));
-			System.out.println("OrderServiceImpl -> finishGoods:order.getTotalMoney() = " + order.getTotalMoney());
+			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(), order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.update(member);
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-
 }

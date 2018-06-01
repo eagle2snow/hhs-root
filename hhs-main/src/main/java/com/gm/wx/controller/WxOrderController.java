@@ -146,10 +146,9 @@ public class WxOrderController extends WeixinBaseController {
 	 */
 	@ResponseBody
 	@GetMapping("confirmGoods/{orderId}")
-	public Map<String, Object> confirmGoods(@PathVariable Integer orderId) {
-
+	public Map<String, Object> confirmGoods(@PathVariable Integer orderId)
+	{
 		HashMap<String, Object> map = this.getMap();
-
 		try {
 			Order order = orderService.get(orderId);
 			order.setStatus("4");
@@ -157,15 +156,12 @@ public class WxOrderController extends WeixinBaseController {
 			orderService.confirmGoods(orderId);
 			map.put("status", 1);
 			map.put("msg", "确认收货成功");
-
 		} catch (Exception e) {
 			map.put("status", 2);
 			map.put("msg", "系统正在维护");
-
 			logger.error("confirmGoods:Error info is {}", e.getMessage());
-
 		}
-		logger.error("confirmGoods:The Map map = {}", JSON.toJSON(map));
+		logger.info("confirmGoods:The Map map = {}", JSON.toJSON(map));
 		return map;
 	}
 

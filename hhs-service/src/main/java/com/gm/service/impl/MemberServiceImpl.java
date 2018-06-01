@@ -273,48 +273,45 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		// ① 判断会员等级
 		Order order = orderService.get(orderId);
 		Member member = order.getMember();
+		if (member == null) {
+		    logger.error("member == null");
+            return;
+        }
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+        try {
+            for (OrderItem orderItem : listEq) {
+                Commodity commodity = orderItem.getCommodity();
+                TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
+                if (tenReturnOne == null) {
+                    tenReturnOne = new TenReturnOne();
+                    tenReturnOne.setThisTimeCommodity(commodity);
+                    tenReturnOne.setThisTimeMember(member);
+                    tenReturnOne.setTime(1);
+                    tenReturnOneDao.add(tenReturnOne);
+                } else {
+                    tenReturnOne.setThisTimeCommodity(commodity);
+                    tenReturnOne.setThisTimeMember(member);
+                    tenReturnOne.setTime(tenReturnOne.getTime() + 1);
+                    tenReturnOneDao.add(tenReturnOne);
 
-		if (!StringUtils.isEmpty(member) && member.getLevel() != 1) { // 判断等级 除了 游客外
-			try {
-				for (OrderItem orderItem : listEq) {
-					Commodity commodity = orderItem.getCommodity();
-					TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
-					if (StringUtils.isEmpty(tenReturnOne)) {
-						tenReturnOne = new TenReturnOne();
-						tenReturnOne.setThisTimeCommodity(commodity);
-						tenReturnOne.setThisTimeMember(member);
-						tenReturnOne.setTime(1);
-						tenReturnOneDao.add(tenReturnOne);
-
-					} else {
-						tenReturnOne.setThisTimeCommodity(commodity);
-						tenReturnOne.setThisTimeMember(member);
-						tenReturnOne.setTime(tenReturnOne.getTime() + 1);
-						tenReturnOneDao.add(tenReturnOne);
-
-						Integer time = tenReturnOne.getTime();
-						if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
-							// 通过次数获取会员
-							TenReturnOne one = tenReturnOneDao.getOne("time", time);
-							Member thisTimeMember = one.getThisTimeMember();
-							// 设置会员的十返一字段 空：设置， 非空：取出来再加
-							if (StringUtils.isEmpty(thisTimeMember.getTenReturnOne())) {
-								thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
-							} else {
-								thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne()
-										.add(one.getThisTimeCommodity().getShowPrice()));
-							}
-						}
-						dao.update(member);
-					}
-				}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
+                    Integer time = tenReturnOne.getTime();
+                    if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
+                        // 通过次数获取会员
+                        TenReturnOne one = tenReturnOneDao.getOne("time", time);
+                        Member thisTimeMember = one.getThisTimeMember();
+                        // 设置会员的十返一字段 空：设置， 非空：取出来再加
+                        if (thisTimeMember.getTenReturnOne() == null) {
+                            thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
+                        } else {
+                            thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
+                        }
+                    }
+                    dao.update(member);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	/**
