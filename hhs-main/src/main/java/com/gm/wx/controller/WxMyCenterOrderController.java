@@ -1,14 +1,8 @@
 package com.gm.wx.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -22,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.sd4324530.fastweixin.api.response.DownloadMediaResponse;
 import com.github.sd4324530.fastweixin.api.response.GetSignatureResponse;
 import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
@@ -33,8 +26,6 @@ import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.service.impl.MemberServiceImpl;
 import com.gm.utils.PathUtil;
-import com.gm.utils.StringUtil;
-import com.xiaoleilu.hutool.io.FileUtil;
 
 /**
  * 
@@ -78,32 +69,21 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	 * @return
 	 */
 	@RequestMapping("myOrders/{status}")
-	public String myOrders(ModelMap map, @PathVariable Integer status) {
+	public String myOrders(ModelMap map, @PathVariable Integer status)
+	{
 		Member member = getCurMember();
-
-		List<Order> orders = new ArrayList<>();
-
-		logger.info("myOrders:The args stattus = {}", status);
-
-		if (0 != status) {
-			orders = orderService.list(
-					"from order o where o.member.id=" + member.getId() + " and o.deleted=1 and o.status=" + status);
-
-		} else {
-			orders = orderService.list("from order o where o.member.id=" + member.getId() + " and o.deleted=1");
-
-		}
+		String hql = "from order o where o.member.id=" + member.getId() + " and o.deleted=1";
+		if (status != 0)
+			hql += " and o.status=" + status;
+		List<Order> orders = orderService.list(hql);
 		if (orders.size() > 0) {
 			List<Integer> orderIds = orders.parallelStream().map(Order::getId).collect(Collectors.toList());
 			List<OrderItem> items = orderItemService.listIn("order.id", orderIds);
 			orders.forEach(p -> p.setItems(
 					items.stream().filter(q -> q.getOrder().getId().equals(p.getId())).collect(Collectors.toList())));
-
 		}
-
 		map.put("orders", orders);
 		map.put("path", PATH);
-
 		return PATH + "myOrders";
 	}
 
@@ -120,7 +100,8 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	 * @version 1.0
 	 */
 	@RequestMapping("toBackOrder/{orderId}")
-	public String toBackOrder(ModelMap map, @PathVariable Integer orderId) {
+	public String toBackOrder(ModelMap map, @PathVariable Integer orderId)
+	{
 		String httpUrl = PathUtil.getHttpUrl(getRequest());
 		System.out.println(httpUrl);
 		GetSignatureResponse res = WeiXinApi.getJsAPI().getSignature(httpUrl);
