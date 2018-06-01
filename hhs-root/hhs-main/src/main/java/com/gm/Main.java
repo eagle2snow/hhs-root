@@ -8,6 +8,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.ArrayList;
+
 @SpringBootApplication
 @ServletComponentScan
 @EnableTransactionManagement
@@ -19,6 +21,7 @@ public class Main extends SpringBootServletInitializer {
 	 */
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		ArrayList<Integer> integers = new ArrayList<>();
 		return application.sources(Main.class);
 	}
 
