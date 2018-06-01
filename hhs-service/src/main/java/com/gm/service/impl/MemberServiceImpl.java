@@ -295,20 +295,21 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                     tenReturnOne.setTime(tenReturnOne.getTime() + 1);
                     tenReturnOneDao.add(tenReturnOne);
 
-                    Integer time = tenReturnOne.getTime();
-                    if (time % Const.returnOne == 0 && time >= Const.returnOne) { // 次数是十的倍数
-                        // 通过次数获取会员
-                        TenReturnOne one = tenReturnOneDao.getOne("time", time);
-                        Member thisTimeMember = one.getThisTimeMember();
-                        // 设置会员的十返一字段 空：设置， 非空：取出来再加
-                        if (thisTimeMember.getTenReturnOne() == null) {
-                            thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
-                        } else {
-                            thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
-                        }
-                    }
-                    dao.update(member);
                 }
+                
+                Integer time = tenReturnOne.getTime();
+                if (time % Const.returnOne == 0 && time >= Const.returnOne) { // 次数是十的倍数
+                    // 通过次数获取会员
+                    TenReturnOne one = tenReturnOneDao.getOne("time", time);
+                    Member thisTimeMember = one.getThisTimeMember();
+                    // 设置会员的十返一字段 空：设置， 非空：取出来再加
+                    if (thisTimeMember.getTenReturnOne() == null) {
+                        thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice());
+                    } else {
+                        thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
+                    }
+                }
+                dao.update(member);
             }
         } catch (Exception e) {
             e.printStackTrace();
