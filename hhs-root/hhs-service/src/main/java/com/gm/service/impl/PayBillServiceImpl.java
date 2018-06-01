@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,9 @@ import com.gm.service.IPayBillService;
 @Transactional
 @Service("payBillSercive")
 public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implements IPayBillService {
+
+	private static final Logger logger = LoggerFactory.getLogger(PayBillServiceImpl.class);
+
 	@Resource
 	private IPayBillDao dao;
 
@@ -40,10 +45,10 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 			update(payBill);
 			if (payBill.getType() == 1) { // 购买套餐
 				memberService.payMemberSuccess(payBill.getOpenid());
-				System.out.println("PayBillServiceImpl paySuccess: ================套餐========================");
+				logger.info("paySuccess: ================套餐========================");
 			} else if (payBill.getType() == 2) {// 购买商品
-				orderService.payOrderSuccess(payBill.getOrderNo());
-				System.out.println("PayBillServiceImpl paySuccess: ================商品========================");
+				orderService.payOrderSuccess(payBill.getOrderNo(), payBill);
+				logger.info("paySuccess: ================商品========================");
 			}
 
 		}

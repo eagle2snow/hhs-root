@@ -7,6 +7,7 @@ import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
 import com.gm.base.model.Member;
 import com.gm.base.model.Order;
+import com.gm.base.model.PayBill;
 
 /**
  * 代码生成器生成代码<br/>
@@ -47,7 +48,7 @@ public interface IOrderService extends IBaseService<Order, Integer> {
 	
 	* @version 1.0
 	 */
-	void payOrderSuccess(String orderNo);
+	void payOrderSuccess(String orderNo, PayBill payBill);
 
 	/**
 	 * @Title: confirmGoods   
