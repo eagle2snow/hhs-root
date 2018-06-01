@@ -87,8 +87,8 @@ public class OrderItem extends Model {
 
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
 	private String specifications;
-	
-	@FormField(label = "是否已评价", type = FieldType.TEXTINPUT)
+
+	@FormField(label = "是否已评价", type = FieldType.TEXTINPUT)//1是已评价
 	private String appraise;
 
 	@ManyToOne

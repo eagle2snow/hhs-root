@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gm.base.model.*;
 import com.gm.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.gm.base.model.Commodity;
-import com.gm.base.model.CommodityAppraise;
-import com.gm.base.model.Order;
-import com.gm.base.model.OrderItem;
 import com.gm.service.ICommodityAppraiseService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IOrderItemService;
@@ -143,40 +140,40 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 	@ResponseBody
 	@RequestMapping("confirmComments")
-	public String confirmComments(HttpServletRequest request) {
-		Map map = request.getParameterMap();
-		String Stars = request.getParameter("xx");
-		String text = request.getParameter("text");
-		String memberId = request.getParameter("memberId");
-		String commodityid = request.getParameter("commodityid");
-		String orderid = request.getParameter("orderid");
-		int cid = Integer.valueOf(commodityid).intValue();
-		int oid = Integer.valueOf(orderid).intValue();
+	public String confirmComments(String xx, String text, Integer commodityid, Integer orderid)
+	{
+		OrderItem orderItem = itemService.getOne("id", orderid);
+		if ("1".equals(orderItem.getAppraise()))
+			return "no";
 
-		OrderItem order = itemService.getOne("id", oid);
-		Commodity commodity = commodityService.get(cid);
+		Commodity commodity = commodityService.get(commodityid);
+		Order order = orderService.get(orderItem.getOrder().getId());
+		Member curMember = getCurMember();
 
-		CommodityAppraise t = new CommodityAppraise();
-		t.setContent(text);
-		t.setStarLevel(Stars);
-		t.setOrderItem(order);
-		t.setMember(this.getCurMember());
-		t.setCommodity(commodity);
-		if (appraiseService.add(t)) {
-			if (!StringUtils.isEmpty(commodity.getComment())) {
-				commodity.setComment(commodity.getComment() + 1);
-			} else {
-				commodity.setComment(1);
-			}
-			commodityService.update(commodity);
-			order.setAppraise("1");
-			itemService.update(order);
-			return "ok";
-
-		} else {
+		if (!curMember.getId().equals(order.getMember().getId())) {
+			logger.error("!curMember.getId().equals(order.getMember().getId())");
 			return "no";
 		}
 
+		CommodityAppraise t = new CommodityAppraise();
+		t.setContent(text);
+		t.setStarLevel(xx);
+		t.setOrderItem(orderItem);
+		t.setMember(this.getCurMember());
+		t.setCommodity(commodity);
+
+		if (appraiseService.add(t)) {
+			if (commodity.getComment() != null)
+				commodity.setComment(commodity.getComment() + 1);
+			else
+				commodity.setComment(1);
+			commodityService.update(commodity);
+			orderItem.setAppraise("1");
+			itemService.update(orderItem);
+			return "ok";
+		} else {
+			return "no";
+		}
 	}
 
 	@RequestMapping("myComments")
