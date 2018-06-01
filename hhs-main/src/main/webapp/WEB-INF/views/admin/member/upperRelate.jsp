@@ -153,7 +153,7 @@
         </div>
     </form>
 </section>
-<span ${empty upperRelate.id ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp;&nbsp; 没有上家</span>
+<span ${empty upperRelate.id ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp; 没有上家</span>
 <%@ include file="/common/admin/my_js.jsp" %>
 </body>
 </html>
