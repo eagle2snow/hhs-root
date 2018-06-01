@@ -8,6 +8,39 @@
     <title>商品评价</title>
     <%@ include file="/common/wx/mate.jsp" %>
     <%@ include file="/common/wx/css.jsp" %>
+    <style>
+        .leftIcon {
+            width: 7rem;
+            height: 7rem;
+            position: absolute;
+            top: 24rem;
+            left: 3rem;
+            display: block;
+        }
+        #leftFile {
+            position: absolute;
+            top: 30rem;
+            left: 5rem;
+        }
+        .rightIcon {
+            width: 7rem;
+            height: 7rem;
+            position: absolute;
+            top: 24rem;
+            left: 19rem;
+            display: block;
+        }
+        #rightFile {
+            position: absolute;
+            top: 30rem;
+            left: 21rem;
+        }
+        .hiddenInput {
+            opacity: 0;
+            z-index: 99;
+        }
+
+    </style>
 </head>
 <body>
 <div class="mbox">
@@ -40,18 +73,22 @@
     </form>
 
     <form id="uploadFile" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
-        <input type="file" name="uploadFile" class="takephoto_bsico bsico">
-        <input type="text" hidden="hidden" class="orderid" name="orderId">
-        <img src="/static/wx/images/icon/folder.png">
-        <p>添加图片</p>
+        <input  type="file" name="uploadFile" accept="image/*" class="hiddenInput leftIcon">
+        <input type="text" hidden="hidden" name="orderid" name="orderId">
+        <img src="/static/wx/images/icon/folder.png" class="leftIcon">
     </form>
+    <span id="leftFile">
+
+    </span>
 
     <form id="takenPicture" enctype="multipart/form-data" action="${ctx}wx/comments/uploadFile/" method="post">
-        <input type="file" id='image' accept="image/*" capture='camera'>
+        <input type="file" name="uploadFile" accept="image/*" capture='camera' class="hiddenInput rightIcon">
         <input type="text" hidden="hidden" class="orderid" name="orderId">
-        <img src="/static/wx/images/icon/cam.png">
-        <p>照相机</p>
+        <img src="/static/wx/images/icon/cam.png" class="rightIcon">
     </form>
+    <span id="rightFile">
+
+    </span>
 </div>
 <div class="fbottom">
     <nav class="btool">
@@ -64,6 +101,19 @@
 
 <script src="/static/wx/js/tool.js"></script>
 <script type="text/javascript">
+    window.onload = () => {
+        $("#uploadFile .hiddenInput")[0].onchange = () => {
+            $("#leftFile").html('已选择文件')
+            $("#rightFile").html('')
+            console.log($("#leftFile").html().length)
+            console.log($("#rightFile").html().length)
+        }
+        $("#takenPicture .hiddenInput")[0].onchange = () => {
+            $("#rightFile").html('已选择文件')
+            $("#leftFile").html('')
+        }
+    }
+
     function confirmComments() {
         if ($("#text").val() == "" || $.trim($("#text").val()) == '') {
             $.alert("请输入评价内容", "提示");
@@ -96,16 +146,20 @@
                 order[0].value = id
                 order[1].value = id
 
-                var selectedPic = $("#uploadFile input")[0]
-                if (selectedPic.files.length > 0) {
-                    $("#uploadFile").submit()
-                } else {
+                if ($("#leftFile").html().length > 0) {
+                    var selectedPic = $("#uploadFile input")[0]
+                    if (selectedPic.files.length > 0)
+                        $("#uploadFile").submit()
+                    else
+                        location.href = '${ctx}wx/comments/commentSucceed';
+                } else if ($("#rightFile").html().length > 0) {
                     var takenPicture = $("#takenPicture input")[0]
                     if (takenPicture.files.length > 0)
                         takenPicture.submit()
                     else
-                        location.href = '${ctx}wx/comments/commentSucceed';
-                }
+                        location.href = '${ctx}wx/comments/commentSucceed'
+                } else
+                    location.href = '${ctx}wx/comments/commentSucceed'
             } else
                 location.href = '${ctx}wx/comments/commentFailure/' +${orderId};
         }).catch(data => {
