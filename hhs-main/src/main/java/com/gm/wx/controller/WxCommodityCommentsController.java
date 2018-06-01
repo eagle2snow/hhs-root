@@ -118,7 +118,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		return PATH + "commodityComments";
 	}
 
-	@RequestMapping("uploadFile")
+	//@RequestMapping("uploadFile")
 	public String uploadFile(@RequestParam(value = "uploadFile") MultipartFile image, Integer orderId)
 	{
 		if (orderId == null)
