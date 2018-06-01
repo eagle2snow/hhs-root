@@ -6,7 +6,7 @@
     <%@ include file="/common/admin/head.jsp" %>
 </head>
 <body>
-<section class="content">
+<section class="content" ${empty allChild ? "style='display: none'":""}>
     <table class="table table-bordered table-striped">
         <thead>
         <tr>
@@ -33,6 +33,7 @@
         </tbody>
     </table>
 </section>
+<span ${empty allChild ? "style='font-size: 20px'":"style='display: none'"} >&nbsp;&nbsp;&nbsp;&nbsp; 没有直系</span>
 <%@ include file="/common/admin/my_js.jsp" %>
 </body>
 </html>
