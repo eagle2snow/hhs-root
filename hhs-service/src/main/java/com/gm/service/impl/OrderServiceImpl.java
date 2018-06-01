@@ -236,24 +236,22 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 支付成功之后的相关设置
 	 */
 	@Override
-	public void payOrderSuccess(String orderNo)
+	public void payOrderSuccess(String orderNo, PayBill payBill)
 	{
 		Order order = getOne("orderNo", orderNo);
-		// 防止购买成功后多次回调
-		if (!order.getStatus().trim().equals("1")) {
-			logger.info("微信多次回掉");
+		if (order == null) {
+			logger.error("order == null");
 			return;
 		}
 
-		PayBill payBill = payBillService.getOne("orderNo", orderNo);
-		logger.info("payBill={}", JSON.toJSON(payBill.getOrderNo()));
-
-		List<OrderItem> listEq = null;
-		if (!StringUtils.isEmpty(order)) {
-			listEq = orderItemService.listEq("order.id", order.getId());
+		// 防止购买成功后多次回调
+		if (!order.getStatus().trim().equals("1")) {
+			logger.error("微信多次回掉");
+			return;
 		}
 
-		for (OrderItem item : listEq) {
+		List<OrderItem> items = orderItemService.listEq("order.id", order.getId());
+		for (OrderItem item : items) {
 			Commodity commodity = item.getCommodity();
 			// 商品的设置
 			if (commodity.getSalesVolume() != null)
@@ -298,9 +296,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
         PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		// 设置订单相关属性
-		if (payBill != null) {
+		if (payBill != null)
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
-		}
+
 		order.setReceivingTime(LocalDateTime.now());
 		order.setFinishTime(LocalDateTime.now());
         order.setStatus("10");

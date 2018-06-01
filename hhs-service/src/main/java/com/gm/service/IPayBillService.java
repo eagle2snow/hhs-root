@@ -1,6 +1,5 @@
 package com.gm.service;
 
-import com.gm.service.IBaseService;
 import com.gm.base.model.PayBill;
 
 /**
