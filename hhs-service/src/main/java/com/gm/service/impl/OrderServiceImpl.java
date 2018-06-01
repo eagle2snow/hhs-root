@@ -310,13 +310,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 */
 	private void finishGoods(Member member, Order order) {
 		try {
-			BigDecimal balance = member.getBalance();
 			memberService.tenReturnOne(order.getId());
 			// 十件商品返一件
 			// 设置可提现余额
-			if (balance != null && member.getTenReturnOne() != null)
-				member.setBalance(balance.add(member.getTenReturnOne()));
-			logger.info("OrderServiceImpl -> finishGoodes : balance = {}", member.getBalance());
+			
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
