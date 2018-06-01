@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.swing.*;
 import javax.validation.constraints.NotNull;
 
+import org.apache.http.Consts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -295,7 +296,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                     tenReturnOneDao.add(tenReturnOne);
 
                     Integer time = tenReturnOne.getTime();
-                    if (time % 10 == 0 && time >= 10) { // 次数是十的倍数
+                    if (time % 10 == 0 && time >= Const.returnOnew) { // 次数是十的倍数
                         // 通过次数获取会员
                         TenReturnOne one = tenReturnOneDao.getOne("time", time);
                         Member thisTimeMember = one.getThisTimeMember();
