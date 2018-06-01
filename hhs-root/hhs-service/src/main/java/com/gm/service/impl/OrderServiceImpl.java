@@ -236,8 +236,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 支付成功之后的相关设置
 	 */
 	@Override
-	public void payOrderSuccess(String orderNo, PayBill payBill)
-	{
+	public void payOrderSuccess(String orderNo, PayBill payBill) {
 		Order order = getOne("orderNo", orderNo);
 		if (order == null) {
 			logger.error("order == null");
@@ -272,17 +271,16 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 * 确认收货之后的相关设置
 	 */
 	@Override
-	public void confirmGoods(Integer orderId)
-    {
+	public void confirmGoods(Integer orderId) {
 		Order order = orderService.get(orderId);
-		//防止客户端多次确认
-        String status = order.getStatus();
-        if (!status.trim().equals("3")) {
-            logger.error("客户端多次确认啦");
-            return;
-        }
+		// 防止客户端多次确认
+		String status = order.getStatus();
+		if (!status.trim().equals("3")) {
+			logger.error("客户端多次确认啦");
+			return;
+		}
 
-        List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
+		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		for (OrderItem item : listEq) {
 			logger.info("orderItem={}", JSON.toJSON(item.getId()));
 			Commodity commodity = item.getCommodity();
@@ -290,18 +288,18 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			if (commodity.getSalesVolume() != null)
 				commodity.setSalesVolume(commodity.getSalesVolume() + item.getBuyCount());
 			else
-			    commodity.setSalesVolume(1);
+				commodity.setSalesVolume(1);
 			commodityService.update(commodity);
 		}
 
-        PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
+		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		// 设置订单相关属性
 		if (payBill != null)
 			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 
 		order.setReceivingTime(LocalDateTime.now());
 		order.setFinishTime(LocalDateTime.now());
-        order.setStatus("10");
+		order.setStatus("10");
 		Member member = order.getMember();
 		update(order);
 		finishGoods(member, order);
@@ -310,21 +308,22 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	/**
 	 * 订单完成
 	 */
-	private void finishGoods(Member member, Order order)
-	{
+	private void finishGoods(Member member, Order order) {
 		try {
 			BigDecimal balance = member.getBalance();
 			memberService.tenReturnOne(order.getId());
 			// 十件商品返一件
 			// 设置可提现余额
-			member.setBalance(balance.add(member.getTenReturnOne()));
+			if (balance != null && member.getTenReturnOne() != null)
+				member.setBalance(balance.add(member.getTenReturnOne()));
+			logger.info("OrderServiceImpl -> finishGoodes : balance = {}", member.getBalance());
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
 			if (listEq != null) {
-                for (OrderItem item : listEq)
-                    size += item.getBuyCount();
-            }
+				for (OrderItem item : listEq)
+					size += item.getBuyCount();
+			}
 			member.setLove(member.getLove() + size);// 爱心资助
 			BigDecimal consume = member.getConsume();
 			BigDecimal totalMoney = order.getTotalMoney();
@@ -335,7 +334,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
-			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(), order.getTotalMoney().multiply(new BigDecimal(0.01)));
+			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
