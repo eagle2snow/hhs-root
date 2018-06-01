@@ -124,7 +124,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		if (orderId == null)
 			return "redirect:/error/404";
         try {
-            if (File.separator.equals("/") || true) {
+            if (File.separator.equals("/")) {
             	String fileName = String.format("/usr/static/comment/%s%s", orderId, image.getName());
                 File file = new File(fileName);
                 image.transferTo(file);
@@ -143,8 +143,8 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 	public String confirmComments(String xx, String text, Integer commodityid, Integer orderid)
 	{
 		OrderItem orderItem = itemService.getOne("id", orderid);
-//		if ("1".equals(orderItem.getAppraise()))
-//			return "no";
+		if ("1".equals(orderItem.getAppraise()))
+			return "no";
 
 		Commodity commodity = commodityService.get(commodityid);
 		Order order = orderService.get(orderItem.getOrder().getId());
