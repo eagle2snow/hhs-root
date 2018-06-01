@@ -82,8 +82,8 @@
 										<div class="cutdcont">
 											数量：${item.buyCount }
 										</div>
-									<c:if test="${order.status==10 and order.appraise==0}">
-											<span onclick="comments(${item.id})"  class="defaultlinebtn radiusbtn msbtn" ${order.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
+									<c:if test="${order.status==10 and item.appraise==0}">
+											<span onclick="comments(${item.id})"  class="defaultlinebtn radiusbtn msbtn" ${item.appraise eq "1"? 'style="display:none"': ''} style="float: right;margin-right: 1rem;">即刻评价</span>
 											<%-- <span onclick="toBackOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn">申请售后</span> --%>
 					</c:if>
 									</div>
@@ -93,8 +93,8 @@
 						</div>
 					</c:forEach>
 				</li>
-
-				<li ${order.status==10 and order.appraise==0 or order.status==8 or order.status==4 ?  'style="display:none;"':''}  style="background-color: #fff;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
+				<c:forEach items='${order.items }' var='item'>
+				<li ${order.status==10 and item.appraise==0 or order.status==8 or order.status==4 ?  'style="display:none;"':''}  style="background-color: #fff;margin-bottom: 1rem;height: 2.5rem;margin-top: -1rem;padding-top: 0.5rem;">
 
 					<c:if test="${order.status==1}"> <span onclick="payMoney(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">马上付款</span>
 						<span onclick="cancelOrder(${order.id})" class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 1rem;">取消订单</span>
@@ -125,10 +125,10 @@
 						<span class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;box-shadow: none;">退换货中</span>
 					</c:if>
 
-					<c:if test="${order.status==10 and order.appraise==1 }">
+					<c:if test="${order.status==10 and item.appraise==1 }">
 						<span onclick="lookAppraise()"  class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;">查看评价</span>
 					</c:if>
-					<c:if test="${order.status==10 and order.appraise==0}">
+					<c:if test="${order.status==10 and item.appraise==0}">
 							<span   class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;box-shadow: none;">订单完成</span>
 					</c:if>
 					
@@ -145,7 +145,7 @@
 						<span class="defaultlinebtn radiusbtn msbtn" style="float: right;margin-right: 2rem;box-shadow: none;">加急中</span>
 					</c:if>
 				</li>
-
+				</c:forEach>
 			</c:forEach>
 
 		</ul>
