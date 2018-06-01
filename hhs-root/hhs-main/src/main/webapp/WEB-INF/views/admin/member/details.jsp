@@ -129,10 +129,11 @@
 
 
 
-						<div class="form-group">
+						<div class="form-group"  >
 							<label class="col-sm-2 control-label"> 等级:</label>
 							<div class="col-sm-8">
-								<input type="text" class="form-control" value="${model.level}"
+								<input style="text-align: left;" type="text" class="form-control" 
+								value="<c:if test="${model.level == 1}">竹语游客</c:if><c:if test="${model.level == 2}">普通会员 </c:if><c:if test="${model.level == 3}">业务经理 </c:if><c:if test="${model.level == 4}">城市经理</c:if><c:if test="${model.level == 5}">合作伙伴</c:if>"
 									style="border: none;" readonly="readonly" />
 							</div>
 						</div>
