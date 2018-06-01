@@ -118,7 +118,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		logger.info("genCodeAndQrCode:Start");
 		String path = request.getServletContext().getRealPath(File.separator) + File.separator;
 		logger.info("path={}", path);
-
 		String domain = request.getScheme() + "://" + request.getServerName();
 		logger.info("domain={}", domain);
 
@@ -283,6 +282,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
             for (OrderItem orderItem : listEq) {
                 Commodity commodity = orderItem.getCommodity();
                 TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
+                logger.info("TenReturnOne tenReturnOne = {}",JSON.toJSON(tenReturnOne));
                 if (tenReturnOne == null) {
                     tenReturnOne = new TenReturnOne();
                     tenReturnOne.setThisTimeCommodity(commodity);
@@ -296,7 +296,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                     tenReturnOneDao.add(tenReturnOne);
 
                     Integer time = tenReturnOne.getTime();
-                    if (time % 10 == 0 && time >= Const.returnOne) { // 次数是十的倍数
+                    if (time % Const.returnOne == 0 && time >= Const.returnOne) { // 次数是十的倍数
                         // 通过次数获取会员
                         TenReturnOne one = tenReturnOneDao.getOne("time", time);
                         Member thisTimeMember = one.getThisTimeMember();
@@ -306,12 +306,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
                         } else {
                             thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
                         }
-                        if (thisTimeMember.getBalance() == null) {
-                        	thisTimeMember.setBalance(one.getThisTimeCommodity().getShowPrice());
-                        } else {
-                        	thisTimeMember.setBalance(thisTimeMember.getBalance().add(one.getThisTimeCommodity().getShowPrice()));
-                        }
-                        
                     }
                     dao.update(member);
                 }
