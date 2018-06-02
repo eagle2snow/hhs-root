@@ -111,8 +111,8 @@
 				</nav>
 				<nav class="fnavlist">
 					<a href="${ctx }wx/index" class="myqrcode fnavitem">首页</a> <a
-						href="${ctx}wx/commodity/showCart" class="on cart fnavitem">购物车</a> <a href="${ctx}wx/myCenter/index"
-						class="user fnavitem">个人中心</a>
+						href="${ctx}wx/commodity/showCart" class="on cart fnavitem">购物车</a> <a href="${ctx}wx/myCenter/index?fuck"
+						class="user fnavitem">个人中心</a> 
 				</nav>
 			</div>
 		</div>

@@ -33,7 +33,7 @@
 </div>
 <div class="mt80 spcbtnrow">
 	<div class="spcbtnrow_item"><a href="/wx/index" class="secondbtn mdbtn">去逛逛</a></div>
-	<div class="spcbtnrow_item"><a href="/wx/myCenter/index" class="primarybtn mdbtn">个人中心</a></div>
+	<div class="spcbtnrow_item"><a href="/wx/myCenter/index?fuck" class="primarybtn mdbtn">个人中心</a></div>
 </div>
 <!-- end 一行 -->
 <!--end 中间-->

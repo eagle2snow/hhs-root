@@ -109,7 +109,7 @@
 	<nav class="fnavlist">
 		<a href="${ctx}wx/myCenter/myQrCode" class="myqrcode fnavitem">我的二维码</a>
 		<a href="${ctx}wx/commodity/showCart" class="cart fnavitem">购物车</a> <a
-			href="${ctx}wx/myCenter/index" class="user fnavitem">个人中心</a>
+			href="${ctx}wx/myCenter/index?fuck" class="user fnavitem">个人中心</a>
 	</nav>
 
 	<!--end 底部-->
