@@ -125,7 +125,7 @@
 	<nav class="fnavlist">
 		<a href="${ctx}wx/index" class="fnavitem">首页</a> <a
 			href="${ctx}wx/commodity/showCart" class="cart fnavitem">购物车</a> <a
-			href="${ctx}wx/myCenter/index" class="on user fnavitem">个人中心</a>
+			href="${ctx}wx/myCenter/index?fuck" class="on user fnavitem">个人中心</a>
 	</nav>
 	
 	

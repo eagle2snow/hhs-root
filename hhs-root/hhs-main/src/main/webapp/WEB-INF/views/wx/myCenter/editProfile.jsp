@@ -63,7 +63,7 @@
 		<nav class="fnavlist">
 		<a href="${ctx}wx/index" class="fnavitem">首页</a> <a
 			href="${ctx}wx/commodity/showCart" class="cart fnavitem">购物车</a> <a
-			href="${ctx}wx/myCenter/index" class="on user fnavitem">个人中心</a>
+			href="${ctx}wx/myCenter/index?fuck" class="on user fnavitem">个人中心</a>
 	</nav>
 </div>
 <!--end 底部-->
@@ -112,7 +112,7 @@
 		$.getJSON("${adp}editProfile/"+nickname+"/"+mobile+"/"+code, function(data) {
 			if (data.status == 1) {
 				layer.msg(data.msg,{icon:6}); 
-				window.location.href = href="${ctx}wx/myCenter/index";
+				window.location.href = href="${ctx}wx/myCenter/index?fuck";
 			
 			} else if(data.status == 2) {
 				layer.msg(data.msg,{icon:5}); //错误的表情 
