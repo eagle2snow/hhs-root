@@ -331,8 +331,10 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
+//			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+//					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					order.getTotalMoney().multiply(new BigDecimal(0.01)));
+					(order.getTotalMoney().add(BigDecimal.valueOf(100))).multiply(new BigDecimal(0.01)));
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
