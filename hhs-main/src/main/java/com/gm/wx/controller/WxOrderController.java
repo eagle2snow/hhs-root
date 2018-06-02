@@ -268,7 +268,7 @@ public class WxOrderController extends WeixinBaseController {
 	@SuppressWarnings("all")
 	@RequestMapping("/confirmOrder/{orderId}")
 	public String confirmOrder(@PathVariable Integer orderId, ModelMap map, String addressId) {
-		Member member = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 		Order order = orderService.get(orderId);
 		if (!StringUtil.strNullOrEmpty(addressId)) {
 			MemberAddress orderAddress = memberAddressService.get(Integer.parseInt(addressId));
@@ -336,7 +336,7 @@ public class WxOrderController extends WeixinBaseController {
 			return map;
 		}
 
-		Member member = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 		if ("on".equals(defautlocal)) {
 			address.setDefaultAddress(1);
 			memberAddressService

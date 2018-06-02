@@ -231,7 +231,7 @@ public class WxMyCenterController extends WeixinBaseController {
 
 		Map<String, Object> map = this.getMap();
 
-		Member curMember = this.getCurMember();
+		Member curMember = WXHelper.getMember(getCurMember());
 		String code2session = (String) this.getRequest().getSession().getAttribute(Const.verificationCode2Session);
 
 		if (!StringUtils.isEmpty(code2session)) {

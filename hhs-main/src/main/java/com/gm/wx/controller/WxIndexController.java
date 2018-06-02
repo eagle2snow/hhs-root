@@ -157,7 +157,7 @@ public class WxIndexController extends WeixinBaseController {
 	 */
 	@RequestMapping("profile")
 	public String setProfileView(ModelMap model) {
-		model.put("member", this.getCurMember());
+		model.put("member", WXHelper.getMember(getCurMember()));
 		model.put("path", PATH);
 		return PATH + "profile";
 	}
@@ -170,7 +170,7 @@ public class WxIndexController extends WeixinBaseController {
 	 */
 	@RequestMapping("/setMeal")
 	public String setMealView(ModelMap model) {
-		model.put("member", this.getCurMember());
+		model.put("member", WXHelper.getMember(getCurMember()));
 		model.put("path", PATH);
 		return PATH + "setMeal";
 	}
@@ -181,7 +181,7 @@ public class WxIndexController extends WeixinBaseController {
 	 */
 	@RequestMapping("/payMemberSuccess")
 	public String payMemberSuccess(ModelMap model) {
-		Member curMember = this.getCurMember();
+		Member curMember = WXHelper.getMember(getCurMember());
 		model.put("path", PATH);
 		model.put("member", curMember);
 
