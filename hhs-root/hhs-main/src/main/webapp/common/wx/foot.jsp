@@ -6,7 +6,7 @@
 		<nav class="fnavlist">
 		<a href="${adp}myQrCode" class="myqrcode fnavitem">我的二维码</a>
 		<a href="${adp}commodity/showCart/1" class="cart fnavitem">购物车</a>
-		<a href="${adp}myCenter/index/1" class="user fnavitem">个人中心</a>
+		<a href="${adp}myCenter/index?fuck" class="user fnavitem">个人中心</a>  
 	</nav>
 	</nav>
 </div>
