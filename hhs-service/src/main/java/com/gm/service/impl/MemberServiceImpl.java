@@ -56,9 +56,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private ITenReturnOneDao tenReturnOneDao;
 
-	@Autowired
-	private SuperTree superTree;
-
 	@Resource
 	private IMemberService memberService;
 
@@ -228,7 +225,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			visitedParents.add(current.getId());
 			if (!gt) {
 				int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
-				if (childrenCount < Const.betweenMember)
+				if (childrenCount <= Const.betweenMember)
 					continue;
 				gt = true;
 			}
