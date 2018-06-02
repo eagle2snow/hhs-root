@@ -55,11 +55,7 @@ public class WxChatController extends WeixinBaseController {
 	private IAutoMsgTypeService autoMsgTypeService;
 
 	@RequestMapping("/chat")
-	public String chat(ModelMap map,HttpSession session) {
-		
-		System.out.println(session.getMaxInactiveInterval());
-		
-		Member member = getCurMember();
+	public String chat(ModelMap map) {
 		Integer mid = getMid();
 		List<Msg> msgs = msgService.listMsgByMember(mid);
 

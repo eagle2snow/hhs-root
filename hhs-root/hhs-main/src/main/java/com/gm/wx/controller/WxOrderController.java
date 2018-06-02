@@ -242,7 +242,7 @@ public class WxOrderController extends WeixinBaseController {
 	@ResponseBody
 	public Map<String, Object> addOrder(String cartsStr) {
 		List<CartDto> carts = JSON.parseArray(cartsStr, CartDto.class);
-		Member member = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 		Map<String, Object> map = orderService.genOrder(member, carts);
 		return map;
 	}
@@ -381,7 +381,7 @@ public class WxOrderController extends WeixinBaseController {
 	@ResponseBody
 	public Map<String, Object> prePayOrder(Integer orderId, Integer addressId, String itemsStr, String content) {
 		List<OrderItemDto> items = JSON.parseArray(itemsStr, OrderItemDto.class);
-		Member member = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 		Map<String, Object> map = orderService.prePayOrder(member, orderId, addressId, items, content);
 		return map;
 	}

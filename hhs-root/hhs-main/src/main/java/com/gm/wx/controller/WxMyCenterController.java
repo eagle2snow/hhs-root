@@ -92,12 +92,7 @@ public class WxMyCenterController extends WeixinBaseController {
 	@RequestMapping("index")
 	public String toMyCenterIndex(ModelMap map, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		Member member = getCurMember();
-		Member dbmember = memberService.get(member.getId());
-		if (dbmember == null)
-			logger.info("toMyCenterIndex", "dbmember == null");
-		else
-			member = dbmember;
+		Member member = WXHelper.getMember(getCurMember());
 		map.put("member", member);
 
 		if (StringUtil.strNullOrEmpty(member.getNickname())) {
@@ -128,7 +123,6 @@ public class WxMyCenterController extends WeixinBaseController {
 	 * @param type
 	 *            1未购买，2已购买
 	 * @param map
-	 * @param generalizeId
 	 * @return
 	 */
 	@RequestMapping("myMembers/{type}")
@@ -152,7 +146,6 @@ public class WxMyCenterController extends WeixinBaseController {
 	/**
 	 * @Title: editProfileView
 	 * @Description: 修改个人资料请求vies
-	 * @param model
 	 *            会员信息
 	 * @return Map<String,Object>
 	 */
@@ -226,7 +219,6 @@ public class WxMyCenterController extends WeixinBaseController {
 	/**
 	 * @Title: updateAction
 	 * @Description: 修改个人资料请求Action
-	 * @param model
 	 *            会员信息
 	 * @return Map<String,Object>
 	 */
@@ -302,8 +294,6 @@ public class WxMyCenterController extends WeixinBaseController {
 	 * Description:删除评论
 	 * </p>
 	 *
-	 * @param map
-	 * @param type
 	 *            id
 	 * @return
 	 */
