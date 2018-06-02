@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
+import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IOrderDao;
 import com.gm.base.dao.ITenReturnOneDao;
@@ -291,7 +292,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		// 设置订单相关属性
 		if (payBill != null)
-			order.setTotalMoney(payBill.getReaFee().multiply(BigDecimal.valueOf(100))); // 订单总额
+			order.setTotalMoney(payBill.getReaFee()); // 订单总额
 
 		order.setReceivingTime(LocalDateTime.now());
 		order.setFinishTime(LocalDateTime.now());
@@ -306,10 +307,9 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	 */
 	private void finishGoods(Member member, Order order) {
 		try {
-			memberService.tenReturnOne(order.getId());
 			// 十件商品返一件
 			// 设置可提现余额
-			
+			memberService.tenReturnOne(order.getId());
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
@@ -327,10 +327,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
-//			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-//					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().multiply(BigDecimal.valueOf(100))).multiply(new BigDecimal(0.01)));
+					(order.getTotalMoney().multiply(Const.pushMoney)));
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
