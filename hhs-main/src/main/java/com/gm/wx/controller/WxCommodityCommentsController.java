@@ -148,9 +148,9 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 
 		Commodity commodity = commodityService.get(commodityid);
 		Order order = orderService.get(orderItem.getOrder().getId());
-		Member curMember = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 
-		if (!curMember.getId().equals(order.getMember().getId())) {
+		if (!member.getId().equals(order.getMember().getId())) {
 			logger.error("!curMember.getId().equals(order.getMember().getId())");
 			return "no";
 		}
@@ -159,7 +159,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		t.setContent(text);
 		t.setStarLevel(xx);
 		t.setOrderItem(orderItem);
-		t.setMember(this.getCurMember());
+		t.setMember(member);
 		t.setCommodity(commodity);
 
 		if (appraiseService.add(t)) {

@@ -106,8 +106,7 @@ public class WxMemberAddressController extends WeixinBaseController {
 			return map;
 		}
 
-
-		Member member = this.getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 		logger.info("addAddressAction: the Member to json is {}.", JSON.toJSONString(member));
 
 		if ("on".equals(defautlocal)) {

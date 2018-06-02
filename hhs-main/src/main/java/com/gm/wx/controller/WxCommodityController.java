@@ -81,7 +81,7 @@ public class WxCommodityController extends WeixinBaseController {
 		}
 		commodityService.update(commodity);
 		map.put("model", commodity);
-		map.put("member", this.getCurMember());
+		map.put("member", WXHelper.getMember(getCurMember()));
 		map.put("date", DateUtil.dateToStr(new Date(), 12));
 		map.put("path", PATH);
 
@@ -112,7 +112,7 @@ public class WxCommodityController extends WeixinBaseController {
 	public Map<String, Object> addToCart(@PathVariable Integer commodityId, @PathVariable Integer count) {
 		Map<String, Object> map = new HashMap<>();
 
-		Member member = getCurMember();
+		Member member = WXHelper.getMember(getCurMember());
 
 		Cart cart = cartService.checkCommodityInCart(member.getId(), commodityId);
 		if (cart != null) {

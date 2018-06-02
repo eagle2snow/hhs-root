@@ -62,9 +62,11 @@ public class WeixinPayController extends WeixinBaseController {
 	 */
 	@RequestMapping("/prePayOrder")
 	@ResponseBody
-	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount, HttpServletRequest request) {
+	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount)
+	{
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 
+		Member member = WXHelper.getMember(getCurMember());
 		if (null != getCurMember().getSetMeal() && this.getCurMember().getSetMeal() != 1) { // 已经购买套餐
 
 			amount = amount.multiply(Const.discount);
@@ -77,7 +79,7 @@ public class WeixinPayController extends WeixinBaseController {
 		if (null == payBill) {
 			payBill = new PayBill();
 			payBill.setOrderNo(orderNo);
-			payBill.setOpenid(getCurMember().getOpenid());
+			payBill.setOpenid(member.getOpenid());
 			payBill.setType(2);
 			payBill.setPay(1);
 			payBill.setPreFee(amount);
@@ -112,24 +114,28 @@ public class WeixinPayController extends WeixinBaseController {
 	 */
 	@RequestMapping("/prePayCombo")
 	@ResponseBody
-	public Map<String, Object> prePayCombo() {
-
+	public Map<String, Object> prePayCombo()
+	{
 		Map<String, Object> map = getMap();
 
-		Member member = getCurMember();
-		String openid = member.getOpenid();
+		Member member = WXHelper.getMember(getCurMember());
+		if (member == null) {
+			logger.error("member == null");
+			map.put("s", "系统有误，请稍候再试！");
+			return map;
+		}
 
 		PayBill payBill = new PayBill();
 		payBill.setOrderNo(OrderServiceImpl.genOrderNo());
 		payBill.setType(1);
 		payBill.setPay(1);
-		payBill.setOpenid(openid);
+		payBill.setOpenid(member.getOpenid());
 		payBill.setPreFee(Const.MEMBER_AMOUNT);
 		payBillService.save(payBill);
 		
 		try {
 			if (member.getSetMeal() == 1) {
-				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, openid,
+				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, member.getOpenid(),
 						getDomain());
 				map.put("s", 1);
 				map.put("data", res);
