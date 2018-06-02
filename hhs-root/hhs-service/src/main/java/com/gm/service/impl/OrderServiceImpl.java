@@ -14,10 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IOrderDao;
 import com.gm.base.dao.ITenReturnOneDao;
@@ -29,7 +27,6 @@ import com.gm.base.model.Member;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.base.model.PayBill;
-import com.gm.base.model.TenReturnOne;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberBuyService;
@@ -37,7 +34,6 @@ import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.DateUtil;
-import com.gm.utils.StringUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
@@ -295,7 +291,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		PayBill payBill = payBillService.getOne("orderNo", order.getOrderNo());
 		// 设置订单相关属性
 		if (payBill != null)
-			order.setTotalMoney(payBill.getReaFee()); // 订单总额
+			order.setTotalMoney(payBill.getReaFee().multiply(BigDecimal.valueOf(100))); // 订单总额
 
 		order.setReceivingTime(LocalDateTime.now());
 		order.setFinishTime(LocalDateTime.now());
@@ -334,7 +330,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 //			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
 //					order.getTotalMoney().multiply(new BigDecimal(0.01)));
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().add(BigDecimal.valueOf(100))).multiply(new BigDecimal(0.01)));
+					(order.getTotalMoney().multiply(BigDecimal.valueOf(100))).multiply(new BigDecimal(0.01)));
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
