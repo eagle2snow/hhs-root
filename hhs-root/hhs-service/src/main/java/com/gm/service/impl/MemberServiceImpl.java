@@ -162,7 +162,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
 			String randomNumbers = RandomUtil.randomNumbers(6);
 			if (randomNumbers.charAt(0) != '0') {
-				member.setGeneralizeId(RandomUtil.randomNumbers(6));
+				member.setGeneralizeId(randomNumbers);
 			} else {
 				member.setGeneralizeId("1" + RandomUtil.randomNumbers(5));
 			}
