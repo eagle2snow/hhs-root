@@ -161,7 +161,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		member.setSetMeal(2);
 		member.setLevel(3);
-		update(member);
+
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
 			String randomNumbers = RandomUtil.randomNumbers(6);
 			if (randomNumbers.charAt(0) != '0') {
@@ -180,7 +180,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		} else {
 			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
 		}
-
+		update(member);
 		threeMoney(member);
 		logger.info("threeMoney", JSON.toJSON(member));
 
