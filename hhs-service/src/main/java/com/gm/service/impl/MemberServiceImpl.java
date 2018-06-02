@@ -308,7 +308,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					}
 					BigDecimal balance = member.getBalance();
 					if (balance != null && member.getTenReturnOne() != null)
-						member.setBalance(balance.add(member.getTenReturnOne()));
+						member.setBalance(balance.add(one.getThisTimeCommodity().getShowPrice()));
 					logger.info("MemberServiceImpl -> tenReturnOne : balance = {}", member.getBalance());
 					dao.update(member);
 				}
