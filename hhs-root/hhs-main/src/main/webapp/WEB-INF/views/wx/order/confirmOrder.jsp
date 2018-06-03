@@ -298,7 +298,7 @@ var orderVue = new Vue({
 		
 		disconut:function(){
 			var t = parseFloat(0);
-			if(${curMember.setMeal}==2){
+			if(${curMember.setMeal}!=1){
 				t = this.totalAmount*0.2;
 				return t.toFixed(2);
 			}else{
