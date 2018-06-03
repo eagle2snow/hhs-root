@@ -67,13 +67,13 @@ public class WeixinPayController extends WeixinBaseController {
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 
 		Member member = WXHelper.getMember(getCurMember());
-		if (member.getSetMeal() == 1 || member.getSetMeal() == 3) { // 已经购买套餐
-			amount = amount.multiply(Const.discount);
-		}
+		// if (member.getSetMeal() == 2 || member.getSetMeal() == 3) { // 已经购买套餐 并且
+		// 第二件起每件八折
+		// amount = amount.multiply(Const.discount).multiply(BigDecimal.valueOf(0.01));
+		// logger.info("--------------prePay:amount * 0.08 * 0.01 =
+		// {}-----------------",JSON.toJSON(amount));
+		// }
 		
-		logger.info("--------------prePay:amount = -----------------",amount);
-
-		//amount = BigDecimal.valueOf(0.01);
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
 

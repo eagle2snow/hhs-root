@@ -215,6 +215,7 @@ public class WxCommodityController extends WeixinBaseController {
 	@RequestMapping("/sett")
 	public String sett(ModelMap map) {
 		map.put("path", PATH);
+		
 		return PATH + "confirmOrder";
 	}
 
