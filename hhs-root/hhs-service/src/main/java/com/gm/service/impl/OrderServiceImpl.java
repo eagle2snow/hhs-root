@@ -260,7 +260,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 		order.setPostageMoney(BigDecimal.valueOf(0));// 包邮
 		order.setPaymentTime(LocalDateTime.now());// 付款时间
 		order.setPayPathway(1);// 支付方式
-		order.setTotalMoney(payBill.getReaFee().multiply(BigDecimal.valueOf(100)));
+		order.setTotalMoney(payBill.getReaFee());
 		update(order);
 	}
 
