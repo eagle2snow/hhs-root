@@ -161,6 +161,7 @@ public class WxCommodityController extends WeixinBaseController {
 		 */
 		carts.parallelStream().forEach(p -> p.setHad(true));
 		map.put("carts", JSON.toJSONString(carts));
+		
 		map.put("path", PATH);
 		return PATH + "cart";
 	}
