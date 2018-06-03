@@ -65,15 +65,10 @@ public class WeixinPayController extends WeixinBaseController {
 	public Map<String, Object> prePay(String orderNo, String orderName, BigDecimal amount)
 	{
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
-
-		Member member = WXHelper.getMember(getCurMember());
-		// if (member.getSetMeal() == 2 || member.getSetMeal() == 3) { // 已经购买套餐 并且
-		// 第二件起每件八折
-		// amount = amount.multiply(Const.discount).multiply(BigDecimal.valueOf(0.01));
-		// logger.info("--------------prePay:amount * 0.08 * 0.01 =
-		// {}-----------------",JSON.toJSON(amount));
-		// }
 		
+		amount = amount.multiply(BigDecimal.valueOf(0.01));
+		logger.info("--------------prePay:amount * 0.08 * 0.01 ={}-----------------",JSON.toJSON(amount));
+		Member member = WXHelper.getMember(getCurMember());
 
 		PayBill payBill = payBillService.getOne("orderNo", orderNo);
 
