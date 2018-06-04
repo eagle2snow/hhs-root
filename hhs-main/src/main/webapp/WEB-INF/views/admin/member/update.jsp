@@ -55,7 +55,7 @@
 							
 							
 			                
-							<div class="form-group">
+							<div class="form-group" hidden="hidden">
 								<label class="col-sm-2 control-label">推广ID:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.generalizeId}"
@@ -325,7 +325,7 @@
 							
 							
 			                
-							<div class="form-group">
+							<div class="form-group" hidden="hidden">
 								<label class="col-sm-2 control-label">推荐人的开放ID:</label>
 								<div class="col-sm-8">
 									<input type="text" class="form-control" value="${model.referrerGeneralizeId}"
