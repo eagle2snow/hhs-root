@@ -192,7 +192,7 @@ public class WeixinPayController extends WeixinBaseController {
 	// produces: 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；
 	@PostMapping(value = "/paySuccess", produces = "text/html;charset=utf-8")
 	@ResponseBody
-	public String WeixinParentNotifyPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String WeixinParentNotifyPage(HttpServletRequest request) throws Exception {
 		ServletInputStream instream = request.getInputStream();
 		StringBuffer sb = new StringBuffer();
 		int len = -1;
@@ -203,11 +203,11 @@ public class WeixinPayController extends WeixinBaseController {
 		}
 		instream.close();
 
-		PayResponse response2 = WeixinPayApi.getBestPayServiceImpl(getDomain()).asyncNotify(sb.toString());
+		PayResponse response = WeixinPayApi.getBestPayServiceImpl(getDomain()).asyncNotify(sb.toString());
 
-		String orderId = response2.getOrderId();
-		Double amount = response2.getOrderAmount();
-		String outTradeNo = response2.getOutTradeNo();
+		String orderId = response.getOrderId();
+		Double amount = response.getOrderAmount();
+		String outTradeNo = response.getOutTradeNo();
 
 		PayBill payBill = payBillService.getOne("orderNo", orderId);
 		if (payBill != null) {
@@ -215,6 +215,7 @@ public class WeixinPayController extends WeixinBaseController {
 			payBill.setReaFee(BigDecimal.valueOf(amount));
 			payBill.setTransactionId(outTradeNo);
 			payBillService.update(payBill);
+			success.add(payBill);
 			try {
 				lock.lock();
 				condition.signalAll();
@@ -223,7 +224,6 @@ public class WeixinPayController extends WeixinBaseController {
 			} finally {
 				lock.unlock();
 			}
-			success.add(payBill);
 		}
 		return "";
 	}
