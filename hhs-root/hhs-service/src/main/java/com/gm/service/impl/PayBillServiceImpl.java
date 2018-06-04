@@ -36,21 +36,16 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 	}
 
 	@Override
-	public void paySuccess(String orderId, Double amount, String outTradeNo) {
-		PayBill payBill = getOne("orderNo", orderId);
-		if (null != payBill) {
-			payBill.setPay(2);
-			payBill.setReaFee(BigDecimal.valueOf(amount));
-			payBill.setTransactionId(outTradeNo);
-			update(payBill);
-			if (payBill.getType() == 1) { // 购买套餐
-				memberService.payMemberSuccess(payBill.getOpenid());
-				logger.info("paySuccess: ================套餐========================");
-			} else if (payBill.getType() == 2) {// 购买商品
-				orderService.payOrderSuccess(payBill.getOrderNo(), payBill);
-				logger.info("paySuccess: ================商品========================");
-			}
-
+	public void paySuccess(PayBill payBill)
+	{
+		if (payBill == null)
+			return;
+		if (payBill.getType() == 1) { // 购买套餐
+			memberService.payMemberSuccess(payBill.getOpenid());
+			logger.info("paySuccess: ================套餐========================");
+		} else if (payBill.getType() == 2) {// 购买商品
+			orderService.payOrderSuccess(payBill.getOrderNo(), payBill);
+			logger.info("paySuccess: ================商品========================");
 		}
 	}
 }

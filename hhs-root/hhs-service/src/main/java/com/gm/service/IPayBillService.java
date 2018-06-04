@@ -10,6 +10,6 @@ import com.gm.base.model.PayBill;
  */
 public interface IPayBillService extends IBaseService<PayBill, Integer> {
 
-	void paySuccess(String orderId, Double amount, String outTradeNo);
+	void paySuccess(PayBill payBill);
 
 }

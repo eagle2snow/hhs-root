@@ -47,9 +47,6 @@ public class WeixinPayController extends WeixinBaseController {
 	@Resource
 	private IPayBillService payBillService;
 
-	@Resource
-	private IMemberService memberService;
-
 	/**
 	 * @Title: prePay   
 	 * @Description: 订单支付前    应该添加个备注字段
@@ -174,10 +171,16 @@ public class WeixinPayController extends WeixinBaseController {
 		Double amount = response2.getOrderAmount();
 		String outTradeNo = response2.getOutTradeNo();
 
-		payBillService.paySuccess(orderId, amount, outTradeNo);
+		PayBill payBill = payBillService.getOne("orderNo", orderId);
+		if (payBill != null) {
+			payBill.setPay(2);
+			payBill.setReaFee(BigDecimal.valueOf(amount));
+			payBill.setTransactionId(outTradeNo);
+			payBillService.update(payBill);
+			payBillService.paySuccess(payBill);
+		}
 
 		return "";
-
 	}
 
 }
