@@ -43,16 +43,15 @@ public class WxMemberAddressController extends WeixinBaseController {
 	
 
 	@RequestMapping("shippingAddress")
-	public String shippingAddressView( ModelMap model) {
-		
-		model.put("list", memberAddressService.listEq("member.id", this.getMid()));
-		logger.info("shippingAddressView: the bean to json is {}.",
-				JSON.toJSONString(memberAddressService.listEq("member.id", this.getMid())));
-
+	public String shippingAddressView( ModelMap model)
+	{
+		Integer id = getMid();
+		logger.info("shippingAddress = " + id);
+		List<MemberAddress> list = memberAddressService.listEq("member.id", id);
+		model.put("list", list);
 		model.put("path", PATH);
 
 		return PATH + "shippingAddress";
-
 	}
 
 	@ResponseBody
