@@ -142,12 +142,49 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return member;
 	}
 
+	private String randNum(int len)
+	{
+		StringBuffer b = new StringBuffer();
+		for (int i = 0; i < len; ++i)
+			b.append(String.valueOf((int) Math.floor(Math.random() * 9 + 1)));
+		return b.toString();
+	}
+
+	private String getGenId(Integer memberId)
+	{
+		if (memberId > 100000)
+			return String.valueOf(memberId * 117 + 6379) + randNum(2);
+		int b1 = 0b1;
+		int b3 = 0b100;
+		int b5 = 0b10000;
+		int b18 = 0b100000000000000000;
+		int id = memberId;
+		if ((b1 & id) > 0)
+			memberId -= b1;
+		else
+			memberId += b1;
+		if ((b3 & id) > 0)
+			memberId -= b3;
+		else
+			memberId += b3;
+		if ((b5 & id) > 0)
+			memberId -= b5;
+		else
+			memberId += b5;
+		if ((b18 & id) > 0)
+			memberId -= b18;
+		else
+			memberId += b18;
+		int f = (int)Math.floor(Math.random() * 9 + 1);
+		return String.valueOf(f) + memberId;
+	}
+
 	@Override
 	public void payMemberSuccess(String openid) {
 		Member member = getOne("openid", openid);
 
 		if (member == null) {
-			logger.info("payMemberSuccess", "member == null");
+			logger.info("payMemberSuccess member == null", "member == null");
 			return;
 		}
 
@@ -160,12 +197,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setLevel(3);
 
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
-			String randomNumbers = RandomUtil.randomNumbers(6);
-			if (randomNumbers.charAt(0) != '0') {
-				member.setGeneralizeId(randomNumbers);
-			} else {
-				member.setGeneralizeId("1" + RandomUtil.randomNumbers(5));
-			}
+			member.setGeneralizeId(getGenId(member.getId()));
 		}
 		if (StringUtils.isEmpty(member.getLove()) || member.getLove() == 0) {
 			member.setLove(1);
