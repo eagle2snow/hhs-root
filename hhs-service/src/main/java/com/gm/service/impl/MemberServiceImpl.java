@@ -289,7 +289,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (StringUtils.isEmpty(member.getReferrerGeneralizeId()))
 			return null;
 		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
-		if (parent != null && parent.getId() == member.getId())
+		if (parent != null && parent.getId().equals(member.getId()))
 			return null;
 		return parent;
 	}
