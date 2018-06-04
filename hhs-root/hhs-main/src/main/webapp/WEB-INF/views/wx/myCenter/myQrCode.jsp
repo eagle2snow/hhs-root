@@ -30,7 +30,7 @@
 				<div class="myqrcodebox">
 					<img src="${curMember.qrCode }" alt="">
 				</div>
-				<div class="ac dtrins">扫描二维码关注【竹语商城】</div>
+				<div class="ac dtrins">分享方式：<br>①直接扫描二维码<br>②长按二维码 -> 发送给朋友</div>
 			</div>
 		</div>
 	</div>
