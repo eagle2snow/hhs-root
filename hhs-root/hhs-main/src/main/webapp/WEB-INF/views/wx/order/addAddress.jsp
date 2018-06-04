@@ -110,7 +110,7 @@
 			},
 			callback : function(res) {
 				if(res.addressId>0){
-				   to('${adp}confirmOrder/${orderId}?addressId='+res.addressId);
+				   to('/wx/order/confirmOrder/${orderId}?addressId='+res.addressId);
 				}else{
 				   alert("添加失败，请认真填写信息");
 				   re();
