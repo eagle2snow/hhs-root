@@ -2,12 +2,18 @@ package com.gm.wx.controller;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gm.utils.cppstl.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -150,6 +156,38 @@ public class WeixinPayController extends WeixinBaseController {
 		return map;
 	}
 
+	private final Lock lock = new ReentrantLock();
+	private final ConcurrentLinkedQueue<PayBill> success = new ConcurrentLinkedQueue<>();
+	private final Condition condition = lock.newCondition();
+
+	@PostConstruct
+	public void init()
+	{
+		new Thread(() -> {
+			for (;;) {
+				try {
+					if (success.isEmpty()) {
+						try {
+							lock.lock();
+							condition.await();
+						} catch (Exception e) {
+							logger.error("condition.await()", e);
+						} finally {
+							lock.unlock();
+						}
+					}
+					if (success.isEmpty())
+						continue;
+					PayBill payBill = success.poll();
+					payBillService.paySuccess(payBill);
+				} catch (Exception e) {
+					logger.error("paysuccess thread", e);
+				}
+			}
+		}).start();
+	}
+
+
 	// 成功支付
 	// produces: 指定返回的内容类型，仅当request请求头中的(Accept)类型中包含该指定类型才返回；
 	@PostMapping(value = "/paySuccess", produces = "text/html;charset=utf-8")
@@ -177,9 +215,16 @@ public class WeixinPayController extends WeixinBaseController {
 			payBill.setReaFee(BigDecimal.valueOf(amount));
 			payBill.setTransactionId(outTradeNo);
 			payBillService.update(payBill);
-			payBillService.paySuccess(payBill);
+			try {
+				lock.lock();
+				condition.signalAll();
+			} catch (Exception e) {
+				logger.error("condition.signalAll", e);
+			} finally {
+				lock.unlock();
+			}
+			success.add(payBill);
 		}
-
 		return "";
 	}
 
