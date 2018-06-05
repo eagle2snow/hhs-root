@@ -75,10 +75,13 @@
 											<th >订单号</th>
 											<!-- <th>名称</th> -->
 											<th>订单状态</th>
+											<th>收货人名字</th>
+											<th>收货人电话</th>
+											<th>收货人地址</th>
 											<th>会员名字</th>
 											<th>订单总额</th>
 											<!-- <th>邮费</th> -->
-											<th>支付方式</th>
+											<!-- <th>支付方式</th> -->
 											<th>用户备注</th>
 											<!-- <th>付款时间</th>
 											<th>发货时间</th>
@@ -131,13 +134,16 @@
 												<c:if test="${model.status == '9'}">订单已退款</c:if>
 												<c:if test="${model.status == '10'}">订单已完成</c:if> --%>
 											 </th>
+											 <th>${model.memberAddress.name}</th>
+											 <th>${model.memberAddress.mobile}</th>
+											 <th>${model.memberAddress.pca} &nbsp; ${model.memberAddress.address}</th>
 											 <th>${model.member.name}</th>
 											
 											 <th>${model.totalMoney}</th>
 											
 											 <%-- <th>${model.postageMoney}</th> --%>
 											
-											 <th>${model.payPathway eq 1 ? "微信":"支付宝"}</th>
+											 <%-- <th>${model.payPathway eq 1 ? "微信":"支付宝"}</th> --%>
 											
 											 <th>${model.orderRemarks}</th>
 											
