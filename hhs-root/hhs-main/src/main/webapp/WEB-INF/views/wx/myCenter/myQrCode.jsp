@@ -71,8 +71,8 @@
                 // wx.hideOptionMenu();
                 wx.onMenuShareTimeline({
                     title: '漓江竹语会员分享',
-                    link: 'http://zhuyu.tiexinxi.cn/${curMember.qrCode }',
-                    imgUrl: 'http://zhuyu.tiexinxi.cn/${curMember.qrCode }',
+                    link: 'http://zhuyu.tiexinxi.cn/wx/myCenter/myQrCode/${curMember.openid }',
+                    imgUrl: 'http://zhuyu.tiexinxi.cn/static/wx/images/icon/20180605125532.png',
                     success: function () { 
                         // 用户确认分享后执行的回调函数
                          alert('分享到朋友圈成功');
@@ -85,8 +85,8 @@
                 wx.onMenuShareAppMessage({
                       title: '漓江竹语会员分享',
                       desc: '好的商品,好的品质,优惠的价格,贴心的服务,快乐购物!!!',
-                      link: 'http://zhuyu.tiexinxi.cn/${curMember.qrCode }',
-                      imgUrl: 'http://zhuyu.tiexinxi.cn/${curMember.qrCode }',
+                      link: 'http://zhuyu.tiexinxi.cn/wx/myCenter/myQrCode/${curMember.openid }',
+                      imgUrl: 'http://zhuyu.tiexinxi.cn/static/wx/images/icon/20180605125532.png',
                       trigger: function (res) {
                         // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
                       },
