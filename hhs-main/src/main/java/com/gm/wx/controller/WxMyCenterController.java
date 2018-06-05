@@ -430,6 +430,24 @@ public class WxMyCenterController extends WeixinBaseController {
 		}
 		return PATH + "myQrCode";
 	}
+	
+	/**
+	 * 
+	 *<p>Title:myQrCode</p>
+	 *<p>Description:分享我的二维码页面</p>
+	 *
+	 * @param map
+	 * @param openid
+	 * @return
+	 */
+	@RequestMapping("myQrCode/{openid}")
+	public String myQrCode(ModelMap map,@PathVariable String openid) {
+		Member one = memberService.getOne("openid", openid);
+		map.put("user",one);
+		map.put("status",1);
+	
+		return PATH + "myQrCode1";
+	}
 
 	// 生成二维码
 	private void genQrCode(HttpSession session, HttpServletRequest request, Member member, String generalizeId) {
