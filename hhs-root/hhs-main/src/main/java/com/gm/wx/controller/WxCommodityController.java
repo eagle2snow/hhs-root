@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.gm.base.consts.Const;
 import com.gm.base.model.Cart;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
@@ -113,7 +114,7 @@ public class WxCommodityController extends WeixinBaseController {
 		Map<String, Object> map = new HashMap<>();
 
 		Member member = WXHelper.getMember(getCurMember());
-
+		getRequest().getSession().setAttribute("curMember",member);
 		Cart cart = cartService.checkCommodityInCart(member.getId(), commodityId);
 		if (cart != null) {
 			cart.setBuyCount(cart.getBuyCount() + 1);
@@ -215,7 +216,6 @@ public class WxCommodityController extends WeixinBaseController {
 	@RequestMapping("/sett")
 	public String sett(ModelMap map) {
 		map.put("path", PATH);
-		
 		return PATH + "confirmOrder";
 	}
 
