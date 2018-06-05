@@ -11,43 +11,43 @@ import javax.persistence.Table;
 @Table(name = "t_member_buy")
 public class MemberBuy extends Model {
 
-	private Member member;
-	private Commodity commodity;
-	private BigDecimal price; // 购买时单价
-	private Integer isReturn;// 是否返佣
+    private Member member;
+    private Commodity commodity;
+    private BigDecimal price; // 购买时单价
+    private Integer isReturn;// 是否返佣
 
-	@ManyToOne
-	public Member getMember() {
-		return member;
-	}
+    @ManyToOne
+    public Member getMember() {
+        return member;
+    }
 
-	public void setMember(Member member) {
-		this.member = member;
-	}
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-	@ManyToOne
-	public Commodity getCommodity() {
-		return commodity;
-	}
+    @ManyToOne
+    public Commodity getCommodity() {
+        return commodity;
+    }
 
-	public void setCommodity(Commodity commodity) {
-		this.commodity = commodity;
-	}
+    public void setCommodity(Commodity commodity) {
+        this.commodity = commodity;
+    }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-	public Integer getIsReturn() {
-		return isReturn;
-	}
+    public Integer getIsReturn() {
+        return isReturn;
+    }
 
-	public void setIsReturn(Integer isReturn) {
-		this.isReturn = isReturn;
-	}
+    public void setIsReturn(Integer isReturn) {
+        this.isReturn = isReturn;
+    }
 
 }

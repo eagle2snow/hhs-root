@@ -82,6 +82,7 @@ public class Member extends Model {
 	@FormField(type = FieldType.NUMBER, label = "爱心扶贫")
 	private Integer love = 0; // 每购买一件商品 爱心扶贫一元 购买套餐视为一件商品
 
+
 	@FormField(type = FieldType.TEXTINPUT, label = "推广费")
 	private BigDecimal generalizeCost = BigDecimal.ZERO;
 
