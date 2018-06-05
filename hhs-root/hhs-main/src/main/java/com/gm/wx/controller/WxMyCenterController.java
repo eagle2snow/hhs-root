@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.enums.OauthScope;
 import com.github.sd4324530.fastweixin.api.enums.QrcodeType;
+import com.github.sd4324530.fastweixin.api.response.GetSignatureResponse;
 import com.github.sd4324530.fastweixin.api.response.QrcodeResponse;
 import com.gm.api.sms.BSSendSms;
 import com.gm.api.wx.WeiXinApi;
@@ -408,11 +409,15 @@ public class WxMyCenterController extends WeixinBaseController {
 	 */
 
 	@RequestMapping("myQrCode")
-	public String myQrCode(HttpSession session, HttpServletRequest request) {
+	public String myQrCode(HttpSession session, HttpServletRequest request,ModelMap map) {
 		Member member = getRealMember();
 		if (!StringUtils.isEmpty(member)) {
 			String generalizeId = member.getGeneralizeId();
 			if (!StringUtil.strNullOrEmpty(generalizeId)) {
+				
+				GetSignatureResponse resp=	WeiXinApi.getJsAPI().getSignature(getDomain()+request.getRequestURI());
+				map.put("resp", resp);
+				
 				if (!StringUtil.strNullOrEmpty(member.getQrCode())) {
 					LocalDateTime lastUpdateQrCode = member.getLastUpdateQrCode();
 					if (null == lastUpdateQrCode || lastUpdateQrCode.plusDays(25).isBefore(LocalDateTime.now())) {
