@@ -219,6 +219,8 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 */
 	List<T> list();
 
+	List<T> list(QueryObj queryObj);
+
 	/**
 	 * 投影查询专用获取全部实体（不包括删除的）
 	 * 
