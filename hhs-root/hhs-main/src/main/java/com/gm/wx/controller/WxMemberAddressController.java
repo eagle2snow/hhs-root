@@ -57,9 +57,16 @@ public class WxMemberAddressController extends WeixinBaseController {
 	@ResponseBody
 	@RequestMapping("editDefaultAddress/{addrId}")
 	public Map<String, Object> editDefaultAddressAction(@PathVariable Integer addrId) {
+		Member member = WXHelper.getMember(getCurMember());
 
-		HashMap<String, Object> map = this.getMap();
+		HashMap<String, Object> map = new HashMap<>();
 		MemberAddress address = memberAddressService.get(addrId);
+
+		if (!address.getMember().getId().equals(member.getId())) {
+			logger.error("!address.getMember().getId().equals(member.getId())");
+			return map;
+		}
+
 		logger.info("editDefaultAddressAction: the MemberAddress to json is {}.",
 				JSON.toJSONString(address));
 
@@ -68,7 +75,7 @@ public class WxMemberAddressController extends WeixinBaseController {
 				JSON.toJSONString(list));
 
 		memberAddressService
-				.updateByHql("update memberAddress addr set addr.defaultAddress = 2 where addr.member.id = 1");
+				.updateByHql("update memberAddress addr set addr.defaultAddress = 2 where addr.member.id = " + member.getId());
 		boolean b = memberAddressService
 				.updateByHql("update memberAddress addr set addr.defaultAddress = 1 where addr.id = " + addrId);
 
