@@ -78,7 +78,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">会员:</label>
 										<div class="col-sm-8">
-											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member" style="border: none;" readonly="readonly">
+											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member" disabled="disabled" style="border: none;" readonly="readonly">
 												<c:forEach items="${memberList}" var="m">
 													<option    ${model.member.id==m.id?'selected':'' }  value="${m.id}">
 														${m.name}
