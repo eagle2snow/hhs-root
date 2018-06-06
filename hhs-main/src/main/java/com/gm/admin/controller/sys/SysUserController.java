@@ -157,36 +157,55 @@ public class SysUserController extends BaseAdminController {
 		}
 	}
 
+	private boolean checkUserNameAndMobile(Map<String, Object> map, User user)
+	{
+		List<User> userMobile = userService.listEq("mobile", user.getMobile());
+		if (userMobile.size() > 1) {
+			for (int i = 0; i < userMobile.size(); ++i) {
+				User one = userMobile.get(i);
+				if (!one.getId().equals(user.getId())) {
+					map.put("status", "此手机号已存在");
+					return false;
+				}
+			}
+		}
+
+		List<User> userName = userService.listEq("username", user.getUsername());
+		if (userName.size() > 1) {
+			for (int i = 0; i < userName.size(); ++i) {
+				User one = userName.get(i);
+				if (!one.getId().equals(user.getId())) {
+					map.put("status", "用户名已存在");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	@RequiresPermissions("admin:sys:user:update")
 	@RequestMapping("update.json")
 	@ResponseBody
-	public Map<String, Object> updateAction(User model, String resStr, String newPass) {
+	public Map<String, Object> updateAction(User myself, String resStr, String newPass)
+	{
 		Map<String, Object> map = new HashMap<>();
 
-		if (userService.go().eq("mobile", model.getMobile()).ne("id", model.getId()).list().size() > 0) {
-			map.put("status", "此手机号已存在");
+		if (!checkUserNameAndMobile(map, myself))
 			return map;
-		}
-
-		if (userService.go().eq("username", model.getUsername()).ne("id", model.getId()).list().size() > 0) {
-			map.put("status", "用户名已存在");
-			return map;
-		}
 
 		if (!StringUtil.strNullOrEmpty(newPass)) {
-			model.setPassword(newPass);
+			myself.setPassword(newPass);
 		}
 
-		if (userService.update(model)) {
-
-			userResService.deleteByParm("user.id", model.getId(), true);
+		if (userService.update(myself)) {
+			userResService.deleteByParm("user.id", myself.getId(), true);
 			if (!StringUtil.strNullOrEmpty(resStr)) {
 				String[] permissionId = resStr.split(",");
 				for (int i = 0; i < permissionId.length; i++) {
 					UserRes userRes = new UserRes();
 					Res res = new Res();
 					res.setId(Integer.valueOf(permissionId[i]));
-					userRes.setUser(model);
+					userRes.setUser(myself);
 					userRes.setRes(res);
 					userResService.add(userRes);
 				}
@@ -202,24 +221,18 @@ public class SysUserController extends BaseAdminController {
 	@RequiresPermissions("admin:sys:user:update")
 	@RequestMapping("updateNoRes.json")
 	@ResponseBody
-	public Map<String, Object> updateNoResAction(User model, String resStr, String newPass) {
+	public Map<String, Object> updateNoResAction(User myself, String newPass)
+	{
 		Map<String, Object> map = new HashMap<>();
 
-		if (userService.go().eq("mobile", model.getMobile()).ne("id", model.getId()).list().size() > 0) {
-			map.put("status", "此手机号已存在");
+		if (!checkUserNameAndMobile(map, myself))
 			return map;
-		}
-
-		if (userService.go().eq("username", model.getUsername()).ne("id", model.getId()).list().size() > 0) {
-			map.put("status", "用户名已存在");
-			return map;
-		}
 
 		if (!StringUtil.strNullOrEmpty(newPass)) {
-			model.setPassword(newPass);
+			myself.setPassword(newPass);
 		}
 
-		if (userService.update(model)) {
+		if (userService.update(myself)) {
 			map.put("status", "ok");
 		} else {
 			map.put("status", "no");

@@ -47,7 +47,11 @@ public class AdminCommodityEvaluationController extends BaseAdminController{
 	public String addView(ModelMap map) {
 		
 		map.put("path", path);
-		map.put("commodityList",commodityService.list());map.put("memberList",memberService.list());map.put("commodityAppraiseList",commodityAppraiseService.list());map.put("userList",userService.list());map.put("orderItemList",orderItemService.list());
+		map.put("commodityList",commodityService.list());
+		map.put("memberList",memberService.list());
+		map.put("commodityAppraiseList",commodityAppraiseService.list());
+		map.put("userList",userService.list());
+		map.put("orderItemList",orderItemService.list());
 		return path + "add";
 	}
 
@@ -72,7 +76,11 @@ public class AdminCommodityEvaluationController extends BaseAdminController{
 		CommodityEvaluation model = commodityEvaluationService.get(id);
 		map.put("path", path);
 		map.put("model", model);
-		map.put("commodityList",commodityService.list());map.put("memberList",memberService.list());map.put("commodityAppraiseList",commodityAppraiseService.list());map.put("userList",userService.list());map.put("orderItemList",orderItemService.list());
+		map.put("commodityList",commodityService.list());
+		map.put("memberList",memberService.list());
+		map.put("commodityAppraiseList",commodityAppraiseService.list());
+		map.put("userList",userService.list());
+		map.put("orderItemList",orderItemService.list());
 		return path + "update";
 	}
 

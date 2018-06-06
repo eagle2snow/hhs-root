@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.gm.base.query.QueryObj;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.springframework.transaction.annotation.Transactional;
@@ -223,15 +224,9 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 * 投影查询专用获取全部实体（不包括删除的）
 	 * 
 	 * @return
+	 * @param queryObj
 	 */
-	List<Map<String, Object>> pqList();
-	
-	/**
-	 * 投影查询专用获取n条数据（不包括删除的）
-	 * 
-	 * @return
-	 */
-	List<Map<String, Object>> pqList(Integer n);
+	List<Map<String, Object>> pqList(QueryObj queryObj);
 
 	/**
 	 * 获取全部实体（包括删除的）
@@ -600,12 +595,7 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 */
 	List<PK> listIdsBySQL(String sql);
 
-	/**
-	 * 清除查询条件
-	 * 
-	 * @return
-	 */
-	IBaseService<T, PK> go();
+
 
 	/**
 	 * 链式调用，根据属性属性值相等查询

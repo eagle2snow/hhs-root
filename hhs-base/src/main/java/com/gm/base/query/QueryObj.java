@@ -10,15 +10,8 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.gm.base.enums.QueryObjEnum;
-import com.gm.base.model.Model;
 
-/**
- * 查询对象
- * 
- * @author ying
- *
- *
- */
+
 @Component
 public class QueryObj {
 
@@ -97,23 +90,28 @@ public class QueryObj {
 		return lkMap;
 	}
 	
-	public void setReList(String p) {
+	public QueryObj setReList(String p) {
 		alias(p);
-		this.reList.add(p);
+		reList.add(p);
+		return this;
 	}
 	
-	public void setEqMap(String p, Object v) {
+	public QueryObj setEqMap(String p, Object v)
+	{
 		alias(p);
 		Map<String,Object> map = new HashMap<>();
 		map.put(p, v);
-		this.eqMap.add(map);
+		eqMap.add(map);
+		return this;
 	}
 
-	public void setNeMap(String p, Object v) {
+	public QueryObj setNeMap(String p, Object v)
+	{
 		alias(p);
 		Map<String,Object> map = new HashMap<>();
 		map.put(p, v);
-		this.neMap.add(map);
+		neMap.add(map);
+		return this;
 	}
 
 	public void setLtMap(String p, Object v) {

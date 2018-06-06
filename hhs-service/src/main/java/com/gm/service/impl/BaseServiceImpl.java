@@ -23,11 +23,10 @@ import com.gm.service.IBaseService;
 
 @Transactional
 public abstract class BaseServiceImpl<T extends Serializable, PK extends Serializable> implements IBaseService<T, PK> {
-	// @Autowired
-	// private HttpSession session;
 
 	@Autowired
-	private QueryObj qeuryObj;
+	private QueryObj queryObj;
+
 	@Autowired
 	private ConObj conObj;
 
@@ -35,50 +34,41 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 
 	public abstract IBaseDao<T, PK> getDao();
 
-	// 清除查询条件，并开启条件查询
-	@Override
-	public BaseServiceImpl<T, PK> go() {
-		this.qeuryObj = new QueryObj();
-		this.conObj = new ConObj();
-		this.query = true;
-		return this;
-	}
-
 	// 链式调用
 	@Override
 	public BaseServiceImpl<T, PK> eq(String p, Object v) {
 		// this.eqMap.put(p, v);
-		qeuryObj.setEqMap(p, v);
+		queryObj.setEqMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> ne(String p, Object v) {
-		qeuryObj.setNeMap(p, v);
+		queryObj.setNeMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> lt(String p, Object v) {
-		qeuryObj.setLtMap(p, v);
+		queryObj.setLtMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> le(String p, Object v) {
-		qeuryObj.setLeMap(p, v);
+		queryObj.setLeMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> gt(String p, Object v) {
-		qeuryObj.setGtMap(p, v);
+		queryObj.setGtMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> ge(String p, Object v) {
-		qeuryObj.setGeMap(p, v);
+		queryObj.setGeMap(p, v);
 		return this;
 	}
 
@@ -86,25 +76,25 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 	public BaseServiceImpl<T, PK> bt(String p, Object start, Object end) {
 		conObj.setStart(start);
 		conObj.setEnd(end);
-		qeuryObj.setBtMap(p, conObj);
+		queryObj.setBtMap(p, conObj);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> lk(String p, Object v) {
-		qeuryObj.setLkMap(p, v);
+		queryObj.setLkMap(p, v);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> pq(String s) {
-		qeuryObj.setReList(s);
+		queryObj.setReList(s);
 		return this;
 	}
 
 	@Override
 	public BaseServiceImpl<T, PK> sort(String p,QueryObjEnum v) {
-		qeuryObj.setSortMap(p, v);
+		queryObj.setSortMap(p, v);
 		return this;
 	}
 
@@ -196,75 +186,40 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 	}
 
 	@Override
-	public List<T> list() {
-		if (query) {
-			List<T> list = getDao().list(qeuryObj);
-			this.qeuryObj = new QueryObj();
-			this.conObj = new ConObj();
-			this.query = false;
-			return list;
-		}
+	public List<T> list()
+	{
 		return getDao().list();
 	}
 
 	@Override
-	public List pqList() {
-		List listMap = new ArrayList<>();
-		if (query) {
-			List<T> list = getDao().list(qeuryObj);
-			List<String> qeuryObjList = qeuryObj.getReList();
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, Object> map = new HashMap<>();
-				Object[] os = null;
-				if (qeuryObjList.size() >= 2) {
-					 os = (Object[]) list.get(i);					
-				}
-				for (int j = 0; j < qeuryObjList.size(); j++) {
-					String key = "";
-
-					if (qeuryObjList.size() >= 2) {	
-						map.put(qeuryObjList.get(j).replace(".", "_"), os[j]);
-					}else {
-						map.put(qeuryObjList.get(j).replace(".", "_"),list.get(i));
-					}
-				}
-				listMap.add(map);
-			}
-			this.qeuryObj = new QueryObj();
-			this.conObj = new ConObj();
-			this.query = false;
-		}
+	public List<Map<String, Object>> pqList(QueryObj queryObj)
+	{
+		List<String> selectedFields = queryObj.getReList();
+		if (selectedFields.size() == 1)
+			return pqListQueryObjReSizeEqOne(queryObj, selectedFields);
+		List<Object[]> list = getDao().list(queryObj);
+		List<Map<String, Object>> listMap = new ArrayList<>();
+		list.forEach(os -> {
+			Map<String, Object> map = new HashMap<>();
+			for (int i = 0; i < selectedFields.size(); i++)
+				map.put(selectedFields.get(i).replace(".", "_"), os[i]);
+			listMap.add(map);
+		});
 		return listMap;
 	}
-	
-	@Override
-	public List pqList(Integer n) {
-		List listMap = new ArrayList<>();
-		if (query) {
-			List<T> list = getDao().list(qeuryObj);
-			List<String> qeuryObjList = qeuryObj.getReList();
-			Integer size = n>list.size()?list.size():n;
-			for (int i = 0; i < size; i++) {
-				Map<String, Object> map = new HashMap<>();
-				Object[] os = null;
-				if (qeuryObjList.size() >= 2) {
-					 os = (Object[]) list.get(i);					
-				}
-				for (int j = 0; j < qeuryObjList.size(); j++) {
-					if (qeuryObjList.size() >= 2) {	
-						map.put(qeuryObjList.get(j).replace(".", "_"), os[j]);
-					}else {
-						map.put(qeuryObjList.get(j).replace(".", "_"),list.get(i));
-					}
-				}
-				listMap.add(map);
-			}
-			this.qeuryObj = new QueryObj();
-			this.conObj = new ConObj();
-			this.query = false;
-		}
-		return listMap;
-	}	
+
+	private List<Map<String, Object>> pqListQueryObjReSizeEqOne(QueryObj queryObj, List<String> selectedFields)
+	{
+		List<Map<String, Object>> results = new ArrayList<>();
+		List<Object> list = getDao().list(queryObj);
+		list.forEach(one -> {
+			Map<String, Object> map = new HashMap<>();
+			for (int i = 0; i < selectedFields.size(); ++i)
+				map.put(selectedFields.get(i).replace(".", "_"), one);
+			results.add(map);
+		});
+		return results;
+	}
 
 	@Override
 	public List<T> listAll() {
@@ -274,7 +229,7 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 	@Override
 	public List<T> list(Integer n) {
 		if (query) {
-			List<T> list = getDao().list(qeuryObj, n);
+			List<T> list = getDao().list(queryObj, n);
 			query = false;
 			return list;
 		}
