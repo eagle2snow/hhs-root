@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -562,15 +561,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
 			one.setBalance(one.getBalance().add(multiply));
 
-			Order order = orderService.getOne("member.id", one.getId());
-			accountBill = new MemberAccountBill();
-			accountBill.setSelfId(one.getId());
-			accountBill.setCreateTime(LocalDateTime.now());
-			accountBill.setType(4); // 提成
-			accountBill.setMoney(multiply);
-			accountBill.setOrderNo(order.getOrderNo());
-			accountBillDao.save(accountBill);
-			dao.update(one);
 		} else {
 			logger.info("MemberServiceImpl NULL pointer");
 		}
@@ -579,8 +569,5 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	}
 
-	@Test
-	public void test() {
-	}
 
 }
