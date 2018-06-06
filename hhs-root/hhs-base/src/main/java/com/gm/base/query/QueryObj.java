@@ -7,12 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
-
 import com.gm.base.enums.QueryObjEnum;
 
-
-@Component
 public class QueryObj {
 
 	// 查询条件 相等
@@ -140,8 +136,6 @@ public class QueryObj {
 		map.put(p, conObj);
 		this.btMap.add(map);
 	}
-
-	
 
 	public void setLkMap(String p, Object v) {
 		alias(p);
