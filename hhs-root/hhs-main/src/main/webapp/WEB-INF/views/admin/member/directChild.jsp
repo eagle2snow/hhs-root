@@ -16,7 +16,7 @@
             <th>性别</th>
             <th>城市</th>
             <th>手机号</th>
-            <th>最后登录时间</th>
+            <!-- <th>最后登录时间</th> -->
         </tr>
         </thead>
 
@@ -28,7 +28,7 @@
                 <td>${one.gender eq 1?'男':(one.gender eq 2?'女':'不详')}</td>
                 <td>${one.city}</td>
                 <td>${one.mobile}</td>
-                <td>${one.loginTime}</td>
+                <%-- <td>${one.loginTime}</td> --%>
             </tr>
         </c:forEach>
         </tbody>
