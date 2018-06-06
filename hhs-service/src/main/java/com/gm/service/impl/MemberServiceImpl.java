@@ -275,8 +275,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 * 返 5 元/人
 	 *
 	 */
-	public void returnFiveMoney(Member member)
-	{
+	public void returnFiveMoney(Member member) {
 		Map<Integer, Integer> memento = new HashMap<>();
 		Set<Integer> visited = new HashSet<>();
 		Set<Integer> added = new HashSet<>();
