@@ -2,14 +2,19 @@ package com.gm.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
-import javax.validation.constraints.NotNull;
 
-import org.apache.http.Consts;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +27,12 @@ import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.api.wx.WeiXinApi;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
+import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.dao.IMemberDao;
 import com.gm.base.dao.ITenReturnOneDao;
-import com.gm.base.dto.SuperTree;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
+import com.gm.base.model.MemberAccountBill;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.base.model.TenReturnOne;
@@ -35,8 +41,6 @@ import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.QRCodeUtils;
-import com.gm.utils.StringUtil;
-import com.xiaoleilu.hutool.util.RandomUtil;
 
 @Transactional
 @Service("memberSercive")
@@ -46,6 +50,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Resource
 	private IMemberDao dao;
+
+	@Autowired
+	private IMemberAccountBillDao accountBillDao;
 
 	@Resource
 	private IOrderItemService orderItemService;
@@ -142,16 +149,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return member;
 	}
 
-	private String randNum(int len)
-	{
+	private String randNum(int len) {
 		StringBuffer b = new StringBuffer();
 		for (int i = 0; i < len; ++i)
 			b.append(String.valueOf((int) Math.floor(Math.random() * 9 + 1)));
 		return b.toString();
 	}
 
-	private String getGenId(Integer memberId)
-	{
+	private String getGenId(Integer memberId) {
 		if (memberId > 100000)
 			return String.valueOf(memberId * 117 + 6379) + randNum(2);
 		int b1 = 0b1;
@@ -175,7 +180,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			memberId -= b18;
 		else
 			memberId += b18;
-		int f = (int)Math.floor(Math.random() * 9 + 1);
+		int f = (int) Math.floor(Math.random() * 9 + 1);
 		return String.valueOf(f) + memberId;
 	}
 
@@ -195,6 +200,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		member.setSetMeal(2);
 		member.setLevel(3);
+
+		MemberAccountBill accountBill = new MemberAccountBill();
+		accountBill.setSelfId(member.getId());
+		accountBill.setType(8); // 8|买套餐
+		accountBill.setMoney(Const.MEMBER_AMOUNT);
+		accountBill.setCreateTime(LocalDateTime.now());
+		accountBillDao.save(accountBill);
 
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
 			member.setGeneralizeId(getGenId(member.getId()));
@@ -226,16 +238,33 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return;
 
 		Member m = member;
+		MemberAccountBill accountBill = new MemberAccountBill();
+		accountBill.setSelfId(m.getId());
+		accountBill.setCreateTime(LocalDateTime.now());
+
 		for (int i = 1; i <= 3; ++i) {
 			m = memberService.getParent(m, 1);
+
 			if (m == null)
 				break;
 			if (i != 2) {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(50)));
+				accountBill.setUpId(m.getId());
+				accountBill.setUpName(m.getName());
+				accountBill.setType(6); // 6|三级分润
+				accountBill.setMoney(BigDecimal.valueOf(50));
+				accountBillDao.save(accountBill);
+
 			} else {
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(60)));
+				accountBill.setUpId(m.getId());
+				accountBill.setUpName(m.getName());
+				accountBill.setType(6); // 6|三级分润
+				accountBill.setMoney(BigDecimal.valueOf(60));
+				accountBillDao.save(accountBill);
+
 			}
 			logger.info(m.getNickname(), m.getGeneralizeCost());
 			dao.update(m);
@@ -252,6 +281,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Set<Integer> visited = new HashSet<>();
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
+
+		MemberAccountBill accountBill = new MemberAccountBill();
+		accountBill.setSelfId(member.getId());
+		accountBill.setCreateTime(LocalDateTime.now());
+
 		boolean gt = false;
 		for (Member current = getParent(member, 1); current != null
 				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
@@ -267,6 +301,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
+
+			accountBill.setUpId(current.getId());
+			accountBill.setUpName(current.getName());
+			accountBill.setType(3); // 3|5元/人
+			accountBill.setMoney(BigDecimal.valueOf(5));
+			accountBillDao.save(accountBill);
+
 			if (current.getLevel() < 4)
 				current.setLevel(4);
 			logger.info(current.getNickname(), current.getGeneralizeCost());
@@ -340,7 +381,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					BigDecimal balance = member.getBalance();
 					if (balance != null && member.getTenReturnOne() != null)
 						member.setBalance(balance.add(one.getThisTimeCommodity().getShowPrice()));
-					logger.info("MemberServiceImpl -> tenReturnOne : balance = {}", member.getBalance());
+
+					MemberAccountBill accountBill = new MemberAccountBill();
+					accountBill.setSelfId(member.getId());
+					accountBill.setType(1); // 1|十返一
+					accountBill.setMoney(balance.add(one.getThisTimeCommodity().getShowPrice()));
+					accountBill.setCreateTime(LocalDateTime.now());
+					accountBillDao.save(accountBill);
+
 					dao.update(member);
 				}
 			}
@@ -366,6 +414,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			if (parent.getSetMeal() != 3) {
 				parent.setBalance(parent.getBalance().add(Const.MEMBER_AMOUNT));
 				parent.setSetMeal(3);
+
+				MemberAccountBill accountBill = new MemberAccountBill();
+				accountBill = new MemberAccountBill();
+				accountBill.setNextId(parent.getId());
+				accountBill.setNextName(parent.getName());
+				accountBill.setType(2); // 2|返套餐
+				accountBill.setMoney(Const.MEMBER_AMOUNT);
+				accountBill.setCreateTime(LocalDateTime.now());
+				accountBillDao.save(accountBill);
+
 				dao.update(parent);
 			}
 		}
@@ -491,22 +549,39 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return member;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gm.service.IMemberService#updateGeneralizeCost(java.lang.String, java.math.BigDecimal)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.gm.service.IMemberService#updateGeneralizeCost(java.lang.String,
+	 * java.math.BigDecimal)
 	 */
 	@Override
 	public void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply) {
 		Member one = dao.getOne("generalizeId", referrerGeneralizeId);
+		MemberAccountBill accountBill = null;
 		if (one != null) {
 			one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
 			one.setBalance(one.getBalance().add(multiply));
+
+			Order order = orderService.getOne("member.id", one.getId());
+			accountBill = new MemberAccountBill();
+			accountBill.setSelfId(one.getId());
+			accountBill.setCreateTime(LocalDateTime.now());
+			accountBill.setType(4); // 提成
+			accountBill.setMoney(multiply);
+			accountBill.setOrderNo(order.getOrderNo());
+			accountBillDao.save(accountBill);
 			dao.update(one);
 		} else {
-			System.out.println("MemberServiceImpl NULL pointer");
+			logger.info("MemberServiceImpl NULL pointer");
 		}
 
-		System.out.println("MemberServiceImpl -> updateGeneralizeCost:" + referrerGeneralizeId + "," + multiply);
+		logger.info("MemberServiceImpl -> updateGeneralizeCost:" + referrerGeneralizeId + "," + multiply);
 
+	}
+
+	@Test
+	public void test() {
 	}
 
 }
