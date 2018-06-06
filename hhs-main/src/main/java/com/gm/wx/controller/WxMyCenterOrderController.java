@@ -123,7 +123,7 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	 */
 	@RequestMapping("pushOrders/{type}")
 	public String pushOrders(ModelMap map, @PathVariable Integer type) {
-		String generalizeId = this.getCurMember().getGeneralizeId();
+		String generalizeId = WXHelper.getMember(getCurMember()).getGeneralizeId();
 		List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
 		List<Order> listEq = new ArrayList<>();
 		for (Member order : list) {
