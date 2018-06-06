@@ -811,9 +811,9 @@ public class BaseDaoImpl<T extends Model, ID extends Serializable> implements IB
 		return createCriteria().add(Restrictions.isNotNull(p)).list();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<T> list(QueryObj queryObj) {
+	public List list(QueryObj queryObj)
+	{
 		return getCriteria(queryObj, 0).list();
 	}
 

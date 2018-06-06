@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.gm.base.model.*;
+import com.gm.base.query.QueryObj;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -292,8 +293,16 @@ public class WxOrderController extends WeixinBaseController {
 			}
 		}
 
-		List<MemberAddress> addressList = memberAddressService.go().pq("id").pq("name").pq("mobile").pq("pca")
-				.pq("address").pq("defaultAddress").eq("member.id", member.getId()).pqList();
+		QueryObj queryObj = new QueryObj();
+		queryObj.setReList("id")
+				.setReList("name")
+				.setReList("mobile")
+				.setReList("pca")
+				.setReList("address")
+				.setReList("defaultAddress")
+				.setEqMap("member.id", member.getId());
+		List<Map<String, Object>> addressList = memberAddressService.pqList(queryObj);
+
 		map.put("addressList", JSON.toJSON(addressList));
 		map.put("order", JSON.toJSON(order));
 		List<OrderItem> items = orderItemService.listEq("order.id", orderId);

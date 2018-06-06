@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gm.base.query.QueryObj;
 
@@ -871,7 +870,7 @@ public interface IBaseDao<T extends Serializable, ID extends Serializable> {
 	 */
 	List<T> listIsNotNull(String p, String token);
 
-	List<T> list(QueryObj queryObj);
+	List list(QueryObj queryObj);
 
 	List<T> list(QueryObj qeuryObj, Integer n);
 
