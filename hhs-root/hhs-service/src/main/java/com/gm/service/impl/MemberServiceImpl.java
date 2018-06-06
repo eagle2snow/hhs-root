@@ -560,7 +560,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (one != null) {
 			one.setGeneralizeCost(one.getGeneralizeCost().add(multiply));
 			one.setBalance(one.getBalance().add(multiply));
-
+			dao.update(one);
 		} else {
 			logger.info("MemberServiceImpl NULL pointer");
 		}
