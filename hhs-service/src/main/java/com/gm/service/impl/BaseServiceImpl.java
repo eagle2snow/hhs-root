@@ -120,6 +120,12 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 	}
 
 	@Override
+	public List<T> list(QueryObj queryObj)
+	{
+		return getDao().list(queryObj);
+	}
+
+	@Override
 	public List<Map<String, Object>> pqList(QueryObj queryObj)
 	{
 		List<String> selectedFields = queryObj.getReList();

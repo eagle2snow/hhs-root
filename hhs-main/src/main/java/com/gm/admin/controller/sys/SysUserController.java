@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gm.base.query.QueryObj;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -159,27 +160,26 @@ public class SysUserController extends BaseAdminController {
 
 	private boolean checkUserNameAndMobile(Map<String, Object> map, User user)
 	{
-		List<User> userMobile = userService.listEq("mobile", user.getMobile());
-		if (userMobile.size() > 1) {
-			for (int i = 0; i < userMobile.size(); ++i) {
-				User one = userMobile.get(i);
-				if (!one.getId().equals(user.getId())) {
-					map.put("status", "此手机号已存在");
-					return false;
-				}
-			}
+		QueryObj queryObj = new QueryObj();
+		queryObj.setEqMap("mobile", user.getMobile())
+			.setNeMap("id", user.getId());
+		List<User> list = userService.list(queryObj);
+
+		if (!list.isEmpty()) {
+			map.put("status", "此手机号已存在");
+			return false;
 		}
 
-		List<User> userName = userService.listEq("username", user.getUsername());
-		if (userName.size() > 1) {
-			for (int i = 0; i < userName.size(); ++i) {
-				User one = userName.get(i);
-				if (!one.getId().equals(user.getId())) {
-					map.put("status", "用户名已存在");
-					return false;
-				}
-			}
+		queryObj = new QueryObj();
+		queryObj.setEqMap("username", user.getUsername())
+				.setNeMap("id", user.getId());
+
+		List<User> list1 = userService.list(queryObj);
+		if (!list1.isEmpty()) {
+			map.put("status", "用户名已存在");
+			return false;
 		}
+
 		return true;
 	}
 
