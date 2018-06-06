@@ -1,10 +1,12 @@
 package com.gm.wx.controller;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gm.base.consts.Const;
+import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.model.Draw;
 import com.gm.base.model.Member;
+import com.gm.base.model.MemberAccountBill;
 import com.gm.service.IDrawService;
 import com.gm.service.IMemberService;
 
@@ -40,6 +44,9 @@ public class WxMyDrawController extends WeixinBaseController {
 
 	@Resource
 	private IMemberService memberService;
+	
+	@Autowired
+	private IMemberAccountBillDao accountBillDao;
 
 	private static final String PATH = "/wx/myCenter/draw/";
 
@@ -86,6 +93,15 @@ public class WxMyDrawController extends WeixinBaseController {
 			map.put("s", -1);// 余额不足
 		} else if (drawService.save(draw)) {
 			member.setBalance(member.getBalance().subtract(draw.getAmount()));
+			
+			MemberAccountBill accountBill = new MemberAccountBill();
+			accountBill.setSelfId(member.getId());
+			accountBill.setCreateTime(LocalDateTime.now());
+			accountBill.setType(9); //9|提现
+			accountBill.setMoney(draw.getAmount());
+			accountBillDao.save(accountBill);
+			
+			
 			memberService.update(member);
 			map.put("s", 1);
 		} else {

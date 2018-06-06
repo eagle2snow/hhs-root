@@ -12,12 +12,14 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
+import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.dao.IOrderDao;
 import com.gm.base.dao.ITenReturnOneDao;
 import com.gm.base.dto.CartDto;
@@ -25,6 +27,7 @@ import com.gm.base.dto.OrderItemDto;
 import com.gm.base.model.Cart;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
+import com.gm.base.model.MemberAccountBill;
 import com.gm.base.model.Order;
 import com.gm.base.model.OrderItem;
 import com.gm.base.model.PayBill;
@@ -42,6 +45,9 @@ import com.xiaoleilu.hutool.util.RandomUtil;
 public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements IOrderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+
+	@Autowired
+	private IMemberAccountBillDao accountBillDao;
 
 	@Resource
 	private ITenReturnOneDao oneDao;
@@ -323,12 +329,21 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			BigDecimal add = consume.add(totalMoney);
 			member.setConsume(add);// 消费额 null?
 
+			MemberAccountBill accountBill = new MemberAccountBill();
+			accountBill.setSelfId(member.getId());
+			accountBill.setCreateTime(LocalDateTime.now());
+			accountBill.setType(7); // 7|买商品
+			accountBill.setMoney(order.getTotalMoney());
+			accountBill.setOrderNo(order.getOrderNo());
+			accountBillDao.save(accountBill);
+
 			if (member.getLevel() == 1) // 如果是访客，升级为普通会员
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
 					(order.getTotalMoney().multiply(Const.pushMoney)));
+
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
