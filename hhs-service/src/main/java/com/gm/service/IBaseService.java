@@ -38,7 +38,6 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 * 新增并返回刚新增数据的Id，功能和addReturnId(T t)一样
 	 * 
 	 * @param t
-	 * @return {@linkplain #addReturnId(Serializable)}
 	 */
 	PK saveReturnId(T t);
 
@@ -234,15 +233,6 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 * @return
 	 */
 	List<T> listAll();
-
-	/**
-	 * 获取n条数据，默认按id倒序排序
-	 * 
-	 * @param n
-	 *            限定条数
-	 * @return
-	 */
-	List<T> list(Integer n);
 
 	/**
 	 * 根据属性和属性值查询
@@ -595,95 +585,6 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 */
 	List<PK> listIdsBySQL(String sql);
 
-
-
-	/**
-	 * 链式调用，根据属性属性值相等查询
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            属性值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> eq(String p, Object v);
-
-	/**
-	 * 链式调用，查询指定属性的值在某个范围的数据
-	 * 
-	 * @param p
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> bt(String p, Object start, Object end);
-
-	/**
-	 * 链式调用，查询指定属性的值大于或等于给定的值的数据
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            给定的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> ge(String p, Object v);
-
-	/**
-	 * 链式调用，查询指定属性的值大于给定的值的数据
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            给定的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> gt(String p, Object v);
-
-	/**
-	 * 链式调用，查询指定属性的值小于或等于给定的值的数据
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            给定的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> le(String p, Object v);
-
-	/**
-	 * 链式调用，查询指定属性的值小于给定的值的数据
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            给定的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> lt(String p, Object v);
-
-	/**
-	 * 链式调用，查询指定属性的值不等于给定的值的数据
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            给定的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> ne(String p, Object v);
-
-	/**
-	 * 链式调用，根据指定属性模糊查询
-	 * 
-	 * @param p
-	 *            属性名
-	 * @param v
-	 *            待匹配的值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> lk(String p, Object v);
-
 	/**
 	 * 获取Session
 	 * 
@@ -711,22 +612,6 @@ public interface IBaseService<T extends Serializable, PK extends Serializable> {
 	 * @return
 	 */
 	boolean exist(String p, String v, Integer storeId);
-
-	/**
-	 * 返回指定数据集
-	 * 
-	 * @param s
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> pq(String s);
-	
-	/**
-	 * 排序list
-	 * @param p 属性名 
-	 * @param v 属性值
-	 * @return
-	 */
-	BaseServiceImpl<T, PK> sort(String p,QueryObjEnum v);
 
 	/**
 	 * 根据属性和属性值查询,并根据条件排序

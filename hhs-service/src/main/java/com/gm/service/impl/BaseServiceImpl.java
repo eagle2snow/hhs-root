@@ -24,79 +24,7 @@ import com.gm.service.IBaseService;
 @Transactional
 public abstract class BaseServiceImpl<T extends Serializable, PK extends Serializable> implements IBaseService<T, PK> {
 
-	@Autowired
-	private QueryObj queryObj;
-
-	@Autowired
-	private ConObj conObj;
-
-	private boolean query = false;
-
 	public abstract IBaseDao<T, PK> getDao();
-
-	// 链式调用
-	@Override
-	public BaseServiceImpl<T, PK> eq(String p, Object v) {
-		// this.eqMap.put(p, v);
-		queryObj.setEqMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> ne(String p, Object v) {
-		queryObj.setNeMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> lt(String p, Object v) {
-		queryObj.setLtMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> le(String p, Object v) {
-		queryObj.setLeMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> gt(String p, Object v) {
-		queryObj.setGtMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> ge(String p, Object v) {
-		queryObj.setGeMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> bt(String p, Object start, Object end) {
-		conObj.setStart(start);
-		conObj.setEnd(end);
-		queryObj.setBtMap(p, conObj);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> lk(String p, Object v) {
-		queryObj.setLkMap(p, v);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> pq(String s) {
-		queryObj.setReList(s);
-		return this;
-	}
-
-	@Override
-	public BaseServiceImpl<T, PK> sort(String p,QueryObjEnum v) {
-		queryObj.setSortMap(p, v);
-		return this;
-	}
 
 	@Override
 	public boolean add(T t) {
@@ -224,16 +152,6 @@ public abstract class BaseServiceImpl<T extends Serializable, PK extends Seriali
 	@Override
 	public List<T> listAll() {
 		return getDao().listAll();
-	}
-
-	@Override
-	public List<T> list(Integer n) {
-		if (query) {
-			List<T> list = getDao().list(queryObj, n);
-			query = false;
-			return list;
-		}
-		return getDao().list(n);
 	}
 
 	@Override
