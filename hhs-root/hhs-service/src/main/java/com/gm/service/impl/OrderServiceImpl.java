@@ -344,6 +344,14 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
 					(order.getTotalMoney().multiply(Const.pushMoney)));
 
+			accountBill = new MemberAccountBill();
+			accountBill.setSelfId(member.getId());
+			accountBill.setCreateTime(LocalDateTime.now());
+			accountBill.setType(4); // 提成
+			accountBill.setMoney((order.getTotalMoney().multiply(Const.pushMoney)));
+			accountBill.setOrderNo(order.getOrderNo());
+			accountBillDao.save(accountBill);
+
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
