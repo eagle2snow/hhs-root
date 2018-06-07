@@ -84,6 +84,7 @@
 											<th>重量</th>
 											<th>体积</th>
 											<th>规格</th>
+											<th>提成(元)</th>
 											<th width="130">创建时间</th>
 											<th width="100">状态</th>
 											<th width="150">详情 | 编辑 | 删除</th>
@@ -141,6 +142,8 @@
 											 <th>${model.defaultBulk}</th>
 											 
 											 <th>${model.specifications}</th>
+											 
+											 <th>${model.extract}</th>
 											
 											<td><javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 											<td class="td-status">

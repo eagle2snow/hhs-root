@@ -451,7 +451,14 @@
 								</div>
 			                
 			                
-			                
+			                <div class="form-group">
+										<label class="col-sm-2 control-label">提成(元):</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" value="${model.extract}"
+								        	placeholder="提成" id="extract" name="extract" 
+								        	style="border: none;" readonly="readonly"/>
+										</div>
+								</div>
 							
 							
 							
