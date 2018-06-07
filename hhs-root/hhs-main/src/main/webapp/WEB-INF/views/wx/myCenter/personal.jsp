@@ -191,22 +191,21 @@
 		var referrerGeneralizeId = $("input[ name='referrerGeneralizeId' ] ").val()
 		
 		$.getJSON("${adp}editReferrerAction/"+referrerGeneralizeId,
-			function(date) {
-				if (date.s == "1")
-					$.alert("推广码有误，请检查!");
-				else if (date.s == "2")
-					$.alert("不存在推荐人，请重新更改!");
-				else if(date.s == "3")
-					$.alert("推荐人只能修改一次，请勿重复修改!");
-				else if(date.s == "4")
-					$.alert("推荐人不可以是自己!");
-				else if (date.s == "5")
-					$.alert("推荐关系是环形！请重新选择！");
-				else if (date.s == "6")
+		function(date) {
+			if (date.s == "1")
+                    $.alert("推广码有误，请检查!");
+                else if (date.s == "2")
+                    $.alert("不存在推荐人，请重新更改!");
+                else if(date.s == "3")
+                    $.alert("推荐人只能修改一次，请勿重复修改!");
+                else if(date.s == "4")
+                    $.alert("推荐人不可以是自己!");
+                else if (date.s == "5")
+                    $.alert("推荐关系是环形！请重新选择！");
+                else if (date.s == "6")
                     $.alert("推荐关系是环形　请重新选择！");
-				else if (date.s == "7")
-                    $.alert("更改完成!");
-				re();
+                else if (date.s == "7")
+                    re()		
 		});
 	}
 	
