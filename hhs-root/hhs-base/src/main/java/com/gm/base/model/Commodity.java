@@ -88,7 +88,23 @@ public class Commodity extends Model {
 	@FormField(label = "规格", type = FieldType.TEXTINPUT)
 	private String specifications;
 	
+	@FormField(label = "提成", type = FieldType.NUMBER)
+	private BigDecimal extract = BigDecimal.ZERO;
 	
+	/**
+	 * @return the extract
+	 */
+	public BigDecimal getExtract() {
+		return extract;
+	}
+
+	/**
+	 * @param extract the extract to set
+	 */
+	public void setExtract(BigDecimal extract) {
+		this.extract = extract;
+	}
+
 	@ManyToOne
 	public CommodityClass getCommodityClass() {
 		return commodityClass;
