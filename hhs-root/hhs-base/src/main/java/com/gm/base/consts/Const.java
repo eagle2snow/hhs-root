@@ -46,12 +46,29 @@ public class Const {
 	// 以下为系统需要的其他常量
 	public static final String verificationCode2Session = "";// 验证码
 	
-
-	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);// 会员套餐价格，單位（元）
-	public static final Integer directMember = 10;						  // 直推人数
-	public static final Integer betweenMember = 100;					    // 直系人数
-	public static final BigDecimal discount = BigDecimal.valueOf(0.8);	    // 折扣数
-	public static final BigDecimal pushMoney = BigDecimal.valueOf(0.01);   // 提成
-	public static final Integer returnOne= 10;							    // 十件商品返一件
+	/**
+	 * 购买会员套餐单价（元）
+	 */
+	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);
+	/**
+	 * 直推人数
+	 */
+	public static final Integer directMember = 2;						   
+	/**
+	 * 直系人数
+	 */
+	public static final Integer betweenMember = 5;					   
+	/**
+	 * 购买会员套餐后打折比
+	 */
+	public static final BigDecimal discount = BigDecimal.valueOf(0.8);	   
+	/**
+	 * 购买商品返上家提成
+	 */
+	public static final BigDecimal pushMoney = BigDecimal.valueOf(0.01);   
+	/**
+	 * 商品十返一
+	 */
+	public static final Integer returnOne= 10;							   
 
 }
