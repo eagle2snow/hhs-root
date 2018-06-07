@@ -319,9 +319,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
+			BigDecimal extract = BigDecimal.ZERO;
 			if (listEq != null) {
-				for (OrderItem item : listEq)
+				for (OrderItem item : listEq) {
+					extract = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
 					size += item.getBuyCount();
+				}
 			}
 			member.setLove(member.getLove() + size);// 爱心资助
 			BigDecimal consume = member.getConsume();
@@ -341,17 +344,28 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
-			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().multiply(Const.pushMoney)));
+			/*memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+					(order.getTotalMoney().multiply(Const.pushMoney)));*/
+			//返提成给上，上上，上上上家
+			Member m = member;
+			accountBill=null;
+			for (int i = 1; i <= 3; ++i) {
+				m = memberService.getParent(m, 1);
 
-			accountBill = new MemberAccountBill();
-			accountBill.setSelfId(member.getId());
-			accountBill.setCreateTime(LocalDateTime.now());
-			accountBill.setType(4); // 提成
-			accountBill.setMoney((order.getTotalMoney().multiply(Const.pushMoney)));
-			accountBill.setOrderNo(order.getOrderNo());
-			accountBillDao.save(accountBill);
+				if (m == null)
+					break;
+					m.setBalance(m.getBalance().add(extract));
+					m.setGeneralizeCost(m.getGeneralizeCost().add(extract));
+					accountBill.setUpId(m.getId());
+					accountBill.setUpName(m.getName());
+					accountBill.setType(4); // 4|提成
+					accountBill.setMoney(extract);
+					accountBill.setSelfId(member.getId());
+					accountBillDao.save(accountBill);
+					memberService.update(m);
 
+			}
+			
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
