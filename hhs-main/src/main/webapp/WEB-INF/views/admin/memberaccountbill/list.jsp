@@ -37,10 +37,10 @@
 										<div class="cl pd-5 bg-1 bk-gray mt-20">
 											<span class="l"><a href="javascript:;"
 												onclick="delByIds('${adp}')" class="btn btn-danger radius"><i
-													class="glyphicon glyphicon-trash"></i> 批量删除</a> <button
+													class="glyphicon glyphicon-trash"></i> 批量删除</a> <%-- <button
 													onclick="openPerRe('添加',90,90,'${adp}add.htm')"
 												class="btn btn-primary radius"><i class="glyphicon glyphicon-plus"></i>
-													添加</button></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
+													添加</button> --%></span> <span class="r">共有数据：<strong id="count">${page.count}</strong> 条
 											</span>
 										</div>
 									</div>
@@ -64,15 +64,16 @@
 									
 										<tr>
 											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
-											<th width="40">ID</th>
-											<th>会员</th>
+											<!-- <th width="40">ID</th> -->
+											<th>会员ID</th>
+											<th>上下家ID</th>
 											<th>订单</th>
 											<th>类型</th>
 											<th>金额</th>
-											<th>备注</th>
+											<!-- <th>备注</th> -->
 											<th width="130">创建时间</th>
 											<th width="100">状态</th>
-											<th width="100">操作</th>
+											<th width="50">操作</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -80,13 +81,21 @@
 										<c:forEach items="${page.list}" var="model">
 										<tr>
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
-											<td>${model.id}</td>
+											<%-- <td>${model.id}</td> --%>
+											<td>${model.selfId}</td>
 											
 											
 											
-											 <th>${model.member.name}</th>
+											 <th>
+											   <%--  <c:if test="${not empty model.upId}">${model.upId}:上家</c:if> --%>
+											    ${model.upId}
+											    <%-- ${model.upName} --%>
+											   <%--  <c:if test="${not empty model.nextId}">${model.nextId}:下家</c:if> --%>
+											    ${model.nextId}
+											 	<%-- ${model.nextName} --%>
+											 </th>
 											
-											 <th>${model.order.orderNo}</th>
+											 <th>${model.orderNo}</th>
 											 <th> 
 											 	<c:if test="${model.type == 1}">十返一</c:if>
 											 	<c:if test="${model.type == 2}">返套餐</c:if>
@@ -111,7 +120,7 @@
 											 	<c:if test="${model.type == 9}">-${model.money}</c:if>
 											 </th>
 											
-											 <th>${model.remark}</th>
+											 <%-- <th>${model.remark}</th> --%>
 											
 											<td><javatime:format value="${model.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 											<td class="td-status">
@@ -123,7 +132,7 @@
 														</div>
 											</td>
 											<td>
-												<button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button>
+												<%-- <button onclick="edit(${model.id})"  class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-pencil" title="修改"></i></button> --%>
 												<button onclick="del(${model.id})" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-trash" title="删除"></i></button>
 											</td>
 										</tr>
