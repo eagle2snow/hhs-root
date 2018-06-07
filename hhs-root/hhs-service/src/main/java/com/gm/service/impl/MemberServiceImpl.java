@@ -414,7 +414,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				parent.setSetMeal(3);
 
 				MemberAccountBill accountBill = new MemberAccountBill();
-				accountBill = new MemberAccountBill();
 				accountBill.setNextId(parent.getId());
 				accountBill.setNextName(parent.getName());
 				accountBill.setType(2); // 2|返套餐
