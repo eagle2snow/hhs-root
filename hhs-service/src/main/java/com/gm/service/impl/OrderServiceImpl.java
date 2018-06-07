@@ -348,15 +348,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					(order.getTotalMoney().multiply(Const.pushMoney)));*/
 			//返提成给上，上上，上上上家
 			Member m = member;
-			accountBill=null;
 			for (int i = 1; i <= 3; ++i) {
 				m = memberService.getParent(m, 1);
 
 				if (m == null)
 					break;
+				    accountBill = new MemberAccountBill();
 					m.setBalance(m.getBalance().add(extract));
 					m.setGeneralizeCost(m.getGeneralizeCost().add(extract));
-					accountBill.setUpId(m.getId());
+					accountBill.setUpId(m.getId().intValue());
 					accountBill.setUpName(m.getName());
 					accountBill.setType(4); // 4|提成
 					accountBill.setMoney(extract);
