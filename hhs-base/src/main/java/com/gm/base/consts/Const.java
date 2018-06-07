@@ -71,4 +71,5 @@ public class Const {
 	 */
 	public static final Integer returnOne= 10;							   
 
+    public static final String KEY = null;
 }
