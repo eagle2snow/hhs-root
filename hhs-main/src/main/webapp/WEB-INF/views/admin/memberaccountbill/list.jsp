@@ -100,8 +100,7 @@
 											 	<c:if test="${model.type == 1}">十返一</c:if>
 											 	<c:if test="${model.type == 2}">返套餐</c:if>
 											 	<c:if test="${model.type == 3}">5元/人</c:if>
-											 	<c:if test="${model.type == 4}">一级分润</c:if>
-											 	<c:if test="${model.type == 5}">二级分润</c:if>
+											 	<c:if test="${model.type == 4}">提成</c:if>
 											 	<c:if test="${model.type == 6}">三级分润</c:if>
 											 	<c:if test="${model.type == 7}">买商品</c:if>
 											 	<c:if test="${model.type == 8}">买套餐</c:if>
@@ -113,7 +112,6 @@
 											 	<c:if test="${model.type == 2}">+${model.money}</c:if>
 											 	<c:if test="${model.type == 3}">+${model.money}</c:if>
 											 	<c:if test="${model.type == 4}">+${model.money}</c:if>
-											 	<c:if test="${model.type == 5}">+${model.money}</c:if>
 											 	<c:if test="${model.type == 6}">+${model.money}</c:if>
 											 	<c:if test="${model.type == 7}">-${model.money}</c:if>
 											 	<c:if test="${model.type == 8}">-${model.money}</c:if>
