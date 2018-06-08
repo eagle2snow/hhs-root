@@ -122,8 +122,10 @@ public class WxCommodityCommentsController extends WeixinBaseController {
     @ResponseBody
     public String confirmComments(HttpServletRequest request, String xx, String text, Integer commodityid, Integer orderid)
     {
-        if (!(request instanceof AbstractMultipartHttpServletRequest))
-            return "no";
+        if (!(request instanceof AbstractMultipartHttpServletRequest)) {
+        	logger.error("request instanceof AbstractMultipartHttpServletRequest");
+			return "no";
+		}
 
         OrderItem orderItem = itemService.getOne("id", orderid);
         if ("1".equals(orderItem.getAppraise()))
