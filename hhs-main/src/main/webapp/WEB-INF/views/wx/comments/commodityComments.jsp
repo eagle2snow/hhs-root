@@ -76,8 +76,6 @@
         </div>
     </form>
 
-
-
     <div>
         <img id="img1" hidden="hidden">
         <img id="img2" hidden="hidden">
