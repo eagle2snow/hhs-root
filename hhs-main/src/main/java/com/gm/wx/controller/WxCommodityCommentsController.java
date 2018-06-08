@@ -167,7 +167,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
             MultipartFile value = file.getValue();
             String fileName;
             if (File.separator.equals("/"))
-                fileName = "/usr/static/comment/" + order.getId() + "_" + i;
+                fileName = "/usr/static/comment/" + order.getId() + "_" + i++;
             else
                 fileName = "D://123" + i++ + ".pic"; // windows 测试用
             File newFile = new File(fileName);
