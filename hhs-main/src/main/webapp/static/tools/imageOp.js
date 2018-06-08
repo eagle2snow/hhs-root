@@ -17,7 +17,6 @@ function photoCompress(file, w, objDiv) {
         canvasDataURL(re, w, objDiv)
     }
 }
-
 function canvasDataURL(path, obj, callback) {
     var img = new Image();
     img.src = path;
@@ -47,10 +46,12 @@ function canvasDataURL(path, obj, callback) {
 }
 
 function convertBase64UrlToBlob(urlData) {
-    var arr = urlData.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], {type: mime});
+    let arr = urlData.split(',')
+    let mime = arr[0].match(/:(.*?);/)[1]
+    let bstr = atob(arr[1])
+    let n = bstr.length
+    let u8arr = new Uint8Array(n)
+    while (n--)
+        u8arr[n] = bstr.charCodeAt(n)
+    return new Blob([u8arr], {type: mime})
 }

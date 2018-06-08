@@ -114,7 +114,7 @@
             input.change(function() {
                 const len = this.files.length
                 if (len + imgCount > 5) {
-                    alert("最多只能上传5张图片!")
+                    $.alert("最多只能上传5张图片!")
                     return
                 }
                 for (let i = 1; i <= len; ++i) {
