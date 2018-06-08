@@ -131,8 +131,7 @@
         })
     });
 
-    function makePromise(file, form) {
-        let i = 1
+    function makePromise(file, form, ith) {
         return new Promise((resolve) => {
             const fileSize = file.size / 1024
             if (fileSize > 2048) {
@@ -140,13 +139,11 @@
                     quality: 0.2
                 }, function (base64Codes) {
                     const compressed = convertBase64UrlToBlob(base64Codes)
-                    form.append("file[]" + i, compressed, "compressed.jpg" + i);
-                    ++i
+                    form.append("file[]" + ith, compressed, ith);
                     resolve()
                 })
             } else {
-                form.append("file[]" + i, file, "orginal.jpg" + i)
-                ++i
+                form.append("file[]" + ith, file, ith)
                 resolve()
             }
         })
@@ -164,7 +161,7 @@
         for (let i = 1; i <= 5; ++i) {
             const files = document.getElementById("upload" + i).files
             for (let j = 0; j < files.length; ++j)
-                promises.push(makePromise(files[j], form))
+                promises.push(makePromise(files[j], form, i * 100 + j))
         }
 
         form.append("xx", a)
