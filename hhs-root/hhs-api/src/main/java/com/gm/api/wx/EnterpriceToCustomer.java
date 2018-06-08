@@ -1,4 +1,4 @@
-﻿package com.gm.api.wx;
+package com.gm.api.wx;
 
 import java.util.Map;
 import java.util.SortedMap;
