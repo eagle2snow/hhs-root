@@ -357,11 +357,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					m.setBalance(m.getBalance().add(extract));
 					m.setGeneralizeCost(m.getGeneralizeCost().add(extract));
 					accountBill.setUpId(m.getId().intValue());
-					accountBill.setUpName(m.getName());
+					accountBill.setUpName(m.getNickname());
 					accountBill.setType(4); // 4|提成
 					accountBill.setMoney(extract);
 					accountBill.setSelfId(member.getId());
-					accountBill.setSelfName(member.getName());
+					accountBill.setSelfName(member.getNickname());
 					accountBillDao.save(accountBill);
 					memberService.update(m);
 
