@@ -237,16 +237,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return;
 
 		Member m = member;
-		MemberAccountBill accountBill = new MemberAccountBill();
-		accountBill.setSelfId(m.getId());
-		accountBill.setCreateTime(LocalDateTime.now());
-
 		for (int i = 1; i <= 3; ++i) {
 			m = memberService.getParent(m, 1);
 
 			if (m == null)
 				break;
 			if (i != 2) {
+				MemberAccountBill accountBill = new MemberAccountBill();
+				accountBill.setSelfId(member.getId());
+				accountBill.setSelfName(member.getNickname());
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(50)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(50)));
 				accountBill.setUpId(m.getId());
@@ -256,6 +255,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				accountBillDao.save(accountBill);
 
 			} else {
+				MemberAccountBill accountBill = new MemberAccountBill();
+				accountBill.setSelfId(member.getId());
+				accountBill.setSelfName(member.getNickname());
 				m.setGeneralizeCost(m.getGeneralizeCost().add(BigDecimal.valueOf(60)));
 				m.setBalance(m.getBalance().add(BigDecimal.valueOf(60)));
 				accountBill.setUpId(m.getId());
@@ -280,10 +282,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
 
-		MemberAccountBill accountBill = new MemberAccountBill();
-		accountBill.setSelfId(member.getId());
-		accountBill.setCreateTime(LocalDateTime.now());
-
 		boolean gt = false;
 		for (Member current = getParent(member, 1); current != null
 				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
@@ -300,8 +298,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
 
+			MemberAccountBill accountBill = new MemberAccountBill();
+			accountBill.setSelfId(member.getId());
+			accountBill.setSelfName(member.getNickname());
 			accountBill.setUpId(current.getId());
-			accountBill.setUpName(current.getName());
+			accountBill.setUpName(current.getNickname());
 			accountBill.setType(3); // 3|5元/人
 			accountBill.setMoney(BigDecimal.valueOf(5));
 			accountBillDao.save(accountBill);
@@ -384,7 +385,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					accountBill.setSelfId(member.getId());
 					accountBill.setType(1); // 1|十返一
 					accountBill.setMoney(balance.add(one.getThisTimeCommodity().getShowPrice()));
-					accountBill.setCreateTime(LocalDateTime.now());
 					accountBillDao.save(accountBill);
 
 					dao.update(member);
@@ -411,14 +411,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (children != null && children.size() >= Const.directMember) {
 			if (parent.getSetMeal() != 3) {
 				parent.setBalance(parent.getBalance().add(Const.MEMBER_AMOUNT));
+				parent.setGeneralizeCost(parent.getGeneralizeCost().add(Const.MEMBER_AMOUNT));
 				parent.setSetMeal(3);
 
 				MemberAccountBill accountBill = new MemberAccountBill();
-				accountBill.setNextId(parent.getId());
-				accountBill.setNextName(parent.getName());
+				accountBill.setSelfId(parent.getId());
 				accountBill.setType(2); // 2|返套餐
 				accountBill.setMoney(Const.MEMBER_AMOUNT);
-				accountBill.setCreateTime(LocalDateTime.now());
 				accountBillDao.save(accountBill);
 
 				dao.update(parent);
