@@ -22,7 +22,7 @@ public class MemberAccountBill extends Model {
 	private Integer selfId;
 	
 	@FormField(type = FieldType.TEXTINPUT, label = "自己昵称")
-	private Integer selfName;
+	private String selfName;
 
 	@FormField(type = FieldType.TEXTINPUT, label = "上家ID")
 	private Integer upId;
