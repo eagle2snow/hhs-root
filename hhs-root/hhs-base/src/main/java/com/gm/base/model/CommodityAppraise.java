@@ -55,6 +55,18 @@ public class CommodityAppraise extends Model {
 	}
 	
 	/**
+	 * @return the imgeList
+	 */
+	public String getImgeList() {
+		return imgeList;
+	}
+	/**
+	 * @param imgeList the imgeList to set
+	 */
+	public void setImgeList(String imgeList) {
+		this.imgeList = imgeList;
+	}
+	/**
 	 * @return the replyTime
 	 */
 	public Date getReplyTime() {
