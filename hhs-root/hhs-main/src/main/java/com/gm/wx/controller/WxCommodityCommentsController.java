@@ -116,26 +116,6 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		return PATH + "commodityComments";
 	}
 
-	//@RequestMapping("uploadFile")
-	public String uploadFile(@RequestParam(value = "uploadFile") MultipartFile image, Integer orderId)
-	{
-		if (orderId == null)
-			return "redirect:/error/404";
-        try {
-            if (File.separator.equals("/")) {
-            	String fileName = String.format("/usr/static/comment/%s%s", orderId, image.getName());
-                File file = new File(fileName);
-                image.transferTo(file);
-            } else
-                logger.error("windows platform");
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("uploadFile error", e);
-            return "redirect:../commentFailure/" + orderId;
-        }
-        return "redirect:../commentSucceed";
-	}
-
 	@RequestMapping(value = "/confirmComments", method = RequestMethod.POST)
     @ResponseBody
     public String confirmComments(HttpServletRequest request, String xx, String text, Integer commodityid, Integer orderid)
