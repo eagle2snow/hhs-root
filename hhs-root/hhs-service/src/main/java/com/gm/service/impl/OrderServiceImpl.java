@@ -361,6 +361,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					accountBill.setType(4); // 4|提成
 					accountBill.setMoney(extract);
 					accountBill.setSelfId(member.getId());
+					accountBill.setSelfName(member.getName());
 					accountBillDao.save(accountBill);
 					memberService.update(m);
 
