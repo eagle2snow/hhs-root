@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.gm.base.model.*;
 import com.gm.utils.StringUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,13 +145,15 @@ public class WxCommodityCommentsController extends WeixinBaseController {
             logger.error("fileMap.entrySet().size() > 5");
             return "no";
         }
-        for (Map.Entry<String, MultipartFile> file : fileMap.entrySet()) {
+		JSONArray objects = new JSONArray();
+		for (Map.Entry<String, MultipartFile> file : fileMap.entrySet()) {
             MultipartFile value = file.getValue();
             String fileName;
             if (File.separator.equals("/"))
                 fileName = "/usr/static/comment/" + order.getId() + "_" + i++;
             else
                 fileName = "D://123" + i++ + ".pic"; // windows 测试用
+			objects.put(fileName);
             File newFile = new File(fileName);
             try {
                 value.transferTo(newFile);
@@ -164,6 +168,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
         t.setOrderItem(orderItem);
         t.setMember(member);
         t.setCommodity(commodity);
+        t.setImgeList(objects.toString());
 
         if (appraiseService.save(t)) {
             if (commodity.getComment() != null)
