@@ -173,7 +173,6 @@
         form.append("orderid", $("#orderid").html())
         form.append("commodityid", $("#commodityid").html())
         Promise.all(promises).then(() => {
-            alert("是否开始上传文件")
             $.ajax({
                 url : "${ctx}wx/comments/confirmComments",
                 type : 'POST',
