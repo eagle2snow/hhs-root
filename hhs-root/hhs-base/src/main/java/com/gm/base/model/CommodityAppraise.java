@@ -35,7 +35,10 @@ public class CommodityAppraise extends Model {
 	
 	@FormField(label = "星级", type = FieldType.TEXTINPUT)
 	private String starLevel;
-	 
+	
+	@FormField(type = FieldType.PICTURELIST, label = "评价图片列表")
+	private String imgeList;
+	
 	@FormField(label = "管理员回复", sort = 100, type = FieldType.EDITOR)
 	@Verification()
 	private String replyDeails;
