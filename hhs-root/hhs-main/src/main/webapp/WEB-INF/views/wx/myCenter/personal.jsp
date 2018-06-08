@@ -130,7 +130,7 @@
 	<nav class="fnavlist">
 		<a href="${ctx}wx/index" class="fnavitem">首页</a> <a
 			href="${ctx}wx/commodity/showCart" class="cart fnavitem">购物车</a> <a
-			href="${ctx}wx/myCenter/index?fuck" class="on user fnavitem">个人中心</a>
+			href="${ctx}wx/myCenter/index" class="on user fnavitem">个人中心</a>
 	</nav>
 	
 	
@@ -165,6 +165,7 @@
 			</div>
 		</div>
 	</div>
+	<a id="alink" href="${ctx}/wx/myCenter/index" style = "visibility: hidden;"/>
 	<!-- cpop -->
 
 	<%@ include file="/common/wx/js.jsp"%>
@@ -204,8 +205,9 @@
                     $.alert("推荐关系是环形！请重新选择！");
                 else if (date.s == "6")
                     $.alert("推荐关系是环形　请重新选择！");
-                else if (date.s == "7")
-                    re()		
+                else if (date.s == "7")           
+                	document.getElementById("alink").click();
+            	   	
 		});
 	}
 	
