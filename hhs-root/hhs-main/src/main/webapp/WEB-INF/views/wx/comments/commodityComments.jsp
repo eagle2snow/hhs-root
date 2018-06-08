@@ -85,11 +85,11 @@
     </div>
     <img src="/static/wx/images/icon/cam.png" alt="  " id="cam">
     <div>
-        <input id="upload1" name="file" accept="image/*" type="file" multiple="multiple" style="display: none">
-        <input id="upload2" name="file" accept="image/*" type="file" multiple="multiple" style="display: none">
-        <input id="upload3" name="file" accept="image/*" type="file" multiple="multiple" style="display: none">
-        <input id="upload4" name="file" accept="image/*" type="file" multiple="multiple" style="display: none">
-        <input id="upload5" name="file" accept="image/*" type="file" multiple="multiple" style="display: none">
+        <input id="upload1" name="file" accept="image/*" type="file" style="display: none">
+        <input id="upload2" name="file" accept="image/*" type="file" style="display: none">
+        <input id="upload3" name="file" accept="image/*" type="file" style="display: none">
+        <input id="upload4" name="file" accept="image/*" type="file" style="display: none">
+        <input id="upload5" name="file" accept="image/*" type="file" style="display: none">
     </div>
 
 
@@ -111,14 +111,14 @@
         var imgCount = 0
         $("#cam").click(function () {
             const input = $("#upload" + inputCount)
-            if (imgCount >= 5) {
-                $.alert("最多只能上传5张图片!!!")
+            if (imgCount >= 1) {
+                $.alert("最多只能上传1张图片!!!")
                 return false
             }
             input.change(function() {
                 let len = this.files.length
-                if (len + imgCount > 5) {
-                    $.alert("最多只能上传5张图片!")
+                if (len + imgCount > 1) {
+                    $.alert("最多只能上传1张图片!")
                     return false
                 }
                 for (let i = 1; i <= len; ++i) {
@@ -154,12 +154,21 @@
         })
     }
 
+    let clicked = false
     function confirmComments() {
         const text = $("#text").val()
         if (text == "" || $.trim(text) == '') {
             $.alert("请输入评价内容", "提示");
             return
         }
+        if (clicked) {
+        	$.alert('正在上传文件  请稍等 ')
+        	return
+        }
+        	
+        clicked = true
+        	
+        
 
         const form = new FormData()
         const promises = []
