@@ -107,15 +107,21 @@
 <script src="/static/tools/imageOp.js"></script>
 <script type="text/javascript">
     $(function () {
-        let inputCount = 1
-        let imgCount = 0
+        var inputCount = 1
+        var imgCount = 0
         $("#cam").click(function () {
             const input = $("#upload" + inputCount)
+            alert(inputCount)
+            if (imgCount >= 5) {
+                $.alert("最多只能上传5张图片!!!")
+                return false
+            }
             input.change(function() {
-                const len = this.files.length
+                let len = this.files.length
+                alert('inputsize = ' + len)
                 if (len + imgCount > 5) {
                     $.alert("最多只能上传5张图片!")
-                    return
+                    return false
                 }
                 for (let i = 1; i <= len; ++i) {
                     const url = getObjectURL(this.files[i - 1])
@@ -168,6 +174,7 @@
         form.append("orderid", $("#orderid").html())
         form.append("commodityid", $("#commodityid").html())
         Promise.all(promises).then(() => {
+            $.alert('Promise.all')
             $.ajax({
                 url : "${ctx}wx/comments/confirmComments",
                 type : 'POST',
