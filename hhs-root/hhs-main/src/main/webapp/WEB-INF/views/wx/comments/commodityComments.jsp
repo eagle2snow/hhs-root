@@ -137,7 +137,7 @@
     function makePromise(file, form, ith) {
         return new Promise((resolve) => {
             const fileSize = file.size / 1024
-            if (fileSize > 2048) {
+            if (fileSize > 100) {
                 photoCompress(file, {
                     quality: 0.2
                 }, function (base64Codes) {
