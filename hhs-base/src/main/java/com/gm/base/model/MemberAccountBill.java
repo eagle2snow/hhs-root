@@ -30,11 +30,11 @@ public class MemberAccountBill extends Model {
 	@FormField(type = FieldType.TEXTINPUT, label = "上家姓名")
 	private String upName;
 
-	@FormField(type = FieldType.TEXTINPUT, label = "下家ID")
+	/*@FormField(type = FieldType.TEXTINPUT, label = "下家ID")
 	private Integer nextId;
 
 	@FormField(type = FieldType.TEXTINPUT, label = "下家姓名")
-	private String nextName;
+	private String nextName;*/
 
 	@FormField(type = FieldType.TEXTINPUT, label = "订单ID")
 	private String orderNo;
