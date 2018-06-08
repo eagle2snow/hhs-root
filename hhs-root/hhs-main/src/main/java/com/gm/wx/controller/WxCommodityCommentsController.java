@@ -138,43 +138,68 @@ public class WxCommodityCommentsController extends WeixinBaseController {
         return "redirect:../commentSucceed";
 	}
 
-	@ResponseBody
-	@RequestMapping("confirmComments")
-	public String confirmComments(String xx, String text, Integer commodityid, Integer orderid)
-	{
-		OrderItem orderItem = itemService.getOne("id", orderid);
-		if ("1".equals(orderItem.getAppraise()))
-			return "no";
+	@RequestMapping(value = "/confirmComments", method = RequestMethod.POST)
+    @ResponseBody
+    public String confirmComments(HttpServletRequest request, String xx, String text, Integer commodityid, Integer orderid)
+    {
+        if (!(request instanceof AbstractMultipartHttpServletRequest))
+            return "no";
 
-		Commodity commodity = commodityService.get(commodityid);
-		Order order = orderService.get(orderItem.getOrder().getId());
-		Member member = WXHelper.getMember(getCurMember());
+        OrderItem orderItem = itemService.getOne("id", orderid);
+        if ("1".equals(orderItem.getAppraise()))
+            return "no";
 
-		if (!member.getId().equals(order.getMember().getId())) {
-			logger.error("!curMember.getId().equals(order.getMember().getId())");
-			return "no";
-		}
+        Commodity commodity = commodityService.get(commodityid);
+        Order order = orderService.get(orderItem.getOrder().getId());
+        Member member = getDBMember();
 
-		CommodityAppraise t = new CommodityAppraise();
-		t.setContent(text);
-		t.setStarLevel(xx);
-		t.setOrderItem(orderItem);
-		t.setMember(member);
-		t.setCommodity(commodity);
+        if (!member.getId().equals(order.getMember().getId())) {
+            logger.error("!curMember.getId().equals(order.getMember().getId())");
+            return "no";
+        }
 
-		if (appraiseService.add(t)) {
-			if (commodity.getComment() != null)
-				commodity.setComment(commodity.getComment() + 1);
-			else
-				commodity.setComment(1);
-			commodityService.update(commodity);
-			orderItem.setAppraise("1");
-			itemService.update(orderItem);
-			return "ok";
-		} else {
-			return "no";
-		}
-	}
+        AbstractMultipartHttpServletRequest req = (AbstractMultipartHttpServletRequest)request;
+        Map<String, MultipartFile> fileMap = req.getFileMap();
+        int i = 1;
+        if (fileMap.entrySet().size() > 5) {
+            logger.error("fileMap.entrySet().size() > 5");
+            return "no";
+        }
+        for (Map.Entry<String, MultipartFile> file : fileMap.entrySet()) {
+            MultipartFile value = file.getValue();
+            String fileName;
+            if (File.separator.equals("/"))
+                fileName = "/usr/static/comment/" + order.getId() + "_" + i;
+            else
+                fileName = "D://123" + i++ + ".pic"; // windows 测试用
+            File newFile = new File(fileName);
+            try {
+                value.transferTo(newFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        CommodityAppraise t = new CommodityAppraise();
+        t.setContent(text);
+        t.setStarLevel(xx);
+        t.setOrderItem(orderItem);
+        t.setMember(member);
+        t.setCommodity(commodity);
+
+        if (appraiseService.save(t)) {
+            if (commodity.getComment() != null)
+                commodity.setComment(commodity.getComment() + 1);
+            else
+                commodity.setComment(1);
+            commodityService.update(commodity);
+            orderItem.setAppraise("1");
+            itemService.update(orderItem);
+            return "ok";
+        } else {
+            return "no";
+        }
+    }
 
 	@RequestMapping("myComments")
 	public String myComments(ModelMap map) {
