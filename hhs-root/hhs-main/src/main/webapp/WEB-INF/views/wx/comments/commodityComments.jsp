@@ -111,14 +111,12 @@
         var imgCount = 0
         $("#cam").click(function () {
             const input = $("#upload" + inputCount)
-            alert(inputCount)
             if (imgCount >= 5) {
                 $.alert("最多只能上传5张图片!!!")
                 return false
             }
             input.change(function() {
                 let len = this.files.length
-                alert('inputsize = ' + len)
                 if (len + imgCount > 5) {
                     $.alert("最多只能上传5张图片!")
                     return false
@@ -135,6 +133,7 @@
         })
     });
 
+    let kkk = 1
     function makePromise(file, form, ith) {
         return new Promise((resolve) => {
             const fileSize = file.size / 1024
@@ -143,11 +142,13 @@
                     quality: 0.2
                 }, function (base64Codes) {
                     const compressed = convertBase64UrlToBlob(base64Codes)
-                    form.append("file[]" + ith, compressed, ith);
+                    form.append(kkk, compressed, kkk);
+                    ++kkk
                     resolve()
                 })
             } else {
-                form.append("file[]" + ith, file, ith)
+                form.append(kkk, file, kkk)
+                ++kkk
                 resolve()
             }
         })
@@ -174,7 +175,6 @@
         form.append("orderid", $("#orderid").html())
         form.append("commodityid", $("#commodityid").html())
         Promise.all(promises).then(() => {
-            $.alert('Promise.all')
             $.ajax({
                 url : "${ctx}wx/comments/confirmComments",
                 type : 'POST',
