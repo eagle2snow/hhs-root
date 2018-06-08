@@ -20,6 +20,9 @@ public class MemberAccountBill extends Model {
 
 	@FormField(type = FieldType.NUMBER, label = "自己Id")
 	private Integer selfId;
+	
+	@FormField(type = FieldType.TEXTINPUT, label = "自己昵称")
+	private Integer selfName;
 
 	@FormField(type = FieldType.TEXTINPUT, label = "上家ID")
 	private Integer upId;
