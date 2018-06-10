@@ -24,9 +24,10 @@
 	</ul>
 	<!-- end 一行 -->
 	<!-- 一行 -->
-	<div class="cartpro_pic">
-			<a href=""><img :src="static/wx/images/Introduction/08.png" alt="纸"></a>
-			<a href=""><img :src="static/wx/images/Introduction/09.png" alt="酒"></a>
+	<div >
+			<!-- <a href=""><img :src="static/wx/images/Introduction/08.png" alt="纸"></a>
+			<a href=""><img :src="static/wx/images/Introduction/09.png" alt="酒"></a> -->
+			<img alt="" src="/static/wx/images/pic/1212.jpg" style="height: 100%;width: 100%">
    </div>
 <!-- 	<section class="binsbox"> -->
 <!-- 		<h3 class="binsbox_dt">VIP专享分红佣金：</h3> -->
