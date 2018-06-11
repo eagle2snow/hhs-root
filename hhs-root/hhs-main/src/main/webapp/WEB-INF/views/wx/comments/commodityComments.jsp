@@ -83,6 +83,7 @@
                     $.alert("最多只能上传" + MAX_IMG + "张图片!")
                     return false
                 }
+                alert(this.files[0].name + "   " + this.files.length)
                 const url = getObjectURL(this.files[0])
                 const img = $("#img" + (imgCount + 1))
                 img.attr("src", url).attr("width", "100rem").show()
