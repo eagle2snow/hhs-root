@@ -8,43 +8,6 @@
     <title>商品评价</title>
     <%@ include file="/common/wx/mate.jsp" %>
     <%@ include file="/common/wx/css.jsp" %>
-    <style>
-        .leftIcon {
-            width: 7rem;
-            height: 7rem;
-            position: absolute;
-            top: 24rem;
-            left: 3rem;
-            display: block;
-        }
-
-        #leftFile {
-            position: absolute;
-            top: 30rem;
-            left: 5rem;
-        }
-
-        .rightIcon {
-            width: 7rem;
-            height: 7rem;
-            position: absolute;
-            top: 24rem;
-            left: 19rem;
-            display: block;
-        }
-
-        #rightFile {
-            position: absolute;
-            top: 30rem;
-            left: 21rem;
-        }
-
-        .hiddenInput {
-            opacity: 0;
-            z-index: 99;
-        }
-
-    </style>
 </head>
 <body>
 <div class="mbox">
@@ -106,35 +69,31 @@
 <script src="/static/wx/js/tool.js"></script>
 <script src="/static/tools/imageOp.js"></script>
 <script type="text/javascript">
+    const MAX_IMG = 5
+    var imgCount = 0
     $(function () {
-        var inputCount = 1
-        var imgCount = 0
         $("#cam").click(function () {
-            const input = $("#upload" + inputCount)
-            if (imgCount >= 1) {
-                $.alert("最多只能上传1张图片!!!")
+            const input = $("#upload" + (imgCount + 1))
+            if (imgCount >= MAX_IMG) {
+                $.alert("最多只能上传" + MAX_IMG + "张图片!!!")
                 return false
             }
             input.change(function() {
-                let len = this.files.length
-                if (len + imgCount > 1) {
-                    $.alert("最多只能上传1张图片!")
+                if (imgCount >= MAX_IMG) {
+                    $.alert("最多只能上传" + MAX_IMG + "张图片!")
                     return false
                 }
-                for (let i = 1; i <= len; ++i) {
-                    const url = getObjectURL(this.files[i - 1])
-                    const img = $("#img" + (i + imgCount))
-                    img.attr("src", url).attr("width", "100rem").show()
-                }
-                inputCount += 1
-                imgCount += len
+                const url = getObjectURL(this.files[0])
+                const img = $("#img" + (imgCount + 1))
+                img.attr("src", url).attr("width", "100rem").show()
+                imgCount += 1
             })
             input.click()
         })
     });
 
     let kkk = 1
-    function makePromise(file, form, ith) {
+    function makePromise(file, form) {
         return new Promise((resolve) => {
             const fileSize = file.size / 1024
             if (fileSize > 100) {
@@ -165,17 +124,13 @@
         	$.alert('正在上传文件  请稍等 ')
         	return
         }
-        	
         clicked = true
-        	
-        
 
         const form = new FormData()
         const promises = []
-        for (let i = 1; i <= 5; ++i) {
+        for (let i = 1; i <= imgCount; ++i) {
             const files = document.getElementById("upload" + i).files
-            for (let j = 0; j < files.length; ++j)
-                promises.push(makePromise(files[j], form, i * 100 + j))
+            promises.push(makePromise(files[0], form, i * 100))
         }
 
         form.append("xx", a)
