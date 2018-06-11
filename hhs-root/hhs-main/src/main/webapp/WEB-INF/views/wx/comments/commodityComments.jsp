@@ -99,7 +99,7 @@
             const fileSize = file.size / 1024
             if (fileSize > 100) {
                 photoCompress(file, {
-                    quality: 0.2
+                    quality: 0.7
                 }, function (base64Codes) {
                     const compressed = convertBase64UrlToBlob(base64Codes)
                     form.append(kkk, compressed, kkk);
