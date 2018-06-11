@@ -17,8 +17,8 @@
 			id="tosel01" name="tosel"> <label for="tosel01"
 			class="toselabel">
 				<div class="toselabel_cont">
-					<div class="name">竹语会员</div>
-					<div class="info">成为会员，享受专属福利</div>
+					<div class="name">竹语套餐</div>
+					<div class="info">购买套餐，享受专属福利。</div>
 				</div> <span class="price"><ins>398元</ins>/1套</span>
 		</label></li>
 	</ul>
