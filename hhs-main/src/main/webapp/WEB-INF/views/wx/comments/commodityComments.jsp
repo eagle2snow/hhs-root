@@ -78,7 +78,6 @@
                 $.alert("最多只能上传" + MAX_IMG + "张图片!!!")
                 return false
             }
-            alert(imgCount)
             input.change(function() {
                 if (imgCount >= MAX_IMG) {
                     $.alert("最多只能上传" + MAX_IMG + "张图片!")
