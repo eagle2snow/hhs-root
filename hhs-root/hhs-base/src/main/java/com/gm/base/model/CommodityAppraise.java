@@ -36,15 +36,6 @@ public class CommodityAppraise extends Model {
 	@FormField(label = "星级", type = FieldType.TEXTINPUT)
 	private String starLevel;
 
-	public String getImgeList()
-	{
-		return imgeList;
-	}
-
-	public void setImgeList(String imgeList)
-	{
-		this.imgeList = imgeList;
-	}
 
 	@FormField(type = FieldType.PICTURELIST, label = "评价图片列表")
 	private String imgeList;
