@@ -128,8 +128,10 @@ public class WxCommodityCommentsController extends WeixinBaseController {
 		}
 
         OrderItem orderItem = itemService.getOne("id", orderid);
-        if ("1".equals(orderItem.getAppraise()))
-            return "no";
+        if ("1".equals(orderItem.getAppraise())) {
+        	logger.info("orderItem.getAppraise");
+			return "no";
+		}
 
         Commodity commodity = commodityService.get(commodityid);
         Order order = orderService.get(orderItem.getOrder().getId());
@@ -182,6 +184,7 @@ public class WxCommodityCommentsController extends WeixinBaseController {
             itemService.update(orderItem);
             return "ok";
         } else {
+        	logger.info("appraiseService.save");
             return "no";
         }
     }
