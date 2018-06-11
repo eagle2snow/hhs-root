@@ -78,17 +78,18 @@
                 $.alert("最多只能上传" + MAX_IMG + "张图片!!!")
                 return false
             }
+            alert(imgCount)
             input.change(function() {
                 if (imgCount >= MAX_IMG) {
                     $.alert("最多只能上传" + MAX_IMG + "张图片!")
+                    $(this).unbind()
                     return false
                 }
                 if (this.files[0].size / 1024 > 2048) {
-                    $.alert('图片太大 请重新上传')
+                    $.alert('单张图片不能超过2M 请重新选择(可降低拍照分辨率)')
+                    $(this).unbind()
                     return
                 }
-
-                alert(this.files[0].name + "   " + this.files.length)
                 const url = getObjectURL(this.files[0])
                 const img = $("#img" + (imgCount + 1))
                 img.attr("src", url).attr("width", "100rem").show()
@@ -102,9 +103,9 @@
     function makePromise(file, form) {
         return new Promise((resolve) => {
             const fileSize = file.size / 1024
-            if (fileSize > 100) {
+            if (fileSize > 400) {
                 photoCompress(file, {
-                    quality: 0.7
+                    quality: 0.5
                 }, function (base64Codes) {
                     const compressed = convertBase64UrlToBlob(base64Codes)
                     form.append(kkk, compressed, kkk);
