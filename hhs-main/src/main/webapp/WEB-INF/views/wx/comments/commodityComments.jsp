@@ -83,6 +83,11 @@
                     $.alert("最多只能上传" + MAX_IMG + "张图片!")
                     return false
                 }
+                if (this.files[0].size / 1024 > 2048) {
+                    $.alert('图片太大 请重新上传')
+                    return
+                }
+
                 alert(this.files[0].name + "   " + this.files.length)
                 const url = getObjectURL(this.files[0])
                 const img = $("#img" + (imgCount + 1))
