@@ -378,13 +378,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 								thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()));
 					}
 					BigDecimal balance = member.getBalance();
-					if (balance != null && member.getTenReturnOne() != null)
+					if (balance != null && member.getTenReturnOne() != null) {
 						member.setBalance(balance.add(one.getThisTimeCommodity().getShowPrice()));
+						member.setGeneralizeCost(member.getGeneralizeCost().add(one.getThisTimeCommodity().getShowPrice()));
+					}
 
 					MemberAccountBill accountBill = new MemberAccountBill();
 					accountBill.setSelfId(member.getId());
 					accountBill.setType(1); // 1|十返一
-					accountBill.setMoney(balance.add(one.getThisTimeCommodity().getShowPrice()));
+					accountBill.setMoney(one.getThisTimeCommodity().getShowPrice());
 					accountBillDao.save(accountBill);
 
 					dao.update(member);
