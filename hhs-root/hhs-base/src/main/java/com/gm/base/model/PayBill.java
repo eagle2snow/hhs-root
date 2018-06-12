@@ -24,6 +24,17 @@ public class PayBill extends Model {
 	private Integer type;// 1购买套餐，2购买产品
 	private Integer pay;// 1未支付，2已支付
 	private LocalDateTime payTime = LocalDateTime.now();// 完成支付时间
+	private Integer addressId;
+
+	public Integer getAddressId()
+	{
+		return addressId;
+	}
+
+	public void setAddressId(Integer addressId)
+	{
+		this.addressId = addressId;
+	}
 
 	public String getOrderNo() {
 		return orderNo;
