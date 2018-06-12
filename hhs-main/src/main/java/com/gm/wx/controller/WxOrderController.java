@@ -21,13 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.gm.base.consts.Const;
 import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
-import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
 import com.gm.service.IMemberAddressService;
-import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.service.IPayBillService;
@@ -57,10 +54,6 @@ public class WxOrderController extends WeixinBaseController {
 	private IPayBillService payBillService;
 	@Resource
 	private ICommodityService commodityService;
-	@Resource
-	private ICartService cartService;
-	@Resource
-	private IMemberService memberService;
 	@Resource
 	private IOrderService orderService;
 	@Resource
