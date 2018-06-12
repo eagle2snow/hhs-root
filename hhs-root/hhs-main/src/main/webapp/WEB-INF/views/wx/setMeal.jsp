@@ -49,10 +49,10 @@
 				<div class="weui-cell__ft">
 					<c:choose>
 						<c:when test="${one.defaultAddress=='1'}">
-							<input type="radio" class="weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
+							<input type="radio" class="memberAddressExist weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
 						</c:when>
 						<c:otherwise>
-							<input type="radio" class="weui-check" name="memberAddress" value="${one.id}"><span class="weui-icon-checked"></span>
+							<input type="radio" class="memberAddressExist weui-check" name="memberAddress" value="${one.id}"><span class="weui-icon-checked"></span>
 						</c:otherwise>
 					</c:choose>
 
@@ -110,6 +110,11 @@
 
 		function prePay() {
 			$.getJSON('${ctx}wx/pay/prePayCombo', function(res) {
+				if ($(".memberAddressExist").length == 0) {
+				    to('myCenter/addAddress?setMeal=1')
+				    return
+				}
+
                 var choosed = $('#wrap input[name="memberAddress"]:checked').val()
                 if (choosed == undefined) {
                     $.alert('请选择收货地址')
