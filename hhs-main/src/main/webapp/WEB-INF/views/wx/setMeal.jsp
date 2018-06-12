@@ -110,7 +110,9 @@
 
 		function preprePay() {
             if ($(".memberAddressExist").length == 0) {
-                to('myCenter/addAddress?setMeal=1')
+                $.alert('请填写收货地址',function(){
+                    to('myCenter/addAddress?setMeal=1')
+                })
                 return
             }
 
