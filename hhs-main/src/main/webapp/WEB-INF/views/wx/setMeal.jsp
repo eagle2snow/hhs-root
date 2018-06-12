@@ -95,7 +95,7 @@
 	<div class="fbottom">
 		<nav class="btool">
 			<div class="btool_halfcont">
-				<a onclick="prePay()" class="primarybtn btoolbtn">立&nbsp;即&nbsp;购&nbsp;买</a>
+				<a onclick="preprePay()" class="primarybtn btoolbtn">立&nbsp;即&nbsp;购&nbsp;买</a>
 			</div>
 		</nav>
 	</div>
@@ -108,19 +108,23 @@
 		document.addEventListener("touchstart", function() {
 		}, true);
 
-		function prePay() {
-			$.getJSON('${ctx}wx/pay/prePayCombo', function(res) {
-				if ($(".memberAddressExist").length == 0) {
-				    to('myCenter/addAddress?setMeal=1')
-				    return
-				}
+		function preprePay() {
+            if ($(".memberAddressExist").length == 0) {
+                to('myCenter/addAddress?setMeal=1')
+                return
+            }
 
-                var choosed = $('#wrap input[name="memberAddress"]:checked').val()
-                if (choosed == undefined) {
-                    $.alert('请选择收货地址')
-					return
-                }
+            var choosed = $('#wrap input[name="memberAddress"]:checked').val()
+            if (choosed == undefined) {
+                $.alert('请选择收货地址')
+                return
+            }
 
+            prePay(choosed)
+        }
+
+		function prePay(choosed) {
+			$.getJSON('${ctx}wx/pay/prePayCombo?choosed=' + choosed, function(res) {
 				if (res.s === 1) {
 					var appId = res.data.appId;
 					var timeStamp = res.data.timeStamp;
