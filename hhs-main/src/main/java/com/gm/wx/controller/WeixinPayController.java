@@ -113,7 +113,7 @@ public class WeixinPayController extends WeixinBaseController {
 	 */
 	@RequestMapping("/prePayCombo")
 	@ResponseBody
-	public Map<String, Object> prePayCombo()
+	public Map<String, Object> prePayCombo(Integer choosed)
 	{
 		Map<String, Object> map = getMap();
 
@@ -130,6 +130,7 @@ public class WeixinPayController extends WeixinBaseController {
 		payBill.setPay(1);
 		payBill.setOpenid(member.getOpenid());
 		payBill.setPreFee(Const.MEMBER_AMOUNT);
+		payBill.setAddressId(choosed);
 		payBillService.save(payBill);
 		
 		try {
