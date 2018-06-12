@@ -4,20 +4,13 @@ import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gm.interceptor.AdminInterceptor;
 import com.gm.interceptor.WeixinInterceptor;
 
-/**
- * 拦截器配置
- * 
- * @author ying
- *
- */
-
 @Configuration
-public class InterceptorConfig extends WebMvcConfigurerAdapter {
+public class InterceptorConfig implements WebMvcConfigurer {
 	@Resource
 	private AdminInterceptor adminInterceptor;
 
@@ -36,8 +29,6 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(weixinInterceptor).addPathPatterns("/wx/**").excludePathPatterns("/wx/saveMember")
 				.excludePathPatterns("/wx").excludePathPatterns("/wx/").excludePathPatterns("/wx/pay/paySuccess")
 				.excludePathPatterns("/wx/testLogin/**");
-
-		super.addInterceptors(registry);
 	}
 
 }
