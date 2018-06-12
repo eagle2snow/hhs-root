@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/wx/global.jsp"%>
@@ -9,6 +10,11 @@
 <%@ include file="/common/wx/mate.jsp"%>
 <%@ include file="/common/wx/css.jsp"%>
 </head>
+<style>
+    .itm {
+        margin-left: 2rem;
+    }
+</style>
 <body>
 	<!-- 中间 -->
 	<!-- 一行 -->
@@ -24,11 +30,50 @@
 	</ul>
 	<!-- end 一行 -->
 	<!-- 一行 -->
+
+
+	<div class="weui-cells weui-cells_radio" style="margin-top:0;" id="wrap">
+		<c:forEach items="${addressList}" var="one">
+			<label class="weui-cell weui-check__label">
+				<div class="weui-cell__bd">
+					<a href="" class="">
+						<div class="sendcard_mt">
+							收货人：<span>${one.name}</span><span class="itm">${one.mobile}</span>
+						</div>
+						<div class="sendcard_mb">
+							<i class="local_mbico mbico"></i>
+							<div class="sendcard_mbcont" v-text='ad.pca+ad.address'></div>
+						</div>
+					</a>
+				</div>
+				<div class="weui-cell__ft">
+					<c:choose>
+						<c:when test="${one.defaultAddress=='1'}">
+							<input type="radio" class="weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
+						</c:when>
+						<c:otherwise>
+							<input type="radio" class="weui-check" name="memberAddress" value="${one.id}"><span class="weui-icon-checked"></span>
+						</c:otherwise>
+					</c:choose>
+
+				</div>
+			</label>
+		</c:forEach>
+		<a href="myCenter/addAddress?setMeal=1" class="weui-cell weui-cell_link">
+		<div class="weui-cell__bd">新地址</div>
+	</a>
+	</div>
+
+
 	<div >
 			<!-- <a href=""><img :src="static/wx/images/Introduction/08.png" alt="纸"></a>
 			<a href=""><img :src="static/wx/images/Introduction/09.png" alt="酒"></a> -->
 			<img alt="" src="/static/wx/images/pic/1212.jpg" style="height: 100%;width: 100%">
    </div>
+
+
+
+
 <!-- 	<section class="binsbox"> -->
 <!-- 		<h3 class="binsbox_dt">VIP专享分红佣金：</h3> -->
 <!-- 		<ul class="decimalist"> -->
@@ -65,6 +110,12 @@
 
 		function prePay() {
 			$.getJSON('${ctx}wx/pay/prePayCombo', function(res) {
+                var choosed = $('#wrap input[name="memberAddress"]:checked').val()
+                if (choosed == undefined) {
+                    $.alert('请选择收货地址')
+					return
+                }
+
 				if (res.s === 1) {
 					var appId = res.data.appId;
 					var timeStamp = res.data.timeStamp;
@@ -112,7 +163,6 @@
 		}
 
 	</script>
-
 
 
 </body>
