@@ -3,18 +3,20 @@ package com.gm.wx.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSON;
+import com.gm.base.model.MemberAddress;
+import com.gm.base.query.QueryObj;
+import com.gm.service.IMemberAddressService;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSON;
 import com.gm.base.consts.Const;
 import com.gm.base.model.Commodity;
 import com.gm.base.model.Member;
@@ -23,6 +25,10 @@ import com.gm.service.ICommodityService;
 import com.gm.service.IMemberService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.StringUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -47,6 +53,9 @@ public class WxIndexController extends WeixinBaseController {
 
 	@Resource
 	private IMemberService memberService;
+
+	@Resource
+	private IMemberAddressService memberAddressService;
 
 	private static final String PATH = "wx/";
 
@@ -162,6 +171,7 @@ public class WxIndexController extends WeixinBaseController {
 		return PATH + "profile";
 	}
 
+
 	/**
 	 * @Title: setMealView
 	 * @Description: 去购买套餐页面
@@ -169,9 +179,23 @@ public class WxIndexController extends WeixinBaseController {
 	 * @return String
 	 */
 	@RequestMapping("/setMeal")
-	public String setMealView(ModelMap model) {
-		model.put("member", WXHelper.getMember(getCurMember()));
+	public String setMealView(ModelMap model)
+	{
+		Member member = WXHelper.getMember(getCurMember());
+		model.put("member", member);
 		model.put("path", PATH);
+
+		QueryObj queryObj = new QueryObj();
+		queryObj.setReList("id")
+				.setReList("name")
+				.setReList("mobile")
+				.setReList("pca")
+				.setReList("address")
+				.setReList("defaultAddress")
+				.setEqMap("member.id", member.getId());
+		List<Map<String, Object>> addressList = memberAddressService.pqList(queryObj);
+		model.put("addressList", addressList);
+		model.put("default", "13433223322");
 		return PATH + "setMeal";
 	}
 

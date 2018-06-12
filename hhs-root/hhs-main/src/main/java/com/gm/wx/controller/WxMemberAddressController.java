@@ -91,9 +91,13 @@ public class WxMemberAddressController extends WeixinBaseController {
 	}
 
 	@RequestMapping("addAddress")
-	public String addAddressView(ModelMap model) {
+	public String addAddressView(ModelMap model, String setMeal)
+	{
 		model.put("path", PATH);
-
+		if (setMeal != null && setMeal.equals("1"))
+			model.put("setMeal", "1");
+		else
+			model.put("setMeal", "0");
 		return PATH + "addAddress";
 
 	}
