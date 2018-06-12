@@ -20,7 +20,7 @@
 <body>
 	<!-- 中间 -->
 	<!-- 一行 -->
-
+	<input type="text" hidden="hidden" value="${setMeal}" id="setMeal">
 	<form class="form" method="post" action="${adp}addAddressAction">
 
 		<div class="setlist">
@@ -108,6 +108,11 @@
 
 			},
 			callback : function(res) {
+				if ($("#setMeal")[0].value === "1") {
+                    to('/wx/setMeal');
+				    return
+                }
+
 				if(res.memberId>0){
 				   to('${adp}shippingAddress');
 				}else{
