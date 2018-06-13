@@ -394,7 +394,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					Member thisTimeMember = one.getThisTimeMember();
 					// 设置会员的十返一字段 空：设置， 非空：取出来再加
 					if (thisTimeMember.getTenReturnOne() == null) {
-						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //判断是否为购买套餐
+						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //未购买套餐
 							thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice()); //原价
 						}else {
 							thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice().multiply(Const.discount)); //八折
