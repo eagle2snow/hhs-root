@@ -234,6 +234,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			Integer addressId = payBill.getAddressId();
 			MemberAddress memberAddress = memberAddressService.get(addressId);
 			Order order = new Order();
+			order.setOrderNo(payBill.getOrderNo());
+			order.setTotalMoney(payBill.getReaFee());
 			order.setMember(member);
 			order.setMemberAddress(memberAddress);
 			order.setStatus("2");
