@@ -1,7 +1,5 @@
 package com.gm.service.impl;
 
-import java.math.BigDecimal;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -41,7 +39,7 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 		if (payBill == null)
 			return;
 		if (payBill.getType() == 1) { // 购买套餐
-			memberService.payMemberSuccess(payBill.getOpenid());
+			memberService.payMemberSuccess(payBill.getOpenid(), payBill);
 			logger.info("paySuccess: ================套餐========================");
 		} else if (payBill.getType() == 2) {// 购买商品
 			orderService.payOrderSuccess(payBill.getOrderNo(), payBill);
