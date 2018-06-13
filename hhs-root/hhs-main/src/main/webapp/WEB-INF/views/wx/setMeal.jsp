@@ -59,7 +59,7 @@
 				</div>
 			</label>
 		</c:forEach>
-		<a href="myCenter/addAddress?setMeal=1" class="weui-cell weui-cell_link">
+		<a href="${ctx}wx/myCenter/addAddress?setMeal=1" class="weui-cell weui-cell_link">
 		<div class="weui-cell__bd">新地址</div>
 	</a>
 	</div>
@@ -111,7 +111,7 @@
 		function preprePay() {
             if ($(".memberAddressExist").length == 0) {
                 $.alert('请填写收货地址',function(){
-                    to('myCenter/addAddress?setMeal=1')
+                    to('${ctx}myCenter/addAddress?setMeal=1')
                 })
                 return
             }
