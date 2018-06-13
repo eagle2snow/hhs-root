@@ -50,6 +50,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private IMemberDao dao;
 
+	@Resource
+	private IMemberAddressService memberAddressService;
+
 	@Autowired
 	private IMemberAccountBillDao accountBillDao;
 
