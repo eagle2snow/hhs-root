@@ -14,6 +14,8 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gm.base.model.*;
+import com.gm.service.IMemberAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,6 @@ import com.gm.base.dao.IBaseDao;
 import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.dao.IMemberDao;
 import com.gm.base.dao.ITenReturnOneDao;
-import com.gm.base.model.Commodity;
-import com.gm.base.model.Member;
-import com.gm.base.model.MemberAccountBill;
-import com.gm.base.model.Order;
-import com.gm.base.model.OrderItem;
-import com.gm.base.model.TenReturnOne;
 import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
@@ -49,6 +45,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Resource
 	private IMemberDao dao;
+
+	@Resource
+	private IMemberAddressService memberAddressService;
 
 	@Autowired
 	private IMemberAccountBillDao accountBillDao;
@@ -184,7 +183,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void payMemberSuccess(String openid) {
+	public void payMemberSuccess(String openid, PayBill payBill)
+	{
 		Member member = getOne("openid", openid);
 
 		if (member == null) {
@@ -229,6 +229,21 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		// 返套餐
 		returnMeal(member.getOpenid());
+
+		try {
+			Integer addressId = payBill.getAddressId();
+			MemberAddress memberAddress = memberAddressService.get(addressId);
+			Order order = new Order();
+			order.setMember(member);
+			order.setMemberAddress(memberAddress);
+			order.setStatus("2");
+			order.setPaymentTime(LocalDateTime.now());
+			order.setPayPathway(1);
+			order.setOrderRemarks("购买竹语套餐");
+			orderService.save(order);
+		} catch (Exception e) {
+			logger.error("gen order error", e);
+		}
 	}
 
 	private void threeMoney(Member member) {

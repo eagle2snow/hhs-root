@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.model.Member;
+import com.gm.base.model.PayBill;
 
 /**
  * 代码生成器生成代码<br/>
@@ -104,18 +105,9 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	Member genCodeAndQrCode(Member member);
 
 	/**
-	 * 
-	 * <p>
 	 * 描述:购买会员套餐，支付成功
-	 * </p>
-	 * 
-	 * @author 灰灰
-	 * 
-	 * @date 2018年5月4日
-	 * 
-	 * @version 1.0
 	 */
-	void payMemberSuccess(String openid);
+	void payMemberSuccess(String openid, PayBill payBill);
 
 	/**
 	 * 获取会员level级上家
