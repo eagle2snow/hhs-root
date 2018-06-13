@@ -195,7 +195,10 @@ public class WxIndexController extends WeixinBaseController {
 				.setEqMap("member.id", member.getId());
 		List<Map<String, Object>> addressList = memberAddressService.pqList(queryObj);
 		model.put("addressList", addressList);
-		model.put("default", "13433223322");
+		if (addressList != null && addressList.size() == 1)
+			model.put("isdefault", "1");
+		else
+			model.put("isdefault", "0");
 		return PATH + "setMeal";
 	}
 
