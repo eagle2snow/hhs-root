@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -348,7 +350,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					(order.getTotalMoney().multiply(Const.pushMoney)));*/
 			//返提成给上，上上，上上上家
 			Member m = member;
-			for (int i = 1; i <= 3; ++i) {
+			/*for (int i = 1; i <= 3; ++i) {
 				m = memberService.getParent(m, 1);
 
 				if (m == null)
@@ -365,11 +367,57 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					accountBillDao.save(accountBill);
 					memberService.update(m);
 
+			}*/
+			
+			Map<Integer, Integer> memento = new HashMap<>();
+			Set<Integer> visited = new HashSet<>();
+			Set<Integer> added = new HashSet<>();
+			Set<Integer> visitedParents = new HashSet<>();
+
+			boolean gt = false;
+			for (Member current = getParent(member, 1); current != null
+					&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
+				visitedParents.add(current.getId());
+				if (!gt) {
+					int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
+					if (childrenCount <= Const.betweenMember)
+						continue;
+					gt = true;
+				}
+				if (current.getSetMeal() != 3)
+					continue;
+				
+				accountBill = new MemberAccountBill();
+				current.setBalance(current.getBalance().add(extract));
+				current.setGeneralizeCost(current.getGeneralizeCost().add(extract));
+				accountBill.setUpId(current.getId().intValue());
+				accountBill.setUpName(current.getNickname());
+				accountBill.setType(4); // 4|提成
+				accountBill.setMoney(extract);
+				accountBill.setSelfId(member.getId());
+				accountBill.setSelfName(member.getNickname());
+				accountBillDao.save(accountBill);
+				memberService.update(current);
+				break;
 			}
+			
 			
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 *<p>Title:</p>
+	 *<p>Description:</p>
+	 *
+	 * @param member
+	 * @param i
+	 * @return
+	 */
+	private Member getParent(Member member, int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
