@@ -24,6 +24,11 @@ public class TenReturnOne extends Model {
 	@FormField(label = "次数", type = FieldType.NUMBER)
 	private Integer time = 0;
 
+
+	@FormField(label = "次数", type = FieldType.NUMBER)
+	private Integer tenTime = 0;
+
+
 	@ManyToOne
 	public Commodity getThisTimeCommodity() {
 		return thisTimeCommodity;
@@ -48,6 +53,14 @@ public class TenReturnOne extends Model {
 
 	public void setTime(Integer time) {
 		this.time = time;
+	}
+
+	public Integer getTenTime() {
+		return tenTime;
+	}
+
+	public void setTenTime(Integer tenTime) {
+		this.tenTime = tenTime;
 	}
 
 }
