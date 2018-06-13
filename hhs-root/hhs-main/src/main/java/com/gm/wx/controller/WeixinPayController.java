@@ -69,7 +69,7 @@ public class WeixinPayController extends WeixinBaseController {
 	{
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 		
-		amount = amount.multiply(BigDecimal.valueOf(0.01));
+		amount = BigDecimal.valueOf(0.01);
 		logger.info("--------------prePay:amount * 0.08 * 0.01 ={}-----------------",JSON.toJSON(amount));
 		Member member = WXHelper.getMember(getCurMember());
 
