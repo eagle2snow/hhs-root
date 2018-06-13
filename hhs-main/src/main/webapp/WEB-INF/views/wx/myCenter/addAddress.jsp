@@ -109,7 +109,7 @@
 			},
 			callback : function(res) {
 				if ($("#setMeal")[0].value === "1") {
-                    to('${ctx}wx/setMeal');
+                    to('${ctx}wx/setMeal/');
 				    return
                 }
 
