@@ -64,6 +64,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private IMemberService memberService;
 
+
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
 		return dao;
@@ -365,72 +366,63 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		try {
 			for (OrderItem orderItem : listEq) {
-				Commodity commodity = orderItem.getCommodity();
-				TenReturnOne tenReturnOne = tenReturnOneDao.getOne("thisTimeCommodity.id", commodity.getId());
-				logger.info("TenReturnOne tenReturnOne = {}", JSON.toJSON(tenReturnOne.getTime()));
-				if (tenReturnOne == null) {
-					tenReturnOne = new TenReturnOne();
+				 Commodity commodity = orderItem.getCommodity();
+				List<TenReturnOne> list = tenReturnOneDao.listEq("thisTimeCommodity.id", commodity.getId());
+				TenReturnOne tenReturnOne = null;
+				if (list == null) {
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
-					tenReturnOne.setTime(1);
+					tenReturnOne.setTime(orderItem.getBuyCount());
 					tenReturnOne.setTenTime(1);
 					tenReturnOneDao.add(tenReturnOne);
 				} else {
+					int time = tenReturnOneDao.selectTime(commodity.getId()).getTime();
+					int tentime = tenReturnOneDao.selectTenTime(commodity.getId()).getTenTime();
+					int num = time + orderItem.getBuyCount();
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
-					tenReturnOne.setTime(tenReturnOne.getTime() + 1);
-					if (tenReturnOne.getTime() %  Const.returnOne == 0){
-						tenReturnOne.setTenTime(tenReturnOne.getTime());
-					}
-					tenReturnOneDao.add(tenReturnOne);
-
-				}
-
-				Integer time = tenReturnOne.getTenTime();
-				if (time != null) { // 次数是十的倍数
-
-					// 通过次数获取会员
-					TenReturnOne one = tenReturnOneDao.getOne("tenTime", time);
-					Member thisTimeMember = one.getThisTimeMember();
-					// 设置会员的十返一字段 空：设置， 非空：取出来再加
-					if (thisTimeMember.getTenReturnOne() == null) {
-						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //未购买套餐
-							thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice()); //原价
-						}else {
-							thisTimeMember.setTenReturnOne(one.getThisTimeCommodity().getShowPrice().multiply(Const.discount)); //八折
+					tenReturnOne.setTime(num);
+					if (num /  Const.returnOne >= tentime){
+						tenReturnOne.setTenTime(tentime++);
+					TenReturnOne selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(),tentime);
+						Member thisTimeMember = memberService.get(selectOneMember.getThisTimeMember().getId());
+						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //未购买套餐  返原价
+							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice()));
+							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice()));			
+							MemberAccountBill accountBill = new MemberAccountBill();
+							accountBill.setSelfId(thisTimeMember.getId());
+							accountBill.setType(1); // 1|十返一
+							accountBill.setMoney(commodity.getShowPrice());
+							accountBillDao.save(accountBill);
+							dao.update(thisTimeMember);
+							tenReturnOneDao.add(tenReturnOne);
+						}else {//返八折
+							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice().multiply(Const.discount)));
+							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice().multiply(Const.discount)));
+							MemberAccountBill accountBill = new MemberAccountBill();
+							accountBill.setSelfId(thisTimeMember.getId());
+							accountBill.setType(1); // 1|十返一
+							accountBill.setMoney(commodity.getShowPrice().multiply(Const.discount));
+							accountBillDao.save(accountBill);
+							dao.update(thisTimeMember);
+							tenReturnOneDao.add(tenReturnOne);
 						}
-					} else {
-						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //判断是否为购买套餐
-							thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice())); //原价
-						}else {
-							thisTimeMember.setTenReturnOne(thisTimeMember.getTenReturnOne().add(one.getThisTimeCommodity().getShowPrice()).multiply(Const.discount)); //八折
-						}
-
-					}
-					BigDecimal balance = member.getBalance();
-					if (balance != null && member.getTenReturnOne() != null){
-						member.setGeneralizeCost(member.getGeneralizeCost().add(member.getTenReturnOne())); //推广费 + 十返一钱
-						member.setBalance(balance.add(member.getTenReturnOne()));//余额 + 十返一钱
-					}
-					MemberAccountBill accountBill = new MemberAccountBill();
-					accountBill.setSelfId(member.getId());
-					accountBill.setType(1); // 1|十返一
-
-					if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //判断是否为购买套餐
-						accountBill.setMoney(balance.add(one.getThisTimeCommodity().getShowPrice()));
+						
 					}else {
-						accountBill.setMoney(balance.add(one.getThisTimeCommodity().getShowPrice().multiply(Const.discount)));
+						tenReturnOne.setTenTime(tentime);
+						tenReturnOneDao.add(tenReturnOne);
 					}
 
-					accountBillDao.save(accountBill);
-
-					dao.update(member);
+					}
+					
 				}
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+		
+
 
 	/**
 	 * 返套餐金额 ①判断是否购买套餐 ②判断直推会员是否是十的倍数
