@@ -48,12 +48,15 @@
 				</div>
 				<div class="weui-cell__ft">
 					<c:choose>
-						<c:when test="${one.defaultAddress=='1'}">
-							<input type="radio" class="memberAddressExist weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
+						<c:when test="${isdefault=='1'}">
+                            <input type="radio" class="memberAddressExist weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
 						</c:when>
-						<c:otherwise>
-							<input type="radio" class="memberAddressExist weui-check" name="memberAddress" value="${one.id}"><span class="weui-icon-checked"></span>
-						</c:otherwise>
+                        <c:when test="${one.defaultAddress=='1'}">
+                            <input type="radio" class="memberAddressExist weui-check" name="memberAddress" checked="checked" value="${one.id}"><span class="weui-icon-checked"></span>
+                        </c:when>
+                        <c:otherwise>
+                            <input type="radio" class="memberAddressExist weui-check" name="memberAddress" value="${one.id}"><span class="weui-icon-checked"></span>
+                        </c:otherwise>
 					</c:choose>
 
 				</div>
@@ -145,13 +148,13 @@
 		function onBridgeReady(appId, timeStamp, nonceStr, packAge, signType,
 				paySign) {
 			WeixinJSBridge.invoke('getBrandWCPayRequest', {
-				"appId" : appId, //公众号名称，由商户传入     
-				"timeStamp" : timeStamp, //时间戳，自1970年以来的秒数     
-				"nonceStr" : nonceStr, //随机串     
+				"appId" : appId, //公众号名称，由商户传入
+				"timeStamp" : timeStamp, //时间戳，自1970年以来的秒数
+				"nonceStr" : nonceStr, //随机串
 				"package" : packAge,
-				"signType" : signType, //微信签名方式：     
+				"signType" : signType, //微信签名方式：
 				"paySign" : paySign
-			//微信签名 
+			//微信签名
 			}, function(res) {
 				if (res.err_msg == "get_brand_wcpay_request:ok") {
 					location.href = '/wx/payMemberSuccess';
