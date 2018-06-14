@@ -69,7 +69,7 @@ public class Const {
 	/**
 	 * 商品十返一
 	 */
-	public static final Integer returnOne= 10;
+	public static final Integer returnOne= 5;
 
     public static final String KEY = null;
 }
