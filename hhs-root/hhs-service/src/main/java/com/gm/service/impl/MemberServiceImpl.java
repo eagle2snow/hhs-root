@@ -368,7 +368,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			for (OrderItem orderItem : listEq) {
 				 Commodity commodity = orderItem.getCommodity();
 				List<TenReturnOne> list = tenReturnOneDao.listEq("thisTimeCommodity.id", commodity.getId());
-				TenReturnOne tenReturnOne = null;
+				TenReturnOne tenReturnOne = new TenReturnOne();
 				if (list == null) {
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
@@ -376,16 +376,15 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					tenReturnOne.setTenTime(1);
 					tenReturnOneDao.add(tenReturnOne);
 				} else {
-					int time = tenReturnOneDao.selectTime(commodity.getId()).getTime();
-					int tentime = tenReturnOneDao.selectTenTime(commodity.getId()).getTenTime();
+					int time = tenReturnOneDao.selectTime(commodity.getId());
+					int tentime = tenReturnOneDao.selectTenTime(commodity.getId());
 					int num = time + orderItem.getBuyCount();
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
 					tenReturnOne.setTime(num);
 					if (num /  Const.returnOne >= tentime){
-						tenReturnOne.setTenTime(tentime++);
-					TenReturnOne selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(),tentime);
-						Member thisTimeMember = memberService.get(selectOneMember.getThisTimeMember().getId());
+					Integer selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(),tentime);
+						Member thisTimeMember = memberService.get(selectOneMember);
 						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //未购买套餐  返原价
 							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice()));
 							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice()));			
@@ -395,6 +394,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 							accountBill.setMoney(commodity.getShowPrice());
 							accountBillDao.save(accountBill);
 							dao.update(thisTimeMember);
+							tenReturnOne.setTenTime(++tentime);
 							tenReturnOneDao.add(tenReturnOne);
 						}else {//返八折
 							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice().multiply(Const.discount)));
@@ -405,6 +405,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 							accountBill.setMoney(commodity.getShowPrice().multiply(Const.discount));
 							accountBillDao.save(accountBill);
 							dao.update(thisTimeMember);
+							tenReturnOne.setTenTime(++tentime);
 							tenReturnOneDao.add(tenReturnOne);
 						}
 						
