@@ -1,5 +1,8 @@
 package com.gm.base.dao.impl;
 
+import java.util.List;
+
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import com.gm.base.dao.ITenReturnOneDao;
@@ -17,21 +20,28 @@ import com.gm.base.dao.impl.BaseDaoImpl;
 public class TenReturnOneDaoImpl extends BaseDaoImpl<TenReturnOne, Integer> implements ITenReturnOneDao {
 
 	@Override
-	public TenReturnOne selectTime(Integer id) {
-		return getOne("SELECT MAX(time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);
+	public Integer selectTime(Integer id) {
+		NativeQuery<Integer> createNativeQuery = getSession().createNativeQuery("SELECT MAX(time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);
+		List<Integer> resultList = createNativeQuery.getResultList();
+		return resultList .get(0);
+		/*return getOne("SELECT MAX(time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);*/
 	}
 
 	@Override
-	public TenReturnOne selectTenTime(Integer id) {
-		return getOne("SELECT MAX(ten_time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);
-		
+	public Integer selectTenTime(Integer id) {
+		NativeQuery<Integer> createNativeQuery = getSession().createNativeQuery("SELECT MAX(ten_time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);
+		List<Integer> resultList = createNativeQuery.getResultList();
+		return resultList .get(0);
+		/*return getOne("SELECT MAX(ten_time) FROM t_ten_return_one WHERE this_time_commodity_id = "+id);*/
 	}
 
 	@Override
-	public TenReturnOne selectOneMember(Integer id, int tentime) {
+	public Integer selectOneMember(Integer id, int tentime) {
 		int mun = tentime - 1;
-		return getOne("SELECT id,this_time_member_id FROM t_ten_return_one WHERE this_time_commodity_id="+id+"  ORDER BY id ASC LIMIT "+mun+",1");
-		
+		NativeQuery<Integer> createNativeQuery = getSession().createNativeQuery("SELECT this_time_member_id FROM t_ten_return_one WHERE this_time_commodity_id="+id+"  ORDER BY id ASC LIMIT "+mun+",1");
+		List<Integer> resultList = createNativeQuery.getResultList();
+		return resultList .get(0);
+		/*return getOne("SELECT this_time_member_id FROM t_ten_return_one WHERE this_time_commodity_id="+id+"  ORDER BY id ASC LIMIT "+mun+",1");*/
 	}
 
 }
