@@ -346,8 +346,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
-			/*memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().multiply(Const.pushMoney)));*/
+			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+					(order.getTotalMoney().multiply(Const.pushMoney)));
 			//返提成给上，上上，上上上家
 			Member m = member;
 			/*for (int i = 1; i <= 3; ++i) {
