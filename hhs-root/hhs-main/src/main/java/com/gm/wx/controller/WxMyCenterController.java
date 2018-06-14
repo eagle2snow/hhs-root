@@ -146,8 +146,7 @@ public class WxMyCenterController extends WeixinBaseController {
 
 	/**
 	 * @Title: editProfileView
-	 * @Description: 修改个人资料请求vies
-	 *            会员信息
+	 * @Description: 修改个人资料请求vies 会员信息
 	 * @return Map<String,Object>
 	 */
 	@RequestMapping("editProfileView")
@@ -219,8 +218,7 @@ public class WxMyCenterController extends WeixinBaseController {
 
 	/**
 	 * @Title: updateAction
-	 * @Description: 修改个人资料请求Action
-	 *            会员信息
+	 * @Description: 修改个人资料请求Action 会员信息
 	 * @return Map<String,Object>
 	 */
 	@ResponseBody
@@ -295,7 +293,8 @@ public class WxMyCenterController extends WeixinBaseController {
 	 * Description:删除评论
 	 * </p>
 	 *
-	 *            id
+	 * id
+	 * 
 	 * @return
 	 */
 	@ResponseBody
@@ -334,13 +333,13 @@ public class WxMyCenterController extends WeixinBaseController {
 			m.put("s", String.valueOf(i));
 			status.put(i, m);
 		}
-		//推广码有误，请检查!
-		//不存在推荐人，请重新更改!
-		//推荐人只能修改一次，请勿重复修改!
-		//推荐人不可以是自己!
-		//推荐关系是环形！请重新选择！
-		//推荐关系是环形　请重新选择！
-		//更改完成!
+		// 推广码有误，请检查!
+		// 不存在推荐人，请重新更改!
+		// 推荐人只能修改一次，请勿重复修改!
+		// 推荐人不可以是自己!
+		// 推荐关系是环形！请重新选择！
+		// 推荐关系是环形 请重新选择！
+		// 更改完成!
 	}
 
 	/**
@@ -352,8 +351,7 @@ public class WxMyCenterController extends WeixinBaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("editReferrerAction/{referrerGeneralizeId}")
-	public Map<String, Object> editReferrerAction(@PathVariable String referrerGeneralizeId)
-	{
+	public Map<String, Object> editReferrerAction(@PathVariable String referrerGeneralizeId) {
 		if (StringUtils.isEmpty(referrerGeneralizeId))
 			return status.get(1);
 		Member other = memberService.getOne("generalizeId", referrerGeneralizeId);
@@ -368,9 +366,7 @@ public class WxMyCenterController extends WeixinBaseController {
 			return status.get(4);
 
 		Member parent = memberService.getParent(other, 1);
-		for (Set<Integer> visited = new HashSet<>();
-			 parent != null;
-			 parent = memberService.getParent(other, 1)) {
+		for (Set<Integer> visited = new HashSet<>(); parent != null; parent = memberService.getParent(other, 1)) {
 			if (parent.getId().equals(other.getId()))
 				return status.get(5);
 			if (visited.contains(parent.getId()))
@@ -409,15 +405,15 @@ public class WxMyCenterController extends WeixinBaseController {
 	 */
 
 	@RequestMapping("myQrCode")
-	public String myQrCode(HttpSession session, HttpServletRequest request,ModelMap map) {
+	public String myQrCode(HttpSession session, HttpServletRequest request, ModelMap map) {
 		Member member = getRealMember();
 		if (!StringUtils.isEmpty(member)) {
 			String generalizeId = member.getGeneralizeId();
 			if (!StringUtil.strNullOrEmpty(generalizeId)) {
-				
-				GetSignatureResponse resp=	WeiXinApi.getJsAPI().getSignature(getDomain()+request.getRequestURI());
+
+				GetSignatureResponse resp = WeiXinApi.getJsAPI().getSignature(getDomain() + request.getRequestURI());
 				map.put("resp", resp);
-				
+
 				if (!StringUtil.strNullOrEmpty(member.getQrCode())) {
 					LocalDateTime lastUpdateQrCode = member.getLastUpdateQrCode();
 					if (null == lastUpdateQrCode || lastUpdateQrCode.plusDays(25).isBefore(LocalDateTime.now())) {
@@ -430,22 +426,26 @@ public class WxMyCenterController extends WeixinBaseController {
 		}
 		return PATH + "myQrCode";
 	}
-	
+
 	/**
 	 * 
-	 *<p>Title:myQrCode</p>
-	 *<p>Description:分享我的二维码页面</p>
+	 * <p>
+	 * Title:myQrCode
+	 * </p>
+	 * <p>
+	 * Description:分享我的二维码页面
+	 * </p>
 	 *
 	 * @param map
 	 * @param openid
 	 * @return
 	 */
 	@RequestMapping("myQrCode/{openid}")
-	public String myQrCode(ModelMap map,@PathVariable String openid) {
+	public String myQrCode(ModelMap map, @PathVariable String openid) {
 		Member one = memberService.getOne("openid", openid);
-		map.put("user",one);
-		map.put("status",1);
-	
+		map.put("user", one);
+		map.put("status", 1);
+
 		return PATH + "myQrCode1";
 	}
 
@@ -461,5 +461,7 @@ public class WxMyCenterController extends WeixinBaseController {
 		memberService.update(member);
 		session.setAttribute(Const.CUR_WX_MEMBER, member);
 	}
+
+
 
 }
