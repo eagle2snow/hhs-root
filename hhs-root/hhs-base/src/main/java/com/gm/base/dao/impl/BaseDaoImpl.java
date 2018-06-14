@@ -49,7 +49,7 @@ public class BaseDaoImpl<T extends Model, ID extends Serializable> implements IB
 	@Resource
 	private EntityManager entityManager;
 
-	private Session getSession() {
+	protected Session getSession() {
 		// HibernateEntityManager hEntityManager = (HibernateEntityManager)
 		// entityManager;
 		// return hEntityManager.getSession();
@@ -1255,5 +1255,6 @@ public class BaseDaoImpl<T extends Model, ID extends Serializable> implements IB
 		Integer i = getSession().createNativeQuery(sql).executeUpdate();
 		return i;
 	}
+	
 
 }
