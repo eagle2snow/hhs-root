@@ -1,0 +1,114 @@
+*{
+	margin: 0 0;
+	padding: 0 0;
+	list-style: none;
+	font-family: "微软雅黑";
+}
+.content>ul>li{
+	padding-left: 1rem;
+	padding-right: 2rem;
+	background: #ffffff;
+	height: 3rem;
+	line-height: 3rem;
+	box-shadow: inset 0px -1px 0px 0px 
+		#cbcbcb;
+}
+.sx{
+	font-size: 1rem;
+	color: #999999;
+	margin-left: 8.5%;
+}
+.fl{
+	    margin-left: 10%;
+	font-size: 1rem;
+	color: #999999;
+}
+.beny{
+	background: #e4e5e7 !important;
+	font-size: 1rem;
+	color: #1c1c1f;
+	line-height: 1.2rem !important;
+	padding-top: .2rem;
+    padding-bottom: .5rem;
+}
+.dangy{
+	display: block;
+	font-size: 1rem;
+	color: #1c1c1f;
+	line-height: 1.5rem;
+}
+.span01{
+	display: block;
+	font-size: .8rem;
+	color: #999999;
+	line-height: 1.5rem;
+}
+.span02{
+	    margin-right: 1.5rem;
+}
+.zhangd{
+	padding: .5rem 2rem .5rem 1rem;
+	font-weight: bold;
+	font-size: 1rem;
+	line-height: 1rem !important;
+	color: #303030;
+}
+.date{
+	display: block;
+	font-size: .8rem;
+    line-height: 2rem;
+    color: #999999;
+    float: left;
+}
+.time{
+	margin-left: 1rem;
+}
+.jine{
+	display: block;
+	float: right;
+	color: #303030;
+	font-size: 1rem;
+}
+.span03{
+	color: #8fbb25;
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+.span04{
+	color: #303030;
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+.saix{
+	width: 100%;
+	    position: absolute;
+    z-index: 2;
+    top: 3rem;
+    display: none;
+}
+.saix>ul>li{
+	font-size: 1rem;
+	line-height: 2rem;
+	color: #303030;
+		background: #fff;
+	border: solid 1px #cbcbcb;
+	text-align: center;
+}
+.fenl{
+	display: none;
+	width: 100%;
+	    position: absolute;
+    z-index: 2;
+    top: 3rem;
+}
+.fenl>ul>li{
+	font-size: 1rem;
+	line-height: 2rem;
+	color: #303030;
+		background: #fff;
+	border: solid 1px #cbcbcb;
+	text-align: center;
+}
+#list01{
+	padding: 0 !important;
+}
