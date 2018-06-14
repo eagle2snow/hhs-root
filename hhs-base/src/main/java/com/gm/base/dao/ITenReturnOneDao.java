@@ -17,19 +17,19 @@ public interface ITenReturnOneDao extends IBaseDao<TenReturnOne, Integer> {
 	 * @param id
 	 * @return
 	 */
-	TenReturnOne selectTime(Integer id);
+	Integer selectTime(Integer id);
 	/**
 	 * 查询返还次数
 	 * @param id
 	 * @return 
 	 */
-	TenReturnOne selectTenTime(Integer id);
+	Integer selectTenTime(Integer id);
 	/**
 	 * 查询十返一会员
 	 * @param id
 	 * @param tentime
 	 * @return 
 	 */
-	TenReturnOne selectOneMember(Integer id, int tentime);
+	Integer selectOneMember(Integer id, int tentime);
 
 }
