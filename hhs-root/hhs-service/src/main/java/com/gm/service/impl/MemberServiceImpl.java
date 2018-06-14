@@ -369,7 +369,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				 Commodity commodity = orderItem.getCommodity();
 				List<TenReturnOne> list = tenReturnOneDao.listEq("thisTimeCommodity.id", commodity.getId());
 				TenReturnOne tenReturnOne = new TenReturnOne();
-				if (list == null) {
+				if (list.size() ==0) {
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
 					tenReturnOne.setTime(orderItem.getBuyCount());
