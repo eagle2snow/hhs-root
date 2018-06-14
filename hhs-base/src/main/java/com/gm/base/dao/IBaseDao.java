@@ -1011,5 +1011,6 @@ public interface IBaseDao<T extends Serializable, ID extends Serializable> {
 	 * @return List<T>
 	 */
 	List<T> listEqDc(String p, Object v, Object c,String s);
+	
 
 }
