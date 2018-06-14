@@ -70,7 +70,7 @@
 			<div class="dd">
 				<span class="n">${member.generalizeCost}</span>元
 			</div>
-			<div class="dt">推广费</div>
+			<div onclick="memberBill(${member.id})" class="dt">推广费</div>
 		</li>
 	</ul>
 	<!-- end 一行 -->
@@ -209,6 +209,12 @@
                 	document.getElementById("alink").click();
             	   	
 		});
+	}
+	
+	//推广费详情
+	function memberBill(memberId){
+		$.alert("memberId ----");
+		window.location.href = "${ctx}/wx/myCenter/memberBill/"+memberId;
 	}
 	
 	
