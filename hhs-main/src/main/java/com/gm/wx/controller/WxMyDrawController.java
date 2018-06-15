@@ -66,6 +66,8 @@ public class WxMyDrawController extends WeixinBaseController {
 	@RequestMapping("/toDraw")
 	public String toDraw(ModelMap map) {
 		map.put("path", PATH);
+		Member member = WXHelper.getMember(getRealMember());
+		map.put("member", member);
 		return PATH + "toDraw";
 	}
 
