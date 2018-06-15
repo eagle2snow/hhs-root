@@ -1,5 +1,6 @@
 package com.gm.wx.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -88,6 +89,9 @@ public class WxMyDrawController extends WeixinBaseController {
 		Member member = memberService.get(getCurMember().getId());
 		draw.setMember(member);
 		draw.setStatus(1);
+		BigDecimal subtractAmount = draw.getAmount().subtract(draw.getAmount().multiply(Const.serviceCharge));
+		draw.setAmount(subtractAmount); //服务费 0.47
+		
 		if (draw.getAmount().compareTo(member.getBalance()) == 1) {
 			map.put("balance", member.getBalance());
 			map.put("s", -1);// 余额不足
