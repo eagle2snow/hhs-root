@@ -596,5 +596,28 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	}
 
+	@Override
+	public int getConditionChildrenCount(Member member, Map<Integer, Integer> data, Map<Integer, Integer> result, int childrenCount)
+	{
+		List<Member> children = getChildren(member, 1);
+		if (children == null)
+			return 0;
+		int sum = 0;
+		for (Member child : children) {
+			Integer id = child.getId();
+			if (result.containsKey(id)) {
+				if (child.getSetMeal() == 3 && result.get(id) >= childrenCount)
+					sum += 1;
+				else
+					sum += result.get(id);
+			} else if (child.getSetMeal() == 3 || data.get(id) >= childrenCount)
+				sum += 1;
+			else
+				sum += data.get(id);
+		}
+		result.put(member.getId(), sum);
+		return sum;
+	}
+
 
 }

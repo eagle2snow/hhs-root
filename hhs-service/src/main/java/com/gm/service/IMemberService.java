@@ -141,6 +141,9 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	 */
 	void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply);
 
+
+	int getConditionChildrenCount(Member member, Map<Integer, Integer> data, Map<Integer, Integer> result, int childrenCount);
+
 	/**
 	 * 获取一个会员的所有下家个数
 	 * @param memento 加速用 notnull
