@@ -74,5 +74,5 @@ public class Const {
 	/**
 	 * 提现个人所得税
 	 */
-    public static final BigDecimal serviceCharge = BigDecimal.valueOf(0.47);
+    public static final BigDecimal serviceCharge = BigDecimal.valueOf(0.0047);
 }
