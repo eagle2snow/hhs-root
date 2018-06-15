@@ -42,6 +42,29 @@ public class DateUtil {
 	public static final String f9 = "yyyyMMdd";
 	public static final String f10 = "yyyyMMddHHmmssSSS";
 
+	// 字符串转LocalDateTime
+	public static LocalDateTime stringDateToLocalDateTime(String dateStr) {
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime ldt = LocalDateTime.parse(dateStr, df);
+		return ldt;
+	}
+
+	// 获取当前月第一天
+	public static String firstDayOfMonty() {
+		Date firstDayOfMonth = DateUtil.getFirstDayOfMonth();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf1.format(firstDayOfMonth);
+	}
+
+	// 判断某个时间是否在一个时间段内
+	public static boolean includeTime(LocalDateTime time, LocalDateTime sTime, LocalDateTime eTime) {
+		boolean flag = false;
+		if (time.isAfter(sTime) && time.isBefore(eTime)) {
+			flag = true;
+		}
+		return flag;
+	}
+
 	/**
 	 * 字符串转化成日期 ("yyyy-MM-dd HH:mm:ss")格式
 	 * 
