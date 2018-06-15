@@ -322,11 +322,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
 			BigDecimal extract = BigDecimal.ZERO;
+			BigDecimal extract1 = BigDecimal.ZERO;
 			BigDecimal extract2momey = BigDecimal.valueOf(2);
 			if (listEq != null) {
 				for (OrderItem item : listEq) {
 					extract = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
-					extract2momey = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
+					extract1 = extract1.add(extract2momey.multiply(BigDecimal.valueOf(item.getBuyCount())));
 					size += item.getBuyCount();
 				}
 			}
@@ -390,12 +391,12 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					continue;
 				
 				accountBill = new MemberAccountBill();
-				current.setBalance(current.getBalance().add(extract));
-				current.setGeneralizeCost(current.getGeneralizeCost().add(extract));
+				current.setBalance(current.getBalance().add(extract1));
+				current.setGeneralizeCost(current.getGeneralizeCost().add(extract1));
 				accountBill.setUpId(current.getId().intValue());
 				accountBill.setUpName(current.getNickname());
 				accountBill.setType(4); // 4|提成
-				accountBill.setMoney(extract);
+				accountBill.setMoney(extract1);
 				accountBill.setSelfId(member.getId());
 				accountBill.setSelfName(member.getNickname());
 				accountBillDao.save(accountBill);
