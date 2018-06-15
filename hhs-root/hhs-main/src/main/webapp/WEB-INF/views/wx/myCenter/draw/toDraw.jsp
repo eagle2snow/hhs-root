@@ -157,7 +157,10 @@
 		}, true);
 
 		function drawAll() {
-			$("#amount").val(all);
+			var  balance= $("#balance").text();
+			var amount= $("#amount").val();
+			
+			
 		}
 	</script>
 
