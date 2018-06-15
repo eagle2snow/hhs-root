@@ -64,9 +64,9 @@
 				</div>
 			</div>
 			<div class="setitem">
-				<a href="###" class="dl"> <span class="gytxt">当前可提现金额：&yen;<span
-						class="insm" id="balance" >${curMember.balance}</span></span>
-					<div class="dd"></div> <span class="primarytxt" onclick="drawAll()">全部提现</span>
+				<a href="###" class="dl"> <span class="gytxt">当前可提现金额：&yen; <span
+						class="insm" id="balance" >${curMember.balance}</span> <span class="primarytxt">扣0.47服务费</span></span>
+					<div class="dd"></div >  <span class="primarytxt" onclick="drawAll()">全部提现</span>
 				</a>
 			</div>
 		</div>

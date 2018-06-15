@@ -16,10 +16,10 @@
 
 <div class="content">
     <ul>
-        <li id="list01">
-            <span class="sx">筛选 <img src="/static/wx/images/bill/bf01.png"/></span>
-            <span class="fl">分类 <img src="/static/wx/images/bill/bf01.png"/></span>
-        </li>
+<!--         <li id="list01"> -->
+<!--             <span class="sx">筛选 <img src="/static/wx/images/bill/bf01.png"/></span> -->
+<!--             <span class="fl">分类 <img src="/static/wx/images/bill/bf01.png"/></span> -->
+<!--         </li> -->
         <li class="beny">
             <span class="dangy">本月</span>
             <span class="span01">支出 <span class="span02">
@@ -46,20 +46,20 @@
         </c:forEach>
     </ul>
 </div>
-<div class="saix">
-    <ul>
-        <li onclick="thisMonth()">本月</li>
-        <li>近一个月</li>
-        <li>近三个月</li>
-    </ul>
-</div>
+<!-- <div class="saix"> -->
+<!--     <ul> -->
+<!--         <li onclick="thisMonth()">本月</li> -->
+<!--         <li>近一个月</li> -->
+<!--         <li>近三个月</li> -->
+<!--     </ul> -->
+<!-- </div> -->
 
-<div class="fenl">
-    <ul>
-        <li>支出</li>
-        <li>收入</li>
-    </ul>
-</div>
+<!-- <div class="fenl"> -->
+<!--     <ul> -->
+<!--         <li>支出</li> -->
+<!--         <li>收入</li> -->
+<!--     </ul> -->
+<!-- </div> -->
 
 <%@ include file="/common/wx/js.jsp" %>
 <%@ include file="/common/wx/socket.jsp" %>
@@ -77,13 +77,11 @@
     })
 </script>
 <script>
-
     //  本月
     function thisMonth() {
-        $.alert("test");
-        $.getJSON("${adp}thisMonth/",
+        $.getJSON("${adp}wx/myCenter/thisMonth",
             function (date) {
-                $.alert("test");
+        	 alert(date.msg);
             });
     }
 </script>
