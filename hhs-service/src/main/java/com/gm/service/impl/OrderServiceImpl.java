@@ -322,9 +322,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			List<OrderItem> listEq = orderItemService.listEq("order.id", order.getId());
 			int size = 0;
 			BigDecimal extract = BigDecimal.ZERO;
+			BigDecimal extract2momey = BigDecimal.valueOf(2);
 			if (listEq != null) {
 				for (OrderItem item : listEq) {
 					extract = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
+					extract2momey = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
 					size += item.getBuyCount();
 				}
 			}
@@ -350,7 +352,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					(order.getTotalMoney().multiply(Const.pushMoney)));
 			//返提成给上，上上，上上上家
 			Member m = member;
-			/*for (int i = 1; i <= 3; ++i) {
+			for (int i = 1; i <= 3; ++i) {
 				m = memberService.getParent(m, 1);
 
 				if (m == null)
@@ -367,7 +369,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 					accountBillDao.save(accountBill);
 					memberService.update(m);
 
-			}*/
+			}
 			
 			Map<Integer, Integer> memento = new HashMap<>();
 			Set<Integer> visited = new HashSet<>();
