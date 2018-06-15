@@ -300,17 +300,19 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
 
-		boolean gt = false;
-		for (Member current = getParent(member, 1); current != null
-				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
+		for (Member current = getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
 			visitedParents.add(current.getId());
-			if (!gt) {
-				int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
-				if (childrenCount <= Const.betweenMember)
-					continue;
-				gt = true;
-			}
-			if (current.getSetMeal() != 3)
+			memberService.getChildrenCount(current, memento, visited, added);
+		}
+
+		visited.clear();
+		added.clear();
+		visitedParents.clear();
+
+		Map<Integer, Integer> result = new HashMap<>();
+		for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
+			int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
+			if (current.getSetMeal() != 3 || c < Const.betweenMember)
 				continue;
 
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
@@ -329,7 +331,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				current.setLevel(4);
 			logger.info(current.getNickname(), current.getGeneralizeCost());
 			dao.update(current);
-			break;
 		}
 	}
 
