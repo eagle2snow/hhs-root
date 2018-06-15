@@ -12,30 +12,21 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import com.gm.base.consts.Const;
+import com.gm.base.dao.IMemberAccountBillDao;
+import com.gm.base.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
-import com.gm.base.consts.Const;
 import com.gm.base.dao.IBaseDao;
-import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.dao.IOrderDao;
-import com.gm.base.dao.ITenReturnOneDao;
 import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
-import com.gm.base.model.Cart;
-import com.gm.base.model.Commodity;
-import com.gm.base.model.Member;
-import com.gm.base.model.MemberAccountBill;
-import com.gm.base.model.Order;
-import com.gm.base.model.OrderItem;
-import com.gm.base.model.PayBill;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
-import com.gm.service.IMemberBuyService;
 import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
@@ -48,11 +39,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-	@Autowired
-	private IMemberAccountBillDao accountBillDao;
-
 	@Resource
-	private ITenReturnOneDao oneDao;
+	IMemberService memberService;
 
 	@Resource
 	private IOrderDao dao;
@@ -73,10 +61,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	private ICommodityService commodityService;
 
 	@Resource
-	private IMemberBuyService memberBuyService;
-
-	@Resource
-	private IMemberService memberService;
+	private IMemberAccountBillDao accountBillDao;
 
 	@Override
 	public IBaseDao<Order, Integer> getDao() {
@@ -377,19 +362,20 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			Set<Integer> added = new HashSet<>();
 			Set<Integer> visitedParents = new HashSet<>();
 
-			boolean gt = false;
-			for (Member current = getParent(member, 1); current != null
-					&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
+			for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 				visitedParents.add(current.getId());
-				if (!gt) {
-					int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
-					if (childrenCount <= Const.betweenMember)
-						continue;
-					gt = true;
-				}
-				if (current.getSetMeal() != 3)
+				memberService.getChildrenCount(current, memento, visited, added);
+			}
+
+			visited.clear();
+			added.clear();
+			visitedParents.clear();
+			Map<Integer, Integer> result = new HashMap<>();
+			for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
+				int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
+				if (current.getSetMeal() != 3 || c < Const.betweenMember)
 					continue;
-				
+
 				accountBill = new MemberAccountBill();
 				current.setBalance(current.getBalance().add(extract1));
 				current.setGeneralizeCost(current.getGeneralizeCost().add(extract1));
@@ -401,26 +387,11 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				accountBill.setSelfName(member.getNickname());
 				accountBillDao.save(accountBill);
 				memberService.update(current);
-				break;
 			}
-			
 			
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 *<p>Title:</p>
-	 *<p>Description:</p>
-	 *
-	 * @param member
-	 * @param i
-	 * @return
-	 */
-	private Member getParent(Member member, int i) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
