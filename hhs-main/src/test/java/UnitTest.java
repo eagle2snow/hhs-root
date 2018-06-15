@@ -21,8 +21,6 @@ public class UnitTest {
     @Transactional
     public void foo()
     {
-        Member member = new Member();
-        member.setId(5);
-        orderService.finishGoods(member, null);
+        
     }
 }
