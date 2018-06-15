@@ -49,15 +49,15 @@ public class Const {
 	/**
 	 * 购买会员套餐单价（元）
 	 */
-	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(0.01);
+	public static final BigDecimal MEMBER_AMOUNT = BigDecimal.valueOf(398);
 	/**
 	 * 直推人数
 	 */
-	public static final Integer directMember = 2;						   
+	public static final Integer directMember = 10;						   
 	/**
 	 * 直系人数
 	 */
-	public static final Integer betweenMember = 5;					   
+	public static final Integer betweenMember = 100;					   
 	/**
 	 * 购买会员套餐后打折比
 	 */
@@ -69,7 +69,10 @@ public class Const {
 	/**
 	 * 商品十返一
 	 */
-	public static final Integer returnOne= 5;
+	public static final Integer returnOne= 10;
 
-    public static final String KEY = null;
+	/**
+	 * 提现服务费
+	 */
+    public static final BigDecimal serviceCharge = BigDecimal.valueOf(0.47);
 }

@@ -42,7 +42,7 @@ public class Draw extends Model {
 	private String cardNo;// 银行卡账号
 
 	@FormField(type = FieldType.TEXTINPUT, label = "提现金额")
-	private BigDecimal amount;
+	private BigDecimal amount = BigDecimal.ZERO;
 	@FormField(type = FieldType.RADIO, label = "状态", data = "1|待审核,2|拒绝提现,3|待打款,4|已打款,5|已作废")
 	private Integer status;
 	@FormField(type = FieldType.TEXTINPUT, label = "银行流水号")
