@@ -62,9 +62,9 @@
 				</div>
 			</label>
 		</c:forEach>
-		<a href="${ctx}wx/myCenter/addAddress?setMeal=1" class="weui-cell weui-cell_link">
-		<div class="weui-cell__bd">新地址</div>
-	</a>
+<%-- 		<a href="${ctx}wx/myCenter/addAddress?setMeal=1" class="weui-cell weui-cell_link"> --%>
+<!-- 			<div class="weui-cell__bd">新地址</div> -->
+<!-- 		</a> -->
 	</div>
 
 
