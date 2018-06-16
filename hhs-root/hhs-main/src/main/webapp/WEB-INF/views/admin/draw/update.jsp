@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="java.text.SimpleDateFormat"%>  
+<%@page import="java.util.*"%> 
 <!DOCTYPE html>
 <html>
 
@@ -11,6 +13,11 @@
 </head>
 
 <body>
+	<%  
+        Date d = new Date();  
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+        String now = df.format(d);  
+    %>
 	<section class="content">
 	<form class="form-horizontal" method="post" id="form-admin-add" action="${adp}update.json">
 		<input type="hidden" name="id" value="${model.id}"/>	
@@ -71,7 +78,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">会员:</label>
 										<div class="col-sm-8">
-											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member" disabled="disabled" style="border: none;" readonly="readonly">
+											<select name="member.id" style="width: 100% !important;" class="form-control select2" id="member" style="border: none;" readonly="readonly">
 												<c:forEach items="${memberList}" var="m">
 													<option    ${model.member.id==m.id?'selected':'' }  value="${m.id}">
 														${m.name}
@@ -85,6 +92,28 @@
 							
 							
 			                
+							<div class="form-group">
+								<label class="col-sm-2 control-label">银行卡号:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.cardNo}"
+							        placeholder="银行卡号" id="cardNo" name="cardNo"   
+							        style="border: none;" readonly="readonly"        />
+								</div>
+							</div>
+							
+							
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">持卡人:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.cardUser}"
+							        placeholder="持卡人" id="cardUser" name="cardUser"   
+							        style="border: none;" readonly="readonly"        />
+								</div>
+							</div>
+							
+							
+							
 							<div class="form-group">
 								<label class="col-sm-2 control-label">提现金额:</label>
 								<div class="col-sm-8">
@@ -104,7 +133,13 @@
 							 
 							
 							
-							
+							<div class="form-group" style="display:none ">
+								<label class="col-sm-2 control-label">处理时间:</label>
+								<div class="col-sm-8">
+									<input type="" class="form-control" value="<%=now %>"
+							        placeholder="处理时间" id="dealDate" name="dealDate"           />
+								</div>
+							</div>
 			                
                         
                         
