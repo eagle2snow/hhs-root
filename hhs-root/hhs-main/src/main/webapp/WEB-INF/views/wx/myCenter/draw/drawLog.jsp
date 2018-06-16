@@ -14,7 +14,7 @@
 		<c:forEach items="${list }" var='draw'>
 			<li class="addressitem">
 				<div class="addressitem_info">
-					<span class="name">${draw.cardUser}</span> <span class="ins">${draw.amount}元</span>
+					<span class="name">${draw.cardUser}</span> <span class="ins">${draw.amount}元</span><span class="ins">（手续费：-${draw.withdrawing}元）</span>
 				</div>
 				<div class="addressitem_local">银行卡号：${draw.cardNo}</div>
 				<div class="addressitem_mb">
