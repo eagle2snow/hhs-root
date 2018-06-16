@@ -64,7 +64,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private IMemberService memberService;
 
-
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
 		return dao;
@@ -184,8 +183,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public void payMemberSuccess(String openid, PayBill payBill)
-	{
+	public void payMemberSuccess(String openid, PayBill payBill) {
 		Member member = getOne("openid", openid);
 
 		if (member == null) {
@@ -300,7 +298,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
 
-		for (Member current = getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
+		for (Member current = getParent(member, 1); current != null
+				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
 			visitedParents.add(current.getId());
 			memberService.getChildrenCount(current, memento, visited, added);
 		}
@@ -310,13 +309,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		visitedParents.clear();
 
 		Map<Integer, Integer> result = new HashMap<>();
-		for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
+		for (Member current = memberService.getParent(member, 1); current != null
+				&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 			int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
-			if (current.getSetMeal() != 3 || c < Const.betweenMember)
+			if (current.getSetMeal() != 3 && c < Const.betweenMember) // 条件应该是并且的关系
 				continue;
 
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
+
+			logger.info("finishGoods:return {} yuan",BigDecimal.valueOf(5));
 
 			MemberAccountBill accountBill = new MemberAccountBill();
 			accountBill.setSelfId(member.getId());
@@ -367,10 +369,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		List<OrderItem> listEq = orderItemService.listEq("order.id", orderId);
 		try {
 			for (OrderItem orderItem : listEq) {
-				 Commodity commodity = orderItem.getCommodity();
+				Commodity commodity = orderItem.getCommodity();
 				List<TenReturnOne> list = tenReturnOneDao.listEq("thisTimeCommodity.id", commodity.getId());
 				TenReturnOne tenReturnOne = new TenReturnOne();
-				if (list.size() ==0) {
+				if (list.size() == 0) {
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
 					tenReturnOne.setTime(orderItem.getBuyCount());
@@ -383,12 +385,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					tenReturnOne.setThisTimeCommodity(commodity);
 					tenReturnOne.setThisTimeMember(member);
 					tenReturnOne.setTime(num);
-					if (num /  Const.returnOne >= tentime){
-					Integer selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(),tentime);
+					if (num / Const.returnOne >= tentime) {
+						Integer selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(), tentime);
 						Member thisTimeMember = memberService.get(selectOneMember);
-						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2){ //未购买套餐  返原价
+						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2) { // 未购买套餐 返原价
 							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice()));
-							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice()));			
+							thisTimeMember.setGeneralizeCost(
+									thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice()));
 							MemberAccountBill accountBill = new MemberAccountBill();
 							accountBill.setSelfId(thisTimeMember.getId());
 							accountBill.setType(1); // 1|十返一
@@ -397,9 +400,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 							dao.update(thisTimeMember);
 							tenReturnOne.setTenTime(++tentime);
 							tenReturnOneDao.add(tenReturnOne);
-						}else {//返八折
-							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice().multiply(Const.discount)));
-							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost().add(commodity.getShowPrice().multiply(Const.discount)));
+						} else {// 返八折
+							thisTimeMember.setBalance(
+									thisTimeMember.getBalance().add(commodity.getShowPrice().multiply(Const.discount)));
+							thisTimeMember.setGeneralizeCost(thisTimeMember.getGeneralizeCost()
+									.add(commodity.getShowPrice().multiply(Const.discount)));
 							MemberAccountBill accountBill = new MemberAccountBill();
 							accountBill.setSelfId(thisTimeMember.getId());
 							accountBill.setType(1); // 1|十返一
@@ -409,22 +414,20 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 							tenReturnOne.setTenTime(++tentime);
 							tenReturnOneDao.add(tenReturnOne);
 						}
-						
-					}else {
+
+					} else {
 						tenReturnOne.setTenTime(tentime);
 						tenReturnOneDao.add(tenReturnOne);
 					}
 
-					}
-					
 				}
-			
+
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-		
-
 
 	/**
 	 * 返套餐金额 ①判断是否购买套餐 ②判断直推会员是否是十的倍数
@@ -598,8 +601,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public int getConditionChildrenCount(Member member, Map<Integer, Integer> data, Map<Integer, Integer> result, int childrenCount)
-	{
+	public int getConditionChildrenCount(Member member, Map<Integer, Integer> data, Map<Integer, Integer> result,
+			int childrenCount) {
 		List<Member> children = getChildren(member, 1);
 		if (children == null)
 			return 0;
@@ -619,6 +622,5 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		result.put(member.getId(), sum);
 		return sum;
 	}
-
 
 }
