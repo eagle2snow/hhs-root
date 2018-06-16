@@ -66,8 +66,6 @@ public class WxMyDrawController extends WeixinBaseController {
 	@RequestMapping("/toDraw")
 	public String toDraw(ModelMap map) {
 		map.put("path", PATH);
-		Member member = WXHelper.getMember(getRealMember());
-		map.put("member", member);
 		return PATH + "toDraw";
 	}
 
@@ -91,14 +89,13 @@ public class WxMyDrawController extends WeixinBaseController {
 		Member member = memberService.get(getCurMember().getId());
 		draw.setMember(member);
 		draw.setStatus(1);
-		BigDecimal subtractAmount = draw.getAmount().subtract(draw.getAmount().multiply(Const.serviceCharge));
-		draw.setAmount(subtractAmount); //服务费 0.47
-		
+		draw.setWithdrawing(draw.getAmount().multiply(BigDecimal.valueOf(0.0047)).setScale(2, BigDecimal.ROUND_UP));
 		if (draw.getAmount().compareTo(member.getBalance()) == 1) {
 			map.put("balance", member.getBalance());
 			map.put("s", -1);// 余额不足
 		} else if (drawService.save(draw)) {
 			member.setBalance(member.getBalance().subtract(draw.getAmount()));
+			memberService.update(member);
 			
 			MemberAccountBill accountBill = new MemberAccountBill();
 			accountBill.setSelfId(member.getId());
@@ -106,9 +103,6 @@ public class WxMyDrawController extends WeixinBaseController {
 			accountBill.setType(9); //9|提现
 			accountBill.setMoney(draw.getAmount());
 			accountBillDao.save(accountBill);
-			
-			
-			memberService.update(member);
 			map.put("s", 1);
 		} else {
 			map.put("s", 0);
