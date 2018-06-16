@@ -62,7 +62,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	@RequiresPermissions("admin:draw:update")
+	//@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update/{id}.htm")
 	public String updateView(@PathVariable Integer id, ModelMap map) {
 		Draw model = drawService.get(id);
@@ -73,11 +73,13 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	@RequiresPermissions("admin:draw:update")
+	//@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update.json")
 	@ResponseBody
 	public Map<String, Object> updateAction(Draw model) {
 		Map<String, Object> map = new HashMap<>();
+		Draw draw = drawService.get(model.getId());
+		model.setMember(draw.getMember());
 		if (drawService.update(model)) {
 			map.put("status", "ok");
 		} else {
