@@ -122,6 +122,18 @@
 							        style="border: none;" readonly="readonly"        />
 								</div>
 							</div>
+							
+							
+							
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">扣费:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" value="${model.withdrawing}"
+							        placeholder="提现金额" id="withdrawing" name="withdrawing"   
+							        style="border: none;" readonly="readonly"        />
+								</div>
+							</div>
                         
                         
 						
