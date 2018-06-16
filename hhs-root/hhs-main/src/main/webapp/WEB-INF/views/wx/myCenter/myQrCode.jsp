@@ -30,7 +30,8 @@
 				<div class="myqrcodebox">
 					<img src="${curMember.qrCode }" alt="">
 				</div>
-				<div class="ac dtrins">分享方式：<br>①直接扫描二维码<br>②长按二维码 -> 发送给朋友<br>③点击右上角 -> 发送给朋友 - 分享到朋友圈</div>
+<!-- 				③点击右上角 -> 发送给朋友 - 分享到朋友圈 -->
+				<div class="ac dtrins">分享方式：<br>①直接扫描二维码<br>②长按二维码 -> 发送给朋友<br></div>
 			</div>
 		</div>
 	</div>
