@@ -48,7 +48,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:add")
+	@RequiresPermissions("admin:draw:add")
 	@ResponseBody
 	@RequestMapping("add.json")
 	public Map<String, Object> addAction(Draw model) {
@@ -62,7 +62,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:update")
+	@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update/{id}.htm")
 	public String updateView(@PathVariable Integer id, ModelMap map) {
 		Draw model = drawService.get(id);
@@ -73,7 +73,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:update")
+	@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update.json")
 	@ResponseBody
 	public Map<String, Object> updateAction(Draw model) {
@@ -92,7 +92,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:show")
+	@RequiresPermissions("admin:draw:show")
 	@RequestMapping("show/{id}.htm")
 	public String showView(@PathVariable Integer id, ModelMap map) {
 		Draw model = drawService.get(id);
