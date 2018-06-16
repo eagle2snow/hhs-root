@@ -70,6 +70,7 @@
 											<th>银行卡号</th>
 											<th>持卡人</th>
 											<th>提现金额</th>
+											<th>实付金额</th>
 											<th>状态</th>
 											<th>银行流水号</th>
 											<th>备注</th>
@@ -93,6 +94,7 @@
 											 <th>${model.cardUser}</th>
 											
 											 <th>${model.amount}</th>
+											 <th>${model.amount - model.withdrawing}</th>
 											
 											 <th>
 											 	<c:if test="${model.status eq 1}">待审核</c:if>
