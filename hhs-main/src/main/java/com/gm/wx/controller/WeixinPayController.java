@@ -11,13 +11,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import com.gm.utils.cppstl.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,10 +26,8 @@ import com.gm.api.wx.WeixinPayApi;
 import com.gm.base.consts.Const;
 import com.gm.base.model.Member;
 import com.gm.base.model.PayBill;
-import com.gm.service.IMemberService;
 import com.gm.service.IPayBillService;
 import com.gm.service.impl.OrderServiceImpl;
-import com.gm.utils.StringUtil;
 
 /**
  * 
@@ -69,7 +64,7 @@ public class WeixinPayController extends WeixinBaseController {
 	{
 		logger.info("prepay:The pay start,ages is orderNo={},orderName={},amount={}", orderNo, orderName, amount);
 		
-		//amount = amount.multiply(BigDecimal.valueOf(0.01));
+//		amount = amount.multiply(BigDecimal.valueOf(0.01));
 		logger.info("--------------prePay:amount * 0.08 * 0.01 ={}-----------------",JSON.toJSON(amount));
 		Member member = WXHelper.getMember(getCurMember());
 
