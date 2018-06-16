@@ -311,7 +311,8 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			BigDecimal extract2momey = BigDecimal.valueOf(2);
 			if (listEq != null) {
 				for (OrderItem item : listEq) {
-					extract = extract.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
+					extract = extract
+							.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
 					extract1 = extract1.add(extract2momey.multiply(BigDecimal.valueOf(item.getBuyCount())));
 					size += item.getBuyCount();
 				}
@@ -334,35 +335,36 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				member.setLevel(2);// 等级
 
 			// 返订单总额0.01%给上家
-			memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
-					(order.getTotalMoney().multiply(Const.pushMoney)));
-			//返提成给上，上上，上上上家
+			// memberService.updateGeneralizeCost(member.getReferrerGeneralizeId(),
+			// (order.getTotalMoney().multiply(Const.pushMoney)));
+			// 返提成给上，上上，上上上家
 			Member m = member;
 			for (int i = 1; i <= 3; ++i) {
 				m = memberService.getParent(m, 1);
 
 				if (m == null)
 					break;
-				    accountBill = new MemberAccountBill();
-					m.setBalance(m.getBalance().add(extract));
-					m.setGeneralizeCost(m.getGeneralizeCost().add(extract));
-					accountBill.setUpId(m.getId().intValue());
-					accountBill.setUpName(m.getNickname());
-					accountBill.setType(4); // 4|提成
-					accountBill.setMoney(extract);
-					accountBill.setSelfId(member.getId());
-					accountBill.setSelfName(member.getNickname());
-					accountBillDao.save(accountBill);
-					memberService.update(m);
+				accountBill = new MemberAccountBill();
+				m.setBalance(m.getBalance().add(extract));
+				m.setGeneralizeCost(m.getGeneralizeCost().add(extract));
+				accountBill.setUpId(m.getId().intValue());
+				accountBill.setUpName(m.getNickname());
+				accountBill.setType(4); // 4|提成
+				accountBill.setMoney(extract);
+				accountBill.setSelfId(member.getId());
+				accountBill.setSelfName(member.getNickname());
+				accountBillDao.save(accountBill);
+				memberService.update(m);
 
 			}
-			
+
 			Map<Integer, Integer> memento = new HashMap<>();
 			Set<Integer> visited = new HashSet<>();
 			Set<Integer> added = new HashSet<>();
 			Set<Integer> visitedParents = new HashSet<>();
 
-			for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
+			for (Member current = memberService.getParent(member, 1); current != null
+					&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 				visitedParents.add(current.getId());
 				memberService.getChildrenCount(current, memento, visited, added);
 			}
@@ -371,10 +373,13 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			added.clear();
 			visitedParents.clear();
 			Map<Integer, Integer> result = new HashMap<>();
-			for (Member current = memberService.getParent(member, 1); current != null && !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
+			for (Member current = memberService.getParent(member, 1); current != null
+					&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 				int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
-				if (current.getSetMeal() != 3 || c < Const.betweenMember)
+				if (current.getSetMeal() != 3 && c < Const.betweenMember) //条件应该为&&
 					continue;
+				
+				logger.info("finishGoods:return {} yuan",extract1);
 
 				accountBill = new MemberAccountBill();
 				current.setBalance(current.getBalance().add(extract1));
@@ -388,7 +393,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				accountBillDao.save(accountBill);
 				memberService.update(current);
 			}
-			
+
 			memberService.update(member);
 		} catch (Exception e) {
 			e.printStackTrace();
