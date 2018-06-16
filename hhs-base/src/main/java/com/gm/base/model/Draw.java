@@ -43,6 +43,8 @@ public class Draw extends Model {
 
 	@FormField(type = FieldType.TEXTINPUT, label = "提现金额")
 	private BigDecimal amount = BigDecimal.ZERO;
+	@FormField(type = FieldType.TEXTINPUT, label = "服务费")
+	private BigDecimal withdrawing =BigDecimal.ZERO;
 	@FormField(type = FieldType.RADIO, label = "状态", data = "1|待审核,2|拒绝提现,3|待打款,4|已打款,5|已作废")
 	private Integer status;
 	@FormField(type = FieldType.TEXTINPUT, label = "银行流水号")
@@ -127,5 +129,14 @@ public class Draw extends Model {
 	public void setCardUser(String cardUser) {
 		this.cardUser = cardUser;
 	}
+
+	public BigDecimal getWithdrawing() {
+		return withdrawing;
+	}
+
+	public void setWithdrawing(BigDecimal withdrawing) {
+		this.withdrawing = withdrawing;
+	}
+	
 
 }
