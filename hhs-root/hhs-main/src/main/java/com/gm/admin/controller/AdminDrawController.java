@@ -62,7 +62,7 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:update")
+	@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update/{id}.htm")
 	public String updateView(@PathVariable Integer id, ModelMap map) {
 		Draw model = drawService.get(id);
