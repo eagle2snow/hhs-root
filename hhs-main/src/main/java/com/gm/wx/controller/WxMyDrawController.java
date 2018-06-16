@@ -2,7 +2,6 @@ package com.gm.wx.controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -89,12 +88,12 @@ public class WxMyDrawController extends WeixinBaseController {
 	@RequestMapping("/addDraw")
 	public Map<String, Object> addDraw(Draw draw, HttpSession session) {
 		Map<String, Object> map = getMap();
-		Member member = memberService.get(1);
+		Member member = memberService.get(getCurMember().getId());
 		draw.setMember(member);
 		draw.setStatus(1);
 		BigDecimal subtractAmount = draw.getAmount().subtract(draw.getAmount().multiply(Const.serviceCharge));
 		draw.setAmount(subtractAmount); //服务费 0.47
-		draw.setMember(WXHelper.getMember(getCurMember()));
+		
 		if (draw.getAmount().compareTo(member.getBalance()) == 1) {
 			map.put("balance", member.getBalance());
 			map.put("s", -1);// 余额不足
@@ -132,8 +131,7 @@ public class WxMyDrawController extends WeixinBaseController {
 	 */
 	@RequestMapping("/drawLog")
 	public String drawLog(ModelMap map) {
-		List<Draw> draws = drawService.listEq("member.id", getCurMember().getId());
-		map.put("list", draws);
+		map.put("list", drawService.listEq("member.id", getCurMember().getId()));
 		map.put("path", PATH);
 		return PATH + "drawLog";
 	}
