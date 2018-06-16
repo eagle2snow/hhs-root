@@ -73,14 +73,16 @@ public class AdminDrawController extends BaseAdminController{
 	}
 
 	
-	//@RequiresPermissions("admin:draw:update")
+	@RequiresPermissions("admin:draw:update")
 	@RequestMapping("update.json")
 	@ResponseBody
 	public Map<String, Object> updateAction(Draw model) {
 		Map<String, Object> map = new HashMap<>();
 		Draw draw = drawService.get(model.getId());
-		model.setMember(draw.getMember());
-		if (drawService.update(model)) {
+		draw.setStatus(model.getStatus());
+		draw.setFlowNo(model.getFlowNo());
+		draw.setRemark(model.getRemark());
+		if (drawService.update(draw)) {
 			map.put("status", "ok");
 		} else {
 			map.put("status", "no");
