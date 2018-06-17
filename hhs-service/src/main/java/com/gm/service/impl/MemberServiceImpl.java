@@ -298,21 +298,17 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Set<Integer> added = new HashSet<>();
 		Set<Integer> visitedParents = new HashSet<>();
 
+		boolean gt = false;
 		for (Member current = getParent(member, 1); current != null
 				&& !visitedParents.contains(current.getId()); current = getParent(current, 1)) {
 			visitedParents.add(current.getId());
-			memberService.getChildrenCount(current, memento, visited, added);
-		}
-
-		visited.clear();
-		added.clear();
-		visitedParents.clear();
-
-		Map<Integer, Integer> result = new HashMap<>();
-		for (Member current = memberService.getParent(member, 1); current != null
-				&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
-			int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
-			if (current.getSetMeal() != 3 || c < Const.betweenMember)
+			if (!gt) {
+				int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
+				if (childrenCount <= Const.betweenMember)
+					continue;
+				gt = true;
+			}
+			if (current.getSetMeal() != 3)
 				continue;
 
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
