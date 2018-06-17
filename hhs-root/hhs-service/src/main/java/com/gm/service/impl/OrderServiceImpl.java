@@ -376,7 +376,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			for (Member current = memberService.getParent(member, 1); current != null
 					&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 				int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
-				if (current.getSetMeal() != 3 && c < Const.betweenMember) //条件应该为&&
+				if (current.getSetMeal() != 3 || c < Const.betweenMember)
 					continue;
 				
 				logger.info("finishGoods:return {} yuan",extract1);
@@ -392,6 +392,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 				accountBill.setSelfName(member.getNickname());
 				accountBillDao.save(accountBill);
 				memberService.update(current);
+				break;
 			}
 
 			memberService.update(member);

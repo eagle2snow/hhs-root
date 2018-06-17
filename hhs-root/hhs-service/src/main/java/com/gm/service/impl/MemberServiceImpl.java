@@ -312,7 +312,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		for (Member current = memberService.getParent(member, 1); current != null
 				&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
 			int c = memberService.getConditionChildrenCount(current, memento, result, Const.betweenMember);
-			if (current.getSetMeal() != 3 && c < Const.betweenMember) // 条件应该是并且的关系
+			if (current.getSetMeal() != 3 || c < Const.betweenMember)
 				continue;
 
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
@@ -333,6 +333,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				current.setLevel(4);
 			logger.info(current.getNickname(), current.getGeneralizeCost());
 			dao.update(current);
+			break;
 		}
 	}
 
