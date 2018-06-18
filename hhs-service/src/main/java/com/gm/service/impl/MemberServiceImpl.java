@@ -620,4 +620,60 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		return sum;
 	}
 
+	public class Count {
+		private Set<Integer> visited = new HashSet<>();
+		private Map<Integer, Integer> result = new HashMap<>();
+		private Set<Integer> detached = new HashSet<>();
+		private int cond1 = 3;// Const.directMember;
+		private int cond2 = 3;//Const.betweenMember;
+
+		public Map<Integer, Integer> getResult()
+		{
+			return result;
+		}
+
+		public int visit(Member root)
+		{
+			if (visited.contains(root.getId()))
+				return 0;
+			visited.add(root.getId());
+
+			List<Member> children = getChildren(root, 1);
+			if (children.isEmpty()) {
+				result.put(root.getId(), 0);
+				return 0;
+			}
+			int sum = 0;
+			int directCount = 0;
+			for (Member child : children) {
+				int count = visit(child);
+				if (detached.contains(child.getId()))
+					sum += 1;
+				else {
+					sum += (count + 1);
+					++directCount;
+				}
+			}
+			if (directCount >= cond1 && sum >= cond2)
+				detached.add(root.getId());
+			result.put(root.getId(), sum);
+			return sum;
+		}
+
+		public Member getRoot(Member member, List<Integer> chains)
+		{
+			Set<Integer> visited = new HashSet<>();
+			Member root = getParent(member, 1);
+			if (root != null)
+				chains.add(root.getId());
+			for (Member current = getParent(root, 1);
+				 current != null && !visited.contains(current.getId());
+				 current = getParent(current, 1)) {
+				visited.add(current.getId());
+				root = current;
+				chains.add(root.getId());
+			}
+			return root;
+		}
+	}
 }
