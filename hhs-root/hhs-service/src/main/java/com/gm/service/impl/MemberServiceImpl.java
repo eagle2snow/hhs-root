@@ -554,7 +554,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		Member membezzrNickName = getOne("generalizeId", referrerGeneralizeId);
 		boolean b = membezzrNickName == null;
 		logger.info("Member memberNickName = {}", b);
-		logger.info("Member memberNickName = {}", JSON.toJSON(membezzrNickName));
 
 		member.setOpenid(openid);
 		GetUserInfoResponse userInfo = WeiXinApi.getUserAPI().getUserInfo(openid);

@@ -49,7 +49,6 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 		logger.info("memberBill:the args memberId = {}", memberId);
 
 		List<MemberAccountBill> accountBills = billService.listEq("selfId", memberId);
-		logger.info("memberBill:List<MemberAccountBill> accountBills = {}", JSON.toJSON(accountBills));
 
 		if (accountBills.size() > 0) {
 			modelAndView.put("accountBills", accountBills);
@@ -60,7 +59,6 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 
 				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				String localTime = df.format(memberAccountBill.getCreateTime());
-				System.out.println("LocalDateTime转成String类型的时间：" + localTime);
 				modelAndView.put("date", localTime);
 
 				// 支出 7|买商品,8|买套餐,9|提现
@@ -92,7 +90,6 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 		Member member = WXHelper.getMember(getRealMember());
 		
 		List<MemberAccountBill> accountBills = billService.listEq("selfId", member.getId());
-		logger.info("memberBill:List<MemberAccountBill> accountBills = {}", JSON.toJSON(accountBills.size()));
 		
 		List<MemberAccountBill> list =null;
 		if (accountBills.size() > 0) {
