@@ -184,6 +184,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	@Override
 	public void payMemberSuccess(String openid, PayBill payBill) {
+		logger.info("payMemberSuccess:The PayBill id is payBill.id = {} and payBill.reaFee",
+				JSON.toJSON(payBill.getId()), JSON.toJSON(payBill.getReaFee()));
+		
 		Member member = getOne("openid", openid);
 
 		if (member == null) {
@@ -314,7 +317,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
 
-			logger.info("finishGoods:return {} yuan",BigDecimal.valueOf(5));
+			logger.info("finishGoods:return {} yuan", BigDecimal.valueOf(5));
 
 			MemberAccountBill accountBill = new MemberAccountBill();
 			accountBill.setSelfId(member.getId());
@@ -624,15 +627,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Map<Integer, Integer> result = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
 		private int cond1 = 3;// Const.directMember;
-		private int cond2 = 3;//Const.betweenMember;
+		private int cond2 = 3;// Const.betweenMember;
 
-		public Map<Integer, Integer> getResult()
-		{
+		public Map<Integer, Integer> getResult() {
 			return result;
 		}
 
-		public int visit(Member root)
-		{
+		public int visit(Member root) {
 			if (visited.contains(root.getId()))
 				return 0;
 			visited.add(root.getId());
@@ -659,15 +660,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return sum;
 		}
 
-		public Member getRoot(Member member, List<Integer> chains)
-		{
+		public Member getRoot(Member member, List<Integer> chains) {
 			Set<Integer> visited = new HashSet<>();
 			Member root = getParent(member, 1);
 			if (root != null)
 				chains.add(root.getId());
-			for (Member current = getParent(root, 1);
-				 current != null && !visited.contains(current.getId());
-				 current = getParent(current, 1)) {
+			for (Member current = getParent(root, 1); current != null
+					&& !visited.contains(current.getId()); current = getParent(current, 1)) {
 				visited.add(current.getId());
 				root = current;
 				chains.add(root.getId());
