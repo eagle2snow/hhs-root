@@ -40,10 +40,10 @@ public class PayBillServiceImpl extends BaseServiceImpl<PayBill, Integer> implem
 			return;
 		if (payBill.getType() == 1) { // 购买套餐
 			memberService.payMemberSuccess(payBill.getOpenid(), payBill);
-			logger.info("paySuccess: ================套餐========================");
+			logger.info("paySuccess: ================套餐================");
 		} else if (payBill.getType() == 2) {// 购买商品
 			orderService.payOrderSuccess(payBill.getOrderNo(), payBill);
-			logger.info("paySuccess: ================商品========================");
+			logger.info("paySuccess: ================商品================");
 		}
 	}
 }
