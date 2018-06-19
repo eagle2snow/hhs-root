@@ -64,7 +64,7 @@ public class AdminMySqlBackups extends BaseAdminController {
  
             // 要用来做导入用的sql目标文件：
             //FileOutputStream fout = new FileOutputStream("D:\\MySqlBackups\\mysql.sql");
-           FileOutputStream fout = new FileOutputStream("/usr/local/mysql/Backups/zhuyu.sql");
+           FileOutputStream fout = new FileOutputStream("/usr/local/mysql/Backups/zhuyudb.sql");
             OutputStreamWriter writer = new OutputStreamWriter(fout, "utf-8");
             writer.write(outStr);
             writer.flush();
@@ -96,7 +96,7 @@ public class AdminMySqlBackups extends BaseAdminController {
             //BufferedReader br = new BufferedReader(new InputStreamReader(
             //		new FileInputStream("D:\\MySqlBackups\\zhuyu.sql"), "utf-8"));
             BufferedReader br = new BufferedReader(new InputStreamReader(
-                    new FileInputStream("/usr/local/mysql/Backups/zhuyu.sql"), "utf-8"));
+                    new FileInputStream("/usr/local/mysql/Backups/zhuyudb.sql"), "utf-8"));
             String str = null;
             StringBuffer sb = new StringBuffer();
             while ((str = br.readLine()) != null) {
