@@ -105,8 +105,6 @@ public class WxMemberAddressController extends WeixinBaseController {
 	@ResponseBody
 	@RequestMapping("/addAddressAction")
 	public Map<String, Object> addAddressAction(MemberAddress address, String defautlocal) {
-		logger.info("addAddressAction: the MemberAddress to json is {} and defaultlocal is {}.",
-				JSON.toJSONString(address), defautlocal);
 
 		Map<String, Object> map = new HashMap<>();
 

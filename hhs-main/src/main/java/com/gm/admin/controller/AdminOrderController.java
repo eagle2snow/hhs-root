@@ -121,7 +121,6 @@ public class AdminOrderController extends BaseAdminController{
 		map.put("page", list);
 		map.put("path", path);
 		map.put("key", k);
-		logger.info("订单列表：{}",JSON.toJSON(list));
 		return path + "list";
 	}
 	
