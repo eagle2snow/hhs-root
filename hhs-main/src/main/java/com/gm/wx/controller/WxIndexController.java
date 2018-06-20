@@ -25,6 +25,7 @@ import com.gm.service.ICommodityService;
 import com.gm.service.IMemberService;
 import com.gm.utils.AESCoder;
 import com.gm.utils.StringUtil;
+import com.mysql.cj.api.xdevapi.Expression;
 
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +150,7 @@ public class WxIndexController extends WeixinBaseController {
 	@ResponseBody
 	public Page<Commodity> getCommodityData(@PathVariable Integer id) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Commodity.class);
+		dc.add(Restrictions.eq("enable", 1));
 		dc.addOrder(Order.desc("sort"));
 		if (id == 1) {
 			dc.add(Restrictions.like("code", "1", MatchMode.ANYWHERE));
