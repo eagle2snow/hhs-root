@@ -620,8 +620,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Map<Integer, Integer> childrenCound = new HashMap<>();
 		private Map<Integer, Integer> direct = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
-		public final int cond1 = 3;// Const.directMember;
-		public final int cond2 = 3;// Const.betweenMember;
+		public final int cond1 = Const.directMember;
+		public final int cond2 = Const.betweenMember;
 
 		public Map<Integer, Integer> getDirect()
 		{
