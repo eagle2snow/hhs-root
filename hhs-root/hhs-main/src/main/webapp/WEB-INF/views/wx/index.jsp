@@ -13,6 +13,7 @@
 </head>
 <body>
 	<!-- banner -->
+	<c:if test="${iid == 2}">
 	<div class="ibn" id="ibn">
 		<ul class="bd">
 			<li><a href=""><img
@@ -24,6 +25,20 @@
 		</ul>
 		<ul class="hd"></ul>
 	</div>
+	</c:if>
+	<c:if test="${iid != 2}">
+	<div class="ibn" id="ibn">
+		<ul class="bd">
+			<li><a href=""><img
+					src="/static/wx/images/banner/ibn/001.jpg" alt=""></a></li>
+			<li><a href=""><img
+					src="/static/wx/images/banner/ibn/002.jpg" alt=""></a></li>
+			<li><a href=""><img
+					src="/static/wx/images/banner/ibn/003.jpg" alt=""></a></li>
+		</ul>
+		<ul class="hd"></ul>
+	</div>
+	</c:if>
 	<!-- banner -->
 	<!-- 中间 -->
 	<!-- 一行 -->
