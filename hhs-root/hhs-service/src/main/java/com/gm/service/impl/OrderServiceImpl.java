@@ -40,7 +40,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
 	@Resource
-	IMemberService memberService;
+	MemberServiceImpl memberService;
 
 	@Resource
 	private IOrderDao dao;
@@ -358,38 +358,36 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			}
 
-			Map<Integer, Integer> memento = new HashMap<>();
-			Set<Integer> visited = new HashSet<>();
-			Set<Integer> added = new HashSet<>();
-			Set<Integer> visitedParents = new HashSet<>();
+			MemberServiceImpl.Count count = memberService.new Count();
+			List<Integer> chains = new ArrayList<>();
+			Member root = count.getRoot(member, chains);
+			count.visit(root);
+			Map<Integer, Integer> childrenCount = count.getChildrenCount();
+			Map<Integer, Integer> direct = count.getDirect();
+			for (Integer one : chains) {
+				if (childrenCount.containsKey(one) && childrenCount.get(one) >= count.cond2) {
+					if (direct.containsKey(one) && direct.get(one) >= count.cond1) {
+						Member current = memberService.get(one);
+						if (current == null) {
+							logger.error("current == null");
+							break;
+						}
+						logger.info("finishGoods:return {} yuan",extract1);
 
-			boolean gt = false;
-			for (Member current = memberService.getParent(member, 1); current != null
-					&& !visitedParents.contains(current.getId()); current = memberService.getParent(current, 1)) {
-				visitedParents.add(current.getId());
-				if (!gt) {
-					int childrenCount = memberService.getChildrenCount(current, memento, visited, added);
-					if (childrenCount <= Const.betweenMember)
-						continue;
-					gt = true;
+						accountBill = new MemberAccountBill();
+						current.setBalance(current.getBalance().add(extract1));
+						current.setGeneralizeCost(current.getGeneralizeCost().add(extract1));
+						accountBill.setUpId(current.getId().intValue());
+						accountBill.setUpName(current.getNickname());
+						accountBill.setType(4); // 4|提成
+						accountBill.setMoney(extract1);
+						accountBill.setSelfId(member.getId());
+						accountBill.setSelfName(member.getNickname());
+						accountBillDao.save(accountBill);
+						memberService.update(current);
+						break;
+					}
 				}
-				if (current.getSetMeal() != 3)
-					continue;
-				
-				logger.info("finishGoods:return {} yuan",extract1);
-
-				accountBill = new MemberAccountBill();
-				current.setBalance(current.getBalance().add(extract1));
-				current.setGeneralizeCost(current.getGeneralizeCost().add(extract1));
-				accountBill.setUpId(current.getId().intValue());
-				accountBill.setUpName(current.getNickname());
-				accountBill.setType(4); // 4|提成
-				accountBill.setMoney(extract1);
-				accountBill.setSelfId(member.getId());
-				accountBill.setSelfName(member.getNickname());
-				accountBillDao.save(accountBill);
-				memberService.update(current);
-				break;
 			}
 
 			memberService.update(member);
