@@ -49,14 +49,42 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 		logger.info("memberBill:the args memberId = {}", memberId);
 
 		List<MemberAccountBill> accountBills = billService.listEq("selfId", memberId);
+		List<MemberAccountBill> accountBillss = billService.listEq("upId", memberId);
+		List<List<MemberAccountBill>> bills = new ArrayList<>();
+		bills.add(accountBillss);
+		bills.add(accountBills);
 
-		if (accountBills.size() > 0) {
-			modelAndView.put("accountBills", accountBills);
+		if (accountBills.size() > 0 || accountBillss.size() > 0) {
 			BigDecimal outManoy = BigDecimal.ZERO;
 			BigDecimal inManoy = BigDecimal.ZERO;
+			
+			for (List<MemberAccountBill> list : bills) {
+				modelAndView.put("bills", list);
+				for (MemberAccountBill memberAccountBill : list) {
+					// 处理时间
+					DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+					String localTime = df.format(memberAccountBill.getCreateTime());
+					modelAndView.put("date", localTime);
+
+					// 支出 7|买商品,8|买套餐,9|提现
+					if (memberAccountBill.getType() == 7 || memberAccountBill.getType() == 8
+							|| memberAccountBill.getType() == 9) {
+						outManoy = outManoy.add(memberAccountBill.getMoney());
+						modelAndView.put("outManoy", outManoy);
+						System.out.println(outManoy);
+
+					} else { // 收入
+						inManoy = inManoy.add(memberAccountBill.getMoney());
+						modelAndView.put("inManoy", inManoy);
+						System.out.println(inManoy);
+
+					}
+
+				}
+			}
+			
 			for (MemberAccountBill memberAccountBill : accountBills) {
 				// 处理时间
-
 				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				String localTime = df.format(memberAccountBill.getCreateTime());
 				modelAndView.put("date", localTime);

@@ -112,7 +112,7 @@
 		$.getJSON("${adp}editProfile/"+nickname+"/"+mobile+"/"+code, function(data) {
 			if (data.status == 1) {
 				layer.msg(data.msg,{icon:6}); 
-				window.location.href = href="${ctx}wx/myCenter/index?fuck";
+				window.location.href = href="${ctx}wx/myCenter/index";
 			
 			} else if(data.status == 2) {
 				layer.msg(data.msg,{icon:5}); //错误的表情 
