@@ -47,20 +47,35 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 	@RequestMapping("memberBill/{memberId}")
 	public String memberBill(@PathVariable Integer memberId, ModelMap modelAndView) {
 		logger.info("memberBill:the args memberId = {}", memberId);
+		if (memberId == null) {
+			return null;
+		}
 
 		List<MemberAccountBill> accountBills = billService.listEq("selfId", memberId);
+		logger.info("List<MemberAccountBill> accountBills selfId = {}",JSON.toJSON(accountBills.size()));
 		List<MemberAccountBill> accountBillss = billService.listEq("upId", memberId);
+		logger.info("List<MemberAccountBill> accountBillss upId = {}",JSON.toJSON(accountBillss.size()));
 		List<List<MemberAccountBill>> bills = new ArrayList<>();
 		bills.add(accountBillss);
 		bills.add(accountBills);
 
-		if (accountBills.size() > 0 || accountBillss.size() > 0) {
+		if (bills.size() > 0) {
 			BigDecimal outManoy = BigDecimal.ZERO;
 			BigDecimal inManoy = BigDecimal.ZERO;
-			
+			List<MemberAccountBill> billList = new ArrayList<>();
 			for (List<MemberAccountBill> list : bills) {
-				modelAndView.put("bills", list);
+				
+				
 				for (MemberAccountBill memberAccountBill : list) {
+					Integer type = memberAccountBill.getType();
+					if (type.equals(7) || type.equals(8) || type.equals(9)) {
+						memberAccountBill.setUpId(null);
+						memberAccountBill.setUpName(null);
+						billService.update(memberAccountBill);
+						
+					}
+					billList.add(memberAccountBill);
+					
 					// 处理时间
 					DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 					String localTime = df.format(memberAccountBill.getCreateTime());
@@ -71,40 +86,19 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 							|| memberAccountBill.getType() == 9) {
 						outManoy = outManoy.add(memberAccountBill.getMoney());
 						modelAndView.put("outManoy", outManoy);
-						System.out.println(outManoy);
 
 					} else { // 收入
 						inManoy = inManoy.add(memberAccountBill.getMoney());
 						modelAndView.put("inManoy", inManoy);
-						System.out.println(inManoy);
 
 					}
 
 				}
 			}
+			modelAndView.put("bills", billList);
+			logger.info("List<MemberAccountBill> accountBillss upId = {}",JSON.toJSON(billList.size()));
 			
-			for (MemberAccountBill memberAccountBill : accountBills) {
-				// 处理时间
-				DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-				String localTime = df.format(memberAccountBill.getCreateTime());
-				modelAndView.put("date", localTime);
-
-				// 支出 7|买商品,8|买套餐,9|提现
-				if (memberAccountBill.getType() == 7 || memberAccountBill.getType() == 8
-						|| memberAccountBill.getType() == 9) {
-					outManoy = outManoy.add(memberAccountBill.getMoney());
-					modelAndView.put("outManoy", outManoy);
-					System.out.println(outManoy);
-
-				} else { // 收入
-					inManoy = inManoy.add(memberAccountBill.getMoney());
-					modelAndView.put("inManoy", inManoy);
-					System.out.println(inManoy);
-
-				}
-
-			}
-
+			
 		}
 
 		return PATH + "memberBill";
@@ -116,18 +110,18 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 	public Map<String, Object> thisMonth() {
 		Map<String, Object> map = new HashMap<>();
 		Member member = WXHelper.getMember(getRealMember());
-		
+
 		List<MemberAccountBill> accountBills = billService.listEq("selfId", member.getId());
-		
-		List<MemberAccountBill> list =null;
+
+		List<MemberAccountBill> list = null;
 		if (accountBills.size() > 0) {
 			map.put("stats", 1);
 			map.put("msg", "ok");
 			for (MemberAccountBill bill : accountBills) {
 				LocalDateTime createTime = bill.getCreateTime();
-				boolean includeTime = DateUtil.includeTime(createTime, DateUtil.stringDateToLocalDateTime(DateUtil.firstDayOfMonty()),
-						LocalDateTime.now());
-				if (includeTime) { //创建时间在本月
+				boolean includeTime = DateUtil.includeTime(createTime,
+						DateUtil.stringDateToLocalDateTime(DateUtil.firstDayOfMonty()), LocalDateTime.now());
+				if (includeTime) { // 创建时间在本月
 					list = new ArrayList<>();
 					list.add(bill);
 				}
@@ -138,11 +132,11 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 			map.put("msg", "no");
 
 		}
-		
-		if (list.size()>0) {
+
+		if (list.size() > 0) {
 			map.put("bills", list);
 		}
-		
+
 		return map;
 	}
 

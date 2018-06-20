@@ -24,7 +24,7 @@
             <tr>
                 <td>${one.name}</td>
                 <td>${one.nickname}</td>
-                <td>${one.gender}</td>
+                <th>${one.gender eq 1?'男':(one.gender eq 2?'女':'')}</th>
                 <td>${one.city}</td>
                 <td>${one.mobile}</td>
                <%--  <td>${one.loginTime}</td> --%>
