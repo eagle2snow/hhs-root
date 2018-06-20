@@ -71,7 +71,8 @@
         <div class="dd">
             <span class="n">${member.generalizeCost}</span>元
         </div>
-        <div onclick="memberBill(${member.id})" class="dt">推广佣金</div>
+        <!-- onclick="memberBill(${member.id})" -->
+        <div  class="dt">推广佣金</div>
     </li>
 </ul>
 <!-- end 一行 -->
