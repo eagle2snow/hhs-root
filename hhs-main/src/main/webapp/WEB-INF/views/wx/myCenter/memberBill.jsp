@@ -40,8 +40,17 @@
                 <c:if test="${accountBill.type == 8}">买套餐</c:if>
                 <c:if test="${accountBill.type == 9}">提现</c:if>
                 <br/>
-                <span class="date"><span class="time">${date}</span></span>
-                <span class="jine"><span class="span03">${accountBill.money}</span>元</span>
+                <span class="date">${date}</span>
+                <span class="jine"><span class="span03">
+	                <c:if test="${accountBill.type == 1}">${accountBill.money}</c:if>
+	                <c:if test="${accountBill.type == 2}">${accountBill.money}</c:if>
+	                <c:if test="${accountBill.type == 3}">${accountBill.money}</c:if>
+	                <c:if test="${accountBill.type == 4}">${accountBill.money}</c:if>
+	                <c:if test="${accountBill.type == 6}">${accountBill.money}</c:if>
+                	<c:if test="${accountBill.type == 7}">-${accountBill.money}</c:if>
+                	<c:if test="${accountBill.type == 8}">-${accountBill.money}</c:if>
+                	<c:if test="${accountBill.type == 9}">-${accountBill.money}</c:if>
+                </span>元</span>
             </li>
         </c:forEach>
     </ul>
