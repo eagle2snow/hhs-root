@@ -29,7 +29,7 @@
 					</span>
 					</span>
         </li>
-        <c:forEach items="${accountBills}" var='accountBill'>
+        <c:forEach items="${bills}" var='accountBill'>
             <li class="zhangd">
                 <c:if test="${accountBill.type == 1}">十返一</c:if>
                 <c:if test="${accountBill.type == 2}">返套餐</c:if>

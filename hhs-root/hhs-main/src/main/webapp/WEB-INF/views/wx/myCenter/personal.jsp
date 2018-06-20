@@ -71,7 +71,7 @@
         <div class="dd">
             <span class="n">${member.generalizeCost}</span>元
         </div>
-        <div onclick="memberBill(${member.id})" class="dt">推广费</div>
+        <div onclick="memberBill(${member.id})" class="dt">推广佣金</div>
     </li>
 </ul>
 <!-- end 一行 -->
@@ -83,7 +83,7 @@
     </a></li>
     <li class="ordernavitem"><a href="${adp }order/pushOrders/1" class="ordernavpro"> <i
             class="commission_mbico mbico"></i>
-        <div class="dt">提成订单</div>
+        <div class="dt">业务佣金</div>
     </a></li>
 </ul>
 <!-- end 一行 -->
@@ -91,7 +91,7 @@
 <ul class="gonavlist">
     <li class="gonavitem"><a
             href="/wx/myCenter/myMembers/1" class="gonavdl">
-        <div class="dt">我的会员</div>
+        <div class="dt">我的客户</div>
         <i class="rgt"></i>
     </a></li>
     <li class="gonavitem"><a

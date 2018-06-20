@@ -61,7 +61,7 @@
 			<span class="span1"><img src="/static/wx/images/details/contentSeller.png"/>
                 <a href="/wx/chat">联系卖家</a></span>
         <span class="span2"><img src="/static/wx/images/details/personal.png"/>
-            <a href="/wx/myCenter/index?fuck">个人中心</a></span>
+            <a href="/wx/myCenter/index">个人中心</a></span>
     </div>
 
 </div>
