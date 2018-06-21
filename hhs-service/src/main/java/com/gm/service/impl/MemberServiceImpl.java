@@ -312,23 +312,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Member getParent(Member member, int level) {
-		if (member == null)
+	public Member getParent(Member member, int level)
+	{
+		if (member == null || StringUtils.isEmpty(member.getReferrerGeneralizeId()))
 			return null;
-		if (level <= 1)
-			return doGetParent(member);
-		Member parent = doGetParent(member);
-		if (parent == null)
-			return null;
-		return getParent(parent, --level);
-	}
-
-	private Member doGetParent(Member member) {
-		if (StringUtils.isEmpty(member.getReferrerGeneralizeId()))
-			return null;
-		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
-		if (parent != null && parent.getId().equals(member.getId()))
-			return null;
+		Member parent = member;
+		for (int i = 1; i <= level; ++i) {
+			parent = getOne("generalizeId", parent.getReferrerGeneralizeId());
+			if (parent == null || parent.getId().equals(member.getId()))
+				return null;
+		}
 		return parent;
 	}
 
@@ -432,30 +425,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				dao.update(parent);
 			}
 		}
-	}
-
-	@Override
-	public int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited,
-			Set<Integer> added) {
-		if (member == null || member.getId() == null)
-			return 0;
-		if (memento.containsKey(member.getId()))
-			return memento.get(member.getId());
-		if (added.contains(member.getId()))
-			return 0;
-		added.add(member.getId());
-		List<Member> members = doGetChildren(member);
-		if (members == null)
-			return 0;
-		int sum = members.size();
-		for (Member m : members) {
-			if (!visited.contains(m.getId())) {
-				visited.add(m.getId());
-				sum += getChildrenCount(m, memento, visited, added);
-			}
-		}
-		memento.put(member.getId(), sum);
-		return sum;
 	}
 
 	public List<Member> getIndirectChildren(Member member) {
@@ -596,7 +565,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					if (direct.containsKey(id) && direct.get(id) >= directCond) {
 						Member current = get(id);
 						if (current == null) {
-							logger.error("current == null");
+							logger.error("iterator current == null");
 							break;
 						}
 						yourCodeHere.accept(current);

@@ -23,6 +23,13 @@ public class UnitTest {
     @Test
     public void foo()
     {
-
+        Member member = memberService.get(8);
+        Member parent = memberService.getParent(member, 1);
+        System.out.println(parent);
+        parent = memberService.getParent(member, 2);
+        System.out.println(parent);
+        parent = memberService.getParent(memberService.get(1), 1);
+        parent = memberService.getParent(memberService.get(1), 1);
+        System.out.println("parent = " + parent);
     }
 }
