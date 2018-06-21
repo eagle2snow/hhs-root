@@ -25,8 +25,9 @@
 		<thead >
 			<tr>
 				<th>昵称</th>
-				<th>订单号</th>
-				<th>金额/推广费</th>
+				<th>单号</th>
+				<th>金额</th>
+<!-- 				<th>金额/推广费</th> -->
 				<th>状态</th>
 				<th>下单时间</th>
 			</tr>
@@ -36,7 +37,8 @@
 			<tr ${o.status ne '10' and type==2 ? 'style="display: none"':''}, ${o.status eq '10' and type==1 ? 'style="display: none"':''} >
 				<td>${o.member.nickname }</td>
 				<td>${o.orderNo } </td>
-				<td>${o.totalMoney }/${o.totalMoney /100}</td>
+				<td>${o.totalMoney }</td>
+<%-- 				<td>${o.totalMoney }/${o.totalMoney /100}</td> --%>
 				<td>
 					<c:if test="${o.status == '1'}">待付款</c:if>
 					<c:if test="${o.status == '2'||o.status == '11'}">待发货</c:if>
@@ -47,7 +49,7 @@
 					<c:if test="${o.status == '7'}">退换货申请通过，买家已发货</c:if>
 					<c:if test="${o.status == '8'}">退换货申请不通过</c:if>
 					<c:if test="${o.status == '9'}">订单已退款</c:if>
-					<c:if test="${o.status == '10'}">订单已完成</c:if>
+					<c:if test="${o.status == '10'}">已完成</c:if>
 				</td>
 				<td>
 				<javatime:format value="${o.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
