@@ -355,8 +355,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			}
 
 			BigDecimal ex = extract1;
-			MemberServiceImpl.Count count = memberService.new Count();
-			count.iterator(member, (current) -> {
+			memberService.new Count().iterator(member, (current) -> {
 				MemberAccountBill bill = new MemberAccountBill();
 				current.setBalance(current.getBalance().add(ex));
 				current.setGeneralizeCost(current.getGeneralizeCost().add(ex));
