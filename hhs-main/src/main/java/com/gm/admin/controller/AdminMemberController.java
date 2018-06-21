@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.annotation.Resource;
 
+import com.gm.service.impl.MemberServiceImpl;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
@@ -33,7 +34,7 @@ public class AdminMemberController extends BaseAdminController {
 	private final static String path = "admin/member/";
 
 	@Resource
-	private IMemberService memberService;
+	private MemberServiceImpl memberService;
 
 	//查看上家会员
 	@RequestMapping("upperRelate/{id}.htm")
@@ -57,7 +58,11 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
             logger.info("getDirectChild::memberService.get(id) == null");
         else {
-            List<Member> directChild = memberService.getChildren(myself, 1);
+			MemberServiceImpl.Count count = memberService.new Count();
+			count.visit(myself);
+			Set<Integer> detached = count.getDetached();
+			List<Member> directChild = memberService.getChildren(myself, 1);
+			directChild.removeIf(m -> detached.contains(m.getId()));
             mm.addAttribute("directChild", directChild);
 		}
 		return path + "directChild";
@@ -72,6 +77,15 @@ public class AdminMemberController extends BaseAdminController {
             logger.info("getAllChild::memberService.get(id) == null");
         else {
 			List<Member> allChild = memberService.getIndirectChildren(myself);
+			MemberServiceImpl.Count count = memberService.new Count();
+			count.visit(myself);
+			Set<Integer> detached = count.getDetached();
+			for (Integer one : detached) {
+				Member member = memberService.get(one);
+				if (member == null || member.getId().equals(id))
+					continue;
+				allChild.add(member);
+			}
 			mm.addAttribute("allChild", allChild);
 		}
         return path + "allChild";
