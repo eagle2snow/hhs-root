@@ -289,8 +289,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member)
 	{
-		MemberServiceImpl.Count count = new Count();
-		count.iterator(member, (current) -> {
+		new Count().iterator(member, (current) -> {
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
 			logger.info("finishGoods:return {} yuan", BigDecimal.valueOf(5));
