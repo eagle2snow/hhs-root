@@ -4,6 +4,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Consumer;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -292,41 +293,25 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	public void returnFiveMoney(Member member)
 	{
 		MemberServiceImpl.Count count = memberService.new Count();
-		List<Integer> chains = new ArrayList<>();
-		Member root = count.getRoot(member, chains);
-		count.visit(root);
-		Map<Integer, Integer> childrenCount = count.getChildrenCount();
-		Map<Integer, Integer> direct = count.getDirect();
-		for (Integer one : chains) {
-			if (childrenCount.containsKey(one) && childrenCount.get(one) >= count.cond2) {
-				if (direct.containsKey(one) && direct.get(one) >= count.cond1) {
-					Member current = memberService.get(one);
-					if (current == null) {
-						logger.error("current == null");
-						break;
-					}
+		count.iterator(member, (current) -> {
+			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
+			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
+			logger.info("finishGoods:return {} yuan", BigDecimal.valueOf(5));
 
-					current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
-					current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
-					logger.info("finishGoods:return {} yuan", BigDecimal.valueOf(5));
+			MemberAccountBill accountBill = new MemberAccountBill();
+			accountBill.setSelfId(member.getId());
+			accountBill.setSelfName(member.getNickname());
+			accountBill.setUpId(current.getId());
+			accountBill.setUpName(current.getNickname());
+			accountBill.setType(3); // 3|5元/人
+			accountBill.setMoney(BigDecimal.valueOf(5));
+			accountBillDao.save(accountBill);
 
-					MemberAccountBill accountBill = new MemberAccountBill();
-					accountBill.setSelfId(member.getId());
-					accountBill.setSelfName(member.getNickname());
-					accountBill.setUpId(current.getId());
-					accountBill.setUpName(current.getNickname());
-					accountBill.setType(3); // 3|5元/人
-					accountBill.setMoney(BigDecimal.valueOf(5));
-					accountBillDao.save(accountBill);
-
-					if (current.getLevel() < 4)
-						current.setLevel(4);
-					logger.info(current.getNickname(), current.getGeneralizeCost());
-					dao.update(current);
-					break;
-				}
-			}
-		}
+			if (current.getLevel() < 4)
+				current.setLevel(4);
+			logger.info(current.getNickname(), current.getGeneralizeCost());
+			dao.update(current);
+		});
 	}
 
 	@Override
@@ -592,55 +577,56 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 	}
 
-	@Override
-	public int getConditionChildrenCount(Member member, Map<Integer, Integer> data, Map<Integer, Integer> result,
-			int childrenCount) {
-		List<Member> children = getChildren(member, 1);
-		if (children == null)
-			return 0;
-		int sum = 0;
-		for (Member child : children) {
-			Integer id = child.getId();
-			if (result.containsKey(id)) {
-				if (child.getSetMeal() == 3 && result.get(id) >= childrenCount)
-					sum += 1;
-				else
-					sum += result.get(id);
-			} else if (child.getSetMeal() == 3 || data.get(id) >= childrenCount)
-				sum += 1;
-			else
-				sum += data.get(id);
-		}
-		result.put(member.getId(), sum);
-		return sum;
-	}
-
 	public class Count {
 		private Set<Integer> visited = new HashSet<>();
-		private Map<Integer, Integer> childrenCound = new HashMap<>();
+		private Map<Integer, Integer> childrenCount = new HashMap<>();
 		private Map<Integer, Integer> direct = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
-		public final int cond1 = Const.directMember;
-		public final int cond2 = Const.betweenMember;
+		private final int directCond = Const.directMember;
+		private final int childrenCond = Const.betweenMember;
 
-		public Map<Integer, Integer> getDirect()
+		public void iterator(Member member, Consumer<Member> yourCodeHere)
+		{
+			List<Integer> chains = new ArrayList<>();
+			Member root = getRoot(member, chains);
+			if (root == null)
+				return;
+			visit(root);
+			Map<Integer, Integer> childrenCount = getChildrenCount();
+			Map<Integer, Integer> direct = getDirect();
+			for (Integer one : chains) {
+				if (childrenCount.containsKey(one) && childrenCount.get(one) >= childrenCond) {
+					if (direct.containsKey(one) && direct.get(one) >= directCond) {
+						Member current = memberService.get(one);
+						if (current == null) {
+							logger.error("current == null");
+							break;
+						}
+						yourCodeHere.accept(current);
+						break;
+					}
+				}
+			}
+		}
+
+		private Map<Integer, Integer> getDirect()
 		{
 			return direct;
 		}
 
-		public Map<Integer, Integer> getChildrenCount()
+		private Map<Integer, Integer> getChildrenCount()
 		{
-			return childrenCound;
+			return childrenCount;
 		}
 
-		public int visit(Member root) {
+		private int visit(Member root) {
 			if (visited.contains(root.getId()))
 				return 0;
 			visited.add(root.getId());
 
 			List<Member> children = getChildren(root, 1);
 			if (children.isEmpty()) {
-				childrenCound.put(root.getId(), 0);
+				childrenCount.put(root.getId(), 0);
 				return 0;
 			}
 			int sum = 0;
@@ -654,14 +640,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					++directCount;
 				}
 			}
-			if (directCount >= cond1 && sum >= cond2)
+			if (directCount >= directCond && sum >= childrenCond)
 				detached.add(root.getId());
 			direct.put(root.getId(), directCount);
-			childrenCound.put(root.getId(), sum);
+			childrenCount.put(root.getId(), sum);
 			return sum;
 		}
 
-		public Member getRoot(Member member, List<Integer> chains) {
+		private Member getRoot(Member member, List<Integer> chains) {
 			Set<Integer> visited = new HashSet<>();
 			Member root = getParent(member, 1);
 			if (root != null)

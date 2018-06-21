@@ -4,15 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import com.gm.base.consts.Const;
 import com.gm.base.dao.IMemberAccountBillDao;
 import com.gm.base.model.*;
 import org.slf4j.Logger;
@@ -27,7 +24,6 @@ import com.gm.base.dto.CartDto;
 import com.gm.base.dto.OrderItemDto;
 import com.gm.service.ICartService;
 import com.gm.service.ICommodityService;
-import com.gm.service.IMemberService;
 import com.gm.service.IOrderItemService;
 import com.gm.service.IOrderService;
 import com.gm.utils.DateUtil;
@@ -358,37 +354,21 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 
 			}
 
+			BigDecimal ex = extract1;
 			MemberServiceImpl.Count count = memberService.new Count();
-			List<Integer> chains = new ArrayList<>();
-			Member root = count.getRoot(member, chains);
-			count.visit(root);
-			Map<Integer, Integer> childrenCount = count.getChildrenCount();
-			Map<Integer, Integer> direct = count.getDirect();
-			for (Integer one : chains) {
-				if (childrenCount.containsKey(one) && childrenCount.get(one) >= count.cond2) {
-					if (direct.containsKey(one) && direct.get(one) >= count.cond1) {
-						Member current = memberService.get(one);
-						if (current == null) {
-							logger.error("current == null");
-							break;
-						}
-						logger.info("finishGoods:return {} yuan",extract1);
-
-						accountBill = new MemberAccountBill();
-						current.setBalance(current.getBalance().add(extract1));
-						current.setGeneralizeCost(current.getGeneralizeCost().add(extract1));
-						accountBill.setUpId(current.getId().intValue());
-						accountBill.setUpName(current.getNickname());
-						accountBill.setType(4); // 4|提成
-						accountBill.setMoney(extract1);
-						accountBill.setSelfId(member.getId());
-						accountBill.setSelfName(member.getNickname());
-						accountBillDao.save(accountBill);
-						memberService.update(current);
-						break;
-					}
-				}
-			}
+			count.iterator(member, (current) -> {
+				MemberAccountBill bill = new MemberAccountBill();
+				current.setBalance(current.getBalance().add(ex));
+				current.setGeneralizeCost(current.getGeneralizeCost().add(ex));
+				bill.setUpId(current.getId());
+				bill.setUpName(current.getNickname());
+				bill.setType(4); // 4|提成
+				bill.setMoney(ex);
+				bill.setSelfId(member.getId());
+				bill.setSelfName(member.getNickname());
+				accountBillDao.save(bill);
+				memberService.update(current);
+			});
 
 			memberService.update(member);
 		} catch (Exception e) {
