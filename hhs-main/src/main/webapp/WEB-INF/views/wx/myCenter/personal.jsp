@@ -23,9 +23,9 @@
             <img src="${member.iocUrl}" alt="">
         </div>
         <div class="cutuser_cont">
-            <div class="tr">会员昵称：${member.name}</div>
+            <div class="tr">昵称：${member.name}</div>
             <div class="tr">
-                会员等级：
+               	 级别：
                 <c:choose>
                     <c:when test="${member.level==1}">竹语游客</c:when>
                     <c:when test="${member.level==2}">普通会员</c:when>

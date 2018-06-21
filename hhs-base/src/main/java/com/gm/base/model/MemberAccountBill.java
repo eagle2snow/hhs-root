@@ -32,6 +32,11 @@ public class MemberAccountBill extends Model {
 
 	@FormField(type = FieldType.TEXTINPUT, label = "上家姓名")
 	private String upName;
+	
+	@FormField(type = FieldType.NUMBER, label = "三级分润等级记录")
+	private Integer status; // 1：直推   2：直系
+	
+	
 
 	/*
 	 * @FormField(type = FieldType.TEXTINPUT, label = "下家ID") private Integer
@@ -40,6 +45,14 @@ public class MemberAccountBill extends Model {
 	 * @FormField(type = FieldType.TEXTINPUT, label = "下家姓名") private String
 	 * nextName;
 	 */
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	@FormField(type = FieldType.TEXTINPUT, label = "订单ID")
 	private String orderNo;
