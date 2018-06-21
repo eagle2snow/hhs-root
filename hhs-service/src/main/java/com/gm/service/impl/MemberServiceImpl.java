@@ -544,8 +544,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Map<Integer, Integer> childrenCount = new HashMap<>();
 		private Map<Integer, Integer> direct = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
-		public final int directCond = 2;//Const.directMember;
-		public final int childrenCond = 5;//Const.betweenMember;
+		public final int directCond = Const.directMember;
+		public final int childrenCond = Const.betweenMember;
 
 		public Set<Integer> getDetached()
 		{
@@ -562,16 +562,14 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				return;
 			visit(root);
 			for (Integer id : chains) {
-				if (childrenCount.containsKey(id) && childrenCount.get(id) >= childrenCond) {
-					if (direct.containsKey(id) && direct.get(id) >= directCond) {
-						Member current = get(id);
-						if (current == null) {
-							logger.error("iterator current == null");
-							break;
-						}
-						yourCodeHere.accept(current);
-						break;
+				if (childrenCount.getOrDefault(id, 0) >= childrenCond && direct.getOrDefault(id, 0) >= directCond) {
+					Member current = get(id);
+					if (current == null) {
+						logger.error("iterator current == null");
+						return;
 					}
+					yourCodeHere.accept(current);
+					return;
 				}
 			}
 		}
