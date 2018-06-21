@@ -587,13 +587,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		public void iterator(Member member, Consumer<Member> yourCodeHere)
 		{
+			if (member == null)
+				return;
 			List<Integer> chains = new ArrayList<>();
 			Member root = getRoot(member, chains);
 			if (root == null)
 				return;
 			visit(root);
-			Map<Integer, Integer> childrenCount = getChildrenCount();
-			Map<Integer, Integer> direct = getDirect();
 			for (Integer one : chains) {
 				if (childrenCount.containsKey(one) && childrenCount.get(one) >= childrenCond) {
 					if (direct.containsKey(one) && direct.get(one) >= directCond) {
@@ -609,17 +609,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 		}
 
-		private Map<Integer, Integer> getDirect()
+		private int visit(Member root)
 		{
-			return direct;
-		}
-
-		private Map<Integer, Integer> getChildrenCount()
-		{
-			return childrenCount;
-		}
-
-		private int visit(Member root) {
 			if (visited.contains(root.getId()))
 				return 0;
 			visited.add(root.getId());
@@ -647,7 +638,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			return sum;
 		}
 
-		private Member getRoot(Member member, List<Integer> chains) {
+		private Member getRoot(Member member, List<Integer> chains)
+		{
 			Set<Integer> visited = new HashSet<>();
 			Member root = getParent(member, 1);
 			if (root != null)
