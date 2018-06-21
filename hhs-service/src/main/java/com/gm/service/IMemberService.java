@@ -2,8 +2,6 @@ package com.gm.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.gm.base.model.Member;
@@ -110,13 +108,11 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	void payMemberSuccess(String openid, PayBill payBill);
 
 	/**
-	 * 获取会员level级上家
-	 * 例如 level == 1 是上家
-	 * 		level == 2 是上上家
-	 * @param member
-	 * @param level
-	 */
-	Member getParent(Member member, int level);
+	 * 获取会员level上家
+     * @param member
+     *
+     */
+	Member getParent(Member member);
 
 	/**
 	 * 获取会员level级下家

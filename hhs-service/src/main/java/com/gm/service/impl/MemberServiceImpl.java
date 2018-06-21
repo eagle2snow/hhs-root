@@ -249,7 +249,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		Member m = member;
 		for (int i = 1; i <= 3; ++i) {
-			m = getParent(m, 1);
+			m = getParent(m);
 
 			if (m == null)
 				break;
@@ -311,16 +311,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	}
 
 	@Override
-	public Member getParent(Member member, int level)
+	public Member getParent(Member member)
 	{
 		if (member == null || StringUtils.isEmpty(member.getReferrerGeneralizeId()))
 			return null;
-		Member parent = member;
-		for (int i = 1; i <= level; ++i) {
-			parent = getOne("generalizeId", parent.getReferrerGeneralizeId());
-			if (parent == null || parent.getId().equals(member.getId()))
-				return null;
-		}
+		Member parent = getOne("generalizeId", member.getReferrerGeneralizeId());
+		if (parent == null || parent.getId().equals(member.getId()))
+			return null;
 		return parent;
 	}
 
@@ -405,7 +402,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		if (myself.getSetMeal() != 2) // 购买套餐了
 			return;
 
-		Member parent = getParent(myself, 1);
+		Member parent = getParent(myself);
 		if (parent == null)
 			return;
 		List<Member> children = getChildren(parent, 1);
@@ -547,8 +544,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Map<Integer, Integer> childrenCount = new HashMap<>();
 		private Map<Integer, Integer> direct = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
-		private final int directCond = 3;//Const.directMember;
-		private final int childrenCond = 3;//Const.betweenMember;
+		public final int directCond = 2;//Const.directMember;
+		public final int childrenCond = 5;//Const.betweenMember;
+
+		public Set<Integer> getDetached()
+		{
+			return detached;
+		}
 
 		public void iterator(Member member, Consumer<Member> yourCodeHere)
 		{
@@ -574,7 +576,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			}
 		}
 
-		private int visit(Member root)
+		public int visit(Member root)
 		{
 			if (visited.contains(root.getId()))
 				return 0;
@@ -606,11 +608,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Member getRoot(Member member, List<Integer> chains)
 		{
 			Set<Integer> visited = new HashSet<>();
-			Member root = getParent(member, 1);
+			Member root = getParent(member);
 			if (root != null)
 				chains.add(root.getId());
-			for (Member current = getParent(root, 1); current != null
-					&& !visited.contains(current.getId()); current = getParent(current, 1)) {
+			for (Member current = getParent(root); current != null
+					&& !visited.contains(current.getId()); current = getParent(current)) {
 				visited.add(current.getId());
 				root = current;
 				chains.add(root.getId());

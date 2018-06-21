@@ -11,14 +11,12 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gm.base.model.Member;
 import com.gm.base.query.Page;
-import com.gm.service.IMemberService;
 import com.gm.utils.StringUtil;
 
 /**
@@ -44,7 +42,7 @@ public class AdminMemberController extends BaseAdminController {
 		if (myself == null)
 		    logger.info("getUpperRelate::memberService.get(id) == null");
         else {
-			Member upperRelate = memberService.getParent(myself, 1);
+			Member upperRelate = memberService.getParent(myself);
 			mm.addAttribute("upperRelate", upperRelate);
 		}
         return path + "upperRelate";

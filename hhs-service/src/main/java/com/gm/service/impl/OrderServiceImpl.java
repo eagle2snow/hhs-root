@@ -340,7 +340,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			// 返提成给上，上上，上上上家
 			Member m = member;
 			for (int i = 1; i <= 3; ++i) {
-				m = memberService.getParent(m, 1);
+				m = memberService.getParent(m);
 
 				if (m == null)
 					break;
