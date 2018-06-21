@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,55 +52,64 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 			return null;
 		}
 
-		List<MemberAccountBill> accountBills = billService.listEq("selfId", memberId);
-		logger.info("List<MemberAccountBill> accountBills selfId = {}",JSON.toJSON(accountBills.size()));
-		List<MemberAccountBill> accountBillss = billService.listEq("upId", memberId);
-		logger.info("List<MemberAccountBill> accountBillss upId = {}",JSON.toJSON(accountBillss.size()));
-		List<List<MemberAccountBill>> bills = new ArrayList<>();
-		bills.add(accountBillss);
-		bills.add(accountBills);
+		 Member member = memberService.getOne("id", memberId);
+		// Integer level = 0; //1：直推 2：直系
+		// String nickname1 = null;//直推人昵称
+		// String nickname2 = null;//直系人昵称
+		// List<Member> children = memberService.getChildren(member, 1); //直推
+		// for (Member member2 : children) {
+		// if (!StringUtils.isEmpty(member2)) {
+		// if (!member2.getSetMeal().equals(1)) {//买套餐了
+		// modelAndView.put("level1", 50);
+		// }
+		// }
+		// }
+		// List<Member> indirectChildren =
+		// memberService.getIndirectChildren(member);//直系
+		// for (Member member3 : indirectChildren) {
+		// if (!StringUtils.isEmpty(member3)) {
+		// level = 2;
+		// nickname2 = member3.getNickname();
+		// }
+		// }
 
-		if (bills.size() > 0) {
-			BigDecimal outManoy = BigDecimal.ZERO;
-			BigDecimal inManoy = BigDecimal.ZERO;
-			List<MemberAccountBill> billList = new ArrayList<>();
-			for (List<MemberAccountBill> list : bills) {
-				
-				
-				for (MemberAccountBill memberAccountBill : list) {
-					Integer type = memberAccountBill.getType();
-					if (type.equals(7) || type.equals(8) || type.equals(9)) {
-						memberAccountBill.setUpId(null);
-						memberAccountBill.setUpName(null);
-						billService.update(memberAccountBill);
-						
-					}
-					billList.add(memberAccountBill);
-					
-					// 处理时间
-					DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-					String localTime = df.format(memberAccountBill.getCreateTime());
-					modelAndView.put("date", localTime);
+		List<MemberAccountBill> billsList = billService.listEq("upId", memberId);
+		logger.info("List<MemberAccountBill> accountBillss upId = {}", JSON.toJSON(billsList.size()));
 
-					// 支出 7|买商品,8|买套餐,9|提现
-					if (memberAccountBill.getType() == 7 || memberAccountBill.getType() == 8
-							|| memberAccountBill.getType() == 9) {
-						outManoy = outManoy.add(memberAccountBill.getMoney());
-						modelAndView.put("outManoy", outManoy);
+		List<MemberAccountBill> selfIdBill = billService.listEq("selfId", memberId);
+		logger.info("List<MemberAccountBill> accountBillss selfIdBill = {}", JSON.toJSON(selfIdBill.size()));
 
-					} else { // 收入
-						inManoy = inManoy.add(memberAccountBill.getMoney());
-						modelAndView.put("inManoy", inManoy);
-
-					}
-
+		if (selfIdBill.size() > 0) {
+			for (MemberAccountBill memberAccountBill : selfIdBill) {
+				if (StringUtils.isEmpty(memberAccountBill.getSelfName())) {
+					billsList.add(memberAccountBill);
 				}
 			}
-			modelAndView.put("bills", billList);
-			logger.info("List<MemberAccountBill> accountBillss upId = {}",JSON.toJSON(billList.size()));
-			
-			
 		}
+
+		if (billsList.size() > 0) {
+			BigDecimal outManoy = BigDecimal.ZERO;
+			BigDecimal inManoy = BigDecimal.ZERO;
+			for (MemberAccountBill memberAccountBill : billsList) {
+				Integer type = memberAccountBill.getType();
+				if (type.equals(7) || type.equals(8) || type.equals(9)) { // 支出 7|买商品,8|买套餐,9|提现
+					memberAccountBill.setUpId(null);
+					memberAccountBill.setUpName(null);
+					billService.update(memberAccountBill);
+					outManoy = outManoy.add(memberAccountBill.getMoney());
+					modelAndView.put("outManoy", outManoy);
+				} else {
+					inManoy = inManoy.add(memberAccountBill.getMoney());
+					if (inManoy.equals(member.getGeneralizeCost())) {
+						modelAndView.put("inManoy", inManoy);
+					}else {
+						inManoy = member.getGeneralizeCost();
+						modelAndView.put("inManoy", inManoy);
+					}
+				}
+			}
+		}
+		modelAndView.put("bills", billsList);
 
 		return PATH + "memberBill";
 	}

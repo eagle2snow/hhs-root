@@ -263,6 +263,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				accountBill.setUpName(m.getName());
 				accountBill.setType(6); // 6|三级分润
 				accountBill.setMoney(BigDecimal.valueOf(50));
+				if (i == 1) 
+					accountBill.setStatus(1);//直推
+				if (i == 3) 
+					accountBill.setStatus(2);//直系
+				
 				accountBillDao.save(accountBill);
 
 			} else {
@@ -275,6 +280,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 				accountBill.setUpName(m.getName());
 				accountBill.setType(6); // 6|三级分润
 				accountBill.setMoney(BigDecimal.valueOf(60));
+				accountBill.setStatus(2);//直系
 				accountBillDao.save(accountBill);
 
 			}
