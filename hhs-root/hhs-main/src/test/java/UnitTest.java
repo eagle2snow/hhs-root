@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RunWith(SpringRunner.class)
@@ -20,9 +22,9 @@ public class UnitTest {
     @Test
     public void foo()
     {
-        Member member = memberService.get(8);
-        memberService.new Count().iterator(member, (m) -> {
-            System.out.println(m.getId());
-        });
+        Member member = memberService.get(13);
+        List<Integer> ids = new ArrayList<>();
+        memberService.new Count().iterator(member, (m) -> ids.add(m.getId()));
+        System.out.println(ids);
     }
 }

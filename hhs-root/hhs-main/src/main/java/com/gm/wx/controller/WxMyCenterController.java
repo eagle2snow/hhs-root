@@ -2,8 +2,6 @@ package com.gm.wx.controller;
 
 import java.io.File;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,8 +37,6 @@ import com.gm.service.impl.CommodityAppraiseServiceImpl;
 import com.gm.service.impl.MemberServiceImpl;
 import com.gm.utils.StringUtil;
 import com.xiaoleilu.hutool.http.HttpUtil;
-import com.xiaoleilu.hutool.io.FileUtil;
-import com.xiaoleilu.hutool.io.IoUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
 
 /**
@@ -365,8 +361,8 @@ public class WxMyCenterController extends WeixinBaseController {
 		if (myself.getId().equals(other.getId()))
 			return status.get(4);
 
-		Member parent = memberService.getParent(other, 1);
-		for (Set<Integer> visited = new HashSet<>(); parent != null; parent = memberService.getParent(other, 1)) {
+		Member parent = memberService.getParent(other);
+		for (Set<Integer> visited = new HashSet<>(); parent != null; parent = memberService.getParent(other)) {
 			if (parent.getId().equals(other.getId()))
 				return status.get(5);
 			if (visited.contains(parent.getId()))
