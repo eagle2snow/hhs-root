@@ -56,9 +56,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	@Resource
 	private ITenReturnOneDao tenReturnOneDao;
 
-	@Resource
-	private MemberServiceImpl memberService;
-
 	@Override
 	public IBaseDao<Member, Integer> getDao() {
 		return dao;
@@ -252,7 +249,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 
 		Member m = member;
 		for (int i = 1; i <= 3; ++i) {
-			m = memberService.getParent(m, 1);
+			m = getParent(m, 1);
 
 			if (m == null)
 				break;
@@ -292,7 +289,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 	 */
 	public void returnFiveMoney(Member member)
 	{
-		MemberServiceImpl.Count count = memberService.new Count();
+		MemberServiceImpl.Count count = new Count();
 		count.iterator(member, (current) -> {
 			current.setGeneralizeCost(current.getGeneralizeCost().add(BigDecimal.valueOf(5)));
 			current.setBalance(current.getBalance().add(BigDecimal.valueOf(5)));
@@ -365,7 +362,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 					tenReturnOne.setTime(num);
 					if (num / Const.returnOne >= tentime) {
 						Integer selectOneMember = tenReturnOneDao.selectOneMember(commodity.getId(), tentime);
-						Member thisTimeMember = memberService.get(selectOneMember);
+						Member thisTimeMember = get(selectOneMember);
 						if (thisTimeMember.getLevel() == 1 || thisTimeMember.getLevel() == 2) { // 未购买套餐 返原价
 							thisTimeMember.setBalance(thisTimeMember.getBalance().add(commodity.getShowPrice()));
 							thisTimeMember.setGeneralizeCost(
@@ -582,8 +579,8 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		private Map<Integer, Integer> childrenCount = new HashMap<>();
 		private Map<Integer, Integer> direct = new HashMap<>();
 		private Set<Integer> detached = new HashSet<>();
-		private final int directCond = Const.directMember;
-		private final int childrenCond = Const.betweenMember;
+		private final int directCond = 3;//Const.directMember;
+		private final int childrenCond = 3;//Const.betweenMember;
 
 		public void iterator(Member member, Consumer<Member> yourCodeHere)
 		{
@@ -594,10 +591,10 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 			if (root == null)
 				return;
 			visit(root);
-			for (Integer one : chains) {
-				if (childrenCount.containsKey(one) && childrenCount.get(one) >= childrenCond) {
-					if (direct.containsKey(one) && direct.get(one) >= directCond) {
-						Member current = memberService.get(one);
+			for (Integer id : chains) {
+				if (childrenCount.containsKey(id) && childrenCount.get(id) >= childrenCond) {
+					if (direct.containsKey(id) && direct.get(id) >= directCond) {
+						Member current = get(id);
 						if (current == null) {
 							logger.error("current == null");
 							break;
