@@ -142,13 +142,6 @@ public interface IMemberService extends IBaseService<Member, Integer> {
 	void updateGeneralizeCost(String referrerGeneralizeId, BigDecimal multiply);
 
 
-	/**
-	 * 获取一个会员的所有下家个数
-	 * @param memento 加速用 notnull
-	 * @member 会员
-	 */
-	int getChildrenCount(Member member, Map<Integer, Integer> memento, Set<Integer> visited, Set<Integer> add);
-
-	Member saveWeixinMember(String openid, String referrerGeneralizeId);
+    Member saveWeixinMember(String openid, String referrerGeneralizeId);
 
 }
