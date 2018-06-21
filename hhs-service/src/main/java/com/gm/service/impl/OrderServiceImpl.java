@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.gm.base.dao.IBaseDao;
@@ -305,12 +306,15 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			BigDecimal extract = BigDecimal.ZERO;
 			BigDecimal extract1 = BigDecimal.ZERO;
 			BigDecimal extract2momey = BigDecimal.valueOf(2);
-			if (listEq != null) {
+//			if (listEq != null) {
+			if (listEq.size() > 0) {
 				for (OrderItem item : listEq) {
-					extract = extract
-							.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
-					extract1 = extract1.add(extract2momey.multiply(BigDecimal.valueOf(item.getBuyCount())));
-					size += item.getBuyCount();
+					if (!StringUtils.isEmpty(item.getCommodity().getExtract())) {
+						extract = extract
+								.add(item.getCommodity().getExtract().multiply(BigDecimal.valueOf(item.getBuyCount())));
+						extract1 = extract1.add(extract2momey.multiply(BigDecimal.valueOf(item.getBuyCount())));
+						size += item.getBuyCount();
+					}
 				}
 			}
 			member.setLove(member.getLove() + size);// 爱心资助
