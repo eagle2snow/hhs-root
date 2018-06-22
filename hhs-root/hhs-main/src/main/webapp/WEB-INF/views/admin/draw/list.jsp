@@ -48,7 +48,7 @@
 										<div id="example1_filter" class="dataTables_filter">
 											<div class="text-c">
 											<span style="color:#666666">1-待审核&nbsp;&nbsp;2-拒绝提现&nbsp;&nbsp;3-待打款&nbsp;&nbsp;4-已打款&nbsp;&nbsp;5-已作废</span>
-												<input type="text" name="" id="key" placeholder="名称、介绍等"
+												<input type="text" name="" id="key" placeholder="输入左侧号码数进行查询"
 													onkeypress="if(event.keyCode==13) {btn.click();return false;}"
 													value='${key}' style="width: 250px;height:33px" class="input-text">
 												<button name="" id="btn" class="btn btn-success" type="submit"
