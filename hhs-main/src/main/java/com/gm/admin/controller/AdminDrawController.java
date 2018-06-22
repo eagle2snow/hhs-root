@@ -105,10 +105,10 @@ public class AdminDrawController extends BaseAdminController{
 	
 	@RequiresPermissions("admin:draw:show")
 	@RequestMapping("list/{pageIndex}/{pageSize}.htm")
-	public String manager(ModelMap map, @PathVariable Integer pageIndex, @PathVariable Integer pageSize,String k) {
+	public String manager(ModelMap map, @PathVariable Integer pageIndex, @PathVariable Integer pageSize,Integer k) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Draw.class);
-		if (!StringUtil.strNullOrEmpty(k)) {
-			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
+		if (k != null) {
+			dc.add(Restrictions.like("status", k));
 		}
 		Page<Draw> list = drawService.list(dc, pageIndex, pageSize);
 		map.put("page", list);
