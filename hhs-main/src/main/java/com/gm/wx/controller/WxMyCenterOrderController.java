@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -124,13 +125,17 @@ public class WxMyCenterOrderController extends WeixinBaseController {
 	@RequestMapping("pushOrders/{type}")
 	public String pushOrders(ModelMap map, @PathVariable Integer type) {
 		String generalizeId = WXHelper.getMember(getCurMember()).getGeneralizeId();
-		List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
-		List<Order> listEq = new ArrayList<>();
-		for (Member order : list) {
-			listEq.addAll(orderService.listEq("member.id", order.getId()));
+		
+		if (!StringUtils.isEmpty(generalizeId)) {
+			List<Member> list = memberService.listEq("referrerGeneralizeId", generalizeId);
+			List<Order> listEq = new ArrayList<>();
+			for (Member order : list) {
+				listEq.addAll(orderService.listEq("member.id", order.getId()));
+			}
+			map.put("order", listEq);
+			map.put("path", PATH);
 		}
-		map.put("order", listEq);
-		map.put("path", PATH);
+		
 		return PATH + "pushOrders";
 	}
 

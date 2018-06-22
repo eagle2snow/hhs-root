@@ -209,11 +209,11 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		} else {
 			member.setLove(member.getLove() + 1);
 		}
-		if (StringUtils.isEmpty(member.getConsume()) || member.getConsume().equals(BigDecimal.ZERO)) {
-			member.setConsume(Const.MEMBER_AMOUNT);
-		} else {
-			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
-		}
+//		if (StringUtils.isEmpty(member.getConsume()) || member.getConsume().equals(BigDecimal.ZERO)) {
+//			member.setConsume(Const.MEMBER_AMOUNT);
+//		} else {
+//			member.setConsume(member.getConsume().add(Const.MEMBER_AMOUNT));
+//		}
 		update(member);
 		threeMoney(member);
 		logger.info("threeMoney", JSON.toJSON(member));
