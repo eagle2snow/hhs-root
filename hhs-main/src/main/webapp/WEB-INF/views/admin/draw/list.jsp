@@ -47,6 +47,7 @@
 									<div class="col-sm-6">
 										<div id="example1_filter" class="dataTables_filter">
 											<div class="text-c">
+											<span style="color:#666666">1-待审核&nbsp;&nbsp;2-拒绝提现&nbsp;&nbsp;3-待打款&nbsp;&nbsp;4-已打款&nbsp;&nbsp;5-已作废</span>
 												<input type="text" name="" id="key" placeholder="名称、介绍等"
 													onkeypress="if(event.keyCode==13) {btn.click();return false;}"
 													value='${key}' style="width: 250px;height:33px" class="input-text">
