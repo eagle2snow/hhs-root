@@ -69,6 +69,7 @@
 											<th>会员</th>
 											<th>银行卡号</th>
 											<th>持卡人</th>
+											<th>所属银行</th>
 											<th>提现金额</th>
 											<th>实付金额</th>
 											<th>状态</th>
@@ -92,6 +93,7 @@
 											 <th>${model.member.name}</th>
 											 <th>${model.cardNo}</th>
 											 <th>${model.cardUser}</th>
+											 <th>${model.cardName}</th>
 											
 											 <th>${model.amount}</th>
 											 <th>${model.amount - model.withdrawing}</th>

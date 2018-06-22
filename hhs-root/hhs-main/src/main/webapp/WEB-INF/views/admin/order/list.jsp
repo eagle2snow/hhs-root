@@ -65,8 +65,9 @@
 										<tr>
 											<th width="25"><input  name="checkAll" class="minimal" type="checkbox"></th>
 											<th >订单号</th>
-											<th>名称</th>
-											<th>会员昵称</th>
+											<th>收货人名字</th>
+											<th>收货人电话</th>
+											<th>收货人地址</th>
 											<th>订单总额</th>
 											<!-- <th>邮费</th> -->
 											<th>订单状态</th>
@@ -108,9 +109,11 @@
 											<td><input type="checkbox" class="minimal" name="ids" value="${model.id}"></td>
 											<td>${model.orderNo}</td>
 											
-											 <th>${model.member.nickname}</th>
-											
 											 <th>${model.member.name}</th>
+											 
+											 <th>${model.memberAddress.mobile}</th>
+											 
+											 <th>${model.memberAddress.pca} &nbsp; ${model.memberAddress.address}</th>
 											
 											 <th>${model.totalMoney}</th>
 											

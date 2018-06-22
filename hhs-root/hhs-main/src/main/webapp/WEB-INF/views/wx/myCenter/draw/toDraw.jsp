@@ -42,6 +42,7 @@
 					</div>
 				</div>
 			</div>
+			
 			<div class="setitem">
 				<div class="dl">
 					<div class="min120 dt">再次确认</div>
@@ -51,6 +52,17 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="setitem">
+				<div class="dl">
+					<div class="min120 dt">银行名称</div>
+					<div class="dd">
+						<input type="text" placeholder="请填写银行名称" class="dtint"
+							name="cardName" id='cardName'>
+					</div>
+				</div>
+			</div>
+			
 			<div class="setitem">
 				<div class="dl">
 					<div class="min120 dt">提现金额</div>
