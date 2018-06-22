@@ -305,7 +305,7 @@
 		
 		function getData(indexPage){
 			  var k = $("#key").val();
-		      location.href = '${adp}list/'+indexPage+'/${page.sizePage}.htm?k='+k;
+		      location.href = '${adp}list1/'+indexPage+'/${page.sizePage}.htm?k='+k;
 		}
 		
 		
