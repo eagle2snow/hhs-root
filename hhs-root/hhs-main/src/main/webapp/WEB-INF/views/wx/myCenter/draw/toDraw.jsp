@@ -83,7 +83,7 @@
 			</div>
 			<div class="setitem">
 				<a href="###" class="dl"> 
-					<span class="primarytxt gytxt">注:扣0.47%服务费</span>
+					<span class="primarytxt gytxt">注:扣0.47%个人所得税</span>
 		</div>
 		<div class="fbottom">
 			<nav class="btool">
