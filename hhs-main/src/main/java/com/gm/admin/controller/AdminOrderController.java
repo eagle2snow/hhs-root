@@ -115,7 +115,7 @@ public class AdminOrderController extends BaseAdminController{
 	public String manager(ModelMap map, @PathVariable Integer pageIndex, @PathVariable Integer pageSize,String k) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (!StringUtil.strNullOrEmpty(k)) {
-			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
+			dc.add(Restrictions.ilike("status", k.trim(),MatchMode.ANYWHERE));
 		}
 		Page<Order> list = orderService.list(dc, pageIndex, pageSize);
 		map.put("page", list);
@@ -131,7 +131,7 @@ public class AdminOrderController extends BaseAdminController{
 	public String manager1(ModelMap map, @PathVariable Integer pageIndex, @PathVariable Integer pageSize,String k) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (!StringUtil.strNullOrEmpty(k)) {
-			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
+			dc.add(Restrictions.ilike("status", k.trim(),MatchMode.ANYWHERE));
 		}	
 		dc.add(Restrictions.or(Restrictions.ilike("status", "2",MatchMode.ANYWHERE),Restrictions.ilike("status", "11",MatchMode.ANYWHERE)));
 
@@ -149,7 +149,7 @@ public class AdminOrderController extends BaseAdminController{
 	public String manager2(ModelMap map, @PathVariable Integer pageIndex, @PathVariable Integer pageSize,String k) {
 		DetachedCriteria dc = DetachedCriteria.forClass(Order.class);
 		if (!StringUtil.strNullOrEmpty(k)) {
-			dc.add(Restrictions.ilike("name", k.trim(),MatchMode.ANYWHERE));
+			dc.add(Restrictions.ilike("status", k.trim(),MatchMode.ANYWHERE));
 		}
 		Page<Order> list = orderService.list(dc, pageIndex, pageSize);
 		map.put("page", list);
