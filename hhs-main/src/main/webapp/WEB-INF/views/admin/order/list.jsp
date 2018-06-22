@@ -47,7 +47,8 @@
 									<div class="col-sm-6">
 										<div id="example1_filter" class="dataTables_filter">
 											<div class="text-c">
-												<input type="text" name="" id="key" placeholder="名称、介绍等"
+											<span style="color:#666666">1-待付款&nbsp;&nbsp;2-待发货&nbsp;&nbsp;3-待收货&nbsp;&nbsp;10-订单已完成&nbsp;&nbsp;11-加急</span>
+												<input type="text" name="" id="key" placeholder="输入左侧号码数进行查询"
 													onkeypress="if(event.keyCode==13) {btn.click();return false;}"
 													value='${key}' style="width: 250px;height:33px" class="input-text">
 												<button name="" id="btn" class="btn btn-success" type="submit"
