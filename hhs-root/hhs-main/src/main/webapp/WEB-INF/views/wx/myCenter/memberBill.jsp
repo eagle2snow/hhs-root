@@ -21,10 +21,10 @@
 				<!--             <span class="fl">分类 <img src="/static/wx/images/bill/bf01.png"/></span> -->
 				<!--         </li> -->
 				<li class="beny">
-					<span class="dangy">本月</span>
-					<span class="span01">支出 <span class="span02">
+<!-- 					<span class="dangy">本月</span> -->
+					<span class="span01">总支出 <span class="span02">
 						¥${outManoy > 0 ? outManoy : 0.00}
-					</span> 收入 <span class="span02">
+					</span> 总收入 <span class="span02">
 						¥${inManoy > 0 ? inManoy : 0.00}
 					</span>
 					</span>
@@ -57,8 +57,8 @@
                 				<javatime:format value="${bill.createTime}" pattern="yyyy-MM-dd HH:mm:ss" />
                 			</span>
 							<span class="nickname" style="color: rgb(240, 173, 78)">
-								<c:if test="${bill.status eq 1 }">[直推]</c:if>
-								<c:if test="${bill.status eq 2 }">[直系]</c:if>
+								<c:if test="${bill.status eq 1 }">[经理]</c:if>
+								<c:if test="${bill.status eq 2 }">[管理]</c:if>
 							</span>
 							<span class="nickname">
 								${bill.selfName}
