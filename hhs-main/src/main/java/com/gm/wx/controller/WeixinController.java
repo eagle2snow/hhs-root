@@ -8,11 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
 import com.github.sd4324530.fastweixin.api.response.GetUserInfoResponse;
 import com.github.sd4324530.fastweixin.api.response.OauthGetTokenResponse;
 import com.github.sd4324530.fastweixin.message.BaseMsg;
@@ -111,38 +111,49 @@ public class WeixinController extends WeixinControllerSupport {
 
 	@RequestMapping("/saveMember")
 	public void saveMember(String code, String state, HttpServletResponse response, HttpSession session) {
-		OauthGetTokenResponse re = WeiXinApi.getOauthAPI().getToken(code);
-		String openid = re.getOpenid();
-		if (!StringUtil.strNullOrEmpty(openid)) {
-			Member member = memberService.getOne("openid", openid);
-			if (null == member) {
-				member = memberService.saveWeixinMember(openid);
+		log.info("saveMember:The args code = {},state = {}",code,state);
+		if (!StringUtil.strNullOrEmpty(code)) {
+			OauthGetTokenResponse re = WeiXinApi.getOauthAPI().getToken(code);
+			String openid = re.getOpenid();
+			if (!StringUtil.strNullOrEmpty(openid)) {
+				Member member = memberService.getOne("openid", openid);
+				if (null == member) {
+					member = memberService.saveWeixinMember(openid);
+				}
+				session.setAttribute(Const.CUR_WX_MEMBER, member);
 			}
-			session.setAttribute(Const.CUR_WX_MEMBER, member);
-		}
-		try {
-			response.sendRedirect(state);
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				if (!StringUtils.isEmpty(state)) {
+					response.sendRedirect(state);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@RequestMapping("/getUserInfo")
 	public void getUserInfo(String code, String state, HttpServletResponse response, HttpSession session) {
-		OauthGetTokenResponse re = WeiXinApi.getOauthAPI().getToken(code);
-		String openid = re.getOpenid();
-		GetUserInfoResponse response2 = WeiXinApi.getOauthAPI().getUserInfo(re.getAccessToken(), openid);
-		Member member = memberService.getOne("openid", openid);
-		if (member == null) {
-			member = memberService.saveWeixinMember(response2);
-		} else {
-			member = memberService.updateWeixinMember(member, response2);
+		log.info("getUserInfo:The args code = {},state = {}",code,state);
+		if (!StringUtil.strNullOrEmpty(code)) {
+			OauthGetTokenResponse re = WeiXinApi.getOauthAPI().getToken(code);
+			String openid = re.getOpenid();
+			GetUserInfoResponse response2 = WeiXinApi.getOauthAPI().getUserInfo(re.getAccessToken(), openid);
+			Member member = memberService.getOne("openid", openid);
+			if (member == null) {
+				member = memberService.saveWeixinMember(response2);
+			} else {
+				member = memberService.updateWeixinMember(member, response2);
+			}
+			session.setAttribute(Const.CUR_WX_MEMBER, member);
+			try {
+				if (!StringUtils.isEmpty(state)) {
+					response.sendRedirect(state);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		session.setAttribute(Const.CUR_WX_MEMBER, member);
-		try {
-			response.sendRedirect(state);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 }
