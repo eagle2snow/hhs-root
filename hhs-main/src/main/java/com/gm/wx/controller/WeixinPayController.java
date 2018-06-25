@@ -118,6 +118,11 @@ public class WeixinPayController extends WeixinBaseController {
 			map.put("s", "系统有误，请稍候再试！");
 			return map;
 		}
+		
+		if (member.getSetMeal() != 1) {
+			map.put("s", "您已购买，请勿重新购买套餐!");
+			return map;
+		}
 
 		PayBill payBill = new PayBill();
 		payBill.setOrderNo(OrderServiceImpl.genOrderNo());
@@ -128,17 +133,11 @@ public class WeixinPayController extends WeixinBaseController {
 		payBill.setAddressId(choosed);
 		payBillService.save(payBill);
 		
-		try {
-			if (member.getSetMeal() == 1) {
+		try {			
 				PayResponse res = WeixinPayApi.pay(payBill.getOrderNo(), "购买套餐", Const.MEMBER_AMOUNT, member.getOpenid(),
 						getDomain());
 				map.put("s", 1);
-				map.put("data", res);
-
-			} else {
-				map.put("s", "您已购买，请勿重新购买套餐!");
-
-			}
+				map.put("data", res);			
 		} catch (BestPayException e) {
 			e.printStackTrace();
 			if (e.getCode().equals(17)) {
@@ -147,6 +146,7 @@ public class WeixinPayController extends WeixinBaseController {
 				map.put("s", "系统有误，请稍候再试");
 			}
 		}
+			
 		logger.info("prePayCombo:the Map map={}", JSON.toJSON(map));
 
 		return map;
