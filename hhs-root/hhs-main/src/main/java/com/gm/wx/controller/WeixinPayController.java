@@ -211,6 +211,7 @@ public class WeixinPayController extends WeixinBaseController {
 			payBill.setReaFee(BigDecimal.valueOf(amount));
 			payBill.setTransactionId(outTradeNo);
 			payBillService.update(payBill);
+			logger.info("paySuccess支付成功回调={}.","orderId="+orderId+"---------TransactionId="+outTradeNo);
 			success.add(payBill);
 			try {
 				lock.lock();
