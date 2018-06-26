@@ -194,12 +194,12 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, Integer> implemen
 		member.setSetMeal(2);
 		member.setLevel(3);
 
-		MemberAccountBill accountBill = new MemberAccountBill();
-		accountBill.setSelfId(member.getId());
-		accountBill.setType(8); // 8|买套餐
-		accountBill.setMoney(Const.MEMBER_AMOUNT);
-		accountBill.setCreateTime(LocalDateTime.now());
-		accountBillDao.save(accountBill);
+//		MemberAccountBill accountBill = new MemberAccountBill();
+//		accountBill.setSelfId(member.getId());
+//		accountBill.setType(8); // 8|买套餐
+//		accountBill.setMoney(Const.MEMBER_AMOUNT);
+//		accountBill.setCreateTime(LocalDateTime.now());
+//		accountBillDao.save(accountBill);
 
 		if (StringUtils.isEmpty(member.getGeneralizeId())) {
 			member.setGeneralizeId(getGenId(member.getId()));

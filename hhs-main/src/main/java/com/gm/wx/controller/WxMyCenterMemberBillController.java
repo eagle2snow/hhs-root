@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,25 +54,6 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 		}
 
 		 Member member = memberService.getOne("id", memberId);
-		// Integer level = 0; //1：直推 2：直系
-		// String nickname1 = null;//直推人昵称
-		// String nickname2 = null;//直系人昵称
-		// List<Member> children = memberService.getChildren(member, 1); //直推
-		// for (Member member2 : children) {
-		// if (!StringUtils.isEmpty(member2)) {
-		// if (!member2.getSetMeal().equals(1)) {//买套餐了
-		// modelAndView.put("level1", 50);
-		// }
-		// }
-		// }
-		// List<Member> indirectChildren =
-		// memberService.getIndirectChildren(member);//直系
-		// for (Member member3 : indirectChildren) {
-		// if (!StringUtils.isEmpty(member3)) {
-		// level = 2;
-		// nickname2 = member3.getNickname();
-		// }
-		// }
 
 		List<MemberAccountBill> billsList = billService.listEq("upId", memberId);
 		logger.info("List<MemberAccountBill> accountBillss upId = {}", JSON.toJSON(billsList.size()));
@@ -90,6 +72,19 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 		if (billsList.size() > 0) {
 			BigDecimal outManoy = BigDecimal.ZERO;
 			BigDecimal inManoy = BigDecimal.ZERO;
+			Iterator<MemberAccountBill> it = billsList.iterator();
+			while (it.hasNext()) {
+				MemberAccountBill memberAccountBill = it.next();
+			
+				logger.info("for:Bill = {}",JSON.toJSON(memberAccountBill.getMoney()));
+				if (memberAccountBill.getMoney().compareTo(BigDecimal.valueOf(0.000001))<0) {
+					it.remove();
+					logger.info("remove:Bill = {}",JSON.toJSON(memberAccountBill));
+//					continue;//满足条件跳出当次循环
+				
+				}
+			}
+			
 			for (MemberAccountBill memberAccountBill : billsList) {
 				Integer type = memberAccountBill.getType();
 				if (type.equals(7) || type.equals(8) || type.equals(9)) { // 支出 7|买商品,8|买套餐,9|提现
@@ -97,6 +92,8 @@ public class WxMyCenterMemberBillController extends WeixinBaseController {
 					memberAccountBill.setUpName(null);
 					billService.update(memberAccountBill);
 					outManoy = outManoy.add(memberAccountBill.getMoney());
+					logger.info("out:money = {}",JSON.toJSON(memberAccountBill.getMoney()));
+					
 					modelAndView.put("outManoy", outManoy);
 				} else {
 					inManoy = inManoy.add(memberAccountBill.getMoney());

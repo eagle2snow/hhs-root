@@ -57,7 +57,7 @@ public class MemberAccountBill extends Model {
 	@FormField(type = FieldType.TEXTINPUT, label = "订单ID")
 	private String orderNo;
 
-	@FormField(type = FieldType.NUMBER, label = "类型", data = "1|十返一,2|返套餐,3|5元/人,4|提成,6|三级分润,7|买商品,8|买套餐,9|提现")
+	@FormField(type = FieldType.NUMBER, label = "类型", data = "1|十返一,2|返套餐,3|5元/人,4|提成,6|三级分润,7|消费,9|提现")
 	private Integer type;
 
 	@FormField(type = FieldType.TEXTINPUT, label = "金额")
