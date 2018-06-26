@@ -326,7 +326,7 @@ public class OrderServiceImpl extends BaseServiceImpl<Order, Integer> implements
 			MemberAccountBill accountBill = new MemberAccountBill();
 			accountBill.setSelfId(member.getId());
 			accountBill.setCreateTime(LocalDateTime.now());
-			accountBill.setType(7); // 7|买商品
+			accountBill.setType(7); // 7|消费
 			accountBill.setMoney(order.getTotalMoney());
 			accountBill.setOrderNo(order.getOrderNo());
 			accountBillDao.save(accountBill);

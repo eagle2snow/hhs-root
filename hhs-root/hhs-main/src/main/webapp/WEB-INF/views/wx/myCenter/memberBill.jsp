@@ -37,8 +37,8 @@
 			                <c:if test="${bill.type == 3}">佣金</c:if>
 			                <c:if test="${bill.type == 4}">佣金</c:if>
 			                <c:if test="${bill.type == 6}">佣金</c:if>
-			                <c:if test="${bill.type == 7}">买商品</c:if>
-			                <c:if test="${bill.type == 8}">买套餐</c:if>
+			                <c:if test="${bill.type == 7}">消费</c:if>
+<%-- 			                <c:if test="${bill.type == 8}">买套餐</c:if> --%>
 			                <c:if test="${bill.type == 9}">提现</c:if>
 	                		<span class="jine"><span class="span03">
 				                <c:if test="${bill.type == 1}">${bill.money}</c:if>
@@ -47,7 +47,7 @@
 				                <c:if test="${bill.type == 4}">${bill.money}</c:if>
 				                <c:if test="${bill.type == 6}">${bill.money}</c:if>
 			                	<c:if test="${bill.type == 7}">-${bill.money}</c:if>
-			                	<c:if test="${bill.type == 8}">-${bill.money}</c:if>
+<%-- 			                	<c:if test="${bill.type == 8}">-${bill.money}</c:if> --%>
 			                	<c:if test="${bill.type == 9}">-${bill.money}</c:if>
                 				</span>元</span>
 							</span>
